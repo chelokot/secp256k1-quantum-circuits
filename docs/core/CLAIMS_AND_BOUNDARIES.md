@@ -201,10 +201,13 @@ lowering embeds `executable_modular_circuit_ir`, emits the modular kernels from
 it, and the modular certificate consumes that same IR plus a generated local
 primitive-stream certificate. The public materialized-engine manifest now binds
 those local modular streams to arithmetic engine kernels, public arithmetic
-rows, exact operand domains, and the strict liveness projection. The remaining
-arithmetic row in `engine_completion_audit.json` is the stronger semantic
-schedule: a single end-to-end modular arithmetic execution schedule rather than
-per-kernel allocation evidence.
+rows, exact operand domains, and the strict liveness projection.
+`modular_execution_trace.json` then binds the selected seven-slot tail schedule
+to modular sub-operations, lookup interface rows, strict slot/liveness owners,
+and the counted zero-lift guard. The remaining arithmetic row in
+`engine_completion_audit.json` is the final expansion step: dumping and checking
+every primitive modular gate row from that scheduled trace, not only the compact
+step trace plus stream hashes.
 The QROAM row similarly records that the current standard-QROAMClean certificate
 now hashes generated word-level unary-iteration rows and target-bit Clifford
 load-site rows with selection-control, target-register, and loaded-bit source

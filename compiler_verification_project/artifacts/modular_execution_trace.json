@@ -1,0 +1,3849 @@
+{
+  "schema": "compiler-project-modular-execution-trace-v1",
+  "status": "selected_tail_schedule_decomposed_into_modular_execution_trace",
+  "source_digests": {
+    "tail_macro_engine_sha256": "eea48169b9577864a0dae285c1ee31e17e7329c8cb3cadb0606657871c5b7d2d",
+    "modular_arithmetic_certificate_sha256": "5dc1bc120d7c52d9b0118c1ff01d28e8bb13fa6060da2aafaed6e15200e38ff8",
+    "public_candidate_materialized_circuit_manifest_sha256": "25d2f9d31df95bb4fde297e3bc127948c8ff69e5c8fe56eb0d8d996dcfbf8818"
+  },
+  "trace_encoding": [
+    "global_suboperation_index",
+    "schedule_index",
+    "tail_operation_index",
+    "target",
+    "kind",
+    "modular_opcode",
+    "semantic_role",
+    "sources",
+    "target_slot",
+    "owner_id",
+    "overwritten_source",
+    "non_clifford",
+    "operation_count"
+  ],
+  "trace_stream_sha256": "d8fe637009767d7729c8ec732908306b646dc3307fe3559803ac010da9fed155",
+  "tail_schedule_row_count": 17,
+  "suboperation_count": 29,
+  "modular_suboperation_count": 23,
+  "modular_opcode_histogram": {
+    "field_add": 6,
+    "field_mul": 11,
+    "field_sub": 2,
+    "field_sub_sum": 1,
+    "field_triple": 1,
+    "mul_const": 2
+  },
+  "scheduled_tail_non_clifford": 1126842,
+  "reconstructed_non_clifford": 1126842,
+  "selected_tail_kernel_non_clifford": 1126842,
+  "trace_rows": [
+    {
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "opcode": "field_add",
+      "target": "G",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": null,
+      "live_before": {
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "G": 3,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "G": 3,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 510,
+      "reconstructed_non_clifford": 510,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 0,
+      "suboperation_end_exclusive": 1,
+      "suboperations": [
+        {
+          "global_suboperation_index": 0,
+          "schedule_index": 0,
+          "tail_operation_index": 0,
+          "target": "G",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_add",
+          "semantic_role": "execute field_add for tail row",
+          "sources": [
+            "X",
+            "Y"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": null,
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+          "step_rows": [
+            {
+              "step": "carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 1,
+      "tail_operation_index": 1,
+      "opcode": "field_mul_lookup_sum",
+      "target": "H",
+      "sources": [
+        "G",
+        "lookup_x_plus_y"
+      ],
+      "target_slot": 4,
+      "owner_id": "tail_reordered_slot_4",
+      "overwritten_source": null,
+      "live_before": {
+        "G": 3,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "G": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 137028,
+      "reconstructed_non_clifford": 137028,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 1,
+      "suboperation_end_exclusive": 3,
+      "suboperations": [
+        {
+          "global_suboperation_index": 1,
+          "schedule_index": 1,
+          "tail_operation_index": 1,
+          "target": "H",
+          "kind": "lookup_interface_stream",
+          "modular_opcode": null,
+          "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+          "sources": [
+            "lookup_x_plus_y"
+          ],
+          "target_slot": null,
+          "owner_id": "lookup_workspace",
+          "overwritten_source": null,
+          "non_clifford": 65536,
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "primitive_stream_sha256": null,
+          "step_rows": []
+        },
+        {
+          "global_suboperation_index": 2,
+          "schedule_index": 1,
+          "tail_operation_index": 1,
+          "target": "H",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_mul",
+          "semantic_role": "execute field_mul_lookup_sum after streamed lookup source",
+          "sources": [
+            "G",
+            "lookup_x_plus_y"
+          ],
+          "target_slot": 4,
+          "owner_id": "tail_reordered_slot_4",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 2,
+      "tail_operation_index": 3,
+      "opcode": "field_mul_lookup_x",
+      "target": "Zx",
+      "sources": [
+        "Z",
+        "lookup_x"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": null,
+      "live_before": {
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2,
+        "Zx": 3
+      },
+      "live_after": {
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2,
+        "Zx": 3
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 137028,
+      "reconstructed_non_clifford": 137028,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 3,
+      "suboperation_end_exclusive": 5,
+      "suboperations": [
+        {
+          "global_suboperation_index": 3,
+          "schedule_index": 2,
+          "tail_operation_index": 3,
+          "target": "Zx",
+          "kind": "lookup_interface_stream",
+          "modular_opcode": null,
+          "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+          "sources": [
+            "lookup_x"
+          ],
+          "target_slot": null,
+          "owner_id": "lookup_workspace",
+          "overwritten_source": null,
+          "non_clifford": 65536,
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "primitive_stream_sha256": null,
+          "step_rows": []
+        },
+        {
+          "global_suboperation_index": 4,
+          "schedule_index": 2,
+          "tail_operation_index": 3,
+          "target": "Zx",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_mul",
+          "semantic_role": "execute field_mul_lookup_x after streamed lookup source",
+          "sources": [
+            "Z",
+            "lookup_x"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 3,
+      "tail_operation_index": 4,
+      "opcode": "field_add",
+      "target": "C_input",
+      "sources": [
+        "X",
+        "Zx"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "Zx",
+      "live_before": {
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2,
+        "Zx": 3
+      },
+      "live_during": {
+        "C_input": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "C_input": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 510,
+      "reconstructed_non_clifford": 510,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 5,
+      "suboperation_end_exclusive": 6,
+      "suboperations": [
+        {
+          "global_suboperation_index": 5,
+          "schedule_index": 3,
+          "tail_operation_index": 4,
+          "target": "C_input",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_add",
+          "semantic_role": "execute field_add for tail row",
+          "sources": [
+            "X",
+            "Zx"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": "Zx",
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+          "step_rows": [
+            {
+              "step": "carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 4,
+      "tail_operation_index": 2,
+      "opcode": "field_mul_lookup_x",
+      "target": "A",
+      "sources": [
+        "X",
+        "lookup_x"
+      ],
+      "target_slot": 0,
+      "owner_id": "tail_reordered_slot_0",
+      "overwritten_source": "X",
+      "live_before": {
+        "C_input": 3,
+        "H": 4,
+        "X": 0,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "A": 0,
+        "C_input": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "A": 0,
+        "C_input": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 137028,
+      "reconstructed_non_clifford": 137028,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 6,
+      "suboperation_end_exclusive": 8,
+      "suboperations": [
+        {
+          "global_suboperation_index": 6,
+          "schedule_index": 4,
+          "tail_operation_index": 2,
+          "target": "A",
+          "kind": "lookup_interface_stream",
+          "modular_opcode": null,
+          "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+          "sources": [
+            "lookup_x"
+          ],
+          "target_slot": null,
+          "owner_id": "lookup_workspace",
+          "overwritten_source": null,
+          "non_clifford": 65536,
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "primitive_stream_sha256": null,
+          "step_rows": []
+        },
+        {
+          "global_suboperation_index": 7,
+          "schedule_index": 4,
+          "tail_operation_index": 2,
+          "target": "A",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_mul",
+          "semantic_role": "execute field_mul_lookup_x after streamed lookup source",
+          "sources": [
+            "X",
+            "lookup_x"
+          ],
+          "target_slot": 0,
+          "owner_id": "tail_reordered_slot_0",
+          "overwritten_source": "X",
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 5,
+      "tail_operation_index": 5,
+      "opcode": "mul_const",
+      "target": "C",
+      "sources": [
+        "C_input"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "C_input",
+      "live_before": {
+        "A": 0,
+        "C_input": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "A": 0,
+        "C": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "A": 0,
+        "C": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 3060,
+      "reconstructed_non_clifford": 3060,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 8,
+      "suboperation_end_exclusive": 9,
+      "suboperations": [
+        {
+          "global_suboperation_index": 8,
+          "schedule_index": 5,
+          "tail_operation_index": 5,
+          "target": "C",
+          "kind": "modular_field_operation",
+          "modular_opcode": "mul_const",
+          "semantic_role": "execute mul_const for tail row",
+          "sources": [
+            "C_input"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": "C_input",
+          "non_clifford": 3060,
+          "operation_count": 6120,
+          "primitive_counts_total": {
+            "ccx": 3060,
+            "cx": 0,
+            "x": 0,
+            "measurement": 3060
+          },
+          "primitive_stream_sha256": "e6ed119767dfedafa9bfd864bd462bf2b17b13b2bac45363fdc25c478aa0b330",
+          "step_rows": [
+            {
+              "step": "chain_1_to_2_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_1_to_2_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_2_to_4_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_2_to_4_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_4_to_8_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_4_to_8_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_8_to_16_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_8_to_16_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_16_to_20_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_16_to_20_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_20_to_21_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_20_to_21_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 6,
+      "tail_operation_index": 9,
+      "opcode": "field_mul_lookup_y",
+      "target": "yZ",
+      "sources": [
+        "Z",
+        "lookup_y"
+      ],
+      "target_slot": 5,
+      "owner_id": "tail_reordered_slot_5",
+      "overwritten_source": null,
+      "live_before": {
+        "A": 0,
+        "C": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "A": 0,
+        "C": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2,
+        "yZ": 5
+      },
+      "live_after": {
+        "A": 0,
+        "C": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2,
+        "yZ": 5
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 137028,
+      "reconstructed_non_clifford": 137028,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 9,
+      "suboperation_end_exclusive": 11,
+      "suboperations": [
+        {
+          "global_suboperation_index": 9,
+          "schedule_index": 6,
+          "tail_operation_index": 9,
+          "target": "yZ",
+          "kind": "lookup_interface_stream",
+          "modular_opcode": null,
+          "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+          "sources": [
+            "lookup_y"
+          ],
+          "target_slot": null,
+          "owner_id": "lookup_workspace",
+          "overwritten_source": null,
+          "non_clifford": 65536,
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "primitive_stream_sha256": null,
+          "step_rows": []
+        },
+        {
+          "global_suboperation_index": 10,
+          "schedule_index": 6,
+          "tail_operation_index": 9,
+          "target": "yZ",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_mul",
+          "semantic_role": "execute field_mul_lookup_y after streamed lookup source",
+          "sources": [
+            "Z",
+            "lookup_y"
+          ],
+          "target_slot": 5,
+          "owner_id": "tail_reordered_slot_5",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 7,
+      "tail_operation_index": 10,
+      "opcode": "field_add",
+      "target": "E",
+      "sources": [
+        "Y",
+        "yZ"
+      ],
+      "target_slot": 5,
+      "owner_id": "tail_reordered_slot_5",
+      "overwritten_source": "yZ",
+      "live_before": {
+        "A": 0,
+        "C": 3,
+        "H": 4,
+        "Y": 1,
+        "Z": 2,
+        "yZ": 5
+      },
+      "live_during": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 510,
+      "reconstructed_non_clifford": 510,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 11,
+      "suboperation_end_exclusive": 12,
+      "suboperations": [
+        {
+          "global_suboperation_index": 11,
+          "schedule_index": 7,
+          "tail_operation_index": 10,
+          "target": "E",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_add",
+          "semantic_role": "execute field_add for tail row",
+          "sources": [
+            "Y",
+            "yZ"
+          ],
+          "target_slot": 5,
+          "owner_id": "tail_reordered_slot_5",
+          "overwritten_source": "yZ",
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+          "step_rows": [
+            {
+              "step": "carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 8,
+      "tail_operation_index": 6,
+      "opcode": "field_mul_lookup_y",
+      "target": "I",
+      "sources": [
+        "Y",
+        "lookup_y"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": "Y",
+      "live_before": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "H": 4,
+        "Y": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "H": 4,
+        "I": 1,
+        "Z": 2
+      },
+      "live_after": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "H": 4,
+        "I": 1,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 137028,
+      "reconstructed_non_clifford": 137028,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 12,
+      "suboperation_end_exclusive": 14,
+      "suboperations": [
+        {
+          "global_suboperation_index": 12,
+          "schedule_index": 8,
+          "tail_operation_index": 6,
+          "target": "I",
+          "kind": "lookup_interface_stream",
+          "modular_opcode": null,
+          "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+          "sources": [
+            "lookup_y"
+          ],
+          "target_slot": null,
+          "owner_id": "lookup_workspace",
+          "overwritten_source": null,
+          "non_clifford": 65536,
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "primitive_stream_sha256": null,
+          "step_rows": []
+        },
+        {
+          "global_suboperation_index": 13,
+          "schedule_index": 8,
+          "tail_operation_index": 6,
+          "target": "I",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_mul",
+          "semantic_role": "execute field_mul_lookup_y after streamed lookup source",
+          "sources": [
+            "Y",
+            "lookup_y"
+          ],
+          "target_slot": 1,
+          "owner_id": "tail_reordered_slot_1",
+          "overwritten_source": "Y",
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 9,
+      "tail_operation_index": 7,
+      "opcode": "field_sub_sum",
+      "target": "K",
+      "sources": [
+        "H",
+        "A",
+        "I"
+      ],
+      "target_slot": 4,
+      "owner_id": "tail_reordered_slot_4",
+      "overwritten_source": "H",
+      "live_before": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "H": 4,
+        "I": 1,
+        "Z": 2
+      },
+      "live_during": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "I": 1,
+        "K": 4,
+        "Z": 2
+      },
+      "live_after": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "I": 1,
+        "K": 4,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 1020,
+      "reconstructed_non_clifford": 1020,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 14,
+      "suboperation_end_exclusive": 15,
+      "suboperations": [
+        {
+          "global_suboperation_index": 14,
+          "schedule_index": 9,
+          "tail_operation_index": 7,
+          "target": "K",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_sub_sum",
+          "semantic_role": "execute field_sub_sum for tail row",
+          "sources": [
+            "H",
+            "A",
+            "I"
+          ],
+          "target_slot": 4,
+          "owner_id": "tail_reordered_slot_4",
+          "overwritten_source": "H",
+          "non_clifford": 1020,
+          "operation_count": 2040,
+          "primitive_counts_total": {
+            "ccx": 1020,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1020
+          },
+          "primitive_stream_sha256": "26ad397d77bd729644c169f07bb2f8f4c7364a92ac026ae716b0a0ecca60b364",
+          "step_rows": [
+            {
+              "step": "first_subtract_borrow_ladder",
+              "kind": "ripple_borrow",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "first_subtract_conditional_add_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_subtract_borrow_ladder",
+              "kind": "ripple_borrow",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_subtract_conditional_add_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 10,
+      "tail_operation_index": 8,
+      "opcode": "field_triple",
+      "target": "L",
+      "sources": [
+        "A"
+      ],
+      "target_slot": 0,
+      "owner_id": "tail_reordered_slot_0",
+      "overwritten_source": "A",
+      "live_before": {
+        "A": 0,
+        "C": 3,
+        "E": 5,
+        "I": 1,
+        "K": 4,
+        "Z": 2
+      },
+      "live_during": {
+        "C": 3,
+        "E": 5,
+        "I": 1,
+        "K": 4,
+        "L": 0,
+        "Z": 2
+      },
+      "live_after": {
+        "C": 3,
+        "E": 5,
+        "I": 1,
+        "K": 4,
+        "L": 0,
+        "Z": 2
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 1020,
+      "reconstructed_non_clifford": 1020,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 15,
+      "suboperation_end_exclusive": 16,
+      "suboperations": [
+        {
+          "global_suboperation_index": 15,
+          "schedule_index": 10,
+          "tail_operation_index": 8,
+          "target": "L",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_triple",
+          "semantic_role": "execute field_triple for tail row",
+          "sources": [
+            "A"
+          ],
+          "target_slot": 0,
+          "owner_id": "tail_reordered_slot_0",
+          "overwritten_source": "A",
+          "non_clifford": 1020,
+          "operation_count": 2040,
+          "primitive_counts_total": {
+            "ccx": 1020,
+            "cx": 0,
+            "x": 0,
+            "measurement": 1020
+          },
+          "primitive_stream_sha256": "9007dd13da4826b6dff118e5202ec87642f56886f25387aaaf295a4df997e433",
+          "step_rows": [
+            {
+              "step": "first_add_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "first_add_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_add_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "second_add_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 11,
+      "tail_operation_index": 11,
+      "opcode": "mul_const",
+      "target": "F",
+      "sources": [
+        "Z"
+      ],
+      "target_slot": 2,
+      "owner_id": "tail_reordered_slot_2",
+      "overwritten_source": "Z",
+      "live_before": {
+        "C": 3,
+        "E": 5,
+        "I": 1,
+        "K": 4,
+        "L": 0,
+        "Z": 2
+      },
+      "live_during": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "I": 1,
+        "K": 4,
+        "L": 0
+      },
+      "live_after": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "I": 1,
+        "K": 4,
+        "L": 0
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 3060,
+      "reconstructed_non_clifford": 3060,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 16,
+      "suboperation_end_exclusive": 17,
+      "suboperations": [
+        {
+          "global_suboperation_index": 16,
+          "schedule_index": 11,
+          "tail_operation_index": 11,
+          "target": "F",
+          "kind": "modular_field_operation",
+          "modular_opcode": "mul_const",
+          "semantic_role": "execute mul_const for tail row",
+          "sources": [
+            "Z"
+          ],
+          "target_slot": 2,
+          "owner_id": "tail_reordered_slot_2",
+          "overwritten_source": "Z",
+          "non_clifford": 3060,
+          "operation_count": 6120,
+          "primitive_counts_total": {
+            "ccx": 3060,
+            "cx": 0,
+            "x": 0,
+            "measurement": 3060
+          },
+          "primitive_stream_sha256": "e6ed119767dfedafa9bfd864bd462bf2b17b13b2bac45363fdc25c478aa0b330",
+          "step_rows": [
+            {
+              "step": "chain_1_to_2_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_1_to_2_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_2_to_4_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_2_to_4_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_4_to_8_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_4_to_8_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_8_to_16_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_8_to_16_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_16_to_20_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_16_to_20_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_20_to_21_carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "chain_20_to_21_conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 12,
+      "tail_operation_index": 12,
+      "opcode": "field_add",
+      "target": "M",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "target_slot": 6,
+      "owner_id": "tail_reordered_slot_6",
+      "overwritten_source": null,
+      "live_before": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "I": 1,
+        "K": 4,
+        "L": 0
+      },
+      "live_during": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "I": 1,
+        "K": 4,
+        "L": 0,
+        "M": 6
+      },
+      "live_after": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "I": 1,
+        "K": 4,
+        "L": 0,
+        "M": 6
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 510,
+      "reconstructed_non_clifford": 510,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 17,
+      "suboperation_end_exclusive": 18,
+      "suboperations": [
+        {
+          "global_suboperation_index": 17,
+          "schedule_index": 12,
+          "tail_operation_index": 12,
+          "target": "M",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_add",
+          "semantic_role": "execute field_add for tail row",
+          "sources": [
+            "I",
+            "F"
+          ],
+          "target_slot": 6,
+          "owner_id": "tail_reordered_slot_6",
+          "overwritten_source": null,
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+          "step_rows": [
+            {
+              "step": "carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 13,
+      "tail_operation_index": 13,
+      "opcode": "field_sub",
+      "target": "N",
+      "sources": [
+        "I",
+        "F"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": "I",
+      "live_before": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "I": 1,
+        "K": 4,
+        "L": 0,
+        "M": 6
+      },
+      "live_during": {
+        "C": 3,
+        "E": 5,
+        "F": 2,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1
+      },
+      "live_after": {
+        "C": 3,
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1
+      },
+      "reversible_contract_kind": "screened_local_inverse_field_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 510,
+      "reconstructed_non_clifford": 510,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 18,
+      "suboperation_end_exclusive": 19,
+      "suboperations": [
+        {
+          "global_suboperation_index": 18,
+          "schedule_index": 13,
+          "tail_operation_index": 13,
+          "target": "N",
+          "kind": "modular_field_operation",
+          "modular_opcode": "field_sub",
+          "semantic_role": "execute field_sub for tail row",
+          "sources": [
+            "I",
+            "F"
+          ],
+          "target_slot": 1,
+          "owner_id": "tail_reordered_slot_1",
+          "overwritten_source": "I",
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "aece57b7cb67031af8b4e2a0402dddc7e7c1a274b576796f39c660e368a98c98",
+          "step_rows": [
+            {
+              "step": "borrow_ladder",
+              "kind": "ripple_borrow",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_add_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 14,
+      "tail_operation_index": 14,
+      "opcode": "field_double_mul_sub",
+      "target": "X3",
+      "sources": [
+        "K",
+        "N",
+        "E",
+        "C"
+      ],
+      "target_slot": 2,
+      "owner_id": "tail_reordered_slot_2",
+      "overwritten_source": null,
+      "live_before": {
+        "C": 3,
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1
+      },
+      "live_during": {
+        "C": 3,
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1,
+        "X3": 2
+      },
+      "live_after": {
+        "C": 3,
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1,
+        "X3": 2
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 143494,
+      "reconstructed_non_clifford": 143494,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 19,
+      "suboperation_end_exclusive": 22,
+      "suboperations": [
+        {
+          "global_suboperation_index": 19,
+          "schedule_index": 14,
+          "tail_operation_index": 14,
+          "target": "X3.product_0",
+          "kind": "fused_output_internal_product",
+          "modular_opcode": "field_mul",
+          "semantic_role": "first product for fused subtract output",
+          "sources": [
+            "K",
+            "N"
+          ],
+          "target_slot": 2,
+          "owner_id": "tail_reordered_slot_2",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 20,
+          "schedule_index": 14,
+          "tail_operation_index": 14,
+          "target": "X3.product_1",
+          "kind": "fused_output_internal_product",
+          "modular_opcode": "field_mul",
+          "semantic_role": "second product for fused subtract output",
+          "sources": [
+            "E",
+            "C"
+          ],
+          "target_slot": 2,
+          "owner_id": "tail_reordered_slot_2",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 21,
+          "schedule_index": 14,
+          "tail_operation_index": 14,
+          "target": "X3",
+          "kind": "fused_output_combine",
+          "modular_opcode": "field_sub",
+          "semantic_role": "combine fused output products by subtraction",
+          "sources": [
+            "X3.product_0",
+            "X3.product_1"
+          ],
+          "target_slot": 2,
+          "owner_id": "tail_reordered_slot_2",
+          "overwritten_source": null,
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "aece57b7cb67031af8b4e2a0402dddc7e7c1a274b576796f39c660e368a98c98",
+          "step_rows": [
+            {
+              "step": "borrow_ladder",
+              "kind": "ripple_borrow",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_add_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "schedule_index": 15,
+      "tail_operation_index": 15,
+      "opcode": "field_double_mul_add",
+      "target": "Y3",
+      "sources": [
+        "N",
+        "M",
+        "C",
+        "L"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "C",
+      "live_before": {
+        "C": 3,
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1,
+        "X3": 2
+      },
+      "live_during": {
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "N": 1,
+        "X3": 2,
+        "Y3": 3
+      },
+      "live_after": {
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "X3": 2,
+        "Y3": 3
+      },
+      "reversible_contract_kind": "secp256k1_zero_lifted_fused_output_permutation",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 144004,
+      "reconstructed_non_clifford": 144004,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 22,
+      "suboperation_end_exclusive": 26,
+      "suboperations": [
+        {
+          "global_suboperation_index": 22,
+          "schedule_index": 15,
+          "tail_operation_index": 15,
+          "target": "Y3.product_0",
+          "kind": "fused_output_internal_product",
+          "modular_opcode": "field_mul",
+          "semantic_role": "first product for fused add output",
+          "sources": [
+            "N",
+            "M"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": "C",
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 23,
+          "schedule_index": 15,
+          "tail_operation_index": 15,
+          "target": "Y3.product_1",
+          "kind": "fused_output_internal_product",
+          "modular_opcode": "field_mul",
+          "semantic_role": "second product for fused add output",
+          "sources": [
+            "C",
+            "L"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": "C",
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 24,
+          "schedule_index": 15,
+          "tail_operation_index": 15,
+          "target": "Y3",
+          "kind": "fused_output_combine",
+          "modular_opcode": "field_add",
+          "semantic_role": "combine fused output products by addition",
+          "sources": [
+            "Y3.product_0",
+            "Y3.product_1"
+          ],
+          "target_slot": 3,
+          "owner_id": "tail_reordered_slot_3",
+          "overwritten_source": "C",
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+          "step_rows": [
+            {
+              "step": "carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 25,
+          "schedule_index": 15,
+          "tail_operation_index": 15,
+          "target": "Y3",
+          "kind": "zero_lift_guard_compute_uncompute",
+          "modular_opcode": null,
+          "semantic_role": "compute and uncompute the L == 0 guard for the Y3-over-C zero-lift permutation",
+          "sources": [
+            "L"
+          ],
+          "target_slot": null,
+          "owner_id": "tail_fused_output_zero_lift_guard",
+          "overwritten_source": "C",
+          "non_clifford": 510,
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          },
+          "primitive_stream_sha256": null,
+          "step_rows": []
+        }
+      ]
+    },
+    {
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "opcode": "field_double_mul_add",
+      "target": "Z3",
+      "sources": [
+        "M",
+        "E",
+        "L",
+        "K"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": null,
+      "live_before": {
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "X3": 2,
+        "Y3": 3
+      },
+      "live_during": {
+        "E": 5,
+        "K": 4,
+        "L": 0,
+        "M": 6,
+        "X3": 2,
+        "Y3": 3,
+        "Z3": 1
+      },
+      "live_after": {
+        "X3": 2,
+        "Y3": 3,
+        "Z3": 1
+      },
+      "reversible_contract_kind": "fresh_target_field_register",
+      "reversible_contract_pass": true,
+      "tail_row_non_clifford": 143494,
+      "reconstructed_non_clifford": 143494,
+      "cost_matches_tail_row": true,
+      "suboperation_start": 26,
+      "suboperation_end_exclusive": 29,
+      "suboperations": [
+        {
+          "global_suboperation_index": 26,
+          "schedule_index": 16,
+          "tail_operation_index": 16,
+          "target": "Z3.product_0",
+          "kind": "fused_output_internal_product",
+          "modular_opcode": "field_mul",
+          "semantic_role": "first product for fused add output",
+          "sources": [
+            "M",
+            "E"
+          ],
+          "target_slot": 1,
+          "owner_id": "tail_reordered_slot_1",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 27,
+          "schedule_index": 16,
+          "tail_operation_index": 16,
+          "target": "Z3.product_1",
+          "kind": "fused_output_internal_product",
+          "modular_opcode": "field_mul",
+          "semantic_role": "second product for fused add output",
+          "sources": [
+            "L",
+            "K"
+          ],
+          "target_slot": 1,
+          "owner_id": "tail_reordered_slot_1",
+          "overwritten_source": null,
+          "non_clifford": 71492,
+          "operation_count": 77448,
+          "primitive_counts_total": {
+            "ccx": 71492,
+            "cx": 0,
+            "x": 0,
+            "measurement": 5956
+          },
+          "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+          "step_rows": [
+            {
+              "step": "partial_product_grid",
+              "kind": "schoolbook_partial_products",
+              "operation_count": 65536,
+              "primitive_counts_total": {
+                "ccx": 65536,
+                "cx": 0,
+                "x": 0,
+                "measurement": 0
+              }
+            },
+            {
+              "step": "controlled_add_path",
+              "kind": "controlled_accumulator_add",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "controlled_sub_path",
+              "kind": "controlled_accumulator_subtract",
+              "operation_count": 512,
+              "primitive_counts_total": {
+                "ccx": 256,
+                "cx": 0,
+                "x": 0,
+                "measurement": 256
+              }
+            },
+            {
+              "step": "pseudo_mersenne_first_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 8610,
+              "primitive_counts_total": {
+                "ccx": 4305,
+                "cx": 0,
+                "x": 0,
+                "measurement": 4305
+              }
+            },
+            {
+              "step": "pseudo_mersenne_second_fold",
+              "kind": "pseudo_mersenne_fold",
+              "operation_count": 1260,
+              "primitive_counts_total": {
+                "ccx": 630,
+                "cx": 0,
+                "x": 0,
+                "measurement": 630
+              }
+            },
+            {
+              "step": "pseudo_mersenne_canonicalize",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 1020,
+              "primitive_counts_total": {
+                "ccx": 510,
+                "cx": 0,
+                "x": 0,
+                "measurement": 510
+              }
+            }
+          ]
+        },
+        {
+          "global_suboperation_index": 28,
+          "schedule_index": 16,
+          "tail_operation_index": 16,
+          "target": "Z3",
+          "kind": "fused_output_combine",
+          "modular_opcode": "field_add",
+          "semantic_role": "combine fused output products by addition",
+          "sources": [
+            "Z3.product_0",
+            "Z3.product_1"
+          ],
+          "target_slot": 1,
+          "owner_id": "tail_reordered_slot_1",
+          "overwritten_source": null,
+          "non_clifford": 510,
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          },
+          "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+          "step_rows": [
+            {
+              "step": "carry_ladder",
+              "kind": "ripple_carry",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            },
+            {
+              "step": "conditional_subtract_modulus",
+              "kind": "conditional_modulus_correction",
+              "operation_count": 510,
+              "primitive_counts_total": {
+                "ccx": 255,
+                "cx": 0,
+                "x": 0,
+                "measurement": 255
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "suboperation_preview_head": [
+    {
+      "global_suboperation_index": 0,
+      "schedule_index": 0,
+      "tail_operation_index": 0,
+      "target": "G",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "semantic_role": "execute field_add for tail row",
+      "sources": [
+        "X",
+        "Y"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": null,
+      "non_clifford": 510,
+      "operation_count": 1020,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+      "step_rows": [
+        {
+          "step": "carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 1,
+      "schedule_index": 1,
+      "tail_operation_index": 1,
+      "target": "H",
+      "kind": "lookup_interface_stream",
+      "modular_opcode": null,
+      "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+      "sources": [
+        "lookup_x_plus_y"
+      ],
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
+      "overwritten_source": null,
+      "non_clifford": 65536,
+      "operation_count": 65536,
+      "primitive_counts_total": {
+        "ccx": 65536,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "primitive_stream_sha256": null,
+      "step_rows": []
+    },
+    {
+      "global_suboperation_index": 2,
+      "schedule_index": 1,
+      "tail_operation_index": 1,
+      "target": "H",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_mul",
+      "semantic_role": "execute field_mul_lookup_sum after streamed lookup source",
+      "sources": [
+        "G",
+        "lookup_x_plus_y"
+      ],
+      "target_slot": 4,
+      "owner_id": "tail_reordered_slot_4",
+      "overwritten_source": null,
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 3,
+      "schedule_index": 2,
+      "tail_operation_index": 3,
+      "target": "Zx",
+      "kind": "lookup_interface_stream",
+      "modular_opcode": null,
+      "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+      "sources": [
+        "lookup_x"
+      ],
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
+      "overwritten_source": null,
+      "non_clifford": 65536,
+      "operation_count": 65536,
+      "primitive_counts_total": {
+        "ccx": 65536,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "primitive_stream_sha256": null,
+      "step_rows": []
+    },
+    {
+      "global_suboperation_index": 4,
+      "schedule_index": 2,
+      "tail_operation_index": 3,
+      "target": "Zx",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_mul",
+      "semantic_role": "execute field_mul_lookup_x after streamed lookup source",
+      "sources": [
+        "Z",
+        "lookup_x"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": null,
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 5,
+      "schedule_index": 3,
+      "tail_operation_index": 4,
+      "target": "C_input",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_add",
+      "semantic_role": "execute field_add for tail row",
+      "sources": [
+        "X",
+        "Zx"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "Zx",
+      "non_clifford": 510,
+      "operation_count": 1020,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+      "step_rows": [
+        {
+          "step": "carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 6,
+      "schedule_index": 4,
+      "tail_operation_index": 2,
+      "target": "A",
+      "kind": "lookup_interface_stream",
+      "modular_opcode": null,
+      "semantic_role": "stream table-controlled lookup coordinate into field multiplication",
+      "sources": [
+        "lookup_x"
+      ],
+      "target_slot": null,
+      "owner_id": "lookup_workspace",
+      "overwritten_source": null,
+      "non_clifford": 65536,
+      "operation_count": 65536,
+      "primitive_counts_total": {
+        "ccx": 65536,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "primitive_stream_sha256": null,
+      "step_rows": []
+    },
+    {
+      "global_suboperation_index": 7,
+      "schedule_index": 4,
+      "tail_operation_index": 2,
+      "target": "A",
+      "kind": "modular_field_operation",
+      "modular_opcode": "field_mul",
+      "semantic_role": "execute field_mul_lookup_x after streamed lookup source",
+      "sources": [
+        "X",
+        "lookup_x"
+      ],
+      "target_slot": 0,
+      "owner_id": "tail_reordered_slot_0",
+      "overwritten_source": "X",
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    }
+  ],
+  "suboperation_preview_tail": [
+    {
+      "global_suboperation_index": 21,
+      "schedule_index": 14,
+      "tail_operation_index": 14,
+      "target": "X3",
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_sub",
+      "semantic_role": "combine fused output products by subtraction",
+      "sources": [
+        "X3.product_0",
+        "X3.product_1"
+      ],
+      "target_slot": 2,
+      "owner_id": "tail_reordered_slot_2",
+      "overwritten_source": null,
+      "non_clifford": 510,
+      "operation_count": 1020,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "primitive_stream_sha256": "aece57b7cb67031af8b4e2a0402dddc7e7c1a274b576796f39c660e368a98c98",
+      "step_rows": [
+        {
+          "step": "borrow_ladder",
+          "kind": "ripple_borrow",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "conditional_add_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 22,
+      "schedule_index": 15,
+      "tail_operation_index": 15,
+      "target": "Y3.product_0",
+      "kind": "fused_output_internal_product",
+      "modular_opcode": "field_mul",
+      "semantic_role": "first product for fused add output",
+      "sources": [
+        "N",
+        "M"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "C",
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 23,
+      "schedule_index": 15,
+      "tail_operation_index": 15,
+      "target": "Y3.product_1",
+      "kind": "fused_output_internal_product",
+      "modular_opcode": "field_mul",
+      "semantic_role": "second product for fused add output",
+      "sources": [
+        "C",
+        "L"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "C",
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 24,
+      "schedule_index": 15,
+      "tail_operation_index": 15,
+      "target": "Y3",
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "semantic_role": "combine fused output products by addition",
+      "sources": [
+        "Y3.product_0",
+        "Y3.product_1"
+      ],
+      "target_slot": 3,
+      "owner_id": "tail_reordered_slot_3",
+      "overwritten_source": "C",
+      "non_clifford": 510,
+      "operation_count": 1020,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+      "step_rows": [
+        {
+          "step": "carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 25,
+      "schedule_index": 15,
+      "tail_operation_index": 15,
+      "target": "Y3",
+      "kind": "zero_lift_guard_compute_uncompute",
+      "modular_opcode": null,
+      "semantic_role": "compute and uncompute the L == 0 guard for the Y3-over-C zero-lift permutation",
+      "sources": [
+        "L"
+      ],
+      "target_slot": null,
+      "owner_id": "tail_fused_output_zero_lift_guard",
+      "overwritten_source": "C",
+      "non_clifford": 510,
+      "operation_count": 510,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 0
+      },
+      "primitive_stream_sha256": null,
+      "step_rows": []
+    },
+    {
+      "global_suboperation_index": 26,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "target": "Z3.product_0",
+      "kind": "fused_output_internal_product",
+      "modular_opcode": "field_mul",
+      "semantic_role": "first product for fused add output",
+      "sources": [
+        "M",
+        "E"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": null,
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 27,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "target": "Z3.product_1",
+      "kind": "fused_output_internal_product",
+      "modular_opcode": "field_mul",
+      "semantic_role": "second product for fused add output",
+      "sources": [
+        "L",
+        "K"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": null,
+      "non_clifford": 71492,
+      "operation_count": 77448,
+      "primitive_counts_total": {
+        "ccx": 71492,
+        "cx": 0,
+        "x": 0,
+        "measurement": 5956
+      },
+      "primitive_stream_sha256": "429b488710b032b4dfedfb4fe945399a1beb285c7df8fc0152ea77ab37aa3bc5",
+      "step_rows": [
+        {
+          "step": "partial_product_grid",
+          "kind": "schoolbook_partial_products",
+          "operation_count": 65536,
+          "primitive_counts_total": {
+            "ccx": 65536,
+            "cx": 0,
+            "x": 0,
+            "measurement": 0
+          }
+        },
+        {
+          "step": "controlled_add_path",
+          "kind": "controlled_accumulator_add",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "controlled_sub_path",
+          "kind": "controlled_accumulator_subtract",
+          "operation_count": 512,
+          "primitive_counts_total": {
+            "ccx": 256,
+            "cx": 0,
+            "x": 0,
+            "measurement": 256
+          }
+        },
+        {
+          "step": "pseudo_mersenne_first_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 8610,
+          "primitive_counts_total": {
+            "ccx": 4305,
+            "cx": 0,
+            "x": 0,
+            "measurement": 4305
+          }
+        },
+        {
+          "step": "pseudo_mersenne_second_fold",
+          "kind": "pseudo_mersenne_fold",
+          "operation_count": 1260,
+          "primitive_counts_total": {
+            "ccx": 630,
+            "cx": 0,
+            "x": 0,
+            "measurement": 630
+          }
+        },
+        {
+          "step": "pseudo_mersenne_canonicalize",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 1020,
+          "primitive_counts_total": {
+            "ccx": 510,
+            "cx": 0,
+            "x": 0,
+            "measurement": 510
+          }
+        }
+      ]
+    },
+    {
+      "global_suboperation_index": 28,
+      "schedule_index": 16,
+      "tail_operation_index": 16,
+      "target": "Z3",
+      "kind": "fused_output_combine",
+      "modular_opcode": "field_add",
+      "semantic_role": "combine fused output products by addition",
+      "sources": [
+        "Z3.product_0",
+        "Z3.product_1"
+      ],
+      "target_slot": 1,
+      "owner_id": "tail_reordered_slot_1",
+      "overwritten_source": null,
+      "non_clifford": 510,
+      "operation_count": 1020,
+      "primitive_counts_total": {
+        "ccx": 510,
+        "cx": 0,
+        "x": 0,
+        "measurement": 510
+      },
+      "primitive_stream_sha256": "5c2496ac3c58397ce7000539c82e2ce2b6011bd7b9d90b0c840fc2737cfaa179",
+      "step_rows": [
+        {
+          "step": "carry_ladder",
+          "kind": "ripple_carry",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        },
+        {
+          "step": "conditional_subtract_modulus",
+          "kind": "conditional_modulus_correction",
+          "operation_count": 510,
+          "primitive_counts_total": {
+            "ccx": 255,
+            "cx": 0,
+            "x": 0,
+            "measurement": 255
+          }
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "tail_schedule_rows_cover_fused_output_stream": true,
+    "every_tail_row_reconstructs_non_clifford": true,
+    "all_reversible_contract_rows_pass": true,
+    "slot_liveness_stays_within_seven_field_slots": true,
+    "all_non_lookup_sources_are_live_before_use": true,
+    "modular_stream_certificate_passes": true,
+    "modular_suboperations_bind_known_primitive_streams": true,
+    "public_engine_modular_integration_passes": true,
+    "public_engine_arithmetic_rows_cover_trace_liveness": true,
+    "scheduled_tail_rows_sum_selected_tail_non_clifford": true,
+    "trace_reconstructs_selected_tail_non_clifford": true,
+    "zero_lift_guard_is_explicit_and_counted": true
+  },
+  "pass": true,
+  "boundary": [
+    "This trace gives one scheduled tail-level modular execution trace with explicit slots, source liveness, reversible overwrite contracts, modular primitive stream bindings, lookup stream rows, and the zero-lift guard row.",
+    "It is still a compact step trace rather than a JSON dump of every primitive gate row; exact primitive rows remain available through the materialized netlist iterator and modular primitive stream hashes."
+  ]
+}

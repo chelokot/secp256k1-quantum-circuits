@@ -34,6 +34,7 @@ def _build_manifest(
     qroam_table_cnot: dict | None = None,
     phase_shell: dict | None = None,
     public_candidate_materialized: dict | None = None,
+    modular_execution_trace: dict | None = None,
 ) -> dict:
     resolved_compiler_parameters = compiler_parameters or _load('compiler_parameters.json')
     return build_public_engine_manifest(
@@ -47,6 +48,7 @@ def _build_manifest(
         qroam_table_cnot_materialization=qroam_table_cnot or _load('qroam_table_cnot_materialization.json'),
         phase_shell_lowerings=phase_shell or _load('phase_shell_lowerings.json'),
         public_candidate_materialized_circuit_manifest=public_candidate_materialized or _load('public_candidate_materialized_circuit_manifest.json'),
+        modular_execution_trace=modular_execution_trace or _load('modular_execution_trace.json'),
         selected_family_name=resolved_compiler_parameters['public_headline_policy']['selected_public_family_name'],
     )
 
@@ -86,6 +88,11 @@ def test_public_engine_manifest_reconstructs_checked_artifact() -> None:
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_operation_count'] > expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['run_length_row_count']
     assert expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_count'] > 1
     assert len(expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['flat_segment_merkle_root_sha256']) == 64
+    modular_trace = expected['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']
+    assert expected['checks']['modular_execution_trace_is_bound'] is True
+    assert modular_trace['pass'] is True
+    assert modular_trace['reconstructed_non_clifford'] == expected['primitive_operation_evidence']['arithmetic_operation_ir']['tail_kernel_non_clifford_per_instance']
+    assert modular_trace['modular_opcode_histogram']['field_mul'] == 11
     exact_arithmetic = expected['primitive_operation_evidence']['arithmetic_operation_ir']['selected_leaf_exact_operation_stream']
     assert exact_arithmetic['pass'] is True
     assert exact_arithmetic['non_clifford_count'] == arithmetic_ir['leaf_arithmetic_summary']['non_clifford_total']

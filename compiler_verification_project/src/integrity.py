@@ -32,6 +32,7 @@ from engine_completion_audit import ENGINE_COMPLETION_AUDIT_SCHEMA, build_engine
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
+from modular_execution_trace import build_modular_execution_trace
 from modular_arithmetic_certificate import build_modular_arithmetic_certificate
 from phase_shell_lowering import materialize_phase_operations, phase_shell_family_summary, phase_shell_lowering_library
 from physical_estimator import (
@@ -185,6 +186,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'tail_macro_engine': artifact_root / 'tail_macro_engine.json',
         'arithmetic_operation_ir': artifact_root / 'arithmetic_operation_ir.json',
         'modular_arithmetic_certificate': artifact_root / 'modular_arithmetic_certificate.json',
+        'modular_execution_trace': artifact_root / 'modular_execution_trace.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -289,6 +291,14 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_execution_trace.json',
+            build_modular_execution_trace(
+                tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
+                modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -301,6 +311,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 qroam_table_cnot_materialization=load_json(artifact_root / 'qroam_table_cnot_materialization.json'),
                 phase_shell_lowerings=load_json(artifact_root / 'phase_shell_lowerings.json'),
                 public_candidate_materialized_circuit_manifest=load_json(artifact_root / 'public_candidate_materialized_circuit_manifest.json'),
+                modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
                 selected_family_name=load_json(artifact_root / 'compiler_parameters.json')['public_headline_policy']['selected_public_family_name'],
             ),
         )
@@ -327,6 +338,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 release_corpus_preflight=load_json(artifact_root / 'release_corpus_preflight.json'),
                 streamed_lookup_tail_leaf_equivalence=load_json(artifact_root / 'streamed_lookup_tail_leaf_equivalence.json'),
                 modular_arithmetic_certificate=load_json(artifact_root / 'modular_arithmetic_certificate.json'),
+                modular_execution_trace=load_json(artifact_root / 'modular_execution_trace.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2513,6 +2525,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         qroam_table_cnot_materialization=artifacts['qroam_table_cnot_materialization'],
         phase_shell_lowerings=artifacts['phase_shell_lowerings'],
         public_candidate_materialized_circuit_manifest=artifacts['public_candidate_materialized_circuit_manifest'],
+        modular_execution_trace=artifacts['modular_execution_trace'],
         selected_family_name=selected_family_name,
     )
     executable_resource_engine = lowering['executable_resource_engine']
@@ -2543,6 +2556,7 @@ def build_public_engine_manifest_checks(artifacts: Mapping[str, Any]) -> Dict[st
         _check('public_engine_manifest_fast_contract_is_no_zkp', manifest['fast_no_zkp_contract']['prover_required'] is False and manifest['fast_no_zkp_contract']['verify_group'] == 'public_engine_manifest_checks', {'prover_required': False, 'verify_group': 'public_engine_manifest_checks'}, manifest['fast_no_zkp_contract']),
         _check('public_engine_manifest_binds_semantic_boundary_evidence', manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['pass'] == manifest['semantic_boundary_evidence']['streamed_lookup_tail_leaf_equivalence']['total'] and manifest['semantic_boundary_evidence']['release_corpus_preflight']['case_count'] == GOOGLE_COMPARABLE_CASE_COUNT and all(manifest['semantic_boundary_evidence']['release_corpus_preflight']['category_counts'].get(category, 0) > 0 for category in manifest['semantic_boundary_evidence']['required_categories']) and manifest['semantic_boundary_evidence']['compiler_parameters']['selected_public_family_name'] == selected_family_name, 'semantic boundary evidence covers required categories in release corpus and binds compiler parameters', manifest['semantic_boundary_evidence']),
         _check('public_engine_manifest_binds_primitive_operation_evidence', manifest['primitive_operation_evidence']['arithmetic_operation_ir']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['pass'] is True and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['pass'] is True and manifest['primitive_operation_evidence']['qroam_primitive_certificate']['whole_oracle_non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford'] and manifest['primitive_operation_evidence']['qroam_table_cnot_materialization']['full_oracle_emitted_clifford_cx'] == qroam_table_cnot['totals']['full_oracle_emitted_clifford_cx'] and manifest['primitive_operation_evidence']['phase_shell']['name'] in selected_family_name, 'primitive operation evidence binds materialized public candidate, arithmetic, qroam, table-CNOT, and phase shell sources', manifest['primitive_operation_evidence']),
+        _check('public_engine_manifest_binds_modular_execution_trace', manifest['checks']['modular_execution_trace_is_bound'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']['pass'] is True and manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']['reconstructed_non_clifford'] == artifacts['modular_execution_trace']['reconstructed_non_clifford'], 'modular execution trace is bound into public engine evidence', manifest['primitive_operation_evidence']['public_candidate_materialized_circuit_manifest']['modular_execution_trace']),
         _check('public_engine_manifest_passes_internal_checks', manifest['pass'] is True and all(manifest['checks'].values()), True, manifest['checks']),
     ]
     return _summarize_checks(checks)
@@ -2563,6 +2577,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         release_corpus_preflight=artifacts['release_corpus_preflight'],
         streamed_lookup_tail_leaf_equivalence=artifacts['streamed_lookup_tail_leaf_equivalence'],
         modular_arithmetic_certificate=artifacts['modular_arithmetic_certificate'],
+        modular_execution_trace=artifacts['modular_execution_trace'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],

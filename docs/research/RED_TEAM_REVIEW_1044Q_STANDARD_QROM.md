@@ -91,7 +91,7 @@ resource semantics and macro boundaries.
 | --- | --- | --- | --- | --- |
 | ZK-1 | P0 reviewed-state; remediated on current branch | Reviewed SP1 prepared path did not recompute sidecar hashes; current path now recomputes committed claim/leaf/family/case/resource hashes in guest | This used to let public values carry hash labels trusted from the input builder; current tests reject stale digest labels and mutated committed payloads | Keep full committed documents in the guest input and keep negative digest/payload tests |
 | ZK-2 | P0 | ZKP executes high-level field/macro semantics, not primitive QROAM/arithmetic lowerings | The proof checks point-add behavior for prepared cases, but not that the resource-counted primitive circuit implements that behavior | Feed the same resource IR into the guest or prove a separate lowering certificate |
-| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the public headline, the ZKP input binds the canonical public engine manifest, and local modular streams are bound to public arithmetic engine rows; modular arithmetic still needs one end-to-end semantic schedule | Replace per-kernel modular allocation evidence with one scheduled modular arithmetic execution trace and keep the ZKP guest/input bound to the canonical engine manifest |
+| RES-1 | P0 partially mitigated | The public reusable-chunk leaf now traces the counted `qchunk` scratch lane, and the primary headline counts the replayed fused-output seven-slot tail instead of the old four-slot macro tail | The `1,968` qubit result removes the old tail-slot fantasy from the public headline, the ZKP input binds the canonical public engine manifest, local modular streams are bound to public arithmetic engine rows, and `modular_execution_trace.json` schedules the tail into modular sub-operations with slot/liveness ownership | Expand the scheduled modular trace into every primitive gate row, not only compact step rows plus stream hashes |
 | RES-2 | P0 partially mitigated | Modular field arithmetic costs are now digest-bound operation streams, but still not a generated modular circuit | Rust semantics applies `% p`; arithmetic lowering counts abstract add/sub/mul kernels whose modular-reduction completeness must still be trusted below the compact operation IR | Generate modular add/sub/mul circuits including reduction and count them |
 | RES-3 | P0 materially improved; still below physical-layout FT schedule | The public reusable-chunk resource ledger now has a guest-checked contract engine and a materialized flat primitive stream over counted IR, executable liveness, owner capacity, QROAM target/chunk wires, arithmetic rows, lookup rows, and phase rows | It now catches counted/executable liveness drift, owner-capacity underprovisioning, and missing full-stream materialization, but the deepest arithmetic macro semantics are still certified by generated IR/certificates rather than a routed physical FT schedule | Keep reducing the remaining macro boundary by lowering modular arithmetic certificates into the same flat primitive stream |
 | ZK-3 | P1 remediated for out-of-line proof binding | Checked compressed fixture JSON keeps `proof: null` while binary proof is separate | Large compressed proof bytes remain out-of-line, but fixtures now bind proof/verifier-key path, size, digest, and curated proof-manifest records | Keep `proof_status.py` manifest cross-checks and fixture metadata tests in the release gate |
@@ -1648,9 +1648,9 @@ Current remediation:
   modular arithmetic kernels derive from `executable_modular_circuit_ir` and
   the local modular primitive-stream certificate, binds those local streams to
   public arithmetic engine rows and strict liveness, binds the selected tail
-  macro to `tail_macro_engine`, and keeps
-  `clifford_complete_goal_achieved = false` while modular arithmetic still
-  lacks one end-to-end semantic schedule.
+  macro to `tail_macro_engine`, binds `modular_execution_trace.json`, and keeps
+  `clifford_complete_goal_achieved = false` while the scheduled modular trace
+  is still compact rather than a full primitive-row dump.
   The fast engine loop now includes this audit, so a future patch
   cannot silently promote the current boundary result into a stronger
   full-engine claim by editing prose alone.
@@ -1661,7 +1661,9 @@ Current remediation:
   arithmetic certificate consumes that same IR for reduced-width semantic
   execution and local primitive-stream hashing instead of being an independent
   formula source. The public materialized-engine manifest binds those streams
-  to concrete public arithmetic rows and strict liveness. The resource-liveness certificate
+  to concrete public arithmetic rows and strict liveness. The modular execution
+  trace then schedules the selected tail into modular sub-operations, lookup
+  interface rows, and the zero-lift guard. The resource-liveness certificate
   embeds the full compact arithmetic IR, and fast integrity checks regenerate it.
   The generated-block operand contract also distinguishes bit-index ladder
   operands from operation ordinals, so the IR's operand-capacity profile is no
