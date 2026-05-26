@@ -39,6 +39,13 @@
     "status": "checked_zkp_wrapper_reference_not_primary_resource_headline",
     "reason": "The wrapper resource certificate remains useful as a checked proof/publication sidecar, but the public resource headline is the strict seven-slot engine result."
   },
+  "publication_blockers": [
+    {
+      "name": "remaining_macro_boundaries_not_flattened",
+      "active": true,
+      "required_to_close": "Flatten the remaining modular arithmetic macro boundary into the canonical physical netlist and make engine_completion_audit.clifford_complete_goal_achieved true before publishing checked compressed/Groth16 proof results."
+    }
+  ],
   "comparison_to_public_google_baseline": {
     "low_qubit": {
       "baseline_non_clifford": 90000000,
@@ -211,8 +218,8 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "0e546b538071272a567cc9bbde7f62bea034c3816ccd7305ce6161ef1f29a129",
-      "bytes": 12343
+      "sha256": "c3d6295d4dc442ca08a9a29f45c31c3d8a86af9fc13df0a48d2d57fd0c93579c",
+      "bytes": 13300
     }
   },
   "verification_commands": {
@@ -255,6 +262,7 @@
     "public_engine_manifest_binds_current_public_result": true,
     "public_candidate_materialized_manifest_binds_current_public_result": true,
     "engine_completion_audit_binds_current_public_result_and_remaining_boundaries": true,
+    "full_clifford_complete_engine_ready_for_publication": false,
     "proof_register_contract_binds_prepared_leaf_to_resource_owners": true,
     "compiler_parameters_document_binds_parameter_source": true,
     "reusable_chunk_binds_generated_qroam_primitive_certificate": true,

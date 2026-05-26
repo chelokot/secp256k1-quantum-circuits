@@ -291,6 +291,11 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and engine_completion_audit['source_digests']['public_engine_manifest_sha256'] == _sha256_payload(public_engine_manifest)
             and engine_completion_audit['source_digests']['public_candidate_materialized_circuit_manifest_sha256'] == _sha256_payload(public_candidate_materialized_manifest)
         ),
+        'full_clifford_complete_engine_ready_for_publication': (
+            engine_completion_audit['clifford_complete_goal_achieved'] is True
+            and len(engine_completion_audit['remaining_macro_boundaries']) == 0
+            and engine_completion_audit['checks']['public_claim_not_marked_full_clifford_complete_until_macro_boundaries_flattened'] is True
+        ),
         'proof_register_contract_binds_prepared_leaf_to_resource_owners': (
             input_payload['proof_register_contract']['pass'] is True
             and len(input_payload['proof_register_contract']['register_rows']) == input_payload['prepared_leaf']['register_count']
@@ -374,6 +379,13 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'status': 'checked_zkp_wrapper_reference_not_primary_resource_headline',
             'reason': 'The wrapper resource certificate remains useful as a checked proof/publication sidecar, but the public resource headline is the strict seven-slot engine result.',
         },
+        'publication_blockers': [
+            {
+                'name': 'remaining_macro_boundaries_not_flattened',
+                'active': engine_completion_audit['clifford_complete_goal_achieved'] is not True or len(engine_completion_audit['remaining_macro_boundaries']) > 0,
+                'required_to_close': 'Flatten the remaining modular arithmetic macro boundary into the canonical physical netlist and make engine_completion_audit.clifford_complete_goal_achieved true before publishing checked compressed/Groth16 proof results.',
+            },
+        ],
         'comparison_to_public_google_baseline': _comparison_rows(current_values, baseline),
         'bound_documents': {
             'claim_sha256': current_values['claim_sha256'],

@@ -346,13 +346,19 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     public_values = json.loads((artifact_dir / 'zkp_attestation_reusable_chunk_candidate' / 'zkp_attestation_public_values.json').read_text())
     public_engine_manifest = json.loads((artifact_dir / 'public_engine_manifest.json').read_text())
     status = _proof_status_report()
-    assert public_result['pass'] is status['all_current']
-    if status['all_current']:
+    assert public_result['pass'] is (
+        status['all_current']
+        and public_result['checks']['full_clifford_complete_engine_ready_for_publication']
+    )
+    if public_result['pass']:
         assert all(public_result['checks'].values())
     else:
         assert public_result['checks']['fits_strict_public_goal'] is True
-        assert public_result['checks']['public_values_match_input_claim'] is False
-        assert public_result['checks']['all_fixtures_bind_same_public_values'] is False
+        assert (
+            public_result['checks']['public_values_match_input_claim'] is False
+            or public_result['checks']['full_clifford_complete_engine_ready_for_publication'] is False
+        )
+        assert any(blocker['active'] for blocker in public_result['publication_blockers'])
     assert public_result['checks']['reusable_chunk_lowering_is_demoted_legacy_wrapper_reference'] is True
     assert public_result['checks']['legacy_wrapper_executable_liveness_binds_reference_qubits'] is True
     assert public_result['checks']['reusable_chunk_binds_generated_qroam_primitive_certificate'] is True

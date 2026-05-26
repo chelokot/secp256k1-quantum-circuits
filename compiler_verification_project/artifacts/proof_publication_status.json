@@ -1,5 +1,5 @@
 {
-  "schema": "compiler-project-proof-publication-status-v3",
+  "schema": "compiler-project-proof-publication-status-v4",
   "scope": "checked publication freshness status for the public reusable-chunk proof bundle",
   "publication_ready": false,
   "selected_result": {
@@ -183,6 +183,16 @@
       ],
       "input_binding_status": "fixture_declares_no_input_metadata",
       "resource_certificate_sha256": "d37820bea8e18cab61a8db7ec90efd4fb12801e5398ae686648555bcf1065c53"
+    },
+    {
+      "system": "public_headline_result",
+      "fixture_path": null,
+      "stale_reasons": [
+        "remaining_macro_boundaries_not_flattened"
+      ],
+      "input_binding_status": "blocked_by_public_result_gate",
+      "resource_certificate_sha256": "6727665b649b112f517a0b5230da192b19645be417bd8cfdee2c6ff6ee55060e",
+      "required_to_close": "Flatten the remaining modular arithmetic macro boundary into the canonical physical netlist and make engine_completion_audit.clifford_complete_goal_achieved true before publishing checked compressed/Groth16 proof results."
     }
   ],
   "publication_gate_commands": [
@@ -254,7 +264,7 @@
   "source_artifacts": {
     "public_headline_result": {
       "path": "compiler_verification_project/artifacts/public_headline_result.json",
-      "sha256": "a295b80ea4318e1f53edbc7dcb7ff5af3a0c7e8a717bff311368840a5a74557e"
+      "sha256": "32b5ee1e5085dac9078cc76dc02513c214845d536fa038c5b608679e1c6da147"
     },
     "proof_environment_contract": {
       "path": "compiler_verification_project/artifacts/proof_environment_contract.json",
@@ -269,7 +279,7 @@
     "proof_status_schema_is_current": true,
     "proof_status_all_current_matches_stale_systems": true,
     "proof_status_heavy_rebuild_steps_are_stale_proof_systems": true,
-    "public_headline_pass_matches_proof_status": true,
+    "public_headline_pass_matches_publication_readiness": true,
     "public_headline_checked_input_digest_matches_proof_status": true,
     "public_headline_resource_digest_matches_proof_status_input": true,
     "proof_manifest_path_matches_environment_contract": true,

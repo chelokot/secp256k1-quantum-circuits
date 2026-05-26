@@ -44,7 +44,10 @@ def test_proof_publication_status_matches_generator_and_keeps_ready_separate() -
     assert observed['schema'] == PROOF_PUBLICATION_STATUS_SCHEMA
     assert observed['pass'] is True
     assert all(observed['checks'].values())
-    assert observed['publication_ready'] is observed['proof_status']['all_current']
+    public_result = json.loads(
+        (REPO_ROOT / 'compiler_verification_project' / 'artifacts' / 'public_headline_result.json').read_text()
+    )
+    assert observed['publication_ready'] is (observed['proof_status']['all_current'] and public_result['pass'])
     if not observed['publication_ready']:
         assert observed['publication_blockers']
 

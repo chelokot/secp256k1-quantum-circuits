@@ -11,7 +11,7 @@ from common import load_json, sha256_path
 from proof_status_report import PROOF_STATUS_SCHEMA, build_proof_status_report
 
 
-PROOF_PUBLICATION_STATUS_SCHEMA = 'compiler-project-proof-publication-status-v3'
+PROOF_PUBLICATION_STATUS_SCHEMA = 'compiler-project-proof-publication-status-v4'
 
 
 def _canonical_sha256(payload: Any) -> str:
@@ -44,6 +44,12 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
         }
         for system in stale_systems
     ]
+    public_result_blockers = [
+        blocker
+        for blocker in public_result.get('publication_blockers', [])
+        if blocker.get('active') is True
+    ]
+    publication_ready = proof_status['all_current'] and public_result['pass'] is True and not public_result_blockers
     publication_commands = [
         command
         for command in environment_contract['command_contracts']
@@ -55,7 +61,7 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
         'proof_status_heavy_rebuild_steps_are_stale_proof_systems': proof_status['heavy_rebuild_steps_remaining'] == [
             system for system in ('compressed', 'groth16') if system in stale_systems
         ],
-        'public_headline_pass_matches_proof_status': public_result['pass'] == proof_status['all_current'],
+        'public_headline_pass_matches_publication_readiness': public_result['pass'] == publication_ready,
         'public_headline_checked_input_digest_matches_proof_status': (
             public_result['checked_artifacts']['input']['sha256'] == proof_status['candidate_input_sha256']
         ),
@@ -72,9 +78,9 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
             and any(command['name'] == 'public_headline_compressed_verify' for command in publication_commands)
             and any(command['name'] == 'public_headline_groth16_verify' for command in publication_commands)
         ),
-        'stale_publication_has_explicit_blockers': proof_status['all_current'] or bool(blocker_rows),
+        'stale_publication_has_explicit_blockers': publication_ready or bool(blocker_rows) or bool(public_result_blockers),
         'publication_ready_requires_compressed_and_groth16_verification': (
-            not proof_status['all_current']
+            not publication_ready
             or (
                 systems['compressed']['current'] is True
                 and systems['groth16']['current'] is True
@@ -85,11 +91,21 @@ def build_proof_publication_status(*, repo_root: Path) -> dict[str, Any]:
     return {
         'schema': PROOF_PUBLICATION_STATUS_SCHEMA,
         'scope': 'checked publication freshness status for the public reusable-chunk proof bundle',
-        'publication_ready': proof_status['all_current'],
+        'publication_ready': publication_ready,
         'selected_result': public_result['selected_result'],
         'proof_status_sha256': _canonical_sha256(proof_status_without_manifest_digest),
         'proof_status': proof_status_without_manifest_digest,
-        'publication_blockers': blocker_rows,
+        'publication_blockers': blocker_rows + [
+            {
+                'system': 'public_headline_result',
+                'fixture_path': None,
+                'stale_reasons': [str(blocker['name'])],
+                'input_binding_status': 'blocked_by_public_result_gate',
+                'resource_certificate_sha256': public_result['bound_documents']['resource_certificate_sha256'],
+                'required_to_close': str(blocker['required_to_close']),
+            }
+            for blocker in public_result_blockers
+        ],
         'publication_gate_commands': publication_commands,
         'source_artifacts': {
             'public_headline_result': {
