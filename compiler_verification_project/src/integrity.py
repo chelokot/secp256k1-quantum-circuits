@@ -32,6 +32,7 @@ from engine_completion_audit import ENGINE_COMPLETION_AUDIT_SCHEMA, build_engine
 from fallback_frontier_stress import build_fallback_frontier_stress
 from lookup_lowering import lookup_lowering_library, lowered_lookup_semantic_summary, materialize_lookup_primitive_operations
 from materialized_circuit import PUBLIC_CANDIDATE_MATERIALIZED_CIRCUIT_MANIFEST_SCHEMA, build_arithmetic_operand_replay_audit, build_public_candidate_materialized_circuit_manifest
+from modular_accumulator_capacity_certificate import MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, build_modular_accumulator_capacity_certificate
 from modular_accumulator_lowering import MODULAR_ACCUMULATOR_LOWERING_SCHEMA, build_modular_accumulator_lowering
 from modular_accumulator_row_stream import MODULAR_ACCUMULATOR_ROW_STREAM_SCHEMA, build_modular_accumulator_row_stream
 from modular_execution_trace import build_modular_execution_trace
@@ -197,6 +198,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
         'modular_multiplier_lifecycle': artifact_root / 'modular_multiplier_lifecycle.json',
         'modular_accumulator_lowering': artifact_root / 'modular_accumulator_lowering.json',
         'modular_accumulator_row_stream': artifact_root / 'modular_accumulator_row_stream.json',
+        'modular_accumulator_capacity_certificate': artifact_root / 'modular_accumulator_capacity_certificate.json',
         'tail_macro_liveness': artifact_root / 'tail_macro_liveness.json',
         'tail_macro_reversibility': artifact_root / 'tail_macro_reversibility.json',
         'tail_macro_schedule_search': artifact_root / 'tail_macro_schedule_search.json',
@@ -355,6 +357,13 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
             ),
         )
         dump_json(
+            artifact_root / 'modular_accumulator_capacity_certificate.json',
+            build_modular_accumulator_capacity_certificate(
+                modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
+                field_bits=FIELD_BITS,
+            ),
+        )
+        dump_json(
             artifact_root / 'public_engine_manifest.json',
             build_public_engine_manifest(
                 reusable_chunk_lowering=load_json(artifact_root / 'reusable_chunk_lowering.json'),
@@ -401,6 +410,7 @@ def load_compiler_artifacts(repo_root: Path) -> Dict[str, Any]:
                 modular_multiplier_lifecycle=load_json(artifact_root / 'modular_multiplier_lifecycle.json'),
                 modular_accumulator_lowering=load_json(artifact_root / 'modular_accumulator_lowering.json'),
                 modular_accumulator_row_stream=load_json(artifact_root / 'modular_accumulator_row_stream.json'),
+                modular_accumulator_capacity_certificate=load_json(artifact_root / 'modular_accumulator_capacity_certificate.json'),
                 tail_macro_engine=load_json(artifact_root / 'tail_macro_engine.json'),
                 tail_macro_liveness=load_json(artifact_root / 'tail_macro_liveness.json'),
                 tail_macro_reversibility=load_json(artifact_root / 'tail_macro_reversibility.json'),
@@ -2718,6 +2728,26 @@ def build_modular_accumulator_row_stream_checks(artifacts: Mapping[str, Any]) ->
     return _summarize_checks(checks)
 
 
+def build_modular_accumulator_capacity_certificate_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
+    certificate = artifacts['modular_accumulator_capacity_certificate']
+    expected = build_modular_accumulator_capacity_certificate(
+        modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
+        field_bits=FIELD_BITS,
+    )
+    obligations = {
+        str(row['owner_id']): row
+        for row in certificate['owner_capacity_obligations']
+    }
+    checks = [
+        _check('modular_accumulator_capacity_certificate_matches_generator', certificate == expected, expected, certificate),
+        _check('modular_accumulator_capacity_certificate_schema_is_current', certificate['schema'] == MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, MODULAR_ACCUMULATOR_CAPACITY_CERTIFICATE_SCHEMA, certificate['schema']),
+        _check('modular_accumulator_capacity_certificate_passes_internal_checks', certificate['pass'] is True and all(certificate['checks'].values()), True, certificate['checks']),
+        _check('modular_accumulator_capacity_certificate_rejects_free_product_columns', obligations['streamed_product_accumulator_column_space']['logical_qubit_budget_required_by_materialized_columns'] == 2 * FIELD_BITS - 1 and obligations['streamed_product_accumulator_column_space']['fits_single_field_slot'] is False, '511 product columns cannot be hidden inside one 256-bit field slot', obligations['streamed_product_accumulator_column_space']),
+        _check('modular_accumulator_capacity_certificate_keeps_serial_scratch_unpromoted', obligations['temporary_and_target_wire']['obligation_order_peak_logical_qubits'] == artifacts['modular_accumulator_row_stream']['expanded_counts']['temporary_cleanup_rows'] and obligations['temporary_and_target_wire']['serialized_candidate_peak_logical_qubits'] == 1 and certificate['promotion_status']['status'] == 'capacity_certificate_not_promoted_to_public_resource_contract', 'temporary scratch peak is only one after an unpromoted adjacent cleanup schedule exists', obligations['temporary_and_target_wire']),
+    ]
+    return _summarize_checks(checks)
+
+
 def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[str, Any]:
     audit = artifacts['engine_completion_audit']
     expected = build_engine_completion_audit(
@@ -2739,6 +2769,7 @@ def build_engine_completion_audit_checks(artifacts: Mapping[str, Any]) -> Dict[s
         modular_multiplier_lifecycle=artifacts['modular_multiplier_lifecycle'],
         modular_accumulator_lowering=artifacts['modular_accumulator_lowering'],
         modular_accumulator_row_stream=artifacts['modular_accumulator_row_stream'],
+        modular_accumulator_capacity_certificate=artifacts['modular_accumulator_capacity_certificate'],
         tail_macro_engine=artifacts['tail_macro_engine'],
         tail_macro_liveness=artifacts['tail_macro_liveness'],
         tail_macro_reversibility=artifacts['tail_macro_reversibility'],
@@ -3555,6 +3586,7 @@ def build_integrity_report(repo_root: Path, artifacts: Mapping[str, Any], group_
         'modular_multiplier_lifecycle_checks': lambda: build_modular_multiplier_lifecycle_checks(artifacts),
         'modular_accumulator_lowering_checks': lambda: build_modular_accumulator_lowering_checks(artifacts),
         'modular_accumulator_row_stream_checks': lambda: build_modular_accumulator_row_stream_checks(artifacts),
+        'modular_accumulator_capacity_certificate_checks': lambda: build_modular_accumulator_capacity_certificate_checks(artifacts),
         'public_engine_manifest_checks': lambda: build_public_engine_manifest_checks(artifacts),
         'engine_completion_audit_checks': lambda: build_engine_completion_audit_checks(artifacts),
         'arithmetic_operand_replay_audit_checks': lambda: build_arithmetic_operand_replay_audit_checks(artifacts),

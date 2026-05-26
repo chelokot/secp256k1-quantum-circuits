@@ -218,8 +218,8 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "69e8c9e618ab65d8b478bf9a66e8e38b1276f3ab14c42d4cbe5b37c92badcda6",
-      "bytes": 14734
+      "sha256": "0c18987256b79bac69d3bba0600cf2462e004a7609f2b635aac56d62cc7f2722",
+      "bytes": 15329
     }
   },
   "verification_commands": {

@@ -1,0 +1,72 @@
+{
+  "schema": "compiler-project-modular-accumulator-capacity-certificate-v1",
+  "definition": "Generated owner-capacity certificate for the modular accumulator row-stream obligations. It distinguishes materialized obligation-order capacity from unpromoted serialized candidates so temporary, product-column, guard, and fold-overflow wires cannot be treated as free public resources.",
+  "source_digests": {
+    "modular_accumulator_row_stream_sha256": "5d448f757f16fa01639c8343a8e39789a2a8f29413615d784db88c6659bb4971"
+  },
+  "field_bits": 256,
+  "row_stream_summary": {
+    "row_count": 1448433,
+    "operation_stream_sha256": "5028746679a4ddea5d56d746f492de88bb0284d14ed0ac29a67f3a891217b043",
+    "capacity_owner_counts": {
+      "guard_ladder_predicate_workspace": 510,
+      "streamed_modular_accumulator_field_lane": 5621,
+      "streamed_product_accumulator_column_space": 720896,
+      "temporary_and_target_wire": 721406
+    },
+    "max_source_column": 510,
+    "max_destination_column": 510
+  },
+  "owner_capacity_obligations": [
+    {
+      "owner_id": "streamed_product_accumulator_column_space",
+      "observed_rows": 720896,
+      "logical_qubit_budget_required_by_materialized_columns": 511,
+      "field_slot_capacity_bits": 256,
+      "fits_single_field_slot": false,
+      "status": "requires_streaming_or_dedicated_product_column_owner_before_promotion"
+    },
+    {
+      "owner_id": "streamed_modular_accumulator_field_lane",
+      "observed_rows": 5621,
+      "logical_qubit_budget_required_by_direct_shifted_columns": 287,
+      "field_slot_capacity_bits": 256,
+      "overflowing_shift_column_count": 31,
+      "fits_single_field_slot_without_second_fold": false,
+      "status": "requires_second_fold_or_overflow_column_owner_before_promotion"
+    },
+    {
+      "owner_id": "temporary_and_target_wire",
+      "observed_rows": 721406,
+      "obligation_order_peak_logical_qubits": 721406,
+      "serialized_candidate_peak_logical_qubits": 1,
+      "capacity_status": "serialized_peak_unpromoted_until_compute_consume_cleanup_rows_are_adjacent_in_the_primitive_schedule"
+    },
+    {
+      "owner_id": "guard_ladder_predicate_workspace",
+      "observed_rows": 510,
+      "obligation_order_peak_logical_qubits": 510,
+      "serialized_candidate_peak_logical_qubits": 1,
+      "capacity_status": "serialized_peak_unpromoted_until_guard_cleanup_rows_are_primitive_scheduled"
+    }
+  ],
+  "promotion_status": {
+    "status": "capacity_certificate_not_promoted_to_public_resource_contract",
+    "required_to_promote": [
+      "Replace obligation-order temporary rows with adjacent compute-consume-cleanup primitive rows or count the full obligation-order temporary peak.",
+      "Lower product-column accumulation so the 511-column owner is either streamed with proven non-concurrency or counted explicitly.",
+      "Lower pseudo-Mersenne overflow columns through a second-fold primitive schedule or count the overflow owner explicitly.",
+      "Recompute public peak liveness from the promoted primitive schedule rather than from this capacity certificate."
+    ]
+  },
+  "checks": {
+    "source_row_stream_passes": true,
+    "owner_counts_cover_all_rows": true,
+    "product_column_owner_exceeds_single_field_slot": true,
+    "field_fold_overflow_columns_are_explicit": true,
+    "temporary_owner_capacity_is_not_free_in_obligation_order": true,
+    "serialized_temporary_peak_is_unpromoted": true,
+    "capacity_certificate_not_promoted_to_public_resource_contract": true
+  },
+  "pass": true
+}
