@@ -15,13 +15,13 @@
     "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
   },
   "source_digests": {
-    "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+    "compiler_parameters_sha256": "b4a567d80238820308fe60b8cefa423e6e0a352e6fd14b67cc6c455ea0a04422",
     "executable_resource_engine_sha256": "8f296d454b7228991a10bccd9ffb728cf991f0c58ba84f1d5730ec0fc509be06",
     "counted_resource_ir_sha256": "e2d8c11d60249197de3b9608556b808c8fd8798419763682246e71c098528ea4",
     "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
     "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
     "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-    "public_candidate_materialized_circuit_manifest_sha256": "aa73c0e78e2fefd79691129ef947b866bdaec9016c9b06f8743b8540bf5e9ffa",
+    "public_candidate_materialized_circuit_manifest_sha256": "2d12416e147862d9b0172885f4cb69e33ae303375c50b0db1584ee986170786b",
     "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
   },
   "instruction_stream": {
@@ -702,7 +702,7 @@
     },
     "compiler_parameters": {
       "schema": "compiler-project-parameters-v1",
-      "sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+      "sha256": "b4a567d80238820308fe60b8cefa423e6e0a352e6fd14b67cc6c455ea0a04422",
       "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
       "selected_public_phase_shell": "semiclassical_qft_v1",
       "selected_qroamclean_block_size": 1
@@ -711,7 +711,7 @@
   "primitive_operation_evidence": {
     "public_candidate_materialized_circuit_manifest": {
       "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-      "sha256": "aa73c0e78e2fefd79691129ef947b866bdaec9016c9b06f8743b8540bf5e9ffa",
+      "sha256": "2d12416e147862d9b0172885f4cb69e33ae303375c50b0db1584ee986170786b",
       "pass": true,
       "operation_stream_sha256": "e8b1167c3f632c2682bd6defce6e5cad8473d5da814a5e402f2a12c959823f84",
       "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",

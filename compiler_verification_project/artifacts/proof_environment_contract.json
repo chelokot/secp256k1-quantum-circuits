@@ -237,21 +237,21 @@
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "ffcb886511dde5b7ae98a1d003c17476c01e69e8fa25339e1a019fa7cdf8eb2f",
-      "bytes": 345338,
+      "sha256": "f99b1045799a3cb6fa1739239becdcb027c771f6e467adb20b41007c5a58c0fa",
+      "bytes": 345732,
       "manifest_record": {
-        "sha256": "ffcb886511dde5b7ae98a1d003c17476c01e69e8fa25339e1a019fa7cdf8eb2f",
-        "bytes": 345338
+        "sha256": "f99b1045799a3cb6fa1739239becdcb027c771f6e467adb20b41007c5a58c0fa",
+        "bytes": 345732
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "ba56fc0bdf5f336b5635d2edfd63f171b4b8a7be1cb57ead70114530c3cd3f39",
+      "sha256": "30f1d2f73ca9c8328bef1c666b0086dd081a7c134cd69a25c51319d67ef2c941",
       "bytes": 1709,
       "manifest_record": {
-        "sha256": "ba56fc0bdf5f336b5635d2edfd63f171b4b8a7be1cb57ead70114530c3cd3f39",
+        "sha256": "30f1d2f73ca9c8328bef1c666b0086dd081a7c134cd69a25c51319d67ef2c941",
         "bytes": 1709
       },
       "manifest_record_present": true,
@@ -292,11 +292,11 @@
     },
     "compiler_parameters": {
       "path": "compiler_verification_project/artifacts/compiler_parameters.json",
-      "sha256": "aec277a8507d505473f06f90ef82d5989710099f271fa78f69424ff8958dbb38",
-      "bytes": 2040,
+      "sha256": "74afa46ba679fbc8426397e910469eb03c2f7badd63e9db909779c455ad06bd9",
+      "bytes": 2390,
       "manifest_record": {
-        "sha256": "aec277a8507d505473f06f90ef82d5989710099f271fa78f69424ff8958dbb38",
-        "bytes": 2040
+        "sha256": "74afa46ba679fbc8426397e910469eb03c2f7badd63e9db909779c455ad06bd9",
+        "bytes": 2390
       },
       "manifest_record_present": true,
       "manifest_sha256_matches_checked_record": true
@@ -490,10 +490,10 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "9859f8497848810575116810101d5a48e15bc01a17eb9b8d5a8b64ae69695c32",
+      "sha256": "a2b9add0e89f53ce0251ea4142f756ad659bbfaa784192688ac10c5602edf491",
       "bytes": 45656481,
       "manifest_record": {
-        "sha256": "9859f8497848810575116810101d5a48e15bc01a17eb9b8d5a8b64ae69695c32",
+        "sha256": "a2b9add0e89f53ce0251ea4142f756ad659bbfaa784192688ac10c5602edf491",
         "bytes": 45656481
       },
       "manifest_record_present": true,
@@ -501,10 +501,10 @@
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "f9d82d1498029a21f48250bcc925769cef689ff288cec6874a1316b8ed1eeab0",
+      "sha256": "0376fa4341d3f87243fa4f758b808ee35fad84630a65cea24ce7d16dd511c32d",
       "bytes": 30733,
       "manifest_record": {
-        "sha256": "f9d82d1498029a21f48250bcc925769cef689ff288cec6874a1316b8ed1eeab0",
+        "sha256": "0376fa4341d3f87243fa4f758b808ee35fad84630a65cea24ce7d16dd511c32d",
         "bytes": 30733
       },
       "manifest_record_present": true,
@@ -512,10 +512,10 @@
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "05624ea04e3566b456e0886769bc5d7eb9d7a790f4e95d79cae7b7400ef7de9b",
+      "sha256": "d51e299673ee1916f6d18885f0164afbb8ca0e56759bf3c0f338b258fe410747",
       "bytes": 10888,
       "manifest_record": {
-        "sha256": "05624ea04e3566b456e0886769bc5d7eb9d7a790f4e95d79cae7b7400ef7de9b",
+        "sha256": "d51e299673ee1916f6d18885f0164afbb8ca0e56759bf3c0f338b258fe410747",
         "bytes": 10888
       },
       "manifest_record_present": true,
@@ -529,8 +529,8 @@
   },
   "public_headline_result": {
     "path": "compiler_verification_project/artifacts/public_headline_result.json",
-    "sha256": "6360221213f3e38fb2da0313c72149fc6d55cb87a7ed9fe495447e0ead04ef0a",
-    "bytes": 15251
+    "sha256": "6b8b2389e7addf43326aaa97b6e6df4a7deee124d565883aab0cc502fc967075",
+    "bytes": 15836
   },
   "notes": [
     "This artifact is deterministic and repository-bound; it is not a pinned container or Nix lock.",

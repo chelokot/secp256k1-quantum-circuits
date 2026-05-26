@@ -232,7 +232,7 @@ def build_constant_provenance(
             pointer='/non_clifford_derivation/candidate_total_non_clifford',
             consumers=[
                 _consumer(name='zkp_family_document', document=zkp, pointer='/family_document/payload/full_oracle_non_clifford', expected=_pointer_get(reusable.payload, '/non_clifford_derivation/candidate_total_non_clifford')),
-                _consumer(name='public_headline_result', document=public, pointer='/selected_result/non_clifford', expected=_pointer_get(reusable.payload, '/non_clifford_derivation/candidate_total_non_clifford')),
+                _consumer(name='public_headline_legacy_wrapper_reference', document=public, pointer='/legacy_wrapper_reference/selected_result/non_clifford', expected=_pointer_get(reusable.payload, '/non_clifford_derivation/candidate_total_non_clifford')),
                 _consumer(name='headline_resource_manifest', document=headline_manifest, pointer='/public_totals/non_clifford', expected=_pointer_get(reusable.payload, '/non_clifford_derivation/candidate_total_non_clifford')),
             ],
         ),
@@ -242,7 +242,7 @@ def build_constant_provenance(
             pointer='/qubit_derivation/candidate_total_logical_qubits',
             consumers=[
                 _consumer(name='zkp_family_document', document=zkp, pointer='/family_document/payload/total_logical_qubits', expected=_pointer_get(reusable.payload, '/qubit_derivation/candidate_total_logical_qubits')),
-                _consumer(name='public_headline_result', document=public, pointer='/selected_result/logical_qubits', expected=_pointer_get(reusable.payload, '/qubit_derivation/candidate_total_logical_qubits')),
+                _consumer(name='public_headline_legacy_wrapper_reference', document=public, pointer='/legacy_wrapper_reference/selected_result/logical_qubits', expected=_pointer_get(reusable.payload, '/qubit_derivation/candidate_total_logical_qubits')),
                 _consumer(name='headline_resource_manifest', document=headline_manifest, pointer='/public_totals/logical_qubits', expected=_pointer_get(reusable.payload, '/qubit_derivation/candidate_total_logical_qubits')),
             ],
         ),
@@ -252,7 +252,7 @@ def build_constant_provenance(
             pointer='/selected_family_name',
             consumers=[
                 _consumer(name='zkp_family_document', document=zkp, pointer='/family_document/payload/name', expected=family_name),
-                _consumer(name='public_headline_result', document=public, pointer='/selected_result/name', expected=family_name),
+                _consumer(name='public_headline_legacy_wrapper_reference', document=public, pointer='/legacy_wrapper_reference/selected_result/name', expected=family_name),
                 _consumer(name='headline_resource_manifest', document=headline_manifest, pointer='/selected_family_name', expected=family_name),
             ],
         ),
@@ -260,16 +260,28 @@ def build_constant_provenance(
             name='non_clifford_public_limit',
             document=compiler,
             pointer='/public_headline_policy/non_clifford_limit_exclusive',
-            consumers=[
-                _consumer(name='public_selection_policy', document=public, pointer='/selection_policy/limits/non_clifford_limit_exclusive', expected=_pointer_get(compiler.payload, '/public_headline_policy/non_clifford_limit_exclusive')),
-            ],
+            consumers=[],
         ),
         _source(
             name='logical_qubit_public_limit',
             document=compiler,
             pointer='/public_headline_policy/logical_qubit_limit_exclusive',
+            consumers=[],
+        ),
+        _source(
+            name='non_clifford_primary_strict_limit',
+            document=compiler,
+            pointer='/primary_strict_headline_policy/non_clifford_limit_exclusive',
             consumers=[
-                _consumer(name='public_selection_policy', document=public, pointer='/selection_policy/limits/logical_qubit_limit_exclusive', expected=_pointer_get(compiler.payload, '/public_headline_policy/logical_qubit_limit_exclusive')),
+                _consumer(name='public_selection_policy', document=public, pointer='/selection_policy/limits/non_clifford_limit_exclusive', expected=_pointer_get(compiler.payload, '/primary_strict_headline_policy/non_clifford_limit_exclusive')),
+            ],
+        ),
+        _source(
+            name='logical_qubit_primary_strict_limit',
+            document=compiler,
+            pointer='/primary_strict_headline_policy/logical_qubit_limit_exclusive',
+            consumers=[
+                _consumer(name='public_selection_policy', document=public, pointer='/selection_policy/limits/logical_qubit_limit_exclusive', expected=_pointer_get(compiler.payload, '/primary_strict_headline_policy/logical_qubit_limit_exclusive')),
             ],
         ),
     ])
@@ -286,6 +298,12 @@ def build_constant_provenance(
             < _pointer_get(compiler.payload, '/public_headline_policy/non_clifford_limit_exclusive')
             and _pointer_get(reusable.payload, '/qubit_derivation/candidate_total_logical_qubits')
             < _pointer_get(compiler.payload, '/public_headline_policy/logical_qubit_limit_exclusive')
+        ),
+        'primary_strict_headline_beats_presentation_limits': (
+            _pointer_get(public.payload, '/selected_result/non_clifford')
+            < _pointer_get(compiler.payload, '/primary_strict_headline_policy/non_clifford_limit_exclusive')
+            and _pointer_get(public.payload, '/selected_result/logical_qubits')
+            < _pointer_get(compiler.payload, '/primary_strict_headline_policy/logical_qubit_limit_exclusive')
         ),
     }
     return {

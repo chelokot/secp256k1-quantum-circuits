@@ -34,7 +34,7 @@ def build_primary_strict_result(
     hybrid_bridge_search: Mapping[str, Any],
 ) -> Dict[str, Any]:
     selected = strict_replayed_tail_headline['selected_result']
-    legacy_selected = public_headline_result['selected_result']
+    legacy_selected = public_headline_result['legacy_wrapper_reference']['selected_result']
     engine_totals = engine_completion_audit['public_totals']
     flat_netlist = engine_completion_audit['materialized_flat_netlist']
     legacy_flat_netlist = engine_completion_audit['legacy_materialized_flat_netlist']
@@ -136,7 +136,7 @@ def build_primary_strict_result(
         },
         'remaining_completion_requirements': [
             'replace the strict liveness projection overlay and legacy companion stream with one canonical executable flat IR that directly emits the strict liveness rows',
-            'make the ZKP guest/input bind the primary strict result artifact instead of the legacy macro wrapper',
+            'replace the compact primary_strict_claim ZKP binding with canonical engine-artifact authority in the guest input',
             'keep public presentation generated from this artifact or from strict_replayed_tail_headline.json, never from hand-copied headline numbers',
         ],
         'source_digests': {

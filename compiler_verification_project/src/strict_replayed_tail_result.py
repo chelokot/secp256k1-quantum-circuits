@@ -61,7 +61,7 @@ def build_strict_replayed_tail_headline_result(
     phase_qubits = int(qubit_derivation['phase_qubits'])
     strict_total_logical_qubits = strict_tail_field_qubits + lookup_workspace_qubits + control_qubits + phase_qubits
     non_clifford = int(non_clifford_derivation['candidate_total_non_clifford'])
-    macro_result = public_headline_result['selected_result']
+    macro_result = public_headline_result['legacy_wrapper_reference']['selected_result']
     owner_capacity_rows = slot_assignment['owner_capacity_rows']
     checks = {
         'tail_engine_passes': tail_macro_engine['pass'] is True,

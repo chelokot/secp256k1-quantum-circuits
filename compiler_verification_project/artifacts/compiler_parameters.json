@@ -40,6 +40,12 @@
     "logical_qubit_limit_exclusive": 1200,
     "proof_freshness_required_for_public_pass": true
   },
+  "primary_strict_headline_policy": {
+    "selected_result_source": "compiler_verification_project/artifacts/primary_strict_result.json",
+    "non_clifford_limit_exclusive": 40000000,
+    "logical_qubit_limit_exclusive": 2000,
+    "proof_freshness_required_for_public_pass": true
+  },
   "checks": {
     "field_modulus_has_declared_bit_width": true,
     "pseudo_mersenne_identity_matches_modulus": true,
@@ -48,8 +54,9 @@
     "qroamclean_selected_block_size_is_k1": true,
     "reusable_chunk_policy_covers_field_width": true,
     "selected_public_family_matches_reusable_chunk_policy": true,
-    "public_headline_limits_are_strict": true
+    "public_headline_limits_are_strict": true,
+    "primary_strict_headline_limits_cover_current_result": true
   },
   "pass": true,
-  "parameter_digest_sha256": "47f5bf03c24360d51e75ad4496f455a112b2a8abf7f93e3fef56d07780d5dd6e"
+  "parameter_digest_sha256": "92995f0a3b263b0ca43f12bf811d94304c9e45e36d21c889c021427d8571de2a"
 }

@@ -73,8 +73,9 @@ is:
 Those numbers are exact for the chosen compiler family, not a claim of global
 optimality or a Clifford-complete full-Shor netlist. The primary public resource
 headline is selected in
+`compiler_verification_project/artifacts/public_headline_result.json` and
 `compiler_verification_project/artifacts/primary_strict_result.json`, which
-points to the replayed-tail source artifact
+point to the replayed-tail source artifact
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
 It combines the standard QROAMClean `K = 1` reusable-chunk lookup resource with
 the fused-output seven-slot tail schedule replayed by
@@ -83,9 +84,9 @@ lookup workspace includes folded-control qubits plus one live 155-bit QROAM
 chunk target and no free full-coordinate lookup lane. The strict count also
 includes the one extra guard qubit and 510 non-Clifford operations per tail
 needed for the zero-lifted in-place `Y3` register reuse. The old four-slot
-macro contract remains a ZKP/publication wrapper reference in
-`compiler_verification_project/artifacts/public_headline_result.json`, but it
-is no longer the primary strict resource headline. The older
+macro contract remains a ZKP/publication wrapper reference under
+`public_headline_result.json.legacy_wrapper_reference` and in
+`headline_resource_manifest.json`; it is not the selected resource headline. The older
 `34,925,796 / 1,044` three-slot family remains checked as a reference boundary,
 not as the promoted public claim.
 
@@ -123,8 +124,8 @@ full-coordinate lookup lane, numeric owner capacity, and the current
 flat-index primitive netlist commitment. The current-headline counted-resource
 stream is separately materialized in
 `compiler_verification_project/artifacts/headline_resource_manifest.json`, so
-the old macro `36,957,412 / 1,199` proof-wrapper result is not backed by the
-older three-slot materialized manifest by accident. It also validates the committed compiler-parameter document
+the macro-wrapper proof sidecar is not backed by the older three-slot
+materialized manifest by accident. It also validates the committed compiler-parameter document
 before committing public values. `compiler_verification_project/artifacts/constant_provenance.json`
 binds the selected phase-shell counts, headline totals, and publication limits
 from their source artifacts into the ZKP family document and public headline
@@ -138,7 +139,7 @@ the release gate before claiming current proof freshness. The checked proof
 fixtures still bind a stale macro/ZKP candidate claim and `8 / 8` public cases.
 The current candidate input and Rust guest now also carry a cycle-free
 `primary_strict_claim` for the guarded replayed-tail `36,973,222 / 1,968`
-result selected by `primary_strict_result.json`; the compressed/Groth16
+result sourced from `strict_replayed_tail_headline.json`; the compressed/Groth16
 fixtures remain stale until rebuilt against that input.
 The compiler artifacts also include `public_candidate_materialized_circuit_manifest.json`,
 `public_engine_manifest.json`, and `engine_completion_audit.json`, the no-ZKP

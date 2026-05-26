@@ -2,17 +2,17 @@
   "schema": "compiler-project-zkp-attestation-input-v5",
   "document_digest_scheme": "compiler-project-semantic-json-sha256-v1",
   "selected_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
-  "claim_sha256": "a4206b371fa387c4627f15ab437b1f736632fe224673e70511b245d975d54664",
+  "claim_sha256": "b1c072d0c4fb4e548553fcac698cd0c65898914f9f93bf7459fc444a2cd8614e",
   "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
   "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
   "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
   "resource_certificate_sha256": "b66f0c2c173a54da30fb1cb7c73334aec353ae525e8d0f5e7cfe4078833d31dd",
-  "compiler_parameters_sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
+  "compiler_parameters_sha256": "e186d4ce1da44de2ed9a827d2d8e2ebd47ea665ee784f5781233ad3c429ea17f",
   "claim_document": {
     "document_type": "attestation_claim",
     "artifact_path": "compiler_verification_project/artifacts/zkp_attestation_claim.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "a4206b371fa387c4627f15ab437b1f736632fe224673e70511b245d975d54664",
+    "sha256": "b1c072d0c4fb4e548553fcac698cd0c65898914f9f93bf7459fc444a2cd8614e",
     "payload": {
       "schema": "compiler-project-zkp-attestation-claim-v1",
       "selected_family_alias": "reusable-chunk",
@@ -25,7 +25,7 @@
       "resource_engine_summary": {
         "source": "public_engine_manifest.public_totals",
         "source_document_type": "public_engine_manifest",
-        "source_sha256": "a666b808b661fadf653519f8a1ecd8927e0c1bc800266134dd3b51ca6150c1a4",
+        "source_sha256": "bd74a30e9c8d210b44fa5e99bb223962334e9a0b21ca3c9f0f2a8f001856a302",
         "non_clifford": 36973222,
         "logical_qubits": 1968,
         "matches_family_snapshot": false,
@@ -7837,7 +7837,7 @@
     "document_type": "compiler_parameters",
     "artifact_path": "compiler_verification_project/artifacts/compiler_parameters.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "8015f87a4d334c61db0d2c8843fe12330db770a87e0c5c51e344347416a7555b",
+    "sha256": "e186d4ce1da44de2ed9a827d2d8e2ebd47ea665ee784f5781233ad3c429ea17f",
     "payload": {
       "schema": "compiler-project-parameters-v1",
       "curve": {
@@ -7880,6 +7880,12 @@
         "logical_qubit_limit_exclusive": 1200,
         "proof_freshness_required_for_public_pass": true
       },
+      "primary_strict_headline_policy": {
+        "selected_result_source": "compiler_verification_project/artifacts/primary_strict_result.json",
+        "non_clifford_limit_exclusive": 40000000,
+        "logical_qubit_limit_exclusive": 2000,
+        "proof_freshness_required_for_public_pass": true
+      },
       "checks": {
         "field_modulus_has_declared_bit_width": true,
         "pseudo_mersenne_identity_matches_modulus": true,
@@ -7888,10 +7894,11 @@
         "qroamclean_selected_block_size_is_k1": true,
         "reusable_chunk_policy_covers_field_width": true,
         "selected_public_family_matches_reusable_chunk_policy": true,
-        "public_headline_limits_are_strict": true
+        "public_headline_limits_are_strict": true,
+        "primary_strict_headline_limits_cover_current_result": true
       },
       "pass": true,
-      "parameter_digest_sha256": "47f5bf03c24360d51e75ad4496f455a112b2a8abf7f93e3fef56d07780d5dd6e"
+      "parameter_digest_sha256": "92995f0a3b263b0ca43f12bf811d94304c9e45e36d21c889c021427d8571de2a"
     }
   },
   "claim_summary": {
@@ -7903,7 +7910,7 @@
     "resource_engine_summary": {
       "source": "public_engine_manifest.public_totals",
       "source_document_type": "public_engine_manifest",
-      "source_sha256": "a666b808b661fadf653519f8a1ecd8927e0c1bc800266134dd3b51ca6150c1a4",
+      "source_sha256": "bd74a30e9c8d210b44fa5e99bb223962334e9a0b21ca3c9f0f2a8f001856a302",
       "non_clifford": 36973222,
       "logical_qubits": 1968,
       "matches_family_snapshot": false,
@@ -8267,12 +8274,12 @@
     "The proof input carries both the committed source documents and proof-ready reductions.",
     "The guest recomputes every source-document digest and derives the prepared leaf/case reductions from those documents before publishing public values."
   ],
-  "public_engine_manifest_sha256": "a666b808b661fadf653519f8a1ecd8927e0c1bc800266134dd3b51ca6150c1a4",
+  "public_engine_manifest_sha256": "bd74a30e9c8d210b44fa5e99bb223962334e9a0b21ca3c9f0f2a8f001856a302",
   "public_engine_manifest_document": {
     "document_type": "public_engine_manifest",
     "artifact_path": "compiler_verification_project/artifacts/public_engine_manifest.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "a666b808b661fadf653519f8a1ecd8927e0c1bc800266134dd3b51ca6150c1a4",
+    "sha256": "bd74a30e9c8d210b44fa5e99bb223962334e9a0b21ca3c9f0f2a8f001856a302",
     "payload": {
       "schema": "compiler-project-public-engine-manifest-v1",
       "scope": "current public reusable-chunk executable resource engine manifest",
@@ -8290,13 +8297,13 @@
         "source": "public_candidate_materialized_circuit_manifest.materialized_flat_netlist"
       },
       "source_digests": {
-        "compiler_parameters_sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+        "compiler_parameters_sha256": "b4a567d80238820308fe60b8cefa423e6e0a352e6fd14b67cc6c455ea0a04422",
         "executable_resource_engine_sha256": "8f296d454b7228991a10bccd9ffb728cf991f0c58ba84f1d5730ec0fc509be06",
         "counted_resource_ir_sha256": "e2d8c11d60249197de3b9608556b808c8fd8798419763682246e71c098528ea4",
         "executable_liveness_sha256": "cb3f29e5a76255a1f9b2b0d14e8f98966ce832530b1c40426fc8abe97aa597e3",
         "owner_capacity_sha256": "9e6dc73bc01f9db6ada4f05afb0e1e578d7252921dde5ab3424e5fe528590331",
         "resource_contract_engine_sha256": "0447031a514b04038ab0f51e63a0e1a5ffa187d1cab694de20d7dfc8196ea1e0",
-        "public_candidate_materialized_circuit_manifest_sha256": "aa73c0e78e2fefd79691129ef947b866bdaec9016c9b06f8743b8540bf5e9ffa",
+        "public_candidate_materialized_circuit_manifest_sha256": "2d12416e147862d9b0172885f4cb69e33ae303375c50b0db1584ee986170786b",
         "qroam_table_cnot_materialization_sha256": "b783455ac10c7da613d154ada14315069926fddec5ce0a1ebd23e1cb4d8f3916"
       },
       "instruction_stream": {
@@ -8977,7 +8984,7 @@
         },
         "compiler_parameters": {
           "schema": "compiler-project-parameters-v1",
-          "sha256": "f25239aab49a172397565757d9495c47ea7e88959451bc291d06f0ba37bbb374",
+          "sha256": "b4a567d80238820308fe60b8cefa423e6e0a352e6fd14b67cc6c455ea0a04422",
           "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
           "selected_public_phase_shell": "semiclassical_qft_v1",
           "selected_qroamclean_block_size": 1
@@ -8986,7 +8993,7 @@
       "primitive_operation_evidence": {
         "public_candidate_materialized_circuit_manifest": {
           "schema": "compiler-project-public-candidate-materialized-circuit-manifest-v1",
-          "sha256": "aa73c0e78e2fefd79691129ef947b866bdaec9016c9b06f8743b8540bf5e9ffa",
+          "sha256": "2d12416e147862d9b0172885f4cb69e33ae303375c50b0db1584ee986170786b",
           "pass": true,
           "operation_stream_sha256": "e8b1167c3f632c2682bd6defce6e5cad8473d5da814a5e402f2a12c959823f84",
           "liveness_binding_stream_sha256": "064b5825a77559fdaab046854b89afdf58e1d3da0be53ab53652bb913c87b8eb",
@@ -9211,15 +9218,15 @@
       "pass": true
     }
   },
-  "primary_strict_claim_sha256": "7aab8a4522c5e4f20402385d72050564db3a3399180d3844cbcae102b29786e5",
+  "primary_strict_claim_sha256": "d288d53e84253a99c9bb4c3f28ac0accc571ebcd5e570e90ff82eccc7194810e",
   "primary_strict_claim_document": {
     "document_type": "primary_strict_claim",
-    "artifact_path": "compiler_verification_project/artifacts/primary_strict_result.json",
+    "artifact_path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
     "digest_scheme": "compiler-project-semantic-json-sha256-v1",
-    "sha256": "7aab8a4522c5e4f20402385d72050564db3a3399180d3844cbcae102b29786e5",
+    "sha256": "d288d53e84253a99c9bb4c3f28ac0accc571ebcd5e570e90ff82eccc7194810e",
     "payload": {
       "schema": "compiler-project-primary-strict-claim-v1",
-      "source_artifact_path": "compiler_verification_project/artifacts/primary_strict_result.json",
+      "source_artifact_path": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
       "selected_result": {
         "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
         "non_clifford": 36973222,

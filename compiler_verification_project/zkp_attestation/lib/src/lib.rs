@@ -5989,7 +5989,7 @@ fn validate_primary_strict_claim(
     assert!(json_bool_field(result, "pass"));
     assert_eq!(
         json_string_field(result, "source_artifact_path"),
-        "compiler_verification_project/artifacts/primary_strict_result.json"
+        "compiler_verification_project/artifacts/strict_replayed_tail_headline.json"
     );
     let selected = json_object_field(result, "selected_result");
     assert_eq!(

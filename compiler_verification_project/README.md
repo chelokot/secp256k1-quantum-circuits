@@ -141,8 +141,8 @@ the interface.
 The older `34,925,796 / 1,044` three-slot family remains checked as a reference
 boundary in `family_frontier.json`, `logical_resource_ledger.json`, and the
 root attestation bundle. The reusable-chunk candidate directory contains the
-core/compressed/Groth16 fixtures and proof bundles for the old macro
-stale macro candidate result; use `proof_status.py --require-all-current`
+core/compressed/Groth16 fixtures and proof bundles for the stale macro
+candidate result; use `proof_status.py --require-all-current`
 as the freshness gate after any resource-certificate or guest change.
 `headline_resource_manifest.json` is the macro-wrapper counted-resource stream
 manifest. It expands the reusable-chunk counted-resource IR into term rows and

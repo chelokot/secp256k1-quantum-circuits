@@ -175,7 +175,6 @@ def build_proof_environment_contract(*, repo_root: Path) -> dict[str, Any]:
     groth16_vk_dir = str(Path(groth16_vk_path).parent)
     freshness_check_names = {
         'public_values_match_input_claim',
-        'input_claim_summary_is_engine_snapshot_not_primary_formula',
         'all_fixtures_bind_same_public_values',
         'fixtures_bind_checked_input_digest',
     }

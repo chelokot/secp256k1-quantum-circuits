@@ -233,9 +233,9 @@ def build_engine_completion_audit(
         'zkp_input_binds_primary_strict_claim_without_cycle': (
             zkp_attestation_input['primary_strict_claim_sha256'] == primary_strict_claim_document['sha256']
             and primary_strict_claim_document['document_type'] == 'primary_strict_claim'
-            and primary_strict_claim_document['artifact_path'] == 'compiler_verification_project/artifacts/primary_strict_result.json'
+            and primary_strict_claim_document['artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
             and primary_strict_claim['schema'] == 'compiler-project-primary-strict-claim-v1'
-            and primary_strict_claim['source_artifact_path'] == 'compiler_verification_project/artifacts/primary_strict_result.json'
+            and primary_strict_claim['source_artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
             and primary_strict_claim['pass'] is True
             and int(primary_strict_selected['non_clifford']) == public_totals['non_clifford']
             and int(primary_strict_selected['logical_qubits']) == public_totals['logical_qubits']

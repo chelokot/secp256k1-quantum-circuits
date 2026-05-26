@@ -14,12 +14,13 @@ that same boundary. The current primary strict headline is the reusable-chunk
 standard-QROAM family with the guarded fused-output seven-slot tail at
 `36,973,222` non-Clifford operations and `1,968` logical qubits. That primary
 public resource result is selected in
+`compiler_verification_project/artifacts/public_headline_result.json` and
 `compiler_verification_project/artifacts/primary_strict_result.json`, with the
 replayed-tail source in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.
-The old four-slot macro contract remains checked as a ZKP/publication wrapper reference in
-`compiler_verification_project/artifacts/public_headline_result.json`, but it
-is not the primary strict resource headline. The older `34,925,796 / 1,044`
+The four-slot macro contract remains checked as a ZKP/publication wrapper
+reference under `public_headline_result.json.legacy_wrapper_reference`, but it
+is not the selected resource headline. The older `34,925,796 / 1,044`
 family remains checked as a reference boundary, not as the promoted public
 claim. The generated QROAMClean tradeoff ledger still records the higher-space
 rows needed for the older `<24M` non-Clifford target; the repository headline

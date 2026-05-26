@@ -344,8 +344,8 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
         assert public_result['checks']['fits_strict_public_goal'] is True
         assert public_result['checks']['public_values_match_input_claim'] is False
         assert public_result['checks']['all_fixtures_bind_same_public_values'] is False
-    assert public_result['checks']['reusable_chunk_lowering_is_proven_for_public_headline'] is True
-    assert public_result['checks']['reusable_chunk_executable_liveness_binds_public_qubits'] is True
+    assert public_result['checks']['reusable_chunk_lowering_is_demoted_legacy_wrapper_reference'] is True
+    assert public_result['checks']['legacy_wrapper_executable_liveness_binds_reference_qubits'] is True
     assert public_result['checks']['reusable_chunk_binds_generated_qroam_primitive_certificate'] is True
     assert public_result['checks']['reusable_chunk_binds_modular_arithmetic_certificate'] is True
     assert public_result['checks']['reusable_chunk_tail_contract_is_proven_for_public_headline'] is True
@@ -356,7 +356,8 @@ def test_public_headline_result_binds_reusable_chunk_candidate_artifacts() -> No
     public_policy = public_result['selection_policy']['limits']
     assert selected['non_clifford'] < public_policy['non_clifford_limit_exclusive']
     assert selected['logical_qubits'] < public_policy['logical_qubit_limit_exclusive']
-    assert selected['name'] == input_payload['selected_family_name']
+    assert selected['name'] == input_payload['primary_strict_claim_document']['payload']['selected_result']['name']
+    assert public_result['legacy_wrapper_reference']['selected_result']['name'] == input_payload['selected_family_name']
     assert public_values['expected_full_oracle_non_clifford'] != selected['non_clifford'] or status['all_current']
     checked = public_result['checked_artifacts']
     for key in ('compressed_proof', 'groth16_proof', 'wrap_proof', 'groth16_verifier_key'):

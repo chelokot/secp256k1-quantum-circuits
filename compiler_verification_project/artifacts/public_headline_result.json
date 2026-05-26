@@ -1,20 +1,20 @@
 {
   "schema": "compiler-project-public-headline-result-v1",
   "selected_result": {
-    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+    "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
     "non_clifford": 36973222,
-    "logical_qubits": 1199,
+    "logical_qubits": 1968,
     "case_count": 8,
     "passed_case_count": 8,
     "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
   },
   "selection_policy": {
-    "role": "legacy macro/ZKP publication wrapper reference",
-    "reason": "This reusable-chunk four-slot contract remains the checked macro/ZKP wrapper reference. It is not the current primary strict resource headline; that role belongs to primary_strict_result.json.",
+    "role": "current primary strict resource headline",
+    "reason": "This result is generated from the strict replayed-tail engine artifacts. Checked compressed and Groth16 proof freshness remains separate from resource-headline selection.",
     "limits": {
-      "selected_public_family_name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "selected_result_source": "compiler_verification_project/artifacts/primary_strict_result.json",
       "non_clifford_limit_exclusive": 40000000,
-      "logical_qubit_limit_exclusive": 1200,
+      "logical_qubit_limit_exclusive": 2000,
       "proof_freshness_required_for_public_pass": true
     },
     "supersedes_for_public_headline": [
@@ -27,41 +27,53 @@
       "reason": "Lower qubit count at the earlier three-slot compiler-family boundary, but not the selected stricter four-slot reusable-chunk public headline."
     }
   },
+  "legacy_wrapper_reference": {
+    "selected_result": {
+      "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
+      "non_clifford": 36973222,
+      "logical_qubits": 1199,
+      "case_count": 8,
+      "passed_case_count": 8,
+      "document_digest_scheme": "compiler-project-semantic-json-sha256-v1"
+    },
+    "status": "checked_zkp_wrapper_reference_not_primary_resource_headline",
+    "reason": "The wrapper resource certificate remains useful as a checked proof/publication sidecar, but the public resource headline is the strict seven-slot engine result."
+  },
   "comparison_to_public_google_baseline": {
     "low_qubit": {
       "baseline_non_clifford": 90000000,
       "baseline_logical_qubits": 1200,
       "non_clifford_improvement_ratio": 2.434194131093038,
-      "qubit_delta_vs_baseline": 1,
+      "qubit_delta_vs_baseline": -768,
       "beats_non_clifford": true,
-      "beats_logical_qubits": true
+      "beats_logical_qubits": false
     },
     "low_gate": {
       "baseline_non_clifford": 70000000,
       "baseline_logical_qubits": 1450,
       "non_clifford_improvement_ratio": 1.8932621019612519,
-      "qubit_delta_vs_baseline": 251,
+      "qubit_delta_vs_baseline": -518,
       "beats_non_clifford": true,
-      "beats_logical_qubits": true
+      "beats_logical_qubits": false
     }
   },
   "bound_documents": {
-    "claim_sha256": "a4206b371fa387c4627f15ab437b1f736632fe224673e70511b245d975d54664",
+    "claim_sha256": "b1c072d0c4fb4e548553fcac698cd0c65898914f9f93bf7459fc444a2cd8614e",
     "leaf_sha256": "beb2eb182d9d854626c553954eadd575dc40965dc9fa8e3a1bffd35633b9fac9",
     "family_sha256": "c6a7146ac5c0d7a63f733b0224ac9dc6fbaafb576d196128f882ecbc01e42b2b",
     "case_corpus_sha256": "fe21d4848da9989e94cc627978e3ef7b4d6e2d9ab61a4342b5d23f0b0b2d5dee",
     "resource_certificate_sha256": "b66f0c2c173a54da30fb1cb7c73334aec353ae525e8d0f5e7cfe4078833d31dd",
-    "public_engine_manifest_sha256": "a666b808b661fadf653519f8a1ecd8927e0c1bc800266134dd3b51ca6150c1a4"
+    "public_engine_manifest_sha256": "bd74a30e9c8d210b44fa5e99bb223962334e9a0b21ca3c9f0f2a8f001856a302"
   },
   "checked_artifacts": {
     "input": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_input.json",
-      "sha256": "ffcb886511dde5b7ae98a1d003c17476c01e69e8fa25339e1a019fa7cdf8eb2f",
-      "bytes": 345338
+      "sha256": "f99b1045799a3cb6fa1739239becdcb027c771f6e467adb20b41007c5a58c0fa",
+      "bytes": 345732
     },
     "claim": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_claim.json",
-      "sha256": "ba56fc0bdf5f336b5635d2edfd63f171b4b8a7be1cb57ead70114530c3cd3f39",
+      "sha256": "30f1d2f73ca9c8328bef1c666b0086dd081a7c134cd69a25c51319d67ef2c941",
       "bytes": 1709
     },
     "family": {
@@ -81,8 +93,8 @@
     },
     "compiler_parameters": {
       "path": "compiler_verification_project/artifacts/compiler_parameters.json",
-      "sha256": "aec277a8507d505473f06f90ef82d5989710099f271fa78f69424ff8958dbb38",
-      "bytes": 2040
+      "sha256": "74afa46ba679fbc8426397e910469eb03c2f7badd63e9db909779c455ad06bd9",
+      "bytes": 2390
     },
     "public_values": {
       "path": "compiler_verification_project/artifacts/zkp_attestation_reusable_chunk_candidate/zkp_attestation_public_values.json",
@@ -189,17 +201,17 @@
     },
     "public_candidate_materialized_circuit_manifest": {
       "path": "compiler_verification_project/artifacts/public_candidate_materialized_circuit_manifest.json",
-      "sha256": "9859f8497848810575116810101d5a48e15bc01a17eb9b8d5a8b64ae69695c32",
+      "sha256": "a2b9add0e89f53ce0251ea4142f756ad659bbfaa784192688ac10c5602edf491",
       "bytes": 45656481
     },
     "public_engine_manifest": {
       "path": "compiler_verification_project/artifacts/public_engine_manifest.json",
-      "sha256": "f9d82d1498029a21f48250bcc925769cef689ff288cec6874a1316b8ed1eeab0",
+      "sha256": "0376fa4341d3f87243fa4f758b808ee35fad84630a65cea24ce7d16dd511c32d",
       "bytes": 30733
     },
     "engine_completion_audit": {
       "path": "compiler_verification_project/artifacts/engine_completion_audit.json",
-      "sha256": "05624ea04e3566b456e0886769bc5d7eb9d7a790f4e95d79cae7b7400ef7de9b",
+      "sha256": "d51e299673ee1916f6d18885f0164afbb8ca0e56759bf3c0f338b258fe410747",
       "bytes": 10888
     }
   },
@@ -215,7 +227,7 @@
     "compressed_verification_command": "python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed",
     "groth16_verification_command": "python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16",
     "metadata_scope": [
-      "public headline result status and strict <40M / <1200 bounds",
+      "public headline result status and strict <40M / <2000 bounds",
       "checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests",
       "semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents",
       "generated QROAM K=1 primitive-count certificate bound into the reusable-chunk resource document",
@@ -228,17 +240,17 @@
   "checks": {
     "public_values_match_input_claim": false,
     "public_headline_totals_come_from_engine_output": true,
-    "input_claim_summary_is_engine_snapshot_not_primary_formula": false,
+    "input_claim_summary_is_engine_public_totals_snapshot": true,
     "input_binds_primary_strict_claim_without_digest_cycle": true,
     "all_fixtures_bind_same_public_values": false,
     "fixtures_bind_checked_input_digest": false,
     "compressed_fixture_binds_checked_proof_binary": true,
     "groth16_fixture_binds_checked_proof_and_verifier_key": true,
-    "reusable_chunk_lowering_is_proven_for_public_headline": true,
-    "reusable_chunk_executable_liveness_binds_public_qubits": true,
-    "reusable_chunk_counted_resource_ir_binds_public_totals": true,
-    "reusable_chunk_resource_contract_engine_unifies_liveness_and_capacity": true,
-    "headline_resource_manifest_binds_current_public_result": true,
+    "reusable_chunk_lowering_is_demoted_legacy_wrapper_reference": true,
+    "legacy_wrapper_executable_liveness_binds_reference_qubits": true,
+    "legacy_wrapper_counted_resource_ir_binds_reference_totals": true,
+    "legacy_wrapper_resource_contract_engine_unifies_liveness_and_capacity": true,
+    "headline_resource_manifest_binds_legacy_wrapper_reference": true,
     "public_engine_manifest_binds_current_public_result": true,
     "public_candidate_materialized_manifest_binds_current_public_result": true,
     "engine_completion_audit_binds_current_public_result_and_remaining_boundaries": true,

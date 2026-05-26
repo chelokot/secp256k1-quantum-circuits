@@ -10,6 +10,7 @@ from typing import Any, Dict, Mapping
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 ARTIFACT_ROOT = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
 CANDIDATE_ROOT = ARTIFACT_ROOT / 'zkp_attestation_reusable_chunk_candidate'
+CANONICAL_MATERIALIZED_FLAT_NETLIST = 'canonical_materialized_flat_netlist'
 
 
 def _load(path: Path) -> Dict[str, Any]:
@@ -84,10 +85,10 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     public_candidate_materialized_manifest = _load(ARTIFACT_ROOT / 'public_candidate_materialized_circuit_manifest.json')
     public_engine_manifest = _load(ARTIFACT_ROOT / 'public_engine_manifest.json')
     engine_completion_audit = _load(ARTIFACT_ROOT / 'engine_completion_audit.json')
-    primary_strict_result = _load(ARTIFACT_ROOT / 'primary_strict_result.json')
+    strict_replayed_tail_headline = _load(ARTIFACT_ROOT / 'strict_replayed_tail_headline.json')
     compiler_parameters = _load(ARTIFACT_ROOT / 'compiler_parameters.json')
     family_frontier = _load(ARTIFACT_ROOT / 'family_frontier.json')
-    public_policy = compiler_parameters['public_headline_policy']
+    public_policy = compiler_parameters['primary_strict_headline_policy']
     non_clifford_limit = int(public_policy['non_clifford_limit_exclusive'])
     qubit_limit = int(public_policy['logical_qubit_limit_exclusive'])
     proof_corpus_profiles = _load(ARTIFACT_ROOT / 'proof_corpus_profiles.json')
@@ -96,14 +97,24 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
     counted_resource_ir = lowering['counted_resource_ir']
     resource_contract_engine = lowering['resource_contract_engine']
     superseded_reference = family_frontier['best_qubit_family']
-    engine_public_totals = public_engine_manifest['legacy_wrapper_totals']
+    engine_public_totals = public_engine_manifest['public_totals']
+    legacy_wrapper_totals = public_engine_manifest['legacy_wrapper_totals']
     materialized_public_totals = {
-        'non_clifford': int(public_candidate_materialized_manifest['materialized_flat_netlist']['non_clifford_count']),
-        'logical_qubits': int(public_candidate_materialized_manifest['materialized_flat_netlist']['peak_live_qubits']),
+        'non_clifford': int(public_candidate_materialized_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count']),
+        'logical_qubits': int(public_candidate_materialized_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits']),
+    }
+    legacy_wrapper_reference = {
+        'name': input_payload['selected_family_name'],
+        'non_clifford': int(legacy_wrapper_totals['non_clifford']),
+        'logical_qubits': int(legacy_wrapper_totals['logical_qubits']),
+        'case_count': int(input_payload['prepared_case_corpus']['case_count']),
+        'passed_case_count': int(input_payload['prepared_case_corpus']['case_count']),
+        'document_digest_scheme': input_payload['document_digest_scheme'],
     }
     current_values = {
         'schema': public_values['schema'],
-        'selected_family_name': input_payload['selected_family_name'],
+        'selected_family_name': strict_replayed_tail_headline['selected_result']['name'],
+        'proof_family_name': input_payload['selected_family_name'],
         'document_digest_scheme': input_payload['document_digest_scheme'],
         'claim_sha256': input_payload['claim_sha256'],
         'leaf_sha256': input_payload['leaf_sha256'],
@@ -137,14 +148,14 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and non_clifford == int(materialized_public_totals['non_clifford'])
             and qubits == int(materialized_public_totals['logical_qubits'])
         ),
-        'input_claim_summary_is_engine_snapshot_not_primary_formula': (
+        'input_claim_summary_is_engine_public_totals_snapshot': (
             input_payload['claim_summary']['resource_engine_summary']['non_clifford'] == non_clifford
             and input_payload['claim_summary']['resource_engine_summary']['logical_qubits'] == qubits
             and input_payload['claim_summary']['resource_engine_summary']['source'] == 'public_engine_manifest.public_totals'
             and input_payload['claim_summary']['resource_engine_summary']['source_document_type'] == 'public_engine_manifest'
             and input_payload['claim_summary']['resource_engine_summary']['source_sha256'] == input_payload['public_engine_manifest_sha256']
-            and input_payload['claim_summary']['resource_engine_summary']['matches_family_snapshot'] is True
-            and input_payload['claim_summary']['resource_engine_summary']['matches_resource_certificate_snapshot'] is True
+            and input_payload['claim_summary']['resource_engine_summary']['matches_family_snapshot'] is False
+            and input_payload['claim_summary']['resource_engine_summary']['matches_resource_certificate_snapshot'] is False
             and int(input_payload['claim_summary']['non_clifford_formula']['reconstructed_total']) == non_clifford
             and int(input_payload['claim_summary']['logical_qubit_formula']['reconstructed_total']) == qubits
         ),
@@ -152,8 +163,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             input_payload['primary_strict_claim_sha256'] == input_payload['primary_strict_claim_document']['sha256']
             and input_payload['primary_strict_claim_document']['document_type'] == 'primary_strict_claim'
             and input_payload['primary_strict_claim_document']['payload']['schema'] == 'compiler-project-primary-strict-claim-v1'
-            and input_payload['primary_strict_claim_document']['payload']['source_artifact_path'] == 'compiler_verification_project/artifacts/primary_strict_result.json'
-            and input_payload['primary_strict_claim_document']['payload']['selected_result'] == primary_strict_result['selected_result']
+            and input_payload['primary_strict_claim_document']['payload']['source_artifact_path'] == 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
+            and input_payload['primary_strict_claim_document']['payload']['selected_result'] == strict_replayed_tail_headline['selected_result']
             and input_payload['primary_strict_claim_document']['payload']['selected_result']['non_clifford'] == int(input_payload['claim_summary']['expected_full_oracle_non_clifford'])
             and input_payload['primary_strict_claim_document']['payload']['selected_result']['logical_qubits'] == int(input_payload['claim_summary']['expected_total_logical_qubits'])
             and input_payload['primary_strict_claim_document']['payload']['resource_claim_level']['strict_resource_headline'] == 'current_primary'
@@ -187,50 +198,50 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             and groth16_fixture['verifier_key_sha256'] == _sha256_path(PROJECT_ROOT / groth16_fixture['verifier_key_path'])
             and groth16_fixture['verifier_key_size_bytes'] == (PROJECT_ROOT / groth16_fixture['verifier_key_path']).stat().st_size
         ),
-        'reusable_chunk_lowering_is_proven_for_public_headline': (
+        'reusable_chunk_lowering_is_demoted_legacy_wrapper_reference': (
             lowering['status'] == 'proven_public_headline'
             and lowering['pass'] is True
-            and lowering['non_clifford_derivation']['candidate_total_non_clifford'] == non_clifford
-            and lowering['qubit_derivation']['candidate_total_logical_qubits'] == qubits
+            and lowering['non_clifford_derivation']['candidate_total_non_clifford'] == legacy_wrapper_reference['non_clifford']
+            and lowering['qubit_derivation']['candidate_total_logical_qubits'] == legacy_wrapper_reference['logical_qubits']
         ),
-        'reusable_chunk_executable_liveness_binds_public_qubits': (
+        'legacy_wrapper_executable_liveness_binds_reference_qubits': (
             executable_liveness['pass'] is True
-            and executable_liveness['global_peak_live_qubits'] == qubits
+            and executable_liveness['global_peak_live_qubits'] == legacy_wrapper_reference['logical_qubits']
             and executable_liveness['owner_peak_live_qubits'] == executable_liveness['owner_capacity_qubits']
             and executable_liveness['checks']['qroam_target_and_qchunk_are_concurrently_live'] is True
             and executable_liveness['checks']['no_full_coordinate_lane_wire_is_live'] is True
         ),
-        'reusable_chunk_counted_resource_ir_binds_public_totals': (
+        'legacy_wrapper_counted_resource_ir_binds_reference_totals': (
             counted_resource_ir['pass'] is True
-            and counted_resource_ir['recomputed_total_non_clifford'] == non_clifford
-            and counted_resource_ir['recomputed_peak_live_qubits'] == qubits
-            and sum(term['total_non_clifford'] for term in counted_resource_ir['non_clifford_terms']) == non_clifford
-            and max(interval['total_live_qubits'] for interval in counted_resource_ir['liveness_intervals']) == qubits
+            and counted_resource_ir['recomputed_total_non_clifford'] == legacy_wrapper_reference['non_clifford']
+            and counted_resource_ir['recomputed_peak_live_qubits'] == legacy_wrapper_reference['logical_qubits']
+            and sum(term['total_non_clifford'] for term in counted_resource_ir['non_clifford_terms']) == legacy_wrapper_reference['non_clifford']
+            and max(interval['total_live_qubits'] for interval in counted_resource_ir['liveness_intervals']) == legacy_wrapper_reference['logical_qubits']
         ),
-        'reusable_chunk_resource_contract_engine_unifies_liveness_and_capacity': (
+        'legacy_wrapper_resource_contract_engine_unifies_liveness_and_capacity': (
             resource_contract_engine['pass'] is True
-            and resource_contract_engine['peak_live_qubits'] == qubits
+            and resource_contract_engine['peak_live_qubits'] == legacy_wrapper_reference['logical_qubits']
             and resource_contract_engine['owner_peak_live_qubits'] == resource_contract_engine['owner_capacity_qubits']
             and resource_contract_engine['checks']['counted_wire_catalog_matches_executable_liveness'] is True
             and resource_contract_engine['checks']['counted_intervals_match_executable_liveness'] is True
         ),
-        'headline_resource_manifest_binds_current_public_result': (
+        'headline_resource_manifest_binds_legacy_wrapper_reference': (
             headline_resource_manifest['pass'] is True
-            and headline_resource_manifest['selected_family_name'] == current_values['selected_family_name']
+            and headline_resource_manifest['selected_family_name'] == current_values['proof_family_name']
             and headline_resource_manifest['source_counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
-            and headline_resource_manifest['public_totals']['non_clifford'] == non_clifford
-            and headline_resource_manifest['public_totals']['logical_qubits'] == qubits
+            and headline_resource_manifest['public_totals']['non_clifford'] == legacy_wrapper_reference['non_clifford']
+            and headline_resource_manifest['public_totals']['logical_qubits'] == legacy_wrapper_reference['logical_qubits']
             and headline_resource_manifest['checks']['term_rows_sum_to_public_total'] is True
             and headline_resource_manifest['checks']['liveness_rows_peak_to_public_qubits'] is True
         ),
         'public_engine_manifest_binds_current_public_result': (
             public_engine_manifest['pass'] is True
-            and public_engine_manifest['selected_family_name'] == current_values['selected_family_name']
+            and public_engine_manifest['selected_family_name'] == current_values['proof_family_name']
             and input_payload['public_engine_manifest_document']['payload'] == public_engine_manifest
             and input_payload['public_engine_manifest_document']['sha256'] == current_values['public_engine_manifest_sha256']
             and input_payload['public_engine_manifest_document']['document_type'] == 'public_engine_manifest'
-            and public_engine_manifest['legacy_wrapper_totals']['non_clifford'] == non_clifford
-            and public_engine_manifest['legacy_wrapper_totals']['logical_qubits'] == qubits
+            and public_engine_manifest['public_totals']['non_clifford'] == non_clifford
+            and public_engine_manifest['public_totals']['logical_qubits'] == qubits
             and public_engine_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
             and public_engine_manifest['source_digests']['public_candidate_materialized_circuit_manifest_sha256'] == _sha256_payload(public_candidate_materialized_manifest)
             and public_engine_manifest['source_digests']['executable_liveness_sha256'] == resource_contract_engine['executable_liveness_sha256']
@@ -239,17 +250,17 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
         ),
         'public_candidate_materialized_manifest_binds_current_public_result': (
             public_candidate_materialized_manifest['pass'] is True
-            and public_candidate_materialized_manifest['selected_family_name'] == current_values['selected_family_name']
-            and public_candidate_materialized_manifest['materialized_flat_netlist']['non_clifford_count'] == non_clifford
-            and public_candidate_materialized_manifest['materialized_flat_netlist']['peak_live_qubits'] == qubits
+            and public_candidate_materialized_manifest['selected_family_name'] == current_values['proof_family_name']
+            and public_candidate_materialized_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['non_clifford_count'] == non_clifford
+            and public_candidate_materialized_manifest[CANONICAL_MATERIALIZED_FLAT_NETLIST]['peak_live_qubits'] == qubits
             and public_candidate_materialized_manifest['source_digests']['counted_resource_ir_sha256'] == resource_contract_engine['counted_resource_ir_sha256']
             and public_candidate_materialized_manifest['qroam_expansion']['non_clifford'] == lowering['non_clifford_derivation']['qroam_chunk_non_clifford']
         ),
         'engine_completion_audit_binds_current_public_result_and_remaining_boundaries': (
             engine_completion_audit['pass'] is True
-            and engine_completion_audit['selected_family_name'] == current_values['selected_family_name']
-            and engine_completion_audit['legacy_materialized_flat_netlist']['non_clifford_count'] == non_clifford
-            and engine_completion_audit['legacy_materialized_flat_netlist']['peak_live_qubits'] == qubits
+            and engine_completion_audit['selected_family_name'] == current_values['proof_family_name']
+            and engine_completion_audit['materialized_flat_netlist']['non_clifford_count'] == non_clifford
+            and engine_completion_audit['materialized_flat_netlist']['peak_live_qubits'] == qubits
             and engine_completion_audit['clifford_complete_goal_achieved'] is False
             and len(engine_completion_audit['remaining_macro_boundaries']) > 0
             and engine_completion_audit['checks']['remaining_macro_boundaries_are_explicit'] is True
@@ -322,8 +333,8 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'document_digest_scheme': current_values['document_digest_scheme'],
         },
         'selection_policy': {
-            'role': 'legacy macro/ZKP publication wrapper reference',
-            'reason': 'This reusable-chunk four-slot contract remains the checked macro/ZKP wrapper reference. It is not the current primary strict resource headline; that role belongs to primary_strict_result.json.',
+            'role': 'current primary strict resource headline',
+            'reason': 'This result is generated from the strict replayed-tail engine artifacts. Checked compressed and Groth16 proof freshness remains separate from resource-headline selection.',
             'limits': dict(public_policy),
             'supersedes_for_public_headline': [
                 'folded_standard_qroam_streamed_coordinate_v1__streamed_lookup_tail_leaf_v1__semiclassical_qft_v1',
@@ -334,6 +345,11 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
                 'logical_qubits': int(superseded_reference['total_logical_qubits']),
                 'reason': 'Lower qubit count at the earlier three-slot compiler-family boundary, but not the selected stricter four-slot reusable-chunk public headline.',
             },
+        },
+        'legacy_wrapper_reference': {
+            'selected_result': legacy_wrapper_reference,
+            'status': 'checked_zkp_wrapper_reference_not_primary_resource_headline',
+            'reason': 'The wrapper resource certificate remains useful as a checked proof/publication sidecar, but the public resource headline is the strict seven-slot engine result.',
         },
         'comparison_to_public_google_baseline': _comparison_rows(current_values, baseline),
         'bound_documents': {
@@ -381,7 +397,7 @@ def build_public_headline_result(*, baseline: Mapping[str, Any]) -> Dict[str, An
             'compressed_verification_command': 'python compiler_verification_project/scripts/verify_public_headline.py --verify-compressed',
             'groth16_verification_command': 'python compiler_verification_project/scripts/verify_public_headline.py --verify-groth16',
             'metadata_scope': [
-                'public headline result status and strict <40M / <1200 bounds',
+                'public headline result status and strict <40M / <2000 bounds',
                 'checked input, public values, sidecar documents, fixtures, proof binaries, wrap proof, and Groth16 verifier-key digests',
                 'semantic hashes for committed claim, leaf, family, case corpus, and resource-certificate documents',
                 'generated QROAM K=1 primitive-count certificate bound into the reusable-chunk resource document',

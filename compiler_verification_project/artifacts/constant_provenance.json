@@ -136,9 +136,9 @@
           "pass": true
         },
         {
-          "name": "public_headline_result",
+          "name": "public_headline_legacy_wrapper_reference",
           "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
-          "pointer": "/selected_result/non_clifford",
+          "pointer": "/legacy_wrapper_reference/selected_result/non_clifford",
           "expected": 36973222,
           "observed": 36973222,
           "pass": true
@@ -169,9 +169,9 @@
           "pass": true
         },
         {
-          "name": "public_headline_result",
+          "name": "public_headline_legacy_wrapper_reference",
           "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
-          "pointer": "/selected_result/logical_qubits",
+          "pointer": "/legacy_wrapper_reference/selected_result/logical_qubits",
           "expected": 1199,
           "observed": 1199,
           "pass": true
@@ -202,9 +202,9 @@
           "pass": true
         },
         {
-          "name": "public_headline_result",
+          "name": "public_headline_legacy_wrapper_reference",
           "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
-          "pointer": "/selected_result/name",
+          "pointer": "/legacy_wrapper_reference/selected_result/name",
           "expected": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
           "observed": "folded_standard_qroam_reusable_chunked_coordinate_v1__reusable_chunk_tail_leaf_v1__semiclassical_qft_v1",
           "pass": true
@@ -225,6 +225,22 @@
       "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
       "source_pointer": "/public_headline_policy/non_clifford_limit_exclusive",
       "value": 40000000,
+      "consumers": [],
+      "pass": true
+    },
+    {
+      "name": "logical_qubit_public_limit",
+      "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "source_pointer": "/public_headline_policy/logical_qubit_limit_exclusive",
+      "value": 1200,
+      "consumers": [],
+      "pass": true
+    },
+    {
+      "name": "non_clifford_primary_strict_limit",
+      "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
+      "source_pointer": "/primary_strict_headline_policy/non_clifford_limit_exclusive",
+      "value": 40000000,
       "consumers": [
         {
           "name": "public_selection_policy",
@@ -238,17 +254,17 @@
       "pass": true
     },
     {
-      "name": "logical_qubit_public_limit",
+      "name": "logical_qubit_primary_strict_limit",
       "source_artifact": "compiler_verification_project/artifacts/compiler_parameters.json",
-      "source_pointer": "/public_headline_policy/logical_qubit_limit_exclusive",
-      "value": 1200,
+      "source_pointer": "/primary_strict_headline_policy/logical_qubit_limit_exclusive",
+      "value": 2000,
       "consumers": [
         {
           "name": "public_selection_policy",
           "artifact": "compiler_verification_project/artifacts/public_headline_result.json",
           "pointer": "/selection_policy/limits/logical_qubit_limit_exclusive",
-          "expected": 1200,
-          "observed": 1200,
+          "expected": 2000,
+          "observed": 2000,
           "pass": true
         }
       ],
@@ -318,7 +334,8 @@
     "all_source_rows_match_consumers": true,
     "forbidden_historic_literals_absent": true,
     "tracked_zkp_family_resource_fields_are_not_integer_literals": true,
-    "candidate_beats_public_limits": true
+    "candidate_beats_public_limits": true,
+    "primary_strict_headline_beats_presentation_limits": true
   },
   "pass": true,
   "boundary": {

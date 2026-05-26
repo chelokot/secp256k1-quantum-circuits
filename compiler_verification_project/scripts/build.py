@@ -545,12 +545,12 @@ def main() -> None:
     if args.target in ('arithmetic-operand-replay-audit',):
         build_arithmetic_operand_replay_audit_artifact()
         payload['arithmetic_operand_replay_audit'] = 'compiler_verification_project/artifacts/arithmetic_operand_replay_audit.json'
-    if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
-        build_public_headline()
-        payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
+    if args.target in ('all', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
+        build_public_headline()
+        payload['public_headline_result'] = 'compiler_verification_project/artifacts/public_headline_result.json'
     if args.target in ('all', 'hybrid-bridge-search', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_hybrid_bridge_search_artifact()
         payload['hybrid_bridge_search'] = 'compiler_verification_project/artifacts/hybrid_bridge_search.json'

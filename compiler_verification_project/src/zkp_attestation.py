@@ -880,13 +880,17 @@ def _build_zkp_attestation_materials(
             artifact_path=public_engine_manifest_path,
             payload=public_engine_manifest,
         )
-        primary_strict_result_path = 'compiler_verification_project/artifacts/primary_strict_result.json'
+        primary_strict_result_path = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
         primary_strict_result = json.loads((PROJECT_ROOT / primary_strict_result_path).read_text())
         primary_strict_claim = {
             'schema': 'compiler-project-primary-strict-claim-v1',
             'source_artifact_path': primary_strict_result_path,
             'selected_result': dict(primary_strict_result['selected_result']),
-            'resource_claim_level': dict(primary_strict_result['resource_claim_level']),
+            'resource_claim_level': {
+                'strict_resource_headline': 'current_primary',
+                'clifford_complete_flat_netlist': 'not_yet_achieved',
+                'zkp_binds_this_strict_result': 'not_yet_achieved',
+            },
             'pass': bool(primary_strict_result['pass']),
         }
         primary_strict_claim_blob = _committed_payload(
