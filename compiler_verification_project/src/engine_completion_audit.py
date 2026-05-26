@@ -14,6 +14,7 @@ from public_engine_contract import (
     STRICT_REPLAYED_TAIL_MATERIALIZED_FLAT_NETLIST,
 )
 from modular_accumulator_full_adder_contract import FULL_ADDER_CONTRACT_UNPROMOTED_STATUS
+from modular_accumulator_full_adder_stream import FULL_ADDER_STREAM_UNPROMOTED_STATUS
 
 
 ENGINE_COMPLETION_AUDIT_SCHEMA = 'compiler-project-engine-completion-audit-v1'
@@ -60,6 +61,7 @@ def build_engine_completion_audit(
     modular_accumulator_carry_obligations: Mapping[str, Any],
     modular_accumulator_carry_save_candidate: Mapping[str, Any],
     modular_accumulator_full_adder_contract: Mapping[str, Any],
+    modular_accumulator_full_adder_stream: Mapping[str, Any],
     tail_macro_engine: Mapping[str, Any],
     tail_macro_liveness: Mapping[str, Any],
     tail_macro_reversibility: Mapping[str, Any],
@@ -243,6 +245,7 @@ def build_engine_completion_audit(
             and modular_accumulator_carry_obligations['pass'] is True
             and modular_accumulator_carry_save_candidate['pass'] is True
             and modular_accumulator_full_adder_contract['pass'] is True
+            and modular_accumulator_full_adder_stream['pass'] is True
             and modular_accumulator_lowering['promotion_status']['status'] == 'lowering_plan_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_row_stream['promotion_status']['status'] == 'row_stream_obligations_not_promoted_to_scheduled_primitive_netlist'
             and modular_accumulator_capacity_certificate['promotion_status']['status'] == 'capacity_certificate_not_promoted_to_public_resource_contract'
@@ -251,6 +254,7 @@ def build_engine_completion_audit(
             and modular_accumulator_carry_obligations['promotion_status']['status'] == 'carry_obligations_not_promoted_to_public_resource_contract'
             and modular_accumulator_carry_save_candidate['promotion_status']['status'] == 'carry_save_candidate_not_promoted_to_public_resource_contract'
             and modular_accumulator_full_adder_contract['promotion_status']['status'] == FULL_ADDER_CONTRACT_UNPROMOTED_STATUS
+            and modular_accumulator_full_adder_stream['promotion_status']['status'] == FULL_ADDER_STREAM_UNPROMOTED_STATUS
             and modular_accumulator_lowering['checks']['materialized_product_accumulator_shortcut_is_rejected'] is True
             and modular_accumulator_row_stream['checks']['row_stream_rejects_hidden_512_bit_field_slot'] is True
             and modular_accumulator_capacity_certificate['checks']['product_column_owner_includes_final_carry_bit_and_exceeds_single_field_slot'] is True
@@ -264,6 +268,8 @@ def build_engine_completion_audit(
             and modular_accumulator_carry_save_candidate['checks']['candidate_touch_count_below_naive_carry_obligations'] is True
             and modular_accumulator_full_adder_contract['checks']['truth_table_passes'] is True
             and modular_accumulator_full_adder_contract['checks']['irreversible_three_to_two_compression_is_rejected'] is True
+            and modular_accumulator_full_adder_stream['checks']['streamed_cell_count_matches_contract'] is True
+            and modular_accumulator_full_adder_stream['checks']['retained_input_obligations_remain_explicit'] is True
             and modular_multiplier_lifecycle['current_stream']['physical_lifecycle_status'] == 'invalid_abandoned_temporary_and_targets'
             and int(modular_multiplier_lifecycle['current_stream']['scratch_abandoned_garbage_count']) == int(modular_primitive_wire_audit['arithmetic_scratch_abandoned_garbage_count'])
             and int(modular_primitive_wire_audit['field_wire_missing_liveness_count']) > 0
@@ -431,7 +437,7 @@ def build_engine_completion_audit(
             'name': 'modular_arithmetic_clifford_expansion',
             'status': 'scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition',
             'required_to_close': 'Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf.',
-            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + modular_accumulator_carry_save_candidate + modular_accumulator_full_adder_contract + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
+            'current_evidence': 'scheduled_modular_primitive_netlist + modular_primitive_wire_audit + modular_accumulator_semantic_obligations + modular_accumulator_carry_obligations + modular_accumulator_carry_save_candidate + modular_accumulator_full_adder_contract + modular_accumulator_full_adder_stream + scheduled_modular_global_splice + physical_boundary_summary + Rust prepared guest validation',
             'evidence_metrics': {
                 'source_bound_run_length_rows': rows_by_source_kind['arithmetic_operation_ir'],
                 'leaf_arithmetic_non_clifford': int(arithmetic_leaf_summary['non_clifford_total']),
@@ -487,6 +493,8 @@ def build_engine_completion_audit(
                 'modular_accumulator_carry_save_candidate_sha256': _sha256_payload(modular_accumulator_carry_save_candidate),
                 'modular_accumulator_full_adder_contract_pass': bool(modular_accumulator_full_adder_contract['pass']),
                 'modular_accumulator_full_adder_contract_sha256': _sha256_payload(modular_accumulator_full_adder_contract),
+                'modular_accumulator_full_adder_stream_pass': bool(modular_accumulator_full_adder_stream['pass']),
+                'modular_accumulator_full_adder_stream_sha256': _sha256_payload(modular_accumulator_full_adder_stream),
                 'modular_accumulator_single_grid_column_count': int(modular_accumulator_lowering['single_schoolbook_grid']['column_count']),
                 'modular_accumulator_fold_route_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['route_count']),
                 'modular_accumulator_overflowing_shift_column_count': int(modular_accumulator_lowering['pseudo_mersenne_fold_routes']['overflowing_shift_column_count']),
@@ -529,6 +537,12 @@ def build_engine_completion_audit(
                 'modular_accumulator_full_adder_cx': int(modular_accumulator_full_adder_contract['candidate_totals']['embedded_full_adder_primitive_counts']['cx']),
                 'modular_accumulator_full_adder_retained_input_bits': int(modular_accumulator_full_adder_contract['candidate_totals']['retained_input_obligation_bits']),
                 'modular_accumulator_full_adder_output_bits': int(modular_accumulator_full_adder_contract['candidate_totals']['output_obligation_bits']),
+                'modular_accumulator_full_adder_stream_operation_count': int(modular_accumulator_full_adder_stream['operation_count']),
+                'modular_accumulator_full_adder_stream_non_clifford': int(modular_accumulator_full_adder_stream['non_clifford_count']),
+                'modular_accumulator_full_adder_stream_segment_count': int(modular_accumulator_full_adder_stream['segment_count']),
+                'modular_accumulator_full_adder_stream_retained_input_bits': int(modular_accumulator_full_adder_stream['retained_input_obligation_bits']),
+                'modular_accumulator_full_adder_stream_output_bits': int(modular_accumulator_full_adder_stream['output_obligation_bits']),
+                'modular_accumulator_full_adder_stream_operation_sha256': str(modular_accumulator_full_adder_stream['operation_stream_sha256']),
                 'streamed_lifecycle_candidate_event_stream_sha256': str(modular_multiplier_lifecycle['candidate_lifecycle_stream']['operation_stream_sha256']),
                 'streamed_lifecycle_candidate_event_count': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['event_count']),
                 'streamed_lifecycle_partial_product_routes': int(modular_multiplier_lifecycle['candidate_lifecycle_stream']['route_summary']['partial_product_routes']),
@@ -585,6 +599,7 @@ def build_engine_completion_audit(
             'modular_accumulator_carry_obligations': modular_accumulator_carry_obligations,
             'modular_accumulator_carry_save_candidate': modular_accumulator_carry_save_candidate,
             'modular_accumulator_full_adder_contract': modular_accumulator_full_adder_contract,
+            'modular_accumulator_full_adder_stream': modular_accumulator_full_adder_stream,
             'tail_macro_engine': tail_macro_engine,
             'tail_macro_liveness': tail_macro_liveness,
             'tail_macro_reversibility': tail_macro_reversibility,

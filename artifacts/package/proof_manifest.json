@@ -179,8 +179,8 @@
       "bytes": 36784
     },
     "compiler_verification_project/src/artifact_registry.py": {
-      "sha256": "2187b7e33dd61d2b67291e9af61a65122f903902d51b07817e54e429f76b4407",
-      "bytes": 8290
+      "sha256": "15d6b5e06536beee940d6174efff3355a3b2b7b74de9e6c79b0b6d55bfd56fc5",
+      "bytes": 8421
     },
     "compiler_verification_project/src/artifact_digest_tree.py": {
       "sha256": "793bd67d24876422ef83fc0657e4ea3f99717ab5a598be908dd400c22f0ce19d",
@@ -207,8 +207,8 @@
       "bytes": 26931
     },
     "compiler_verification_project/src/integrity.py": {
-      "sha256": "dcd5f8d5284b88db681cf29f373baa10f91e0e53a2755fde77db420624937b8a",
-      "bytes": 310355
+      "sha256": "53f10e7f20315a7e28b4e0cd5854e80dffa62d3d99d9168098909a17c12abc46",
+      "bytes": 313694
     },
     "compiler_verification_project/src/generated_block_inventory.py": {
       "sha256": "9a5a8cdc5369e43cb88df726d08fbc88ba727a43b72962388357546b8d382d89",
@@ -223,8 +223,8 @@
       "bytes": 5670
     },
     "compiler_verification_project/src/engine_completion_audit.py": {
-      "sha256": "1a46f751bf90ab3f4bcb648ceb1626aee87d74992feeef3841b033e666248431",
-      "bytes": 54872
+      "sha256": "3dba62c9e7816f46264439b9075adb2e5277704457c6e88c32b78ee1996322b2",
+      "bytes": 56653
     },
     "compiler_verification_project/src/public_engine_manifest.py": {
       "sha256": "a816081cd1b56fa27bc022608cc47b068073834d457759995a53e951664bb9b6",
@@ -293,6 +293,10 @@
     "compiler_verification_project/src/modular_accumulator_full_adder_contract.py": {
       "sha256": "42dbd0340158e764040ca8c8917759c07326cae7dd33ad4d4b98f977be176710",
       "bytes": 6687
+    },
+    "compiler_verification_project/src/modular_accumulator_full_adder_stream.py": {
+      "sha256": "7882ca14de1062b84a8e984b3d5555bca981c68dc83b665d0502a86ee47db25b",
+      "bytes": 14463
     },
     "compiler_verification_project/src/modular_primitive_wire_audit.py": {
       "sha256": "2d67e1158b3da5eb2d92a4a142cb7c8081c26d3beedfb01d076d88fb94791f4a",
@@ -407,8 +411,8 @@
       "bytes": 1932
     },
     "compiler_verification_project/scripts/build.py": {
-      "sha256": "2af77bdae5d71d3634c2804fcb2b7039e94a087a327acabdf9320d211802ab40",
-      "bytes": 57095
+      "sha256": "269c9789e4d1ea1fde01cf583142735c5978e2599f6e8a0fd68c1cc14b34f56b",
+      "bytes": 58818
     },
     "compiler_verification_project/scripts/build_zkp_attestation_input.py": {
       "sha256": "aad1d7866c704594ce66dfe6abc39b87d3e9550bb9f01f0a20b3c33926981a61",
@@ -631,8 +635,8 @@
       "bytes": 1262
     },
     "compiler_verification_project/artifacts/build_summary.json": {
-      "sha256": "5b26020f6cf60821be0f9179ad87230a95b6ba32f34554867eab03e4ee476a42",
-      "bytes": 16625
+      "sha256": "d84ef34a3415bc6bdbd3712462bee334af3da5f1a740e814f877264f107eabb6",
+      "bytes": 16756
     },
     "compiler_verification_project/artifacts/constant_provenance.json": {
       "sha256": "92f68183a73092d40e3da380127623bd99f2b7d164e24cf205417da7f6083a3e",
@@ -713,6 +717,10 @@
     "compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json": {
       "sha256": "6df67023f76d3782605eb8b80e056fb1281c8701c6260a3d8288acd76d0e4e77",
       "bytes": 4742
+    },
+    "compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json": {
+      "sha256": "fbb61c5d11d2898833cbe7e11bd0556f36580620af304560f0fc1ea09dc49809",
+      "bytes": 165404
     },
     "compiler_verification_project/artifacts/family_frontier.json": {
       "sha256": "2764e1df8bf3950f84ab0447b1434a63a25d5393a24ddd6299b7963f9b8be06c",
@@ -847,11 +855,11 @@
       "bytes": 34234
     },
     "compiler_verification_project/artifacts/engine_completion_audit.json": {
-      "sha256": "d1dbc703e9e02bec1d4ac9150d20237d73954cd2200c72f803cf3185a5e8dee1",
-      "bytes": 18841
+      "sha256": "4c5345170c8b783f3e2678355dc91e4ce1191191f370de01bce0434751e5a693",
+      "bytes": 19680
     },
     "compiler_verification_project/artifacts/public_headline_result.json": {
-      "sha256": "117106ef9b6d844436feed7751a404946ed38b89f627bb717ea74fb96c0d0af4",
+      "sha256": "6a2f4124e7cbb3296a18ba01374b721aa7dddb016b1cd2fcb0e0925abe2e26e4",
       "bytes": 16349
     },
     "compiler_verification_project/artifacts/strict_replayed_tail_headline.json": {

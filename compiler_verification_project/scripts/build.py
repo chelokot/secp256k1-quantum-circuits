@@ -30,6 +30,7 @@ from modular_accumulator_capacity_certificate import build_modular_accumulator_c
 from modular_accumulator_carry_obligations import build_modular_accumulator_carry_obligations  # noqa: E402
 from modular_accumulator_carry_save_candidate import build_modular_accumulator_carry_save_candidate  # noqa: E402
 from modular_accumulator_full_adder_contract import build_modular_accumulator_full_adder_contract  # noqa: E402
+from modular_accumulator_full_adder_stream import build_modular_accumulator_full_adder_stream  # noqa: E402
 from modular_accumulator_lowering import build_modular_accumulator_lowering  # noqa: E402
 from modular_accumulator_row_stream import build_modular_accumulator_row_stream  # noqa: E402
 from modular_accumulator_scratch_schedule import build_modular_accumulator_scratch_schedule  # noqa: E402
@@ -77,6 +78,7 @@ BUILD_TARGETS = (
     'modular-accumulator-carry-obligations',
     'modular-accumulator-carry-save-candidate',
     'modular-accumulator-full-adder-contract',
+    'modular-accumulator-full-adder-stream',
     'headline-resource-manifest',
     'public-engine-manifest',
     'engine-completion-audit',
@@ -557,6 +559,17 @@ def build_modular_accumulator_full_adder_contract_artifact() -> None:
     )
 
 
+def build_modular_accumulator_full_adder_stream_artifact() -> None:
+    artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
+    dump_json(
+        artifact_dir / 'modular_accumulator_full_adder_stream.json',
+        build_modular_accumulator_full_adder_stream(
+            modular_accumulator_carry_save_candidate=load_json(artifact_dir / 'modular_accumulator_carry_save_candidate.json'),
+            modular_accumulator_full_adder_contract=load_json(artifact_dir / 'modular_accumulator_full_adder_contract.json'),
+        ),
+    )
+
+
 def build_headline_resource_manifest_artifact() -> None:
     artifact_dir = PROJECT_ROOT / 'compiler_verification_project' / 'artifacts'
     compiler_parameters = load_json(artifact_dir / 'compiler_parameters.json')
@@ -616,6 +629,7 @@ def build_engine_completion_audit_artifact() -> None:
         modular_accumulator_carry_obligations=load_json(artifact_dir / 'modular_accumulator_carry_obligations.json'),
         modular_accumulator_carry_save_candidate=load_json(artifact_dir / 'modular_accumulator_carry_save_candidate.json'),
         modular_accumulator_full_adder_contract=load_json(artifact_dir / 'modular_accumulator_full_adder_contract.json'),
+        modular_accumulator_full_adder_stream=load_json(artifact_dir / 'modular_accumulator_full_adder_stream.json'),
         tail_macro_engine=load_json(artifact_dir / 'tail_macro_engine.json'),
         tail_macro_liveness=load_json(artifact_dir / 'tail_macro_liveness.json'),
         tail_macro_reversibility=load_json(artifact_dir / 'tail_macro_reversibility.json'),
@@ -713,6 +727,8 @@ def main() -> None:
         payload['modular_accumulator_carry_save_candidate'] = 'compiler_verification_project/artifacts/modular_accumulator_carry_save_candidate.json'
         build_modular_accumulator_full_adder_contract_artifact()
         payload['modular_accumulator_full_adder_contract'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json'
+        build_modular_accumulator_full_adder_stream_artifact()
+        payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
     if args.target in ('engine-completion-audit',):
@@ -742,6 +758,8 @@ def main() -> None:
         payload['modular_accumulator_carry_save_candidate'] = 'compiler_verification_project/artifacts/modular_accumulator_carry_save_candidate.json'
         build_modular_accumulator_full_adder_contract_artifact()
         payload['modular_accumulator_full_adder_contract'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json'
+        build_modular_accumulator_full_adder_stream_artifact()
+        payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_engine_completion_audit_artifact()
         payload['engine_completion_audit'] = 'compiler_verification_project/artifacts/engine_completion_audit.json'
     if args.target in ('resource-stack', 'public-headline', 'zkp-and-public', 'resource-zkp-and-public'):
@@ -796,6 +814,8 @@ def main() -> None:
         payload['modular_accumulator_carry_save_candidate'] = 'compiler_verification_project/artifacts/modular_accumulator_carry_save_candidate.json'
         build_modular_accumulator_full_adder_contract_artifact()
         payload['modular_accumulator_full_adder_contract'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json'
+        build_modular_accumulator_full_adder_stream_artifact()
+        payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
         build_public_engine_manifest_artifact()
         payload['public_engine_manifest'] = 'compiler_verification_project/artifacts/public_engine_manifest.json'
         build_candidate_zkp()
@@ -844,6 +864,9 @@ def main() -> None:
     if args.target in ('modular-accumulator-full-adder-contract',):
         build_modular_accumulator_full_adder_contract_artifact()
         payload['modular_accumulator_full_adder_contract'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json'
+    if args.target in ('modular-accumulator-full-adder-stream',):
+        build_modular_accumulator_full_adder_stream_artifact()
+        payload['modular_accumulator_full_adder_stream'] = 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json'
     if args.target in ('all', 'public-headline', 'strict-replayed-tail-headline', 'zkp-and-public', 'resource-zkp-and-public'):
         build_strict_replayed_tail_headline()
         payload['strict_replayed_tail_headline'] = 'compiler_verification_project/artifacts/strict_replayed_tail_headline.json'
