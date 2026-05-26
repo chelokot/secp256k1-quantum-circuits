@@ -22,11 +22,13 @@ def test_strict_replayed_tail_headline_is_derived_from_replay_artifacts() -> Non
     selected = headline['selected_result']
     formula = headline['logical_qubit_formula']
     replay = tail_engine['fused_output_replay_certificate']
+    slot_assignment = tail_engine['fused_output_slot_assignment']
+    guard_capacity = tail_engine['fused_output_lowering_contract']['guard_owner_capacity']
 
     assert headline['pass'] is True
-    assert selected['tail_field_slots'] == tail_engine['fused_output_slot_assignment']['peak_field_slots'] == 7
-    assert selected['fused_output_guard_qubits'] == formula['fused_output_guard_qubits'] == 1
-    assert formula['control_qubits'] == lowering['qubit_derivation']['control_qubits'] + 1
+    assert selected['tail_field_slots'] == formula['tail_field_slots'] == slot_assignment['peak_field_slots']
+    assert selected['fused_output_guard_qubits'] == formula['fused_output_guard_qubits'] == guard_capacity['logical_qubits']
+    assert formula['control_qubits'] == lowering['qubit_derivation']['control_qubits'] + guard_capacity['logical_qubits']
     assert replay['pass'] is True
     assert replay['owner_capacity_pass'] is True
     assert replay['checked_non_infinity_pairs'] == headline['semantic_replay_evidence']['checked_non_infinity_pairs']

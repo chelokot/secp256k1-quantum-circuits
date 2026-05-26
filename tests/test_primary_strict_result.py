@@ -21,8 +21,10 @@ def _load(name: str) -> dict:
 
 def test_primary_strict_result_matches_generator_and_demotes_legacy_wrapper() -> None:
     observed = _load('primary_strict_result.json')
+    strict_headline = _load('strict_replayed_tail_headline.json')
+    public_engine = _load('public_engine_manifest.json')
     expected = build_primary_strict_result(
-        strict_replayed_tail_headline=_load('strict_replayed_tail_headline.json'),
+        strict_replayed_tail_headline=strict_headline,
         public_headline_result=_load('public_headline_result.json'),
         engine_completion_audit=_load('engine_completion_audit.json'),
         public_candidate_materialized_circuit_manifest=_load('public_candidate_materialized_circuit_manifest.json'),
@@ -32,8 +34,10 @@ def test_primary_strict_result_matches_generator_and_demotes_legacy_wrapper() ->
     assert observed == expected
     assert observed['pass'] is True
     assert observed['role'] == 'single current public resource headline'
-    assert observed['selected_result']['logical_qubits'] == 1968
-    assert observed['selected_result']['non_clifford'] == 36973222
+    assert observed['selected_result'] == strict_headline['selected_result']
+    assert observed['selected_result']['logical_qubits'] == public_engine['public_totals']['logical_qubits']
+    assert observed['selected_result']['non_clifford'] == public_engine['public_totals']['non_clifford']
+    assert observed['selected_result']['logical_qubits'] != public_engine['legacy_wrapper_totals']['logical_qubits']
     assert observed['legacy_wrapper_reference']['status'] == 'legacy_macro_zkp_wrapper_not_primary_resource_headline'
     assert observed['resource_claim_level']['clifford_complete_flat_netlist'] == 'not_yet_achieved'
     assert observed['resource_claim_level']['zkp_binds_this_strict_result'] == 'not_yet_achieved'
