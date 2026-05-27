@@ -83,71 +83,16 @@ code {
   text-transform: uppercase;
 }
 
-.progress-block {
-  margin: 1.5rem 0;
-}
-
-.progress-label {
-  display: flex;
-  justify-content: space-between;
-  color: #c7d2df;
-  font-size: 0.88rem;
-  margin-bottom: 0.5rem;
-}
-
-.progress-track {
-  height: 0.5rem;
-  overflow: hidden;
-  border-radius: 0.5rem;
-  background: #1c2733;
-}
-
-.progress-track div {
-  height: 100%;
-  background: linear-gradient(90deg, #63e6be, #f5cf6b);
-}
-
-.progress-actions {
-  display: grid;
-  gap: 0.45rem;
-  margin-top: 0.65rem;
-}
-
-.progress-resume,
-.progress-reset {
-  display: inline-flex;
-  gap: 0.4rem;
-  align-items: center;
-  border: 0;
-  padding: 0;
-  color: #aebdca;
-  background: transparent;
-  cursor: pointer;
-}
-
-.progress-resume:disabled,
-.progress-reset:disabled {
-  color: #566472;
-  cursor: not-allowed;
-}
-
-.progress-resume:not(:disabled):hover,
-.progress-resume:not(:disabled):focus-visible,
-.progress-reset:not(:disabled):hover,
-.progress-reset:not(:disabled):focus-visible {
-  color: #f5cf6b;
-}
-
 .nav-mode-toggle {
   display: inline-flex;
   justify-content: center;
-  width: 100%;
-  margin: 0 0 1rem;
-  border: 0.0625rem solid rgba(143, 182, 255, 0.28);
+  width: auto;
+  margin: 1.25rem 0 1rem;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
   border-radius: 0.5rem;
-  padding: 0.6rem 0.75rem;
-  color: #d9e7ff;
-  background: rgba(143, 182, 255, 0.08);
+  padding: 0.45rem 0.65rem;
+  color: #b9c8d8;
+  background: rgba(143, 182, 255, 0.04);
   cursor: pointer;
 }
 
@@ -214,9 +159,9 @@ code {
 }
 
 .hero-panel.no-status {
-  grid-template-columns: minmax(0, 44rem);
+  grid-template-columns: minmax(0, 58rem);
   align-items: start;
-  padding: 1.25rem;
+  padding: 1rem 1.2rem;
 }
 
 .hero-panel.compact-hero {
@@ -231,7 +176,7 @@ code {
 }
 
 .hero-panel.no-status h2 {
-  font-size: clamp(2rem, 3.2vw, 3.45rem);
+  font-size: clamp(1.9rem, 2.5vw, 2.8rem);
 }
 
 .hero-panel.compact-hero h2 {
@@ -241,8 +186,8 @@ code {
 .hero-copy {
   max-width: 58rem;
   color: #c9d6e2;
-  font-size: 1rem;
-  line-height: 1.62;
+  font-size: 0.97rem;
+  line-height: 1.55;
 }
 
 .lesson-pager {
@@ -250,33 +195,20 @@ code {
   grid-template-columns: minmax(8rem, auto) minmax(0, 1fr) minmax(8rem, auto);
   gap: 0.75rem;
   align-items: center;
-  margin-top: 1rem;
-  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  padding: 0.75rem;
-  background: rgba(8, 14, 22, 0.52);
+  margin-top: 0.8rem;
+  padding: 0 0.15rem;
 }
 
 .lesson-pager div {
   display: grid;
-  gap: 0.2rem;
   justify-items: center;
   min-width: 0;
 }
 
-.lesson-pager span {
-  color: #93a4b7;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-}
-
 .lesson-pager strong {
-  color: #ffffff;
-}
-
-.lesson-pager small {
-  color: #b8f3e6;
-  font-size: 0.82rem;
+  color: #b9c8d8;
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .lesson-pager button:first-child {
@@ -285,79 +217,6 @@ code {
 
 .lesson-pager button:last-child {
   justify-self: end;
-}
-
-.lesson-brief {
-  display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.lesson-brief article {
-  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  padding: 0.85rem;
-  background: rgba(14, 21, 29, 0.7);
-}
-
-.lesson-brief span {
-  display: block;
-  color: #93a4b7;
-  font-size: 0.78rem;
-  text-transform: uppercase;
-}
-
-.lesson-brief p {
-  margin: 0.35rem 0 0;
-  color: #dce7f2;
-  line-height: 1.45;
-}
-
-.brief-jump-action {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.75rem;
-  border: 0.0625rem solid rgba(99, 230, 190, 0.35);
-  border-radius: 0.45rem;
-  padding: 0.42rem 0.65rem;
-  color: #dffbf5;
-  background: rgba(99, 230, 190, 0.08);
-  cursor: pointer;
-}
-
-.brief-jump-action:hover,
-.brief-jump-action:focus-visible {
-  background: rgba(99, 230, 190, 0.14);
-}
-
-.lesson-flow-bridge {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin-top: 0.75rem;
-}
-
-.lesson-flow-bridge article {
-  border: 0.0625rem solid rgba(99, 230, 190, 0.14);
-  border-radius: 0.5rem;
-  padding: 0.75rem 0.85rem;
-  background: rgba(99, 230, 190, 0.045);
-}
-
-.lesson-flow-bridge span {
-  display: block;
-  color: #b8f3e6;
-  font-size: 0.76rem;
-  text-transform: uppercase;
-}
-
-.lesson-flow-bridge p {
-  margin: 0.3rem 0 0;
-  color: #c9d6e2;
-  font-size: 0.92rem;
-  line-height: 1.45;
 }
 
 .resource-status-strip {
@@ -4184,8 +4043,6 @@ legend {
 
   .resource-status-strip,
   .metric-row,
-  .lesson-brief,
-  .lesson-flow-bridge,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
@@ -4314,8 +4171,6 @@ legend {
   .metric-row,
   .content-grid,
   .content-grid.learning-grid,
-  .lesson-brief,
-  .lesson-flow-bridge,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,

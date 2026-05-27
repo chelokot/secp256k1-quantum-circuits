@@ -25,19 +25,11 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Given a public key Q');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
-  await expect(page.getByTestId('lesson-pager')).toContainText('0% complete');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
-  await expect(page.getByTestId('lesson-brief')).toContainText('Page goal');
-  await expect(page.getByTestId('lesson-brief')).toContainText('Try next');
-  await expect(page.getByTestId('lesson-brief')).not.toContainText('Check');
-  await expect(page.getByTestId('lesson-brief')).toContainText('Start with “What has to be proved,” then use the learning path map');
-  await expect(page.getByTestId('lesson-brief').getByRole('button', { name: 'Jump to current lab' })).toBeVisible();
-  await page.getByTestId('lesson-brief').getByRole('button', { name: 'Jump to current lab' }).click();
-  await expect(page.getByTestId('project-proof-map')).toBeInViewport();
+  await expect(page.getByLabel('Course progress')).toHaveCount(0);
+  await expect(page.getByTestId('lesson-brief')).toHaveCount(0);
+  await expect(page.getByTestId('lesson-flow-bridge')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Try this page' })).toHaveCount(0);
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Start');
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Next unlocks');
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Qubits as vectors you can steer');
   await expect(page.getByTestId('lesson-detail-steps')).toContainText('Step-by-step explanation');
   await expect(page.getByText('The input problem is a public key')).toBeHidden();
   await page.getByText('Step-by-step explanation').click();
@@ -58,9 +50,9 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByLabel('Course navigation')).toContainText('Orientation');
   await expect(page.getByLabel('Course navigation')).toContainText('Quantum substrate');
   await expect(page.getByLabel('Course navigation')).not.toContainText('This repo now');
-  await page.getByRole('button', { name: 'Full course index' }).click();
+  await page.getByRole('button', { name: 'All lessons' }).click();
   await expect(page.getByLabel('Course navigation')).toContainText('This repo now');
-  await page.getByRole('button', { name: 'Focused path' }).click();
+  await page.getByRole('button', { name: 'Current section' }).click();
   await expect(page.getByLabel('Course navigation')).not.toContainText('This repo now');
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
@@ -70,23 +62,14 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.goto('/');
 
   await page.getByRole('button', { name: 'Mark understood and continue' }).click();
-  await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await expect(page).toHaveURL(/#qubit$/);
-  await expect(page.getByTestId('lesson-pager')).toContainText('5% complete');
   await page.reload();
-  await expect(page.getByLabel('Course progress')).toContainText('1/21');
-  await page.getByRole('button', { name: 'Resume next lesson' }).click();
   await expect(page).toHaveURL(/#qubit$/);
-  await page.getByRole('button', { name: 'Reset progress' }).click();
-  await expect(page.getByLabel('Course progress')).toContainText('0/21');
 
   await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('You just used');
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('What the project is trying to prove');
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Gates, wires, controls, and reversibility');
   await expect(page.getByTestId('page-vocab')).toContainText('Amplitude');
   await expect(page.getByTestId('page-vocab')).not.toContainText('squared magnitude gives a measurement probability');
   await page.getByTestId('page-vocab').getByRole('tab', { name: 'Amplitude' }).click();
@@ -98,7 +81,6 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Next' }).click();
   await expect(page).toHaveURL(/#qubit$/);
   await page.getByRole('button', { name: 'Mark understood and continue' }).click();
-  await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await expect(page).toHaveURL(/#gates$/);
 });
 
@@ -205,7 +187,6 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
   await openLesson(page, 'ecdlp');
 
-  await expect(page.getByTestId('lesson-brief')).toContainText('Start with the Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Lab route');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Resource composer');
@@ -695,8 +676,6 @@ test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) =
 
 test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
   await openLesson(page, 'zkp-boundary');
-  await page.getByRole('button', { name: 'Jump to current lab' }).click();
-  await expect(page.getByTestId('proof-boundary-lab')).toBeInViewport();
   await selectRouteLab(page, /ZKP boundary/);
 
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
@@ -724,10 +703,8 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await openLesson(page, 'repo-baselines');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 21 of 21');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'End' })).toBeDisabled();
-  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Finish line');
   await page.getByRole('button', { name: 'Mark understood and finish course' }).click();
   await expect(page).toHaveURL(/#repo-baselines$/);
-  await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await expect(page.getByTestId('quiz-panel')).toContainText('Final checkpoint');
   await expect(page.getByTestId('quiz-panel')).toContainText('Question 1 of 34');
   await expect(page.getByTestId('quiz-panel')).not.toContainText('What is the current accepted Clifford-complete physical baseline');

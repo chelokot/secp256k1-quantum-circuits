@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, ListChecks, Play, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, ListChecks, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
 import { BaselineChart } from './components/BaselineChart';
@@ -179,23 +179,13 @@ export function App() {
   const [selectedVocabByLesson, setSelectedVocabByLesson] = useState<Partial<Record<LessonId, string>>>({});
   const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
-  const completionPercent = Math.round((completed.size / lessons.length) * 100);
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
   const currentIndex = lessons.findIndex((lesson) => lesson.id === activeLesson.id);
   const previousLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < lessons.length - 1 ? lessons[currentIndex + 1] : null;
-  const resumeLesson = lessons.find((lesson) => !completed.has(lesson.id)) ?? null;
   const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showReviewPanels = activeLesson.id === 'repo-baselines';
-  const pageFocus = activeLesson.coreIdeas?.[0] ?? activeLesson.intuition;
-  const pageExercise = activeLesson.practicePrompt ?? 'Use the labs on this page. Change one control, then read which output, audit, or count changed.';
-  const previousBridge = previousLesson === null
-    ? 'Connect the public-key attack to the resource claim this repo can honestly make.'
-    : `${previousLesson.title}: ${previousLesson.coreIdeas?.[0] ?? previousLesson.mentalModel}`;
-  const nextBridge = nextLesson === null
-    ? 'Use the final checkpoint to separate accepted results, candidates, consequences, and blockers.'
-    : `${nextLesson.title}: ${nextLesson.coreIdeas?.[0] ?? nextLesson.mentalModel}`;
   const checkpointQuestion = checkpointQuestions[activeLesson.id] ?? 'What exact claim does this page let you make, and what evidence supports it?';
   const checkpointRevealed = revealedCheckpointByLesson[activeLesson.id] ?? false;
   const labRoute = labRoutes[activeLesson.id] ?? [];
@@ -221,14 +211,6 @@ export function App() {
   const completeAndContinue = () => {
     setCompleted((previous) => new Set(previous).add(activeLesson.id));
     if (nextLesson !== null) selectLesson(nextLesson.id);
-  };
-
-  const jumpToCurrentLab = () => {
-    document.getElementById('active-lesson-labs')?.scrollIntoView({ behavior: 'auto', block: 'start' });
-  };
-
-  const resetProgress = () => {
-    setCompleted(new Set());
   };
 
   const selectLesson = (lessonId: LessonId) => {
@@ -483,40 +465,13 @@ export function App() {
             <h1>Quantum Circuit Lab</h1>
           </div>
         </div>
-        <div className="progress-block" aria-label="Course progress">
-          <div className="progress-label">
-            <span>{completionPercent}% complete</span>
-            <span>{completed.size}/{lessons.length}</span>
-          </div>
-          <div className="progress-track"><div style={{ width: `${completionPercent}%` }} /></div>
-          <div className="progress-actions">
-            <button
-              className="progress-resume"
-              disabled={resumeLesson === null}
-              onClick={() => resumeLesson && selectLesson(resumeLesson.id)}
-              type="button"
-            >
-              <Play size={14} />
-              {resumeLesson === null ? 'Course complete' : 'Resume next lesson'}
-            </button>
-            <button
-              className="progress-reset"
-              disabled={completed.size === 0}
-              onClick={resetProgress}
-              type="button"
-            >
-              <RotateCcw size={14} />
-              Reset progress
-            </button>
-          </div>
-        </div>
         <button
           className="nav-mode-toggle"
           type="button"
           aria-pressed={showFullCourseIndex}
           onClick={() => setShowFullCourseIndex((value) => !value)}
         >
-          {showFullCourseIndex ? 'Focused path' : 'Full course index'}
+          {showFullCourseIndex ? 'Current section' : 'All lessons'}
         </button>
         <nav className="lesson-list">
           {navigationModules.map((module) => (
@@ -565,9 +520,7 @@ export function App() {
             Previous
           </button>
           <div>
-            <span>{activeLesson.module}</span>
             <strong>Lesson {currentIndex + 1} of {lessons.length}</strong>
-            <small>{completionPercent}% complete</small>
           </div>
           <button
             className="primary-action"
@@ -579,32 +532,6 @@ export function App() {
             {nextLesson === null ? null : <ArrowRight size={18} />}
           </button>
         </nav>
-
-        <section className="lesson-brief" data-testid="lesson-brief" aria-label="How to use this lesson">
-          <article>
-            <span>Page goal</span>
-            <p>{pageFocus}</p>
-          </article>
-          <article>
-            <span>Try next</span>
-            <p>{pageExercise}</p>
-            <button className="brief-jump-action" onClick={jumpToCurrentLab} type="button">
-              Jump to current lab
-              <ArrowRight size={16} />
-            </button>
-          </article>
-        </section>
-
-        <section className="lesson-flow-bridge" data-testid="lesson-flow-bridge" aria-label="How this lesson connects">
-          <article>
-            <span>{previousLesson === null ? 'Start' : 'You just used'}</span>
-            <p>{previousBridge}</p>
-          </article>
-          <article>
-            <span>{nextLesson === null ? 'Finish line' : 'Next unlocks'}</span>
-            <p>{nextBridge}</p>
-          </article>
-        </section>
 
         {showResourceStatus ? (
           <section className="resource-status-strip" aria-label="Current repository resource status">
