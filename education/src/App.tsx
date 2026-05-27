@@ -190,6 +190,10 @@ export function App() {
   const showReviewPanels = activeLesson.id === 'repo-baselines';
   const pageFocus = activeLesson.coreIdeas?.[0] ?? activeLesson.intuition;
   const pageExercise = activeLesson.practicePrompt ?? 'Use the labs on this page. Change one control, then read which output, audit, or count changed.';
+  const previousBridge = previousLesson === null
+    ? 'Connect the public-key attack to the resource claim this repo can honestly make.'
+    : `${previousLesson.title}: ${previousLesson.coreIdeas?.[0] ?? previousLesson.mentalModel}`;
+  const nextBridge = `${nextLesson.title}: ${nextLesson.coreIdeas?.[0] ?? nextLesson.mentalModel}`;
   const checkpointQuestion = checkpointQuestions[activeLesson.id] ?? 'What exact claim does this page let you make, and what evidence supports it?';
   const checkpointRevealed = revealedCheckpointByLesson[activeLesson.id] ?? false;
   const labRoute = labRoutes[activeLesson.id] ?? [];
@@ -571,6 +575,17 @@ export function App() {
           <article>
             <span>Try next</span>
             <p>{pageExercise}</p>
+          </article>
+        </section>
+
+        <section className="lesson-flow-bridge" data-testid="lesson-flow-bridge" aria-label="How this lesson connects">
+          <article>
+            <span>{previousLesson === null ? 'Start' : 'You just used'}</span>
+            <p>{previousBridge}</p>
+          </article>
+          <article>
+            <span>Next unlocks</span>
+            <p>{nextBridge}</p>
           </article>
         </section>
 

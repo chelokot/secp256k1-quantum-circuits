@@ -309,6 +309,34 @@ code {
   line-height: 1.45;
 }
 
+.lesson-flow-bridge {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.lesson-flow-bridge article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.14);
+  border-radius: 0.5rem;
+  padding: 0.75rem 0.85rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.lesson-flow-bridge span {
+  display: block;
+  color: #b8f3e6;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.lesson-flow-bridge p {
+  margin: 0.3rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
 .resource-status-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -4134,6 +4162,7 @@ legend {
   .resource-status-strip,
   .metric-row,
   .lesson-brief,
+  .lesson-flow-bridge,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
@@ -4263,6 +4292,7 @@ legend {
   .content-grid,
   .content-grid.learning-grid,
   .lesson-brief,
+  .lesson-flow-bridge,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,

@@ -30,6 +30,9 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-brief')).toContainText('Try next');
   await expect(page.getByTestId('lesson-brief')).not.toContainText('Check');
   await expect(page.getByTestId('lesson-brief')).toContainText('Start with “What has to be proved,” then use the learning path map');
+  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Start');
+  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Next unlocks');
+  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Qubits as vectors you can steer');
   await expect(page.getByTestId('lesson-detail-steps')).toContainText('Step-by-step explanation');
   await expect(page.getByText('The input problem is a public key')).toBeHidden();
   await page.getByText('Step-by-step explanation').click();
@@ -74,6 +77,9 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
+  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('You just used');
+  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('What the project is trying to prove');
+  await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Gates, wires, controls, and reversibility');
   await expect(page.getByTestId('page-vocab')).toContainText('Amplitude');
   await expect(page.getByTestId('page-vocab')).not.toContainText('squared magnitude gives a measurement probability');
   await page.getByTestId('page-vocab').getByRole('tab', { name: 'Amplitude' }).click();
