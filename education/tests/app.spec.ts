@@ -30,6 +30,10 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-brief')).toContainText('Try next');
   await expect(page.getByTestId('lesson-brief')).not.toContainText('Check');
   await expect(page.getByTestId('lesson-brief')).toContainText('Start with “What has to be proved,” then use the learning path map');
+  await expect(page.getByTestId('lesson-detail-steps')).toContainText('Step-by-step explanation');
+  await expect(page.getByText('The input problem is a public key')).toBeHidden();
+  await page.getByText('Step-by-step explanation').click();
+  await expect(page.getByText('The input problem is a public key')).toBeVisible();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');
   await expect(page.getByTestId('lesson-recall-check')).not.toContainText('public key attack, executable circuit, tests');
@@ -71,6 +75,8 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
   await expect(page.getByTestId('page-vocab')).toContainText('Amplitude');
+  await expect(page.getByTestId('page-vocab')).not.toContainText('squared magnitude gives a measurement probability');
+  await page.getByTestId('page-vocab').getByRole('tab', { name: 'Amplitude' }).click();
   await expect(page.getByTestId('page-vocab')).toContainText('squared magnitude gives a measurement probability');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('P(0) = |a|^2');

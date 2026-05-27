@@ -176,6 +176,7 @@ export function App() {
   const [focusedLabByLesson, setFocusedLabByLesson] = useState<Partial<Record<LessonId, number>>>({});
   const [showAllLabsByLesson, setShowAllLabsByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
   const [revealedCheckpointByLesson, setRevealedCheckpointByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
+  const [selectedVocabByLesson, setSelectedVocabByLesson] = useState<Partial<Record<LessonId, string>>>({});
   const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
   const completionPercent = Math.round((completed.size / lessons.length) * 100);
@@ -197,6 +198,7 @@ export function App() {
     term,
     definition: glossaryByTerm.get(term) ?? '',
   }));
+  const selectedVocab = pageGlossary.find(({ term }) => term === selectedVocabByLesson[activeLesson.id]) ?? pageGlossary[0] ?? null;
 
   const groupedLessons = useMemo(() => {
     return lessons.reduce<Record<string, typeof lessons>>((groups, lesson) => {
@@ -603,28 +605,45 @@ export function App() {
               <span>Start here</span>
               <p>{activeLesson.mentalModel}</p>
             </section>
-            {pageGlossary.length > 0 ? (
+            {pageGlossary.length > 0 && selectedVocab !== null ? (
               <section className="page-vocab" data-testid="page-vocab" aria-label="Words for this page">
                 <span>Words for this page</span>
-                <dl>
-                  {pageGlossary.map(({ term, definition }) => (
-                    <div key={term}>
-                      <dt>{term}</dt>
-                      <dd>{definition}</dd>
-                    </div>
+                <div className="vocab-tabs" role="tablist" aria-label={`${activeLesson.title} vocabulary`}>
+                  {pageGlossary.map(({ term }) => (
+                    <button
+                      aria-selected={term === selectedVocab.term}
+                      key={term}
+                      onClick={() => setSelectedVocabByLesson((previous) => ({ ...previous, [activeLesson.id]: term }))}
+                      role="tab"
+                      type="button"
+                    >
+                      {term}
+                    </button>
                   ))}
+                </div>
+                <dl className="vocab-definition">
+                  <div>
+                    <dt>{selectedVocab.term}</dt>
+                    <dd>{selectedVocab.definition}</dd>
+                  </div>
                 </dl>
               </section>
             ) : null}
             {activeLesson.deepDive ? (
-              <ol className="lesson-step-list">
-                {activeLesson.deepDive.map((paragraph, index) => (
-                  <li key={paragraph}>
-                    <span>{index + 1}</span>
-                    <p>{paragraph}</p>
-                  </li>
-                ))}
-              </ol>
+              <details className="lesson-detail-steps" data-testid="lesson-detail-steps">
+                <summary>
+                  <span>Step-by-step explanation</span>
+                  <strong>{activeLesson.deepDive.length} short steps</strong>
+                </summary>
+                <ol className="lesson-step-list">
+                  {activeLesson.deepDive.map((paragraph, index) => (
+                    <li key={paragraph}>
+                      <span>{index + 1}</span>
+                      <p>{paragraph}</p>
+                    </li>
+                  ))}
+                </ol>
+              </details>
             ) : null}
             {activeLesson.coreIdeas ? (
               <div className="core-idea-list">

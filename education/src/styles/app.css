@@ -423,34 +423,104 @@ code {
   text-transform: uppercase;
 }
 
-.page-vocab dl {
+.vocab-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.vocab-tabs button {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.12);
+  border-radius: 999rem;
+  padding: 0.35rem 0.6rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.045);
+  cursor: pointer;
+}
+
+.vocab-tabs button[aria-selected='true'] {
+  border-color: rgba(99, 230, 190, 0.6);
+  color: #061019;
+  background: #63e6be;
+}
+
+.vocab-definition {
   display: grid;
   gap: 0.65rem;
   margin: 0;
 }
 
-.page-vocab div {
+.vocab-definition div {
   display: grid;
   gap: 0.2rem;
 }
 
-.page-vocab dt {
+.vocab-definition dt {
   color: #ffffff;
   font-weight: 800;
 }
 
-.page-vocab dd {
+.vocab-definition dd {
   margin: 0;
   color: #c6d2df;
   font-size: 0.9rem;
   line-height: 1.45;
 }
 
+.lesson-detail-steps {
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.lesson-detail-steps summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.8rem 0.9rem;
+  color: #ffffff;
+  cursor: pointer;
+  list-style: none;
+}
+
+.lesson-detail-steps summary::marker,
+.lesson-detail-steps summary::-webkit-details-marker {
+  display: none;
+}
+
+.lesson-detail-steps summary::before {
+  content: '+';
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.5);
+  border-radius: 999rem;
+  color: #63e6be;
+  font-weight: 800;
+}
+
+.lesson-detail-steps[open] summary::before {
+  content: '-';
+}
+
+.lesson-detail-steps summary span {
+  color: #dce7f2;
+  font-weight: 800;
+}
+
+.lesson-detail-steps summary strong {
+  color: #93a4b7;
+  font-size: 0.82rem;
+}
+
 .lesson-step-list {
   display: grid;
   gap: 0.75rem;
   margin: 1rem 0;
-  padding: 0;
+  padding: 0 0.9rem 0.9rem;
   list-style: none;
 }
 
