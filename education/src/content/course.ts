@@ -46,7 +46,7 @@ export const lessons: CourseLesson[] = [
     title: 'What the project is trying to prove',
     icon: Route,
     intuition:
-      'The project tries to justify one resource claim: a specified quantum circuit that recovers a secp256k1 private key would need this many live logical qubits and this many expensive non-Clifford operations.',
+      'The project tries to justify one resource claim: a specified quantum circuit that recovers a Bitcoin-style secp256k1 private key would need this many live protected circuit wires, called logical qubits, and this many especially expensive quantum operations, called non-Clifford operations.',
     whyItMatters:
       'A precise-looking number is not enough. The number is only meaningful if it comes from the same executable circuit that the tests and proof artifacts bind to.',
     mentalModel:
@@ -54,13 +54,13 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'The repo must connect public key attack, executable circuit, tests, and resource numbers into one auditable chain.',
     deepDive: [
       'The input problem is a public key. The hidden answer is a private number. The quantum algorithm is the method for extracting that number.',
-      'The engineering problem is stricter: the algorithm must become reversible primitive rows over named quantum wires, with every temporary value cleaned or counted.',
-      'The headline resources are peak logical qubits and total non-Clifford operations. Peak qubits mean the busiest live-wire moment; non-Clifford operations mean expensive fault-tolerant work over the whole run.',
+      'The engineering problem is stricter: the algorithm must become concrete reversible steps over named quantum wires, with every temporary value cleaned or counted.',
+      'The headline resources are peak logical qubits and total non-Clifford operations. Peak logical qubits means the largest number of protected wires alive at once. Non-Clifford operations means the expensive quantum work summed over the whole run.',
       'The repo promise is narrow: if it prints a number, that number should come from the executable circuit path rather than from a manually chosen register list.',
     ],
     coreIdeas: [
       'Target: secp256k1 discrete logarithm, the hard problem behind public keys.',
-      'Main resources: peak logical qubits and total non-Clifford operations.',
+      'Main resources: maximum live protected wires and total expensive quantum operations.',
       'Trustworthy result: numbers derived from a concrete circuit path, not from a hand-wavy estimate.',
     ],
     practicePrompt: 'Start with “What has to be proved,” then use the learning path map. The only thing to hold in your head for now: every later page explains one step between “public key attack” and “auditable resource number.”',
@@ -76,14 +76,15 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'Measurement sees arrow lengths as probabilities. Gates can also use the angles before measurement, which is why a quantum circuit can make answers reinforce or cancel.',
     mentalModel:
-      'Picture a 0-arrow and a 1-arrow. Longer arrow means a more likely direct measurement outcome. The arrow angle is phase: direct measurement does not show it, but a later gate can mix the arrows and turn their angle difference into a changed probability.',
+      'Picture a 0-arrow and a 1-arrow. Longer arrow means a more likely direct measurement outcome. A gate is a valid steering rule applied before measurement: it may rotate or recombine arrows, but it must preserve total probability.',
     checkpoint: 'A probability coin has only chances. A qubit has chances plus amplitude angles that later gates can turn into changed chances.',
     deepDive: [
       'Notation: a|0> + b|1>. The symbols a and b are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
       'Probability rule: P(0) = |a|^2 and P(1) = |b|^2. The vertical bars mean arrow length. If both arrows have length 1/sqrt(2), direct measurement is 50/50.',
-      'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a gate combines the 0-arrow and 1-arrow.',
-      'In the lab, the Hadamard gate is the combining gate. Circuit diagrams often abbreviate it as H. Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1.',
-      'The useful beginner formula is: Hadamard makes the new 0-arrow from old 0 plus old 1, and the new 1-arrow from old 0 minus old 1. That is why direction matters even when the two arrow lengths are unchanged.',
+      'A quantum gate is a controlled physical operation applied before measurement. Mathematically it is a unitary rule: linear, reversible, and total-probability preserving.',
+      'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a valid gate combines the 0-arrow and 1-arrow.',
+      'In the lab, the Hadamard gate is the combining gate. Circuit diagrams often abbreviate it as H. It computes (old 0 + old 1) / sqrt(2) and (old 0 - old 1) / sqrt(2), so probability remains normalized.',
+      'Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1. That is why direction matters even when the two arrow lengths are unchanged.',
       'Later Shor-style pages use the same idea at larger scale: phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
     ],
     coreIdeas: [
@@ -92,7 +93,7 @@ export const lessons: CourseLesson[] = [
       'Relative angle becomes observable only after a gate mixes amplitudes.',
     ],
     practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after the Hadamard gate flips from always 0 to always 1.',
-    glossaryTerms: ['Qubit', 'Amplitude', 'Hadamard gate', 'Destructive interference'],
+    glossaryTerms: ['Qubit', 'Amplitude', 'Quantum gate', 'Unitary', 'Hadamard gate', 'Destructive interference'],
   },
   {
     id: 'gates',
@@ -576,6 +577,8 @@ export const glossary = [
   ['secp256k1', 'The elliptic-curve system used by Bitcoin public keys; this repo studies the quantum circuit cost of attacking its discrete logarithm problem.'],
   ['Qubit', 'A coherent two-state quantum system used as one wire in a circuit.'],
   ['Amplitude', 'A complex state-vector component whose squared magnitude gives a measurement probability.'],
+  ['Quantum gate', 'A controlled operation applied before measurement. In the circuit model it is a fixed transformation of amplitudes.'],
+  ['Unitary', 'A valid quantum gate rule that is linear, reversible, and preserves total probability.'],
   ['Hadamard gate', 'A one-qubit gate that combines the 0-amplitude and 1-amplitude so their relative angle can change measured probabilities. Circuit diagrams often abbreviate it as H.'],
   ['Entanglement', 'A joint quantum state that cannot be decomposed into independent per-qubit states.'],
   ['Logical qubit', 'An error-corrected qubit abstraction counted by this repo.'],

@@ -4,7 +4,7 @@ const proofSteps = [
   {
     title: 'Start object',
     label: 'public key',
-    text: 'The circuit is given Q, a public curve point. The hidden answer is the private key number d where Q = dG.',
+    text: 'The circuit is given Q, a public curve point. The hidden answer is the private key number d. The shorthand Q = dG means d repeated additions of the public generator point G.',
     Icon: KeyRound,
   },
   {
@@ -22,7 +22,7 @@ const proofSteps = [
   {
     title: 'Resource claim',
     label: 'counted peak',
-    text: 'Only then can it claim peak logical qubits and total non-Clifford work from the same circuit path.',
+    text: 'Only then can it claim the maximum live protected wires and the total expensive quantum work from the same circuit path.',
     Icon: Calculator,
   },
 ];

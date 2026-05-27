@@ -23,7 +23,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByRole('heading', { name: 'Current repo contract' })).toHaveCount(0);
   await expect(page.getByLabel('Current repository resource status')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Given a public key Q');
-  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('maximum live protected wires and total expensive quantum operations');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
   await expect(page.getByLabel('Course progress')).toHaveCount(0);
@@ -109,9 +109,13 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Phase becomes probability');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Two arrows');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Lengths become chances');
-  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('What the Hadamard gate is doing');
-  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('new 0-arrow = old 0-arrow + old 1-arrow');
-  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('new 1-arrow = old 0-arrow - old 1-arrow');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('What a quantum gate is');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('calibrated pulse or interaction');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('linear, reversible, and preserve total arrow-length-squared');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Why Hadamard is valid');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('new 0-arrow = (old 0-arrow + old 1-arrow) / sqrt(2)');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('new 1-arrow = (old 0-arrow - old 1-arrow) / sqrt(2)');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('probabilities summing to 100%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Measure now');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 50% / 1: 50%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply Hadamard, then measure');

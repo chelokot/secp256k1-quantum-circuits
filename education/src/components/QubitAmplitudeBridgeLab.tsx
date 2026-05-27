@@ -39,16 +39,39 @@ export function QubitAmplitudeBridgeLab() {
       </p>
 
       <section className="gate-explainer" aria-label="Hadamard gate explanation">
-        <h4>What the Hadamard gate is doing</h4>
+        <h4>What a quantum gate is</h4>
         <p>
-          A gate is a fixed rule for replacing the current arrows with new arrows.
-          Hadamard is the rule that makes a new 0-arrow from the sum of the old arrows,
-          and a new 1-arrow from their difference.
+          A gate is a controlled physical action applied before measurement. In hardware
+          it is a calibrated pulse or interaction. In the circuit model it is a fixed
+          mathematical rule for replacing the current amplitude arrows with new arrows.
+        </p>
+        <div className="gate-foundation-grid">
+          <article>
+            <span>Physical picture</span>
+            <p>The machine is not reading the qubit yet. It is steering the state, like rotating or recombining the arrows.</p>
+          </article>
+          <article>
+            <span>Mathematical rule</span>
+            <p>The rule must be linear, reversible, and preserve total arrow-length-squared. Such a rule is called unitary.</p>
+          </article>
+          <article>
+            <span>Not arbitrary</span>
+            <p>A rule that loses probability, clones an unknown state, or forgets which input made the output is not a valid quantum gate.</p>
+          </article>
+        </div>
+        <h4>Why Hadamard is valid</h4>
+        <p>
+          Hadamard is one valid one-qubit gate. It recombines the old 0-arrow and old
+          1-arrow, then divides by sqrt(2) so the total probability stays 100%.
         </p>
         <div className="gate-rule">
-          <span>new 0-arrow = old 0-arrow + old 1-arrow</span>
-          <span>new 1-arrow = old 0-arrow - old 1-arrow</span>
+          <span>new 0-arrow = (old 0-arrow + old 1-arrow) / sqrt(2)</span>
+          <span>new 1-arrow = (old 0-arrow - old 1-arrow) / sqrt(2)</span>
         </div>
+        <p>
+          The plus output and minus output share the original total length. That is
+          why measurement after the gate still has probabilities summing to 100%.
+        </p>
         <ol>
           <li><strong>Same direction:</strong> the sum is large and the difference cancels, so measurement becomes 0.</li>
           <li><strong>Opposite direction:</strong> the sum cancels and the difference is large, so measurement becomes 1.</li>

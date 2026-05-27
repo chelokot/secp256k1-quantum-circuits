@@ -1013,6 +1013,10 @@ code {
   color: #ffffff;
 }
 
+.gate-explainer h4:not(:first-child) {
+  margin-top: 1rem;
+}
+
 .gate-explainer p,
 .gate-explainer li {
   color: #c9d6e2;
@@ -1022,6 +1026,33 @@ code {
 
 .gate-explainer p {
   margin: 0.45rem 0 0;
+}
+
+.gate-foundation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0.8rem 0;
+}
+
+.gate-foundation-grid article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.45rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.gate-foundation-grid span {
+  display: block;
+  color: #f5cf6b;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.gate-foundation-grid p {
+  margin-top: 0.35rem;
+  font-size: 0.84rem;
 }
 
 .gate-rule {
@@ -1037,7 +1068,8 @@ code {
   color: #fff7cf;
   background: rgba(245, 207, 107, 0.08);
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-  font-size: 0.82rem;
+  font-size: 0.8rem;
+  line-height: 1.45;
 }
 
 .gate-explainer ol {
@@ -4096,6 +4128,7 @@ legend {
   .metric-row,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
+  .gate-foundation-grid,
   .gate-literacy-grid,
   .content-grid.learning-grid,
   .path-stage-grid,
@@ -4224,6 +4257,7 @@ legend {
   .content-grid.learning-grid,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
+  .gate-foundation-grid,
   .gate-literacy-grid,
   .path-stage-grid,
   .readiness-strip,
