@@ -66,6 +66,9 @@ export function App() {
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
   const currentIndex = lessons.findIndex((lesson) => lesson.id === activeLesson.id);
   const nextLesson = lessons[(currentIndex + 1) % lessons.length];
+  const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
+  const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
+  const showReviewPanels = activeLesson.id === 'repo-baselines';
 
   const groupedLessons = useMemo(() => {
     return lessons.reduce<Record<string, typeof lessons>>((groups, lesson) => {
@@ -101,8 +104,6 @@ export function App() {
               lessons={lessons}
               onSelectLesson={selectLesson}
             />
-            <AttackPipelineLab />
-            <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />
           </>
         );
       case 'qubit':
@@ -153,6 +154,7 @@ export function App() {
       case 'ecdlp':
         return (
           <>
+            <AttackPipelineLab />
             <DiscreteLogOracleLab />
             <PhaseKickbackLab />
             <ToyCurveLab />
@@ -310,37 +312,39 @@ export function App() {
       </aside>
 
       <section className="lesson-workspace">
-        <header className="hero-panel">
+        <header className={showResourceStatus ? 'hero-panel' : 'hero-panel no-status'}>
           <div>
             <p className="eyebrow">{activeLesson.module}</p>
             <h2>{activeLesson.title}</h2>
             <p className="hero-copy">{activeLesson.intuition}</p>
           </div>
-          <div className="baseline-strip" aria-label="Current repository resource status">
-            <div>
-              <span>Accepted baseline</span>
-              <strong>none yet</strong>
+          {showResourceStatus ? (
+            <div className="baseline-strip" aria-label="Current repository resource status">
+              <div>
+                <span>Accepted baseline</span>
+                <strong>none yet</strong>
+              </div>
+              <div>
+                <span>Strict candidate</span>
+                <strong>{formatInt(projectData.currentStrictCandidate.logical_qubits)}q</strong>
+              </div>
+              <div>
+                <span>Guard-corrected</span>
+                <strong>{formatInt(projectData.guardCorrectedNoAliasCandidate.logical_qubits)}q</strong>
+              </div>
+              <div>
+                <span>Non-Clifford</span>
+                <strong>{formatInt(projectData.currentStrictCandidate.non_clifford)}</strong>
+              </div>
             </div>
-            <div>
-              <span>Strict candidate</span>
-              <strong>{formatInt(projectData.currentStrictCandidate.logical_qubits)}q</strong>
-            </div>
-            <div>
-              <span>Guard-corrected</span>
-              <strong>{formatInt(projectData.guardCorrectedNoAliasCandidate.logical_qubits)}q</strong>
-            </div>
-            <div>
-              <span>Non-Clifford</span>
-              <strong>{formatInt(projectData.currentStrictCandidate.non_clifford)}</strong>
-            </div>
-          </div>
+          ) : null}
         </header>
 
-        <section className="content-grid">
+        <section className={showRepoContract ? 'content-grid' : 'content-grid learning-grid'}>
           <article className="concept-panel">
             <div className="panel-heading">
               <BookOpen size={20} />
-              <h3>Lesson page</h3>
+              <h3>Core idea</h3>
             </div>
             <p>{activeLesson.mentalModel}</p>
             {activeLesson.deepDive?.map((paragraph) => (
@@ -377,43 +381,55 @@ export function App() {
             </div>
           </article>
 
-          <article className="concept-panel">
-            <div className="panel-heading">
-              <Code2 size={20} />
-              <h3>Current repo contract</h3>
-            </div>
-            <p>
-              The educational app reads checked artifacts through <code>scripts/sync-project-data.mjs</code>.
-              The UI treats resource numbers as contract states, not as marketing copy.
-            </p>
-            <ul className="blocker-list">
-              {blockerNames.map((name) => (
-                <li key={name}>{name}</li>
-              ))}
-            </ul>
-          </article>
-        </section>
-
-        <section className="lesson-labs" aria-label={`${activeLesson.title} labs`}>
-          {activeLabs}
-        </section>
-
-        <section className="wide-panel">
-          <div className="panel-heading">
-            <RotateCcw size={20} />
-            <h3>Vocabulary spine</h3>
-          </div>
-          <div className="glossary-grid">
-            {glossary.map(([term, definition]) => (
-              <div className="glossary-item" key={term}>
-                <strong>{term}</strong>
-                <span>{definition}</span>
+          {showRepoContract ? (
+            <article className="concept-panel">
+              <div className="panel-heading">
+                <Code2 size={20} />
+                <h3>Current repo contract</h3>
               </div>
-            ))}
-          </div>
+              <p>
+                The educational app reads checked artifacts through <code>scripts/sync-project-data.mjs</code>.
+                The UI treats resource numbers as contract states, not as marketing copy.
+              </p>
+              <ul className="blocker-list">
+                {blockerNames.map((name) => (
+                  <li key={name}>{name}</li>
+                ))}
+              </ul>
+            </article>
+          ) : (
+            <section className="lesson-labs inline" aria-label={`${activeLesson.title} labs`}>
+              {activeLabs}
+            </section>
+          )}
         </section>
 
-        <QuizPanel quiz={quiz} />
+        {showRepoContract ? (
+          <section className="lesson-labs" aria-label={`${activeLesson.title} labs`}>
+            {activeLabs}
+          </section>
+        ) : null}
+
+        {showReviewPanels ? (
+          <>
+            <section className="wide-panel">
+              <div className="panel-heading">
+                <RotateCcw size={20} />
+                <h3>Vocabulary spine</h3>
+              </div>
+              <div className="glossary-grid">
+                {glossary.map(([term, definition]) => (
+                  <div className="glossary-item" key={term}>
+                    <strong>{term}</strong>
+                    <span>{definition}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <QuizPanel quiz={quiz} />
+          </>
+        ) : null}
       </section>
     </main>
   );

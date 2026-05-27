@@ -163,6 +163,11 @@ code {
   padding: 1.5rem;
 }
 
+.hero-panel.no-status {
+  grid-template-columns: minmax(0, 44rem);
+  align-items: start;
+}
+
 .hero-panel h2 {
   margin-top: 0.4rem;
   max-width: 52rem;
@@ -214,6 +219,15 @@ code {
   margin-top: 1rem;
 }
 
+.content-grid.single-panel {
+  grid-template-columns: minmax(0, 48rem);
+}
+
+.content-grid.learning-grid {
+  grid-template-columns: minmax(24rem, 0.9fr) minmax(20rem, 1.1fr);
+  align-items: start;
+}
+
 .concept-panel,
 .lab-panel,
 .wide-panel {
@@ -243,6 +257,19 @@ code {
   display: grid;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.lesson-labs.inline {
+  margin-top: 0;
+}
+
+.lesson-labs.inline > .wide-panel,
+.lesson-labs.inline > .lab-grid {
+  margin-top: 0;
+}
+
+.lesson-labs.inline .lab-grid {
+  grid-template-columns: 1fr;
 }
 
 .core-idea-list {
@@ -3155,12 +3182,14 @@ legend {
 
   .hero-panel,
   .content-grid,
+  .content-grid.learning-grid,
   .lab-grid {
     grid-template-columns: 1fr;
   }
 
   .baseline-strip,
   .metric-row,
+  .content-grid.learning-grid,
   .path-stage-grid,
   .readiness-strip,
   .tradeoff-controls,

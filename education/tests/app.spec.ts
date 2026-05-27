@@ -9,15 +9,12 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await page.goto('/');
 
   await expect(page.getByRole('heading', { name: 'Quantum Circuit Lab' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Current repo contract' }).locator('xpath=ancestor::article')).toContainText('contract states, not as marketing copy');
-  await expect(page.getByRole('heading', { name: 'Current repo contract' }).locator('xpath=ancestor::article')).toContainText('zero lift guard capacity not promoted');
-  await expect(page.getByText('none yet').first()).toBeVisible();
-  await expect(page.getByLabel('Current repository resource status')).toContainText('1,968q');
-  await expect(page.getByLabel('Current repository resource status')).toContainText('2,222q');
-  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('how large and expensive');
-  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
+  await expect(page.getByRole('heading', { name: 'Current repo contract' })).toHaveCount(0);
+  await expect(page.getByLabel('Current repository resource status')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('how large and expensive');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
-  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
 });
 
 test('lets the learner navigate concepts and complete progress', async ({ page }) => {
@@ -26,7 +23,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
-  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('Relative phase becomes information through interference');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Relative phase becomes information through interference');
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Next concept' }).click();
@@ -111,7 +108,7 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 });
 
 test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'ecdlp');
 
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
@@ -391,7 +388,7 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
 });
 
 test('maps original education requirements to concrete course coverage', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'contribution');
 
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Lessons');
@@ -567,7 +564,7 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await page.getByLabel('Count clean-ladder zero-lift guard capacity').check();
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
-  await page.goto('/');
+  await openLesson(page, 'repo-baselines');
   await page.getByRole('button', { name: 'None yet.' }).click();
   await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/34');
 });
