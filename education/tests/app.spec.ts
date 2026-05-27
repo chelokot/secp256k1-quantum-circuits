@@ -651,6 +651,13 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
   await openLesson(page, 'repo-baselines');
-  await page.getByRole('button', { name: 'None yet.' }).click();
+  await expect(page.getByTestId('quiz-panel')).toContainText('Final checkpoint');
+  await expect(page.getByTestId('quiz-panel')).toContainText('Question 1 of 34');
+  await expect(page.getByTestId('quiz-panel')).not.toContainText('What is the current accepted Clifford-complete physical baseline');
+  await page.getByRole('button', { name: /Because it still has a lifetime/ }).click();
   await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/34');
+  await page.getByRole('button', { name: 'Next question' }).click();
+  await expect(page.getByTestId('quiz-panel')).toContainText('Question 2 of 34');
+  await page.getByRole('button', { name: 'Review all questions' }).click();
+  await expect(page.getByTestId('quiz-panel')).toContainText('What is the current accepted Clifford-complete physical baseline');
 });
