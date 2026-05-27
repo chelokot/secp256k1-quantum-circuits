@@ -406,31 +406,13 @@ export function App() {
     <>
       {labRoute.length > 0 ? (
         <section className="lab-route" data-testid="lab-route" aria-label="Lab route">
-          <div className="panel-heading">
-            <ListChecks size={20} />
-            <h3>Lab route</h3>
-          </div>
-          <ol>
-            {activeLabItems.map((item, index) => (
-              <li className={index === focusedLabIndex && !showAllLabs ? 'active' : undefined} key={item.name}>
-                <button
-                  aria-current={index === focusedLabIndex && !showAllLabs ? 'step' : undefined}
-                  onClick={() => selectFocusedLab(index)}
-                  type="button"
-                >
-                  <span>{index + 1}</span>
-                  <div>
-                    <strong>{item.name}</strong>
-                    <p>{item.goal}</p>
-                  </div>
-                </button>
-              </li>
-            ))}
-          </ol>
-          {hasGuidedLabFocus ? (
-            <div className="lab-focus-controls" data-testid="lab-focus-controls">
-              <span>{showAllLabs ? `Showing all ${activeLabItems.length} labs` : `Showing lab ${focusedLabIndex + 1} of ${activeLabItems.length}`}</span>
-              <div>
+          <div className="lab-route-header">
+            <div className="panel-heading">
+              <ListChecks size={18} />
+              <h3>{showAllLabs ? 'All labs' : `Lab ${focusedLabIndex + 1} of ${activeLabItems.length}`}</h3>
+            </div>
+            {hasGuidedLabFocus ? (
+              <div className="lab-focus-controls" data-testid="lab-focus-controls">
                 <button className="secondary-action" disabled={showAllLabs || focusedLabIndex === 0} onClick={() => moveFocusedLab(-1)} type="button">
                   <ArrowLeft size={16} />
                   Previous lab
@@ -447,8 +429,22 @@ export function App() {
                   {showAllLabs ? 'Focus one lab' : 'Show all labs'}
                 </button>
               </div>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
+          <ol>
+            {activeLabItems.map((item, index) => (
+              <li className={index === focusedLabIndex && !showAllLabs ? 'active' : undefined} key={item.name}>
+                <button
+                  aria-current={index === focusedLabIndex && !showAllLabs ? 'step' : undefined}
+                  onClick={() => selectFocusedLab(index)}
+                  type="button"
+                >
+                  <span>{index + 1}</span>
+                  <strong>{item.name}</strong>
+                </button>
+              </li>
+            ))}
+          </ol>
         </section>
       ) : null}
       {renderedActiveLabs}
@@ -564,30 +560,6 @@ export function App() {
               <span>Start here</span>
               <p>{activeLesson.mentalModel}</p>
             </section>
-            {pageGlossary.length > 0 && selectedVocab !== null ? (
-              <section className="page-vocab" data-testid="page-vocab" aria-label="Words for this page">
-                <span>Words for this page</span>
-                <div className="vocab-tabs" role="tablist" aria-label={`${activeLesson.title} vocabulary`}>
-                  {pageGlossary.map(({ term }) => (
-                    <button
-                      aria-selected={term === selectedVocab.term}
-                      key={term}
-                      onClick={() => setSelectedVocabByLesson((previous) => ({ ...previous, [activeLesson.id]: term }))}
-                      role="tab"
-                      type="button"
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
-                <dl className="vocab-definition">
-                  <div>
-                    <dt>{selectedVocab.term}</dt>
-                    <dd>{selectedVocab.definition}</dd>
-                  </div>
-                </dl>
-              </section>
-            ) : null}
             {activeLesson.deepDive ? (
               <details className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <summary>
@@ -613,27 +585,33 @@ export function App() {
             ) : null}
             <h4>Why it matters here</h4>
             <p>{activeLesson.whyItMatters}</p>
-            <section className={checkpointRevealed ? 'checkpoint revealed' : 'checkpoint'} data-testid="lesson-recall-check">
-              <CheckCircle2 size={18} />
-              <div>
-                <span>Answer before reveal</span>
-                <strong>{checkpointQuestion}</strong>
-                {checkpointRevealed ? <p>{activeLesson.checkpoint}</p> : null}
-                <button
-                  className="checkpoint-reveal"
-                  onClick={() => setRevealedCheckpointByLesson((previous) => ({ ...previous, [activeLesson.id]: !checkpointRevealed }))}
-                  type="button"
-                >
-                  {checkpointRevealed ? 'Hide answer' : 'Reveal checkpoint answer'}
-                </button>
-              </div>
-            </section>
-            <div className="actions">
-              <button className="primary-action" type="button" onClick={completeAndContinue}>
-                <CheckCircle2 size={18} />
-                {nextLesson === null ? 'Mark understood and finish course' : 'Mark understood and continue'}
-              </button>
-            </div>
+            {pageGlossary.length > 0 && selectedVocab !== null ? (
+              <details className="page-vocab" data-testid="page-vocab">
+                <summary>
+                  <span>Glossary for this page</span>
+                  <strong>{pageGlossary.length} terms</strong>
+                </summary>
+                <div className="vocab-tabs" role="tablist" aria-label={`${activeLesson.title} vocabulary`}>
+                  {pageGlossary.map(({ term }) => (
+                    <button
+                      aria-selected={term === selectedVocab.term}
+                      key={term}
+                      onClick={() => setSelectedVocabByLesson((previous) => ({ ...previous, [activeLesson.id]: term }))}
+                      role="tab"
+                      type="button"
+                    >
+                      {term}
+                    </button>
+                  ))}
+                </div>
+                <dl className="vocab-definition">
+                  <div>
+                    <dt>{selectedVocab.term}</dt>
+                    <dd>{selectedVocab.definition}</dd>
+                  </div>
+                </dl>
+              </details>
+            ) : null}
           </article>
 
           {showRepoContract ? (
@@ -664,6 +642,30 @@ export function App() {
             {guidedActiveLabs}
           </section>
         ) : null}
+
+        <section className="lesson-finish-panel" aria-label="Lesson checkpoint">
+          <section className={checkpointRevealed ? 'checkpoint revealed' : 'checkpoint'} data-testid="lesson-recall-check">
+            <CheckCircle2 size={18} />
+            <div>
+              <span>Answer before reveal</span>
+              <strong>{checkpointQuestion}</strong>
+              {checkpointRevealed ? <p>{activeLesson.checkpoint}</p> : null}
+              <button
+                className="checkpoint-reveal"
+                onClick={() => setRevealedCheckpointByLesson((previous) => ({ ...previous, [activeLesson.id]: !checkpointRevealed }))}
+                type="button"
+              >
+                {checkpointRevealed ? 'Hide answer' : 'Reveal checkpoint answer'}
+              </button>
+            </div>
+          </section>
+          <div className="actions">
+            <button className="primary-action" type="button" onClick={completeAndContinue}>
+              <CheckCircle2 size={18} />
+              {nextLesson === null ? 'Mark understood and finish course' : 'Mark understood and continue'}
+            </button>
+          </div>
+        </section>
 
         {showReviewPanels ? (
           <>

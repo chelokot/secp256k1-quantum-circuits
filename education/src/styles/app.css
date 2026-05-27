@@ -271,7 +271,7 @@ code {
 }
 
 .content-grid.learning-grid {
-  grid-template-columns: minmax(24rem, 0.9fr) minmax(20rem, 1.1fr);
+  grid-template-columns: minmax(0, 1fr);
   align-items: start;
 }
 
@@ -318,25 +318,58 @@ code {
 }
 
 .page-vocab {
-  display: grid;
-  gap: 0.7rem;
-  margin: 1rem 0;
+  margin: 1.1rem 0 0;
   border: 0.0625rem solid rgba(143, 182, 255, 0.22);
   border-radius: 0.5rem;
-  padding: 0.85rem;
   background: rgba(143, 182, 255, 0.06);
 }
 
-.page-vocab > span {
+.page-vocab summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.65rem;
+  align-items: center;
+  padding: 0.75rem 0.85rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.page-vocab summary::marker,
+.page-vocab summary::-webkit-details-marker {
+  display: none;
+}
+
+.page-vocab summary::before {
+  content: '+';
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.38);
+  border-radius: 999rem;
+  color: #8fb6ff;
+  font-weight: 800;
+}
+
+.page-vocab[open] summary::before {
+  content: '-';
+}
+
+.page-vocab summary span {
   color: #93a4b7;
-  font-size: 0.78rem;
-  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.page-vocab summary strong {
+  color: #c6d2df;
+  font-size: 0.82rem;
 }
 
 .vocab-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  padding: 0 0.85rem;
 }
 
 .vocab-tabs button {
@@ -357,7 +390,7 @@ code {
 .vocab-definition {
   display: grid;
   gap: 0.65rem;
-  margin: 0;
+  margin: 0.75rem 0.85rem 0.85rem;
 }
 
 .vocab-definition div {
@@ -498,15 +531,23 @@ code {
 .lab-route {
   border: 0.0625rem solid rgba(255, 255, 255, 0.11);
   border-radius: 0.5rem;
-  padding: 1rem;
+  margin-bottom: 0.8rem;
+  padding: 0.65rem;
   background: rgba(14, 21, 29, 0.72);
 }
 
+.lab-route-header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .lab-route ol {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-  gap: 0.6rem;
-  margin: 0.9rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.65rem 0 0;
   padding: 0;
   list-style: none;
 }
@@ -516,19 +557,17 @@ code {
 }
 
 .lab-route li.active {
-  outline: 0.0625rem solid rgba(99, 230, 190, 0.58);
-  outline-offset: 0.125rem;
+  outline: none;
 }
 
 .lab-route li button {
-  display: grid;
-  grid-template-columns: 1.75rem minmax(0, 1fr);
-  gap: 0.55rem;
-  align-items: start;
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
   width: 100%;
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
-  border-radius: 0.5rem;
-  padding: 0.65rem;
+  border-radius: 999rem;
+  padding: 0.42rem 0.62rem;
   background: rgba(255, 255, 255, 0.035);
   color: inherit;
   text-align: left;
@@ -541,11 +580,17 @@ code {
   background: rgba(99, 230, 190, 0.08);
 }
 
+.lab-route li.active button {
+  border-color: rgba(99, 230, 190, 0.58);
+  background: rgba(99, 230, 190, 0.1);
+}
+
 .lab-route li button > span {
   display: grid;
   place-items: center;
-  width: 1.55rem;
-  height: 1.55rem;
+  flex: 0 0 auto;
+  width: 1.35rem;
+  height: 1.35rem;
   border-radius: 999rem;
   color: #071018;
   background: #63e6be;
@@ -556,35 +601,19 @@ code {
 .lab-route strong {
   display: block;
   color: #ffffff;
+  font-size: 0.92rem;
 }
 
 .lab-route p {
-  margin: 0.25rem 0 0;
-  color: #b9c7d6;
-  font-size: 0.88rem;
-  line-height: 1.45;
+  display: none;
 }
 
 .lab-focus-controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.45rem;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 0.9rem;
-  border-top: 0.0625rem solid rgba(255, 255, 255, 0.09);
-  padding-top: 0.9rem;
-}
-
-.lab-focus-controls > span {
-  color: #d9f8f0;
-  font-weight: 800;
-}
-
-.lab-focus-controls > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .core-idea-list {
@@ -601,11 +630,15 @@ code {
   color: #dffbf5;
 }
 
+.lesson-finish-panel {
+  margin-top: 1rem;
+}
+
 .checkpoint {
   display: flex;
   gap: 0.625rem;
   align-items: start;
-  margin: 1rem 0;
+  margin: 0 0 1rem;
   padding: 0.85rem;
   border-left: 0.25rem solid #f5cf6b;
   background: rgba(245, 207, 107, 0.08);

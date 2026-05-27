@@ -39,7 +39,8 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-recall-check')).not.toContainText('public key attack, executable circuit, tests');
   await page.getByRole('button', { name: 'Reveal checkpoint answer' }).click();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('public key attack, executable circuit, tests');
-  await expect(page.getByTestId('page-vocab')).toContainText('Words for this page');
+  await expect(page.getByTestId('page-vocab')).toContainText('Glossary for this page');
+  await page.getByTestId('page-vocab').getByText('Glossary for this page').click();
   await expect(page.getByTestId('page-vocab')).toContainText('secp256k1');
   await expect(page.getByTestId('page-vocab')).toContainText('The elliptic-curve system used by Bitcoin public keys');
   await expect(page.getByTestId('project-proof-map')).toContainText('What has to be proved');
@@ -70,6 +71,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
+  await page.getByTestId('page-vocab').getByText('Glossary for this page').click();
   await expect(page.getByTestId('page-vocab')).toContainText('Amplitude');
   await expect(page.getByTestId('page-vocab')).not.toContainText('squared magnitude gives a measurement probability');
   await page.getByTestId('page-vocab').getByRole('tab', { name: 'Amplitude' }).click();
@@ -194,10 +196,10 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
   await openLesson(page, 'ecdlp');
 
-  await expect(page.getByTestId('lab-route')).toContainText('Lab route');
+  await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Resource composer');
-  await expect(page.getByTestId('lab-focus-controls')).toContainText('Showing lab 1 of 6');
+  await expect(page.getByTestId('lab-focus-controls')).toContainText('Next lab');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('What is secret?');
@@ -527,6 +529,7 @@ test('shows final glossary only as a late-course reference', async ({ page }) =>
 
   await expect(page.getByRole('heading', { name: 'Full course glossary' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Vocabulary spine' })).toHaveCount(0);
+  await page.getByTestId('page-vocab').getByText('Glossary for this page').click();
   await expect(page.getByTestId('page-vocab')).toContainText('Baseline');
   await expect(page.getByTestId('page-vocab')).toContainText('Promoted candidate');
 });
