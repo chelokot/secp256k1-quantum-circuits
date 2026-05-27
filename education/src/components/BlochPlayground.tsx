@@ -28,6 +28,13 @@ const mulI = (value: Complex): Complex => ({ re: -value.im, im: value.re });
 const scale = (value: Complex, factor: number): Complex => ({ re: value.re * factor, im: value.im * factor });
 const abs2 = (value: Complex) => value.re * value.re + value.im * value.im;
 
+function arrowEnd(value: Complex) {
+  return {
+    x: 50 + value.re * 34,
+    y: 50 - value.im * 34,
+  };
+}
+
 function applyGate(state: State, gate: Gate): State {
   if (gate === 'X') {
     return { zero: state.one, one: state.zero };
@@ -52,8 +59,8 @@ export function BlochPlayground() {
   const state = useMemo(() => gates.reduce(applyGate, initialState), [gates]);
   const p0 = abs2(state.zero);
   const p1 = abs2(state.one);
-  const vectorX = 50 + (p1 - p0) * 26;
-  const vectorY = 50 - state.one.re * 34;
+  const zeroArrow = arrowEnd(state.zero);
+  const oneArrow = arrowEnd(state.one);
 
   return (
     <article className="lab-panel" data-testid="bloch-playground">
@@ -61,13 +68,22 @@ export function BlochPlayground() {
         <Atom size={20} />
         <h3>Qubit steering</h3>
       </div>
-      <svg className="bloch-svg" viewBox="0 0 100 100" role="img" aria-label="Simplified qubit state visualizer">
-        <circle cx="50" cy="50" r="38" />
-        <line x1="12" y1="50" x2="88" y2="50" />
-        <line x1="50" y1="12" x2="50" y2="88" />
-        <line className="state-vector" x1="50" y1="50" x2={vectorX} y2={vectorY} />
-        <circle className="state-dot" cx={vectorX} cy={vectorY} r="3" />
-      </svg>
+      <div className="amplitude-visual-stack steering-amplitude-view">
+        <div className="amplitude-legend" aria-hidden="true">
+          <span><i className="zero-dot" /> 0-amplitude</span>
+          <span><i className="one-dot" /> 1-amplitude</span>
+        </div>
+        <svg className="amplitude-arrows" viewBox="0 0 100 100" role="img" aria-label="Two amplitude arrows for the current one-qubit state">
+          <circle cx="50" cy="50" r="38" />
+          <line className="axis" x1="12" y1="50" x2="88" y2="50" />
+          <line className="axis" x1="50" y1="12" x2="50" y2="88" />
+          <line className="zero-arrow" x1="50" y1="50" x2={zeroArrow.x} y2={zeroArrow.y} />
+          <circle className="zero-dot" cx={zeroArrow.x} cy={zeroArrow.y} r="3" />
+          <line className="one-arrow" x1="50" y1="50" x2={oneArrow.x} y2={oneArrow.y} />
+          <circle className="one-dot" cx={oneArrow.x} cy={oneArrow.y} r="3" />
+        </svg>
+        <p>One qubit is still one state, but this view draws its two amplitudes separately.</p>
+      </div>
       <div className="gate-row steering-gate-row" aria-label="One-qubit gate choices">
         {steerableGates.map((gate) => (
           <button key={gate} type="button" onClick={() => setGates((items) => [...items, gate])}>

@@ -130,6 +130,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('opposite direction');
 
   await selectRouteLab(page, /Qubit steering/);
+  await expect(page.getByTestId('bloch-playground')).toContainText('0-amplitude');
+  await expect(page.getByTestId('bloch-playground')).toContainText('1-amplitude');
+  await expect(page.getByTestId('bloch-playground')).toContainText('draws its two amplitudes separately');
   await expect(page.getByTestId('bloch-playground')).toContainText('mixes 0 and 1 amplitudes');
   await expect(page.getByTestId('bloch-playground')).toContainText('swaps the 0 and 1 amplitudes');
   await expect(page.getByTestId('bloch-playground')).toContainText('rotates only the 1-amplitude phase');

@@ -885,27 +885,16 @@ code {
   cursor: default;
 }
 
-.bloch-svg {
-  width: min(100%, 18rem);
-  display: block;
-  margin: 1rem auto;
+.steering-amplitude-view {
+  justify-items: center;
+  margin: 1rem 0;
 }
 
-.bloch-svg circle,
-.bloch-svg line {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.25);
-  stroke-width: 0.8;
-}
-
-.bloch-svg .state-vector {
-  stroke: #63e6be;
-  stroke-width: 1.7;
-}
-
-.bloch-svg .state-dot {
-  fill: #f5cf6b;
-  stroke: none;
+.steering-amplitude-view p {
+  max-width: 34rem;
+  margin: 0;
+  color: #b4c4d6;
+  text-align: center;
 }
 
 .magic-wheel {
