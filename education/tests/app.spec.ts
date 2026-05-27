@@ -23,7 +23,8 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
-  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Relative phase becomes information through interference');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('two complex numbers');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('P(0) = |a|^2');
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Next concept' }).click();
@@ -51,6 +52,15 @@ test('turns the lab collection into a zero-to-contributor learning path', async 
 
 test('runs the qubit and netlist interactives', async ({ page }) => {
   await openLesson(page, 'qubit');
+
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Phase becomes probability');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Measure now');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 50% / 1: 50%');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply H, then measure');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 100% / 1: 0%');
+  await page.getByLabel('Relative phase angle').fill('180');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Relative angle: 180 degrees');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 0% / 1: 100%');
 
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'H' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');

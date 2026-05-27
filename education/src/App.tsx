@@ -5,6 +5,7 @@ import { lessons, glossary, quiz, type LessonId } from './content/course';
 import { BaselineChart } from './components/BaselineChart';
 import { BlochPlayground } from './components/BlochPlayground';
 import { StateVectorLab } from './components/StateVectorLab';
+import { QubitAmplitudeBridgeLab } from './components/QubitAmplitudeBridgeLab';
 import { StabilizerMagicLab } from './components/StabilizerMagicLab';
 import { CircuitBuilder } from './components/CircuitBuilder';
 import { SlotLiveness } from './components/SlotLiveness';
@@ -109,6 +110,7 @@ export function App() {
       case 'qubit':
         return (
           <section className="lab-grid" aria-label="Interactive labs">
+            <QubitAmplitudeBridgeLab />
             <BlochPlayground />
             <StateVectorLab />
           </section>

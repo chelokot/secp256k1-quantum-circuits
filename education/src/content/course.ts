@@ -69,23 +69,23 @@ export const lessons: CourseLesson[] = [
     title: 'Qubits as vectors you can steer',
     icon: Atom,
     intuition:
-      'A qubit is not a fuzzy bit. It is a two-amplitude state whose direction can be rotated, entangled with other wires, and made to interfere before one classical answer is sampled.',
+      'A qubit is a state with two complex numbers: one attached to outcome 0 and one attached to outcome 1. Their squared lengths become measurement probabilities.',
     whyItMatters:
-      'This project counts coherent information, not variables in source code. A 256-bit field value is 256 quantum wires whose amplitudes must stay phase-consistent while arithmetic, lookup, and cleanup happen.',
+      'Quantum gates edit the arrows before measurement. That is how a circuit turns invisible angle information into visible output probabilities.',
     mentalModel:
-      'Think of a qubit as a tiny two-number vector with a private phase angle. A single qubit is already richer than a probability coin because phases can later add or cancel. A useful quantum computation is built by arranging those cancellations so wrong answers erase themselves and useful structure survives measurement.',
-    checkpoint: 'The useful power is not “many classical worlds”; it is controlled interference before measurement.',
+      'Picture two complex numbers as two arrows: a 0-arrow and a 1-arrow. Longer arrow means a more likely measurement outcome. Arrow direction is phase: hidden from immediate measurement, but useful after a gate combines arrows.',
+    checkpoint: 'A probability coin has only chances. A qubit has chances plus arrow directions that later gates can turn into chances.',
     deepDive: [
-      'The state a|0> + b|1> has two complex amplitudes. Measurement does not reveal a and b; it samples 0 with probability |a|^2 and 1 with probability |b|^2. Gates matter because they change the amplitudes before that irreversible sampling step.',
-      'The phase of one isolated amplitude is not directly visible. Relative phase becomes visible only when paths are recombined. That is the core intuition behind the Fourier parts of Shor-style algorithms: phase slopes are converted into measurement peaks.',
-      'When many qubits represent a field element, they are not 256 independent UI toggles. They are one coherent register that can be in a superposition of many field values, and the circuit must transform the whole register reversibly.',
+      'Notation: a|0> + b|1>. The symbols a and b are complex numbers; in this lesson, treat them as arrows in a plane.',
+      'Probability rule: P(0) = |a|^2 and P(1) = |b|^2. If both arrows have length 1/sqrt(2), direct measurement is 50/50.',
+      'Phase rule: the angle between arrows matters only after a gate recombines them. In the lab, H turns same direction into certain 0 and opposite direction into certain 1.',
     ],
     coreIdeas: [
-      'Amplitudes are not observed directly; probabilities are.',
-      'Relative phase becomes information through interference.',
-      'A field slot is many qubits treated as one coherent register.',
+      'State = two complex amplitudes.',
+      'Measurement probability = squared arrow length.',
+      'Relative angle matters only when a later gate recombines amplitudes.',
     ],
-    practicePrompt: 'Use H in the Bloch playground, then run the interference program in the state-vector lab and watch a 50/50-looking intermediate state become a deterministic output.',
+    practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after H flips from always 0 to always 1.',
   },
   {
     id: 'gates',

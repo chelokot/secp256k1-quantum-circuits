@@ -571,6 +571,112 @@ code {
   color: #b8f3e6;
 }
 
+.amplitude-bridge-grid {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.8fr) minmax(14rem, 1.2fr);
+  gap: 0.85rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.amplitude-arrows {
+  width: min(100%, 17rem);
+  display: block;
+  margin: 0 auto;
+}
+
+.amplitude-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+  color: #dce7f2;
+  font-size: 0.82rem;
+}
+
+.amplitude-legend span {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.amplitude-legend i {
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999rem;
+}
+
+.amplitude-legend .zero-dot {
+  background: #63e6be;
+}
+
+.amplitude-legend .one-dot {
+  background: #f5cf6b;
+}
+
+.amplitude-arrows circle,
+.amplitude-arrows line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 0.85;
+}
+
+.amplitude-arrows .axis {
+  stroke: rgba(255, 255, 255, 0.16);
+}
+
+.amplitude-arrows .zero-arrow {
+  stroke: #63e6be;
+  stroke-width: 2.4;
+}
+
+.amplitude-arrows .one-arrow {
+  stroke: #f5cf6b;
+  stroke-width: 2.4;
+}
+
+.amplitude-arrows .zero-dot {
+  fill: #63e6be;
+  stroke: none;
+}
+
+.amplitude-arrows .one-dot {
+  fill: #f5cf6b;
+  stroke: none;
+}
+
+.amplitude-readout {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.amplitude-readout div {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.amplitude-readout span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.amplitude-readout strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+  font-size: 1.05rem;
+}
+
+.amplitude-readout p {
+  margin: 0.4rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .circuit-rails {
   position: relative;
   min-height: 8rem;
@@ -3175,6 +3281,10 @@ legend {
     grid-template-columns: 1fr;
   }
 
+  .lesson-workspace {
+    order: -1;
+  }
+
   .course-nav {
     position: static;
     height: auto;
@@ -3189,6 +3299,7 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .amplitude-bridge-grid,
   .content-grid.learning-grid,
   .path-stage-grid,
   .readiness-strip,
@@ -3270,6 +3381,9 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .content-grid,
+  .content-grid.learning-grid,
+  .amplitude-bridge-grid,
   .path-stage-grid,
   .readiness-strip,
   .tradeoff-controls,
