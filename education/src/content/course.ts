@@ -36,6 +36,7 @@ export type CourseLesson = {
   deepDive?: string[];
   coreIdeas?: string[];
   practicePrompt?: string;
+  glossaryTerms?: string[];
 };
 
 export const lessons: CourseLesson[] = [
@@ -62,6 +63,7 @@ export const lessons: CourseLesson[] = [
       'Trustworthy result: numbers derived from a concrete circuit path, not from a hand-wavy estimate.',
     ],
     practicePrompt: 'Start with the learning path map below. The only thing to hold in your head for now: every later page explains one step between “quantum attack idea” and “auditable resource number.”',
+    glossaryTerms: ['secp256k1', 'Discrete logarithm', 'Logical qubit', 'Non-Clifford'],
   },
   {
     id: 'qubit',
@@ -88,6 +90,7 @@ export const lessons: CourseLesson[] = [
       'Relative angle becomes observable only after a gate mixes amplitudes.',
     ],
     practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after H flips from always 0 to always 1.',
+    glossaryTerms: ['Qubit', 'Amplitude', 'Destructive interference'],
   },
   {
     id: 'gates',
@@ -112,6 +115,7 @@ export const lessons: CourseLesson[] = [
       'Cleanup = inverse work that removes temporary garbage.',
     ],
     practicePrompt: 'Add H, CX, and CCX in the primitive netlist toy. Watch rows and non-Clifford count change, then compare with the cleanup puzzle.',
+    glossaryTerms: ['Netlist', 'Primitive row', 'Uncompute'],
   },
   {
     id: 'clifford',
@@ -136,6 +140,7 @@ export const lessons: CourseLesson[] = [
       'Qubits and non-Clifford count are separate axes.',
     ],
     practicePrompt: 'Use the stabilizer vs magic wheel. Add H and S first, then add T and notice when the state class changes.',
+    glossaryTerms: ['Clifford', 'Stabilizer state', 'Non-Clifford', 'Magic state'],
   },
   {
     id: 'logic-physical',
@@ -160,6 +165,7 @@ export const lessons: CourseLesson[] = [
       'Repo numbers are logical resources, not a machine bill.',
     ],
     practicePrompt: 'Use the logical-to-physical bridge and change the code distance. Notice that the same logical circuit can imply very different hardware envelopes.',
+    glossaryTerms: ['Physical qubit', 'Logical qubit', 'Code distance', 'Logical failure'],
   },
   {
     id: 'phase-estimation',
@@ -184,6 +190,7 @@ export const lessons: CourseLesson[] = [
       'Controlled curve arithmetic dominates resource cost.',
     ],
     practicePrompt: 'Move the hidden phase numerator slider. The bars show which bit label becomes most likely after the phase-estimation readout.',
+    glossaryTerms: ['Phase estimation', 'Hidden period', 'Fourier transform', 'Fourier label'],
   },
   {
     id: 'netlists',
@@ -208,6 +215,7 @@ export const lessons: CourseLesson[] = [
       'One engine should feed execution, tests, counts, and ZKP input.',
     ],
     practicePrompt: 'Open the stack map and then the mini resource engine. The important habit is to ask where each wire is born, where it dies, and who owns it.',
+    glossaryTerms: ['Netlist', 'Primitive row', 'Liveness', 'Owner'],
   },
   {
     id: 'ecdlp',
@@ -232,6 +240,7 @@ export const lessons: CourseLesson[] = [
       'Resource bottleneck: repeated controlled point-add leaves.',
     ],
     practicePrompt: 'Start with the Whole attack map, then use the Discrete-log oracle toy. Change the secret scalar and watch the hidden-period relation change before opening phase kickback.',
+    glossaryTerms: ['Discrete logarithm', 'Oracle', 'Hidden period', 'Phase kickback'],
   },
   {
     id: 'coordinates',
@@ -257,6 +266,7 @@ export const lessons: CourseLesson[] = [
       'Every secp256k1 field slot is 256 counted logical wires.',
     ],
     practicePrompt: 'Move the projective scale first. Then open the overwrite lab and toggle the zero-lift guard to see when an in-place update stops being reversible.',
+    glossaryTerms: ['Affine point', 'Projective point', 'Field slot', 'Point-add boundary'],
   },
   {
     id: 'lookup-qroam',
@@ -281,6 +291,7 @@ export const lessons: CourseLesson[] = [
       'Free output lanes require liveness proof, not assertion.',
     ],
     practicePrompt: 'Select table bits in the QROAM toy, then use the QROAMClean tradeoff dial. Compare how workspace and non-Clifford pressure move in opposite directions.',
+    glossaryTerms: ['QROAM', 'Lookup infinity', 'Owner', 'Capacity'],
   },
   {
     id: 'programming',
@@ -305,6 +316,7 @@ export const lessons: CourseLesson[] = [
       'Tiny netlists train the same audit reflex used on large lowerings.',
     ],
     practicePrompt: 'Edit the DSL into an invalid program, then fix it with H, CX, and CCX rows. Check that the parser, non-Clifford count, and row list agree.',
+    glossaryTerms: ['Netlist', 'Opcode lowering', 'Primitive row', 'Non-Clifford'],
   },
   {
     id: 'cleanup',
@@ -329,6 +341,7 @@ export const lessons: CourseLesson[] = [
       'No cleanup means garbage still counts or breaks semantics.',
     ],
     practicePrompt: 'In the cleanup puzzle, select the matching uncompute row. Then open the scratch lifecycle lab and compare the consume-row and source-control requirements.',
+    glossaryTerms: ['Uncompute', 'Temporary AND', 'Source-uncompute', 'Abandoned garbage'],
   },
   {
     id: 'modular-lowering',
@@ -353,6 +366,7 @@ export const lessons: CourseLesson[] = [
       'Promotion requires one primitive stream, not a side artifact.',
     ],
     practicePrompt: 'Use the partial-product grid first. Then inspect accumulator lowering and switch to promoted-only facts to see what is still not accepted.',
+    glossaryTerms: ['Partial product', 'Fold', 'Accumulator', 'Carry-save'],
   },
   {
     id: 'owner-capacity',
@@ -377,6 +391,7 @@ export const lessons: CourseLesson[] = [
       'Borrowed lanes are invalid until liveness proves aliasing.',
     ],
     practicePrompt: 'Inject the hidden scratch lane in the invariant lab, then fix owner assignment in the capacity game until the numeric load fits.',
+    glossaryTerms: ['Owner', 'Capacity', 'Live interval', 'Peak live qubits'],
   },
   {
     id: 'resource-engine',
@@ -401,6 +416,7 @@ export const lessons: CourseLesson[] = [
       'Generated artifacts should feed docs and proofs.',
     ],
     practicePrompt: 'Open the circuit stack map and click Primitive netlist engine. Then use the mini engine to make the audit pass by fixing owner capacity and cleanup.',
+    glossaryTerms: ['Circuit stack', 'Liveness', 'Owner', 'Artifact atlas'],
   },
   {
     id: 'mini-engine',
@@ -425,6 +441,7 @@ export const lessons: CourseLesson[] = [
       'Lowering connects abstract operations to primitive rows.',
     ],
     practicePrompt: 'Make the mini engine pass by assigning the scratch owner and adding source uncompute. Then remove cleanup in opcode lowering and watch the audit fail.',
+    glossaryTerms: ['Live interval', 'Owner', 'Capacity', 'Opcode lowering'],
   },
   {
     id: 'optimization',
@@ -449,6 +466,7 @@ export const lessons: CourseLesson[] = [
       'Rejected and hypothesis rows are useful only when clearly labeled.',
     ],
     practicePrompt: 'Switch optimization candidates with both targets required. Then temporarily relax executable promotion to see why an attractive row can pass a toy gate but remain unpublishable.',
+    glossaryTerms: ['Tradeoff', 'Pareto frontier', 'Promoted candidate', 'Claim classification'],
   },
   {
     id: 'point-add-boundary',
@@ -473,6 +491,7 @@ export const lessons: CourseLesson[] = [
       'Counted interface and tested interface must match.',
     ],
     practicePrompt: 'Click inverse pair and lookup infinity in the boundary debugger. Then enable random-only testing and watch the covered-case count collapse.',
+    glossaryTerms: ['Point-add boundary', 'Lookup infinity', 'Permutation contract', 'Coordinate normalization'],
   },
   {
     id: 'contribution',
@@ -497,6 +516,7 @@ export const lessons: CourseLesson[] = [
       'Mission packets connect learning to repo patches.',
     ],
     practicePrompt: 'Use the mission board first. Then classify a claim in the audit drill and require the evidence items until the audit passes.',
+    glossaryTerms: ['Mission packet', 'Claim classification', 'Confidence ladder', 'Promoted candidate'],
   },
   {
     id: 'zkp-boundary',
@@ -521,6 +541,7 @@ export const lessons: CourseLesson[] = [
       'Fresh artifacts and current resource contract must agree.',
     ],
     practicePrompt: 'Use the ZKP boundary lab to close fixtures, macro boundary, and proof verification. Then compare the confidence ladder before changing claim wording.',
+    glossaryTerms: ['ZKP', 'Groth16', 'Public values', 'Confidence ladder'],
   },
   {
     id: 'repo-baselines',
@@ -545,10 +566,12 @@ export const lessons: CourseLesson[] = [
       'Accepted baseline remains blocked until all gates close.',
     ],
     practicePrompt: 'Filter the baseline explorer by status, then use the promotion lab. Close blockers deliberately and check when the wording becomes allowed.',
+    glossaryTerms: ['Baseline', 'Promoted candidate', 'Artifact atlas', 'Learning path'],
   },
 ];
 
 export const glossary = [
+  ['secp256k1', 'The elliptic-curve system used by Bitcoin public keys; this repo studies the quantum circuit cost of attacking its discrete logarithm problem.'],
   ['Qubit', 'A coherent two-state quantum system used as one wire in a circuit.'],
   ['Amplitude', 'A complex state-vector component whose squared magnitude gives a measurement probability.'],
   ['Entanglement', 'A joint quantum state that cannot be decomposed into independent per-qubit states.'],

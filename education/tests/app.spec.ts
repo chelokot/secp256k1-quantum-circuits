@@ -19,6 +19,10 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Do');
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Check');
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with the learning path map below');
+  await expect(page.getByTestId('page-vocab')).toContainText('Words for this page');
+  await expect(page.getByTestId('page-vocab')).toContainText('secp256k1');
+  await expect(page.getByTestId('page-vocab')).toContainText('The elliptic-curve system used by Bitcoin public keys');
+  await expect(page.getByRole('heading', { name: 'Vocabulary spine' })).toHaveCount(0);
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
 });
@@ -30,6 +34,8 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
+  await expect(page.getByTestId('page-vocab')).toContainText('Amplitude');
+  await expect(page.getByTestId('page-vocab')).toContainText('squared magnitude gives a measurement probability');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('P(0) = |a|^2');
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();
@@ -428,6 +434,15 @@ test('maps original education requirements to concrete course coverage', async (
   await page.getByLabel('Show only boundary-aware coverage rows').check();
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('State remaining boundaries instead of pretending the course proves the repo result');
   await expect(page.getByTestId('course-coverage-audit-lab')).not.toContainText('Start from zero quantum computing');
+});
+
+test('shows final glossary only as a late-course reference', async ({ page }) => {
+  await openLesson(page, 'repo-baselines');
+
+  await expect(page.getByRole('heading', { name: 'Full course glossary' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Vocabulary spine' })).toHaveCount(0);
+  await expect(page.getByTestId('page-vocab')).toContainText('Baseline');
+  await expect(page.getByTestId('page-vocab')).toContainText('Promoted candidate');
 });
 
 test('maps checked artifacts to audit questions and claim limits', async ({ page }) => {

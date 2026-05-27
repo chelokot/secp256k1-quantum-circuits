@@ -352,6 +352,45 @@ code {
   margin: 0.35rem 0 0;
 }
 
+.page-vocab {
+  display: grid;
+  gap: 0.7rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(143, 182, 255, 0.06);
+}
+
+.page-vocab > span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.page-vocab dl {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.page-vocab div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.page-vocab dt {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.page-vocab dd {
+  margin: 0;
+  color: #c6d2df;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .lesson-step-list {
   display: grid;
   gap: 0.75rem;

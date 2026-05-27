@@ -131,6 +131,11 @@ export function App() {
   const pageFocus = activeLesson.coreIdeas?.[0] ?? activeLesson.intuition;
   const pageExercise = activeLesson.practicePrompt ?? 'Use the labs on this page. Change one control, then read which output, audit, or count changed.';
   const labRoute = labRoutes[activeLesson.id] ?? [];
+  const glossaryByTerm = useMemo(() => new Map(glossary.map(([term, definition]) => [term, definition])), []);
+  const pageGlossary = (activeLesson.glossaryTerms ?? []).map((term) => ({
+    term,
+    definition: glossaryByTerm.get(term) ?? '',
+  }));
 
   const groupedLessons = useMemo(() => {
     return lessons.reduce<Record<string, typeof lessons>>((groups, lesson) => {
@@ -474,6 +479,19 @@ export function App() {
               <span>Start here</span>
               <p>{activeLesson.mentalModel}</p>
             </section>
+            {pageGlossary.length > 0 ? (
+              <section className="page-vocab" data-testid="page-vocab" aria-label="Words for this page">
+                <span>Words for this page</span>
+                <dl>
+                  {pageGlossary.map(({ term, definition }) => (
+                    <div key={term}>
+                      <dt>{term}</dt>
+                      <dd>{definition}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </section>
+            ) : null}
             {activeLesson.deepDive ? (
               <ol className="lesson-step-list">
                 {activeLesson.deepDive.map((paragraph, index) => (
@@ -549,7 +567,7 @@ export function App() {
             <section className="wide-panel">
               <div className="panel-heading">
                 <RotateCcw size={20} />
-                <h3>Vocabulary spine</h3>
+                <h3>Full course glossary</h3>
               </div>
               <div className="glossary-grid">
                 {glossary.map(([term, definition]) => (
