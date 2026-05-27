@@ -221,6 +221,10 @@ export function App() {
     selectLesson(nextLesson.id);
   };
 
+  const jumpToCurrentLab = () => {
+    document.getElementById('active-lesson-labs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const resetProgress = () => {
     setCompleted(new Set());
   };
@@ -577,6 +581,10 @@ export function App() {
           <article>
             <span>Try next</span>
             <p>{pageExercise}</p>
+            <button className="brief-jump-action" onClick={jumpToCurrentLab} type="button">
+              Jump to current lab
+              <ArrowRight size={16} />
+            </button>
           </article>
         </section>
 
@@ -711,14 +719,14 @@ export function App() {
               </ul>
             </article>
           ) : (
-            <section className="lesson-labs inline" aria-label={`${activeLesson.title} labs`}>
+            <section className="lesson-labs inline" id="active-lesson-labs" aria-label={`${activeLesson.title} labs`}>
               {guidedActiveLabs}
             </section>
           )}
         </section>
 
         {showRepoContract ? (
-          <section className="lesson-labs" aria-label={`${activeLesson.title} labs`}>
+          <section className="lesson-labs" id="active-lesson-labs" aria-label={`${activeLesson.title} labs`}>
             {guidedActiveLabs}
           </section>
         ) : null}

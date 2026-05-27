@@ -314,6 +314,24 @@ code {
   line-height: 1.45;
 }
 
+.brief-jump-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.35);
+  border-radius: 0.45rem;
+  padding: 0.42rem 0.65rem;
+  color: #dffbf5;
+  background: rgba(99, 230, 190, 0.08);
+  cursor: pointer;
+}
+
+.brief-jump-action:hover,
+.brief-jump-action:focus-visible {
+  background: rgba(99, 230, 190, 0.14);
+}
+
 .lesson-flow-bridge {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
