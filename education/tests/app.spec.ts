@@ -16,10 +16,27 @@ test('loads the personal quantum circuit course and generated repo status', asyn
 test('lets the learner navigate concepts and complete progress', async ({ page }) => {
   await page.goto('/');
 
-  await page.getByRole('button', { name: /Qubits as vectors/ }).click();
+  await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
+});
+
+test('turns the lab collection into a zero-to-contributor learning path', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
+  await expect(page.getByTestId('learning-path-map')).toContainText('1. Quantum substrate');
+  await expect(page.getByTestId('learning-path-map')).toContainText('2. Attack algorithm');
+  await expect(page.getByTestId('learning-path-map')).toContainText('3. Circuit engine');
+  await expect(page.getByTestId('learning-path-map')).toContainText('4. Audit and contribution');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Contributor readiness');
+  await expect(page.getByTestId('learning-path-map')).toContainText('not ready');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Qubits as vectors you can steer');
+  await page.getByRole('button', { name: 'Jump to next missing contributor step' }).click();
+  await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
+  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await expect(page.getByTestId('learning-path-map')).toContainText('Gates, wires, controls, and reversibility');
 });
 
 test('runs the qubit and netlist interactives', async ({ page }) => {
@@ -487,5 +504,5 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
   await page.getByRole('button', { name: 'None yet.' }).click();
-  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/32');
+  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/33');
 });

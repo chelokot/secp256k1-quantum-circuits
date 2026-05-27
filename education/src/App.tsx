@@ -46,6 +46,7 @@ import { ArtifactAtlasLab } from './components/ArtifactAtlasLab';
 import { ConfidenceLadderLab } from './components/ConfidenceLadderLab';
 import { OptimizationMissionLab } from './components/OptimizationMissionLab';
 import { PointAddBoundaryDebugger } from './components/PointAddBoundaryDebugger';
+import { LearningPathMap } from './components/LearningPathMap';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
@@ -181,6 +182,13 @@ export function App() {
             </ul>
           </article>
         </section>
+
+        <LearningPathMap
+          activeLessonId={activeLessonId}
+          completedLessonIds={completed}
+          lessons={lessons}
+          onSelectLesson={setActiveLessonId}
+        />
 
         <AttackPipelineLab />
         <DiscreteLogOracleLab />

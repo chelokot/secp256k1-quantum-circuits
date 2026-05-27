@@ -296,6 +296,122 @@ code {
   color: #ffd0d0;
 }
 
+.path-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.path-stage-grid article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.path-stage-grid header {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.path-stage-grid header strong {
+  color: #ffffff;
+}
+
+.path-stage-grid header span {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.36);
+  border-radius: 999rem;
+  padding: 0.18rem 0.5rem;
+  color: #b8f3e6;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.path-stage-grid p {
+  min-height: 4.2rem;
+  color: #b4c4d6;
+  font-size: 0.9rem;
+}
+
+.path-lesson-list {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.path-lesson-list button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3rem;
+  gap: 0.5rem;
+  align-items: center;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.5rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
+  text-align: left;
+  cursor: pointer;
+}
+
+.path-lesson-list button.active {
+  border-color: rgba(245, 207, 107, 0.65);
+  background: rgba(245, 207, 107, 0.13);
+}
+
+.path-lesson-list button.complete {
+  border-color: rgba(99, 230, 190, 0.5);
+  background: rgba(99, 230, 190, 0.1);
+}
+
+.path-lesson-list strong {
+  color: #93a4b7;
+  font-size: 0.74rem;
+  text-align: right;
+}
+
+.readiness-strip {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.65fr) minmax(16rem, 1.35fr) minmax(13rem, 0.9fr);
+  gap: 0.75rem;
+  align-items: stretch;
+}
+
+.readiness-strip div,
+.readiness-strip button {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.readiness-strip span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.readiness-strip strong {
+  display: block;
+  margin-top: 0.3rem;
+  color: #ffffff;
+}
+
+.readiness-strip button {
+  color: #071018;
+  background: #63e6be;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.readiness-strip button:disabled {
+  color: #93a4b7;
+  background: rgba(255, 255, 255, 0.06);
+  cursor: default;
+}
+
 .bloch-svg {
   width: min(100%, 18rem);
   display: block;
@@ -2862,6 +2978,8 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .path-stage-grid,
+  .readiness-strip,
   .tradeoff-controls,
   .tradeoff-grid,
   .fourier-controls,
@@ -2935,6 +3053,8 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .path-stage-grid,
+  .readiness-strip,
   .tradeoff-controls,
   .tradeoff-grid,
   .fourier-controls,
@@ -2997,6 +3117,7 @@ legend {
   }
 
   .role-bars button,
+  .path-lesson-list button,
   .mini-netlist div,
   .liveness-timeline div,
   .schedule-timeline div {

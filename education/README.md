@@ -6,6 +6,8 @@ and resource-accounting ideas behind this repository.
 It is intentionally built as an interactive course, not a static report:
 
 - concept lessons from qubits to secp256k1 resource contracts
+- a zero-to-contributor learning path that groups prerequisites into quantum
+  substrate, attack algorithm, circuit engine, and audit/contribution stages
 - an end-to-end circuit stack map from phase estimation to proof boundary
 - toy gate programming and qubit-state steering
 - an executable two-qubit state-vector simulator for amplitudes,
