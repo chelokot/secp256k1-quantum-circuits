@@ -183,7 +183,7 @@ export function App() {
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
   const currentIndex = lessons.findIndex((lesson) => lesson.id === activeLesson.id);
   const previousLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
-  const nextLesson = lessons[(currentIndex + 1) % lessons.length];
+  const nextLesson = currentIndex < lessons.length - 1 ? lessons[currentIndex + 1] : null;
   const resumeLesson = lessons.find((lesson) => !completed.has(lesson.id)) ?? null;
   const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
@@ -193,7 +193,9 @@ export function App() {
   const previousBridge = previousLesson === null
     ? 'Connect the public-key attack to the resource claim this repo can honestly make.'
     : `${previousLesson.title}: ${previousLesson.coreIdeas?.[0] ?? previousLesson.mentalModel}`;
-  const nextBridge = `${nextLesson.title}: ${nextLesson.coreIdeas?.[0] ?? nextLesson.mentalModel}`;
+  const nextBridge = nextLesson === null
+    ? 'Use the final checkpoint to separate accepted results, candidates, consequences, and blockers.'
+    : `${nextLesson.title}: ${nextLesson.coreIdeas?.[0] ?? nextLesson.mentalModel}`;
   const checkpointQuestion = checkpointQuestions[activeLesson.id] ?? 'What exact claim does this page let you make, and what evidence supports it?';
   const checkpointRevealed = revealedCheckpointByLesson[activeLesson.id] ?? false;
   const labRoute = labRoutes[activeLesson.id] ?? [];
@@ -218,7 +220,7 @@ export function App() {
 
   const completeAndContinue = () => {
     setCompleted((previous) => new Set(previous).add(activeLesson.id));
-    selectLesson(nextLesson.id);
+    if (nextLesson !== null) selectLesson(nextLesson.id);
   };
 
   const jumpToCurrentLab = () => {
@@ -567,9 +569,14 @@ export function App() {
             <strong>Lesson {currentIndex + 1} of {lessons.length}</strong>
             <small>{completionPercent}% complete</small>
           </div>
-          <button className="primary-action" type="button" onClick={() => selectLesson(nextLesson.id)}>
-            Next
-            <ArrowRight size={18} />
+          <button
+            className="primary-action"
+            disabled={nextLesson === null}
+            onClick={() => nextLesson && selectLesson(nextLesson.id)}
+            type="button"
+          >
+            {nextLesson === null ? 'End' : 'Next'}
+            {nextLesson === null ? null : <ArrowRight size={18} />}
           </button>
         </nav>
 
@@ -594,7 +601,7 @@ export function App() {
             <p>{previousBridge}</p>
           </article>
           <article>
-            <span>Next unlocks</span>
+            <span>{nextLesson === null ? 'Finish line' : 'Next unlocks'}</span>
             <p>{nextBridge}</p>
           </article>
         </section>
@@ -697,7 +704,7 @@ export function App() {
             <div className="actions">
               <button className="primary-action" type="button" onClick={completeAndContinue}>
                 <CheckCircle2 size={18} />
-                Mark understood and continue
+                {nextLesson === null ? 'Mark understood and finish course' : 'Mark understood and continue'}
               </button>
             </div>
           </article>
