@@ -168,13 +168,18 @@ code {
   align-items: start;
 }
 
+.hero-panel.compact-hero {
+  grid-template-columns: minmax(0, 58rem);
+  padding: 1.25rem;
+}
+
 .hero-panel h2 {
   margin-top: 0.4rem;
   max-width: 52rem;
   font-size: clamp(2rem, 4vw, 4.2rem);
 }
 
-.hero-panel:not(.no-status) h2 {
+.hero-panel.compact-hero h2 {
   font-size: clamp(2rem, 3vw, 3.2rem);
 }
 
@@ -249,13 +254,14 @@ code {
   line-height: 1.45;
 }
 
-.baseline-strip {
+.resource-status-strip {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
-.baseline-strip div,
+.resource-status-strip div,
 .metric-row div,
 .glossary-item {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
@@ -264,19 +270,27 @@ code {
   padding: 0.8rem;
 }
 
-.baseline-strip span,
+.resource-status-strip span,
 .metric-row dt {
   display: block;
   color: #93a4b7;
   font-size: 0.78rem;
 }
 
-.baseline-strip strong,
+.resource-status-strip strong,
 .metric-row dd {
   display: block;
   margin: 0.2rem 0 0;
   color: #ffffff;
   font-size: 1.25rem;
+}
+
+.resource-status-strip div {
+  padding: 0.65rem;
+}
+
+.resource-status-strip strong {
+  font-size: 1rem;
 }
 
 .content-grid,
@@ -3402,14 +3416,22 @@ legend {
 @media (max-width: 58rem) {
   .app-shell {
     grid-template-columns: 1fr;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .lesson-workspace {
     order: -1;
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
   }
 
   .course-nav {
     position: static;
+    width: 100vw;
+    max-width: 100vw;
+    min-width: 0;
     height: auto;
   }
 
@@ -3420,7 +3442,7 @@ legend {
     grid-template-columns: 1fr;
   }
 
-  .baseline-strip,
+  .resource-status-strip,
   .metric-row,
   .lesson-task-strip,
   .amplitude-bridge-grid,
@@ -3527,7 +3549,19 @@ legend {
     justify-content: center;
   }
 
-  .baseline-strip,
+  .hero-panel,
+  .concept-panel,
+  .lab-panel,
+  .wide-panel,
+  .lesson-labs,
+  .proof-grid article,
+  .proof-simulator {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .resource-status-strip,
+  .metric-pair,
   .metric-row,
   .content-grid,
   .content-grid.learning-grid,
@@ -3607,7 +3641,8 @@ legend {
   .path-lesson-list button,
   .mini-netlist div,
   .liveness-timeline div,
-  .schedule-timeline div {
+  .schedule-timeline div,
+  .proof-system-list div {
     grid-template-columns: 1fr;
   }
 }

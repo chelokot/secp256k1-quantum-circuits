@@ -317,32 +317,12 @@ export function App() {
       </aside>
 
       <section className="lesson-workspace">
-        <header className={showResourceStatus ? 'hero-panel' : 'hero-panel no-status'}>
+        <header className={showResourceStatus ? 'hero-panel no-status compact-hero' : 'hero-panel no-status'}>
           <div>
             <p className="eyebrow">{activeLesson.module}</p>
             <h2>{activeLesson.title}</h2>
             <p className="hero-copy">{activeLesson.intuition}</p>
           </div>
-          {showResourceStatus ? (
-            <div className="baseline-strip" aria-label="Current repository resource status">
-              <div>
-                <span>Accepted baseline</span>
-                <strong>none yet</strong>
-              </div>
-              <div>
-                <span>Strict candidate</span>
-                <strong>{formatInt(projectData.currentStrictCandidate.logical_qubits)}q</strong>
-              </div>
-              <div>
-                <span>Guard-corrected</span>
-                <strong>{formatInt(projectData.guardCorrectedNoAliasCandidate.logical_qubits)}q</strong>
-              </div>
-              <div>
-                <span>Non-Clifford</span>
-                <strong>{formatInt(projectData.currentStrictCandidate.non_clifford)}</strong>
-              </div>
-            </div>
-          ) : null}
         </header>
 
         <nav className="lesson-pager" aria-label="Lesson pager" data-testid="lesson-pager">
@@ -379,6 +359,27 @@ export function App() {
             <p>{activeLesson.checkpoint}</p>
           </article>
         </section>
+
+        {showResourceStatus ? (
+          <section className="resource-status-strip" aria-label="Current repository resource status">
+            <div>
+              <span>Accepted baseline</span>
+              <strong>none yet</strong>
+            </div>
+            <div>
+              <span>Strict candidate</span>
+              <strong>{formatInt(projectData.currentStrictCandidate.logical_qubits)}q</strong>
+            </div>
+            <div>
+              <span>Guard-corrected</span>
+              <strong>{formatInt(projectData.guardCorrectedNoAliasCandidate.logical_qubits)}q</strong>
+            </div>
+            <div>
+              <span>Non-Clifford</span>
+              <strong>{formatInt(projectData.currentStrictCandidate.non_clifford)}</strong>
+            </div>
+          </section>
+        ) : null}
 
         <section className={showRepoContract ? 'content-grid' : 'content-grid learning-grid'}>
           <article className="concept-panel">
