@@ -153,10 +153,15 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await openLesson(page, 'phase-estimation');
 
+  await expect(page.getByTestId('lab-route')).toContainText('Phase estimation lens');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('Hidden phase');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('Current readout');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('largest measurement peak');
   await page.getByTestId('phase-estimation-lab').getByRole('slider').fill('5');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('5/16 maps to 0101');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('0101');
 
+  await selectRouteLab(page, /Fourier lens/);
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('Fourier lens lab');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('peak: 0011 with 100%');
@@ -184,6 +189,8 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('lab-focus-controls')).toContainText('Showing lab 1 of 6');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('What is secret?');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('controlled point-add');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toHaveCount(0);
   await selectRouteLab(page, /Resource composer/);
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
@@ -221,6 +228,8 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
   await showAllLabs(page);
 
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Discrete-log oracle toy');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Choose registers');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Find collisions');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Q = 5G');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('4 + 2 * 5 = 1 mod 13');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('hidden period (+5, -1)');

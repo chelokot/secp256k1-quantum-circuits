@@ -46,6 +46,23 @@ export function DiscreteLogOracleLab() {
         secret is not a point by itself; it is the hidden slope that makes many
         different <code>(a,b)</code> pairs collide to the same group element.
       </p>
+      <div className="concept-bridge-grid" aria-label="Discrete log oracle reading order">
+        <article>
+          <span>1</span>
+          <strong>Choose registers</strong>
+          <p>The toy selects one pair (a,b), while the real circuit holds many pairs coherently.</p>
+        </article>
+        <article>
+          <span>2</span>
+          <strong>Compute group output</strong>
+          <p>The oracle maps (a,b) to (a + b*d)G without revealing d directly.</p>
+        </article>
+        <article>
+          <span>3</span>
+          <strong>Find collisions</strong>
+          <p>Pairs shifted by the hidden period land on the same output.</p>
+        </article>
+      </div>
 
       <div className="oracle-controls">
         <label>

@@ -86,6 +86,10 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
     { name: 'Qubit steering', goal: 'Apply H, X, and S as state-vector steering moves before measurement.' },
     { name: 'Two-qubit state vector', goal: 'Run a tiny two-wire state to see superposition and entanglement.' },
   ],
+  'phase-estimation': [
+    { name: 'Phase estimation lens', goal: 'Move the hidden phase and watch the likely bit label move with it.' },
+    { name: 'Fourier lens', goal: 'Test why the matching output label makes phase arrows align.' },
+  ],
   gates: [
     { name: 'Primitive netlist toy', goal: 'See rows, touched wires, and non-Clifford cost.' },
     { name: 'Quantum DSL', goal: 'Write valid rows and make invalid opcodes fail loudly.' },

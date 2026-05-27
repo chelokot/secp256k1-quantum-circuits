@@ -24,12 +24,35 @@ export function PhaseEstimationLab() {
   const peak = Math.max(...bars.map((bar) => bar.weight));
   const measured = bars.reduce((best, row) => (row.weight > best.weight ? row : best), bars[0]);
   const handAngles = [1, 2, 4, 8].map((power) => 2 * Math.PI * ((phase * power) % 1));
+  const measuredBits = formatBinary(measured.value, precisionBits);
 
   return (
     <article className="lab-panel" data-testid="phase-estimation-lab">
       <div className="panel-heading">
         <Sigma size={20} />
         <h3>Phase estimation lens</h3>
+      </div>
+      <p>
+        This lab compresses the phase-estimation idea into one toy: controlled
+        powers create a phase pattern, and the inverse QFT turns the pattern into
+        the bit label below.
+      </p>
+      <div className="concept-bridge-grid" aria-label="Phase estimation reading order">
+        <article>
+          <span>1</span>
+          <strong>Hidden phase</strong>
+          <p>The slider chooses the repeating angle pattern the circuit must read.</p>
+        </article>
+        <article>
+          <span>2</span>
+          <strong>Controlled powers</strong>
+          <p>The four clocks show powers 1, 2, 4, and 8 of that same phase.</p>
+        </article>
+        <article>
+          <span>3</span>
+          <strong>Bit label</strong>
+          <p>The tallest bar is the binary estimate produced by the readout.</p>
+        </article>
       </div>
       <label className="slider-label">
         Hidden phase numerator: {phaseNumerator}/16
@@ -50,6 +73,14 @@ export function PhaseEstimationLab() {
           </svg>
         ))}
       </div>
+      <div className="experiment-checklist">
+        <span>Current readout</span>
+        <strong>{phaseNumerator}/16 maps to {measuredBits}</strong>
+        <p>
+          In the real attack, secp256k1 group operations create the phase pattern.
+          This page isolates the readout shell before adding curve arithmetic.
+        </p>
+      </div>
       <div className="qft-bars" aria-label="Inverse QFT measurement distribution">
         {bars.map((bar) => (
           <div className="qft-column" key={bar.value}>
@@ -58,7 +89,7 @@ export function PhaseEstimationLab() {
           </div>
         ))}
       </div>
-      <p className="mono-line">largest measurement peak: {formatBinary(measured.value, precisionBits)} ~= {measured.estimate.toFixed(3)}</p>
+      <p className="mono-line">largest measurement peak: {measuredBits} ~= {measured.estimate.toFixed(3)}</p>
       <p>The inverse QFT concentrates a periodic phase into a binary label. In the real attack, the controlled operation is secp256k1 group arithmetic.</p>
     </article>
   );

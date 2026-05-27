@@ -2764,7 +2764,7 @@ code {
 
 .pipeline {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(8.75rem, 1fr));
   gap: 0.55rem;
   margin: 1rem 0;
 }
@@ -2795,9 +2795,51 @@ code {
   color: #ffffff;
 }
 
+.pipeline-stage em {
+  display: block;
+  margin-top: 0.55rem;
+  color: #b8f3e6;
+  font-size: 0.78rem;
+  font-style: normal;
+  line-height: 1.35;
+}
+
 .pipeline-stage p {
   margin: 0.5rem 0 0;
   font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.attack-readout-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.attack-readout-strip article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.28);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.attack-readout-strip span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.attack-readout-strip strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+}
+
+.attack-readout-strip p {
+  margin: 0.4rem 0 0;
+  font-size: 0.86rem;
   line-height: 1.45;
 }
 
@@ -3853,6 +3895,7 @@ legend {
   .overwrite-contract-strip,
   .overwrite-grid,
   .pipeline,
+  .attack-readout-strip,
   .oracle-controls,
   .oracle-grid-layout,
   .oracle-readout,
@@ -3979,6 +4022,7 @@ legend {
   .overwrite-map,
   .matrix-grid,
   .pipeline,
+  .attack-readout-strip,
   .oracle-controls,
   .oracle-grid-layout,
   .oracle-readout,
