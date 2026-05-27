@@ -65,8 +65,9 @@ test('loads the personal quantum circuit course and generated repo status', asyn
 test('lets the learner navigate concepts and complete progress', async ({ page }) => {
   await page.goto('/');
 
-  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await page.getByRole('button', { name: 'Mark understood and continue' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
+  await expect(page).toHaveURL(/#qubit$/);
   await page.reload();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Resume next lesson' }).click();
@@ -91,9 +92,8 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page).toHaveURL(/#zero$/);
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Next' }).click();
   await expect(page).toHaveURL(/#qubit$/);
-  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await page.getByRole('button', { name: 'Mark understood and continue' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
-  await page.getByRole('button', { name: 'Next concept' }).click();
   await expect(page).toHaveURL(/#gates$/);
 });
 
@@ -111,7 +111,7 @@ test('turns the lab collection into a zero-to-contributor learning path', async 
   await page.getByRole('button', { name: 'Jump to next missing contributor step' }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
-  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await page.getByRole('button', { name: 'Mark understood and continue' }).click();
   await page.getByLabel('Course navigation').getByRole('button', { name: /What the project/ }).click();
   await expect(page.getByTestId('learning-path-map')).toContainText('Gates, wires, controls, and reversibility');
 });

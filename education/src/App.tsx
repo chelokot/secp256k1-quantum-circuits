@@ -216,8 +216,9 @@ export function App() {
     ? moduleNames
     : moduleNames.filter((_, index) => Math.abs(index - activeModuleIndex) <= 1);
 
-  const markComplete = () => {
+  const completeAndContinue = () => {
     setCompleted((previous) => new Set(previous).add(activeLesson.id));
+    selectLesson(nextLesson.id);
   };
 
   const resetProgress = () => {
@@ -685,13 +686,9 @@ export function App() {
               </div>
             </section>
             <div className="actions">
-              <button className="primary-action" type="button" onClick={markComplete}>
+              <button className="primary-action" type="button" onClick={completeAndContinue}>
                 <CheckCircle2 size={18} />
-                Mark understood
-              </button>
-              <button className="secondary-action" type="button" onClick={() => selectLesson(nextLesson.id)}>
-                <Play size={18} />
-                Next concept
+                Mark understood and continue
               </button>
             </div>
           </article>
