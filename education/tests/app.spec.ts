@@ -5,6 +5,17 @@ const openLesson = async (page: Page, lessonId: string) => {
   await page.goto(`/#${lessonId}`);
 };
 
+const showAllLabs = async (page: Page) => {
+  const toggle = page.getByRole('button', { name: 'Show all labs' });
+  if (await toggle.count() > 0) {
+    await toggle.click();
+  }
+};
+
+const selectRouteLab = async (page: Page, labName: RegExp) => {
+  await page.getByTestId('lab-route').getByRole('button', { name: labName }).click();
+};
+
 test('loads the personal quantum circuit course and generated repo status', async ({ page }) => {
   await page.goto('/');
 
@@ -128,6 +139,7 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
 
   await openLesson(page, 'ecdlp');
+  await selectRouteLab(page, /Toy curve group/);
   await expect(page.getByTestId('toy-curve-lab')).toContainText('Toy elliptic curve group');
   await page.getByTestId('toy-curve-lab').getByRole('slider').fill('2');
   await expect(page.getByTestId('toy-curve-lab')).toContainText('nP');
@@ -141,8 +153,12 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('lab-route')).toContainText('Lab route');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Resource composer');
+  await expect(page.getByTestId('lab-focus-controls')).toContainText('Showing lab 1 of 6');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toHaveCount(0);
+  await selectRouteLab(page, /Resource composer/);
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
 
   await openLesson(page, 'netlists');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
@@ -151,6 +167,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
 
   await openLesson(page, 'coordinates');
+  await showAllLabs(page);
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('Affine and projective coordinates');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('(15, 3, 3)');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('= (5, 1)');
@@ -173,6 +190,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
 
 test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
   await openLesson(page, 'ecdlp');
+  await showAllLabs(page);
 
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Discrete-log oracle toy');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Q = 5G');
@@ -193,6 +211,7 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
 
 test('teaches the windowed ECDLP scaffold that feeds point-add leaves', async ({ page }) => {
   await openLesson(page, 'ecdlp');
+  await selectRouteLab(page, /Windowed scaffold/);
 
   await expect(page.getByTestId('window-scaffold-lab')).toContainText('Windowed attack scaffold');
   await expect(page.getByTestId('window-scaffold-lab')).toContainText('32');
@@ -211,6 +230,7 @@ test('teaches the windowed ECDLP scaffold that feeds point-add leaves', async ({
 
 test('teaches whole-oracle resource composition from strict artifacts', async ({ page }) => {
   await openLesson(page, 'ecdlp');
+  await selectRouteLab(page, /Resource composer/);
 
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('31 point-add leaves');
@@ -233,6 +253,7 @@ test('teaches whole-oracle resource composition from strict artifacts', async ({
 
 test('shows modular reduction and QROAMClean tradeoff pressure', async ({ page }) => {
   await openLesson(page, 'modular-lowering');
+  await selectRouteLab(page, /Modular reduction/);
 
   await expect(page.getByTestId('modular-reduction-lab')).toContainText('Modular multiplication shape');
   await page.getByTestId('modular-reduction-lab').getByRole('slider').first().fill('4');
@@ -257,6 +278,7 @@ test('separates external baselines, reference boundaries, and unaccepted candida
 
 test('teaches baseline tradeoff landscape and claim status', async ({ page }) => {
   await openLesson(page, 'repo-baselines');
+  await selectRouteLab(page, /Tradeoff landscape/);
 
   await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('Baseline tradeoff landscape');
   await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('1,200q / 90M');
@@ -326,6 +348,7 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
   await expect(page.getByTestId('qroam-lab')).toContainText('Selected');
 
   await openLesson(page, 'owner-capacity');
+  await selectRouteLab(page, /Invariant lab/);
   await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: pass');
   await page.getByLabel('Inject hidden scratch lane').check();
   await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: fail');
@@ -333,6 +356,7 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
 
 test('lets the learner write and debug a tiny quantum netlist', async ({ page }) => {
   await openLesson(page, 'gates');
+  await selectRouteLab(page, /Quantum DSL/);
 
   const editor = page.getByLabel('Quantum DSL editor');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Non-Clifford');
@@ -347,6 +371,7 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
 
 test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
   await openLesson(page, 'gates');
+  await selectRouteLab(page, /Cleanup puzzle/);
 
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: fail');
   await page.getByRole('button', { name: /uncompute A with same x,y/ }).click();
@@ -366,6 +391,7 @@ test('shows partial-product lowering pressure', async ({ page }) => {
 
 test('requires owner assignment and numeric capacity to pass', async ({ page }) => {
   await openLesson(page, 'owner-capacity');
+  await selectRouteLab(page, /Capacity game/);
 
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
   await page.getByLabel('Owner for guard ladder').selectOption('guard_workspace');
@@ -375,6 +401,7 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
 
 test('keeps accepted-baseline promotion behind all blockers', async ({ page }) => {
   await openLesson(page, 'repo-baselines');
+  await selectRouteLab(page, /Promotion audit/);
 
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
   await page.getByLabel('Close zero lift guard capacity not promoted').check();
@@ -460,6 +487,7 @@ test('maps checked artifacts to audit questions and claim limits', async ({ page
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact audit: pass');
 
   await openLesson(page, 'zkp-boundary');
+  await selectRouteLab(page, /Artifact atlas/);
   await page.getByTestId('artifact-atlas-lab').getByRole('button', { name: /Proof publication status/ }).click();
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('proof_publication_status.json');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Publication ready: no');
@@ -467,6 +495,7 @@ test('maps checked artifacts to audit questions and claim limits', async ({ page
 
 test('teaches the result confidence ladder before saying accepted baseline', async ({ page }) => {
   await openLesson(page, 'zkp-boundary');
+  await selectRouteLab(page, /Confidence ladder/);
 
   await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Result confidence ladder');
   await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Highest justified rung');
@@ -498,6 +527,7 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
 
 test('shows how one opcode lowers to primitive rows and liveness intervals', async ({ page }) => {
   await openLesson(page, 'mini-engine');
+  await selectRouteLab(page, /Opcode lowering/);
 
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Opcode lowering microscope');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('select_field_if_flag bit slice');
@@ -528,6 +558,7 @@ test('teaches schedule optimization by shortening live intervals', async ({ page
 
 test('teaches optimization tradeoffs from the hybrid bridge search', async ({ page }) => {
   await openLesson(page, 'optimization');
+  await selectRouteLab(page, /Optimization mission/);
 
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Optimization mission');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: blocked');
@@ -556,6 +587,7 @@ test('teaches point-add semantic boundary cases from equivalence artifacts', asy
 
 test('shows real modular accumulator lowering obligations', async ({ page }) => {
   await openLesson(page, 'modular-lowering');
+  await selectRouteLab(page, /Accumulator lowering/);
 
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('Modular accumulator lowering');
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('1,448,433');
@@ -587,6 +619,7 @@ test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) =
 
 test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
   await openLesson(page, 'zkp-boundary');
+  await selectRouteLab(page, /ZKP boundary/);
 
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('8 cases');

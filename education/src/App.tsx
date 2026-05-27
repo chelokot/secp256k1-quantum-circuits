@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, ListChecks, Play, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
@@ -64,6 +64,12 @@ type LabRouteItem = {
   goal: string;
 };
 
+type LabItem = LabRouteItem & {
+  element: ReactNode;
+};
+
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
 const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   gates: [
     { name: 'Primitive netlist toy', goal: 'See rows, touched wires, and non-Clifford cost.' },
@@ -119,6 +125,8 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
 export function App() {
   const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
   const [completed, setCompleted] = useState<Set<LessonId>>(() => new Set());
+  const [focusedLabByLesson, setFocusedLabByLesson] = useState<Partial<Record<LessonId, number>>>({});
+  const [showAllLabsByLesson, setShowAllLabsByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
   const completionPercent = Math.round((completed.size / lessons.length) * 100);
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
@@ -160,180 +168,177 @@ export function App() {
     return () => window.removeEventListener('hashchange', syncHash);
   }, []);
 
-  const activeLabs = (() => {
+  const activeLabItems: LabItem[] = (() => {
+    const labItem = (index: number, fallbackName: string, element: ReactNode): LabItem => {
+      const routeItem = labRoute[index] ?? {
+        name: fallbackName,
+        goal: 'Use this lab, then compare the output with the page checkpoint.',
+      };
+      return { ...routeItem, element };
+    };
+
     switch (activeLesson.id) {
       case 'zero':
-        return (
-          <>
+        return [
+          labItem(0, 'Learning path map',
             <LearningPathMap
               activeLessonId={activeLessonId}
               completedLessonIds={completed}
               lessons={lessons}
               onSelectLesson={selectLesson}
             />
-          </>
-        );
+          ),
+        ];
       case 'qubit':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <QubitAmplitudeBridgeLab />
-            <BlochPlayground />
-            <StateVectorLab />
-          </section>
-        );
+        return [
+          labItem(0, 'Phase-to-probability bridge', <QubitAmplitudeBridgeLab />),
+          labItem(1, 'Qubit steering', <BlochPlayground />),
+          labItem(2, 'Two-qubit state vector', <StateVectorLab />),
+        ];
       case 'gates':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <CircuitBuilder />
-            <QuantumDslLab />
-            <CleanupPuzzleLab />
-          </section>
-        );
+        return [
+          labItem(0, 'Primitive netlist toy', <CircuitBuilder />),
+          labItem(1, 'Quantum DSL', <QuantumDslLab />),
+          labItem(2, 'Cleanup puzzle', <CleanupPuzzleLab />),
+        ];
       case 'clifford':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <StabilizerMagicLab />
-            <MagicBudgetLab projectData={projectData} />
-          </section>
-        );
+        return [
+          labItem(0, 'Stabilizer vs magic wheel', <StabilizerMagicLab />),
+          labItem(1, 'Magic budget', <MagicBudgetLab projectData={projectData} />),
+        ];
       case 'logic-physical':
-        return (
-          <>
-            <LogicalPhysicalBridgeLab projectData={projectData} />
-            <ErrorCorrectionToyLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Logical-to-physical bridge', <LogicalPhysicalBridgeLab projectData={projectData} />),
+          labItem(1, 'Error-correction toy', <ErrorCorrectionToyLab projectData={projectData} />),
+        ];
       case 'phase-estimation':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <PhaseEstimationLab />
-            <FourierLensLab />
-          </section>
-        );
+        return [
+          labItem(0, 'Phase estimation lens', <PhaseEstimationLab />),
+          labItem(1, 'Fourier lens', <FourierLensLab />),
+        ];
       case 'netlists':
-        return (
-          <>
-            <CircuitStackMap projectData={projectData} />
-            <MiniResourceEngineLab />
-            <OpcodeLoweringLab />
-            <ScheduleOptimizerLab />
-          </>
-        );
+        return [
+          labItem(0, 'Circuit stack map', <CircuitStackMap projectData={projectData} />),
+          labItem(1, 'Mini resource engine', <MiniResourceEngineLab />),
+          labItem(2, 'Opcode lowering', <OpcodeLoweringLab />),
+          labItem(3, 'Schedule optimizer', <ScheduleOptimizerLab />),
+        ];
       case 'ecdlp':
-        return (
-          <>
-            <AttackPipelineLab />
-            <DiscreteLogOracleLab />
-            <PhaseKickbackLab />
-            <ToyCurveLab />
-            <WindowScaffoldLab projectData={projectData} />
-            <OracleResourceComposerLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Whole attack map', <AttackPipelineLab />),
+          labItem(1, 'Discrete-log oracle toy', <DiscreteLogOracleLab />),
+          labItem(2, 'Phase kickback', <PhaseKickbackLab />),
+          labItem(3, 'Toy curve group', <ToyCurveLab />),
+          labItem(4, 'Windowed scaffold', <WindowScaffoldLab projectData={projectData} />),
+          labItem(5, 'Resource composer', <OracleResourceComposerLab projectData={projectData} />),
+        ];
       case 'coordinates':
-        return (
-          <>
-            <CoordinateModelLab />
-            <ReversibleOverwriteLab projectData={projectData} />
-            <PointAddFormulaLab />
-            <PointAddBoundaryDebugger projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Coordinate model', <CoordinateModelLab />),
+          labItem(1, 'Overwrite lab', <ReversibleOverwriteLab projectData={projectData} />),
+          labItem(2, 'Formula microscope', <PointAddFormulaLab />),
+          labItem(3, 'Boundary debugger', <PointAddBoundaryDebugger projectData={projectData} />),
+        ];
       case 'lookup-qroam':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <QroamLab projectData={projectData} />
-            <QroamTradeoffLab />
-          </section>
-        );
+        return [
+          labItem(0, 'QROAM selection', <QroamLab projectData={projectData} />),
+          labItem(1, 'QROAMClean tradeoff', <QroamTradeoffLab />),
+        ];
       case 'programming':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <CircuitBuilder />
-            <QuantumDslLab />
-            <OpcodeLoweringLab />
-          </section>
-        );
+        return [
+          labItem(0, 'Primitive netlist toy', <CircuitBuilder />),
+          labItem(1, 'Quantum DSL', <QuantumDslLab />),
+          labItem(2, 'Opcode lowering', <OpcodeLoweringLab />),
+        ];
       case 'cleanup':
-        return (
-          <>
-            <CleanupPuzzleLab />
-            <AccumulatorScratchLifecycleLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Cleanup puzzle', <CleanupPuzzleLab />),
+          labItem(1, 'Scratch lifecycle', <AccumulatorScratchLifecycleLab projectData={projectData} />),
+        ];
       case 'modular-lowering':
-        return (
-          <>
-            <MultiplierGridLab />
-            <ModularReductionLab />
-            <AccumulatorLoweringLab projectData={projectData} />
-            <AccumulatorScratchLifecycleLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Partial-product grid', <MultiplierGridLab />),
+          labItem(1, 'Modular reduction', <ModularReductionLab />),
+          labItem(2, 'Accumulator lowering', <AccumulatorLoweringLab projectData={projectData} />),
+          labItem(3, 'Scratch lifecycle', <AccumulatorScratchLifecycleLab projectData={projectData} />),
+        ];
       case 'owner-capacity':
-        return (
-          <section className="lab-grid" aria-label="Interactive labs">
-            <SlotLiveness projectData={projectData} />
-            <EngineInvariantLab />
-            <OwnerCapacityGame />
-          </section>
-        );
+        return [
+          labItem(0, 'Slot liveness', <SlotLiveness projectData={projectData} />),
+          labItem(1, 'Invariant lab', <EngineInvariantLab />),
+          labItem(2, 'Capacity game', <OwnerCapacityGame />),
+        ];
       case 'resource-engine':
-        return (
-          <>
-            <CircuitStackMap projectData={projectData} />
-            <MiniResourceEngineLab />
-            <ScheduleOptimizerLab />
-          </>
-        );
+        return [
+          labItem(0, 'Circuit stack map', <CircuitStackMap projectData={projectData} />),
+          labItem(1, 'Mini resource engine', <MiniResourceEngineLab />),
+          labItem(2, 'Schedule optimizer', <ScheduleOptimizerLab />),
+        ];
       case 'mini-engine':
-        return (
-          <>
-            <MiniResourceEngineLab />
-            <OpcodeLoweringLab />
-          </>
-        );
+        return [
+          labItem(0, 'Mini resource engine', <MiniResourceEngineLab />),
+          labItem(1, 'Opcode lowering', <OpcodeLoweringLab />),
+        ];
       case 'optimization':
-        return (
-          <>
-            <OptimizationMissionLab projectData={projectData} />
-            <BaselineTradeoffLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Optimization mission', <OptimizationMissionLab projectData={projectData} />),
+          labItem(1, 'Baseline tradeoff', <BaselineTradeoffLab projectData={projectData} />),
+        ];
       case 'point-add-boundary':
-        return (
-          <>
-            <PointAddBoundaryDebugger projectData={projectData} />
-            <ArtifactAtlasLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Boundary debugger', <PointAddBoundaryDebugger projectData={projectData} />),
+          labItem(1, 'Artifact atlas', <ArtifactAtlasLab projectData={projectData} />),
+        ];
       case 'contribution':
-        return (
-          <>
-            <ContributorMissionBoard projectData={projectData} />
-            <ClaimAuditDrill projectData={projectData} />
-            <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />
-          </>
-        );
+        return [
+          labItem(0, 'Contributor mission board', <ContributorMissionBoard projectData={projectData} />),
+          labItem(1, 'Claim audit drill', <ClaimAuditDrill projectData={projectData} />),
+          labItem(2, 'Course coverage audit', <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />),
+        ];
       case 'zkp-boundary':
-        return (
-          <>
-            <ProofBoundaryLab projectData={projectData} />
-            <ConfidenceLadderLab projectData={projectData} />
-            <ArtifactAtlasLab projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'ZKP boundary', <ProofBoundaryLab projectData={projectData} />),
+          labItem(1, 'Confidence ladder', <ConfidenceLadderLab projectData={projectData} />),
+          labItem(2, 'Artifact atlas', <ArtifactAtlasLab projectData={projectData} />),
+        ];
       case 'repo-baselines':
-        return (
-          <>
-            <BaselineExplorer projectData={projectData} />
-            <BaselineTradeoffLab projectData={projectData} />
-            <BaselinePromotionLab projectData={projectData} />
-            <BaselineChart projectData={projectData} />
-          </>
-        );
+        return [
+          labItem(0, 'Baseline explorer', <BaselineExplorer projectData={projectData} />),
+          labItem(1, 'Tradeoff landscape', <BaselineTradeoffLab projectData={projectData} />),
+          labItem(2, 'Promotion audit', <BaselinePromotionLab projectData={projectData} />),
+          labItem(3, 'Baseline chart', <BaselineChart projectData={projectData} />),
+        ];
     }
   })();
+
+  const focusedLabIndex = Math.min(focusedLabByLesson[activeLesson.id] ?? 0, Math.max(0, activeLabItems.length - 1));
+  const hasGuidedLabFocus = labRoute.length > 0 && activeLabItems.length > 1;
+  const showAllLabs = showAllLabsByLesson[activeLesson.id] ?? false;
+  const visibleLabItems = hasGuidedLabFocus && !showAllLabs ? [activeLabItems[focusedLabIndex]] : activeLabItems;
+  const gridLabLessons = new Set<LessonId>(['qubit', 'clifford', 'phase-estimation', 'lookup-qroam']);
+  const labCollectionClass = hasGuidedLabFocus && !showAllLabs
+    ? 'lab-focus-stage'
+    : gridLabLessons.has(activeLesson.id) ? 'lab-grid' : 'lab-stack';
+
+  const selectFocusedLab = (index: number) => {
+    setFocusedLabByLesson((previous) => ({ ...previous, [activeLesson.id]: index }));
+    setShowAllLabsByLesson((previous) => ({ ...previous, [activeLesson.id]: false }));
+  };
+
+  const moveFocusedLab = (direction: -1 | 1) => {
+    const nextIndex = Math.min(Math.max(focusedLabIndex + direction, 0), activeLabItems.length - 1);
+    selectFocusedLab(nextIndex);
+  };
+
+  const renderedActiveLabs = (
+    <section className={labCollectionClass} aria-label="Interactive labs" data-testid="active-lab-stage">
+      {visibleLabItems.map((item) => (
+        <div className="lab-focus-item" data-testid={`lab-step-${slugify(item.name)}`} key={item.name}>
+          {item.element}
+        </div>
+      ))}
+    </section>
+  );
 
   const guidedActiveLabs = (
     <>
@@ -344,19 +349,47 @@ export function App() {
             <h3>Lab route</h3>
           </div>
           <ol>
-            {labRoute.map((item, index) => (
-              <li key={item.name}>
-                <span>{index + 1}</span>
-                <div>
-                  <strong>{item.name}</strong>
-                  <p>{item.goal}</p>
-                </div>
+            {activeLabItems.map((item, index) => (
+              <li className={index === focusedLabIndex && !showAllLabs ? 'active' : undefined} key={item.name}>
+                <button
+                  aria-current={index === focusedLabIndex && !showAllLabs ? 'step' : undefined}
+                  onClick={() => selectFocusedLab(index)}
+                  type="button"
+                >
+                  <span>{index + 1}</span>
+                  <div>
+                    <strong>{item.name}</strong>
+                    <p>{item.goal}</p>
+                  </div>
+                </button>
               </li>
             ))}
           </ol>
+          {hasGuidedLabFocus ? (
+            <div className="lab-focus-controls" data-testid="lab-focus-controls">
+              <span>{showAllLabs ? `Showing all ${activeLabItems.length} labs` : `Showing lab ${focusedLabIndex + 1} of ${activeLabItems.length}`}</span>
+              <div>
+                <button className="secondary-action" disabled={showAllLabs || focusedLabIndex === 0} onClick={() => moveFocusedLab(-1)} type="button">
+                  <ArrowLeft size={16} />
+                  Previous lab
+                </button>
+                <button className="secondary-action" disabled={showAllLabs || focusedLabIndex === activeLabItems.length - 1} onClick={() => moveFocusedLab(1)} type="button">
+                  Next lab
+                  <ArrowRight size={16} />
+                </button>
+                <button
+                  className="secondary-action"
+                  onClick={() => setShowAllLabsByLesson((previous) => ({ ...previous, [activeLesson.id]: !showAllLabs }))}
+                  type="button"
+                >
+                  {showAllLabs ? 'Focus one lab' : 'Show all labs'}
+                </button>
+              </div>
+            </div>
+          ) : null}
         </section>
       ) : null}
-      {activeLabs}
+      {renderedActiveLabs}
     </>
   );
 
