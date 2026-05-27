@@ -14,7 +14,8 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByText('none yet').first()).toBeVisible();
   await expect(page.getByLabel('Current repository resource status')).toContainText('1,968q');
   await expect(page.getByLabel('Current repository resource status')).toContainText('2,222q');
-  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('chain of lossless translations');
+  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('how large and expensive');
+  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
 });

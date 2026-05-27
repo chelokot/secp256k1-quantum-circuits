@@ -45,22 +45,23 @@ export const lessons: CourseLesson[] = [
     title: 'What the project is trying to prove',
     icon: Route,
     intuition:
-      'The repo is trying to make one exact object exist: a reversible secp256k1 oracle whose behavior, live wires, resource count, and proof statement all refer to the same boundary.',
+      'The project asks a concrete security question: how large and expensive would a fault-tolerant quantum computation have to be to attack secp256k1, the elliptic-curve system used by Bitcoin public keys?',
     whyItMatters:
-      'Most wrong low-qubit results fail because two layers silently talk about different objects: a semantic point-add formula, a lookup abstraction, a liveness list, or a proof input. The course trains you to notice those layer changes.',
+      'The answer is not one vague number. We care mainly about two scarce resources: how many logical qubits must be alive at the busiest moment, and how many expensive non-Clifford operations the computation uses overall.',
     mentalModel:
-      'The useful mental model is a chain of lossless translations. If any link summarizes away a quantum wire, forgets cleanup, or changes the boundary cases, the final number may still look precise while no longer describing an executable circuit.',
-    checkpoint: 'A result is trustworthy only when semantics, liveness, resource owners, and proof inputs all bind the same circuit boundary.',
+      'The first question is: how large and expensive is the quantum computation that would recover a secp256k1 private key from a public key? Imagine starting with that math attack on a whiteboard, then forcing it step by step into something machine-like: first an algorithm, then curve operations, then arithmetic, then tiny reversible gates, then a resource count.',
+    checkpoint: 'The repo is trying to justify resource numbers for a quantum attack, not merely explain that quantum computers threaten elliptic curves.',
     deepDive: [
-      'A classical program can often hide temporary storage behind a compiler. A quantum circuit cannot: every coherent temporary value remains physically present until it is uncomputed, measured under an allowed rule, or declared as part of the output. That is why this repo is mostly about boundaries, not formulas.',
-      'The attack idea is high level: use phase estimation around many controlled elliptic-curve additions. The hard part is proving that the repeated point-add leaf, lookup data, modular arithmetic, owner capacities, and ZKP public values are all describing the same repeated operation.',
+      'A normal software estimate might say “this program uses about this much memory.” Here memory is quantum memory. If a temporary value exists during the computation, it occupies logical qubits until the circuit deliberately erases it in a reversible way. You cannot simply stop mentioning it in a formula.',
+      'The attack idea is high level: a quantum algorithm repeatedly performs controlled elliptic-curve additions and uses interference to recover the secret key. This course starts before those words are assumed. First you learn what qubits and gates are; then you climb toward why point addition, lookup tables, arithmetic, and proof artifacts matter.',
+      'So the first promise of the repo is modest but important: when it says “this candidate uses 1,968 logical qubits and 36,973,222 non-Clifford operations,” those numbers should come from a circuit-like object that can be inspected, tested, and challenged.',
     ],
     coreIdeas: [
-      'Semantic correctness is about the mathematical map.',
-      'Resource correctness is about every live wire at every row.',
-      'Publication correctness is about the exact artifact and proof input being current.',
+      'Target: secp256k1 discrete logarithm, the hard problem behind public keys.',
+      'Main resources: peak logical qubits and total non-Clifford operations.',
+      'Trustworthy result: numbers derived from a concrete circuit path, not from a hand-wavy estimate.',
     ],
-    practicePrompt: 'Use the learning path map below first. Then open the attack map and ask which layer would catch a hidden lookup-output wire.',
+    practicePrompt: 'Start with the learning path map below. The only thing to hold in your head for now: every later page explains one step between “quantum attack idea” and “auditable resource number.”',
   },
   {
     id: 'qubit',
