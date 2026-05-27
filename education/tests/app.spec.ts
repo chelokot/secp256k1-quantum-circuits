@@ -34,6 +34,13 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('page-vocab')).toContainText('secp256k1');
   await expect(page.getByTestId('page-vocab')).toContainText('The elliptic-curve system used by Bitcoin public keys');
   await expect(page.getByRole('heading', { name: 'Vocabulary spine' })).toHaveCount(0);
+  await expect(page.getByLabel('Course navigation')).toContainText('Orientation');
+  await expect(page.getByLabel('Course navigation')).toContainText('Quantum substrate');
+  await expect(page.getByLabel('Course navigation')).not.toContainText('This repo now');
+  await page.getByRole('button', { name: 'Full course index' }).click();
+  await expect(page.getByLabel('Course navigation')).toContainText('This repo now');
+  await page.getByRole('button', { name: 'Focused path' }).click();
+  await expect(page.getByLabel('Course navigation')).not.toContainText('This repo now');
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
 });

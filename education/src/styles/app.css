@@ -107,6 +107,25 @@ code {
   background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
+.nav-mode-toggle {
+  display: inline-flex;
+  justify-content: center;
+  width: 100%;
+  margin: 0 0 1rem;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.28);
+  border-radius: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  color: #d9e7ff;
+  background: rgba(143, 182, 255, 0.08);
+  cursor: pointer;
+}
+
+.nav-mode-toggle:hover,
+.nav-mode-toggle:focus-visible {
+  border-color: rgba(99, 230, 190, 0.42);
+  background: rgba(99, 230, 190, 0.08);
+}
+
 .lesson-list section {
   margin-bottom: 1.25rem;
 }

@@ -127,6 +127,7 @@ export function App() {
   const [completed, setCompleted] = useState<Set<LessonId>>(() => new Set());
   const [focusedLabByLesson, setFocusedLabByLesson] = useState<Partial<Record<LessonId, number>>>({});
   const [showAllLabsByLesson, setShowAllLabsByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
+  const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
   const completionPercent = Math.round((completed.size / lessons.length) * 100);
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
@@ -151,6 +152,11 @@ export function App() {
       return groups;
     }, {});
   }, []);
+  const moduleNames = Object.keys(groupedLessons);
+  const activeModuleIndex = moduleNames.indexOf(activeLesson.module);
+  const navigationModules = showFullCourseIndex
+    ? moduleNames
+    : moduleNames.filter((_, index) => Math.abs(index - activeModuleIndex) <= 1);
 
   const markComplete = () => {
     setCompleted((previous) => new Set(previous).add(activeLesson.id));
@@ -410,11 +416,19 @@ export function App() {
           </div>
           <div className="progress-track"><div style={{ width: `${completionPercent}%` }} /></div>
         </div>
+        <button
+          className="nav-mode-toggle"
+          type="button"
+          aria-pressed={showFullCourseIndex}
+          onClick={() => setShowFullCourseIndex((value) => !value)}
+        >
+          {showFullCourseIndex ? 'Focused path' : 'Full course index'}
+        </button>
         <nav className="lesson-list">
-          {Object.entries(groupedLessons).map(([module, moduleLessons]) => (
+          {navigationModules.map((module) => (
             <section key={module}>
               <p className="module-title">{module}</p>
-              {moduleLessons.map((lesson) => {
+              {groupedLessons[module].map((lesson) => {
                 const Icon = lesson.icon;
                 const isActive = lesson.id === activeLesson.id;
                 const isDone = completed.has(lesson.id);
