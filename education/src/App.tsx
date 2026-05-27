@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, Play, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, ListChecks, Play, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
 import { BaselineChart } from './components/BaselineChart';
@@ -59,6 +59,63 @@ function lessonFromHash() {
   return lessonIds.has(hash as LessonId) ? hash as LessonId : 'zero';
 }
 
+type LabRouteItem = {
+  name: string;
+  goal: string;
+};
+
+const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
+  gates: [
+    { name: 'Primitive netlist toy', goal: 'See rows, touched wires, and non-Clifford cost.' },
+    { name: 'Quantum DSL', goal: 'Write valid rows and make invalid opcodes fail loudly.' },
+    { name: 'Cleanup puzzle', goal: 'Prove compute, use, and uncompute as one lifecycle.' },
+  ],
+  ecdlp: [
+    { name: 'Whole attack map', goal: 'Orient the public key, quantum registers, controlled adds, and readout.' },
+    { name: 'Discrete-log oracle toy', goal: 'Change d and watch the hidden period relation move.' },
+    { name: 'Phase kickback', goal: 'See oracle output disappear while its phase imprint stays.' },
+    { name: 'Toy curve group', goal: 'Ground the abstract oracle in concrete point multiples.' },
+    { name: 'Windowed scaffold', goal: 'Connect retained windows to repeated point-add leaves.' },
+    { name: 'Resource composer', goal: 'Check why gates add over leaves while qubits are peak workspace.' },
+  ],
+  coordinates: [
+    { name: 'Coordinate model', goal: 'Compare affine and projective slot pressure.' },
+    { name: 'Overwrite lab', goal: 'Test when in-place updates are reversible permutations.' },
+    { name: 'Formula microscope', goal: 'Step through ordinary and lookup-infinity point-add behavior.' },
+    { name: 'Boundary debugger', goal: 'Separate random hot-path tests from edge-case coverage.' },
+  ],
+  'modular-lowering': [
+    { name: 'Partial-product grid', goal: 'See why a multiply becomes many temporary bit products.' },
+    { name: 'Modular reduction', goal: 'Follow high-column folds back into field range.' },
+    { name: 'Accumulator lowering', goal: 'Inspect promoted vs unpromoted row obligations.' },
+    { name: 'Scratch lifecycle', goal: 'Track consume and source-uncompute requirements.' },
+  ],
+  'owner-capacity': [
+    { name: 'Slot liveness', goal: 'Reconstruct peak field-slot pressure and guard capacity.' },
+    { name: 'Invariant lab', goal: 'Inject hidden scratch and watch the no-free-wire audit fail.' },
+    { name: 'Capacity game', goal: 'Assign owners until numeric load fits capacity.' },
+  ],
+  'mini-engine': [
+    { name: 'Mini resource engine', goal: 'Derive peak qubits from rows, owners, and cleanup.' },
+    { name: 'Opcode lowering', goal: 'Expand one abstract opcode into primitive counted rows.' },
+  ],
+  optimization: [
+    { name: 'Optimization mission', goal: 'Compare candidates against qubit, gate, semantic, and promotion gates.' },
+    { name: 'Baseline tradeoff', goal: 'Keep external comparison rows separate from repo claims.' },
+  ],
+  'zkp-boundary': [
+    { name: 'ZKP boundary', goal: 'Close freshness, macro-boundary, and proof verification gates.' },
+    { name: 'Confidence ladder', goal: 'Match claim wording to the strongest proved rung.' },
+    { name: 'Artifact atlas', goal: 'Map checked paths to what they prove and do not prove.' },
+  ],
+  'repo-baselines': [
+    { name: 'Baseline explorer', goal: 'Read each row with its source and claim status.' },
+    { name: 'Tradeoff landscape', goal: 'Compare qubits and non-Clifford without merging incompatible rows.' },
+    { name: 'Promotion audit', goal: 'Close blockers deliberately before saying accepted baseline.' },
+    { name: 'Baseline chart', goal: 'Use the visual comparison only after status is understood.' },
+  ],
+};
+
 export function App() {
   const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
   const [completed, setCompleted] = useState<Set<LessonId>>(() => new Set());
@@ -73,6 +130,7 @@ export function App() {
   const showReviewPanels = activeLesson.id === 'repo-baselines';
   const pageFocus = activeLesson.coreIdeas?.[0] ?? activeLesson.intuition;
   const pageExercise = activeLesson.practicePrompt ?? 'Use the labs on this page. Change one control, then read which output, audit, or count changed.';
+  const labRoute = labRoutes[activeLesson.id] ?? [];
 
   const groupedLessons = useMemo(() => {
     return lessons.reduce<Record<string, typeof lessons>>((groups, lesson) => {
@@ -272,6 +330,31 @@ export function App() {
     }
   })();
 
+  const guidedActiveLabs = (
+    <>
+      {labRoute.length > 0 ? (
+        <section className="lab-route" data-testid="lab-route" aria-label="Lab route">
+          <div className="panel-heading">
+            <ListChecks size={20} />
+            <h3>Lab route</h3>
+          </div>
+          <ol>
+            {labRoute.map((item, index) => (
+              <li key={item.name}>
+                <span>{index + 1}</span>
+                <div>
+                  <strong>{item.name}</strong>
+                  <p>{item.goal}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ) : null}
+      {activeLabs}
+    </>
+  );
+
   return (
     <main className="app-shell">
       <aside className="course-nav" aria-label="Course navigation">
@@ -450,14 +533,14 @@ export function App() {
             </article>
           ) : (
             <section className="lesson-labs inline" aria-label={`${activeLesson.title} labs`}>
-              {activeLabs}
+              {guidedActiveLabs}
             </section>
           )}
         </section>
 
         {showRepoContract ? (
           <section className="lesson-labs" aria-label={`${activeLesson.title} labs`}>
-            {activeLabs}
+            {guidedActiveLabs}
           </section>
         ) : null}
 

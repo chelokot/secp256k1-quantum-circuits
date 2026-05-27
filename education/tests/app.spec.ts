@@ -30,7 +30,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
-  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('two complex numbers');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('P(0) = |a|^2');
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();
   await expect(page).toHaveURL(/#zero$/);
@@ -69,7 +69,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 50% / 1: 50%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply H, then measure');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 100% / 1: 0%');
-  await page.getByLabel('Relative phase angle').fill('180');
+  await page.getByLabel('Relative amplitude angle').fill('180');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Relative angle: 180 degrees');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 0% / 1: 100%');
 
@@ -132,6 +132,9 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await openLesson(page, 'ecdlp');
 
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with the Whole attack map');
+  await expect(page.getByTestId('lab-route')).toContainText('Lab route');
+  await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
+  await expect(page.getByTestId('lab-route')).toContainText('Resource composer');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
 

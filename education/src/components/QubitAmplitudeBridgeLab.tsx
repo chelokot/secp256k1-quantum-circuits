@@ -27,15 +27,16 @@ export function QubitAmplitudeBridgeLab() {
         <h3>Phase becomes probability</h3>
       </div>
       <p>
-        Start with an equal-length state: 0 and 1 both have 50% direct measurement chance.
-        Move only the angle of the 1-arrow. The direct chances do not change, but the
-        chances after an H gate do.
+        Start with two equal-length arrows: the 0-amplitude and the 1-amplitude.
+        Equal lengths mean direct measurement is 50/50. Move only the angle of the
+        1-arrow: direct measurement still sees 50/50, but H mixes the arrows first,
+        so the angle changes the final chances.
       </p>
 
       <label className="slider-label">
         <span>Relative angle: {phaseDegrees} degrees</span>
         <input
-          aria-label="Relative phase angle"
+          aria-label="Relative amplitude angle"
           max="180"
           min="0"
           onChange={(event) => setPhaseDegrees(Number(event.currentTarget.value))}
@@ -71,7 +72,7 @@ export function QubitAmplitudeBridgeLab() {
           <div>
             <span>Apply H, then measure</span>
             <strong>0: {formatPercent(afterHP0)} / 1: {formatPercent(afterHP1)}</strong>
-            <p>H combines the arrows. Same direction reinforces 0; opposite direction cancels 0.</p>
+            <p>H mixes the arrows. Same direction reinforces 0; opposite direction cancels 0.</p>
           </div>
         </div>
       </div>

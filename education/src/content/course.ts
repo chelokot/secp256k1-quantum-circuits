@@ -69,21 +69,23 @@ export const lessons: CourseLesson[] = [
     title: 'Qubits as vectors you can steer',
     icon: Atom,
     intuition:
-      'A qubit is a state with two complex numbers: one attached to outcome 0 and one attached to outcome 1. Their squared lengths become measurement probabilities.',
+      'A qubit stores two amplitudes: one for outcome 0 and one for outcome 1. In the lab we draw each amplitude as an arrow, because it has both a length and an angle.',
     whyItMatters:
-      'Quantum gates edit the arrows before measurement. That is how a circuit turns invisible angle information into visible output probabilities.',
+      'Measurement sees arrow lengths as probabilities. Gates can also use the angles before measurement, which is why a quantum circuit can make answers reinforce or cancel.',
     mentalModel:
-      'Picture two complex numbers as two arrows: a 0-arrow and a 1-arrow. Longer arrow means a more likely measurement outcome. Arrow direction is phase: hidden from immediate measurement, but useful after a gate combines arrows.',
-    checkpoint: 'A probability coin has only chances. A qubit has chances plus arrow directions that later gates can turn into chances.',
+      'Picture a 0-arrow and a 1-arrow. Longer arrow means a more likely direct measurement outcome. The arrow angle is phase: direct measurement does not show it, but a later gate can mix the arrows and turn their angle difference into a changed probability.',
+    checkpoint: 'A probability coin has only chances. A qubit has chances plus amplitude angles that later gates can turn into changed chances.',
     deepDive: [
-      'Notation: a|0> + b|1>. The symbols a and b are complex numbers; in this lesson, treat them as arrows in a plane.',
-      'Probability rule: P(0) = |a|^2 and P(1) = |b|^2. If both arrows have length 1/sqrt(2), direct measurement is 50/50.',
-      'Phase rule: the angle between arrows matters only after a gate recombines them. In the lab, H turns same direction into certain 0 and opposite direction into certain 1.',
+      'Notation: a|0> + b|1>. The symbols a and b are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
+      'Probability rule: P(0) = |a|^2 and P(1) = |b|^2. The vertical bars mean arrow length. If both arrows have length 1/sqrt(2), direct measurement is 50/50.',
+      'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a gate combines the 0-arrow and 1-arrow.',
+      'In the lab, H is the combining gate. Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1.',
+      'Later Shor-style pages use the same idea at larger scale: phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
     ],
     coreIdeas: [
-      'State = two complex amplitudes.',
+      'Amplitude = arrow with length and angle.',
       'Measurement probability = squared arrow length.',
-      'Relative angle matters only when a later gate recombines amplitudes.',
+      'Relative angle becomes observable only after a gate mixes amplitudes.',
     ],
     practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after H flips from always 0 to always 1.',
   },
@@ -169,16 +171,16 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The secp256k1 circuit is expensive because phase estimation asks for many controlled group operations, and each one expands into point-add arithmetic.',
     mentalModel:
-      'The circuit prepares many possible exponents at once, attaches phase patterns to them, and then applies a Fourier-style readout that concentrates probability on the matching bit label.',
+      'The circuit prepares many possible exponents at once. The repeated group operation gives each exponent a related amplitude angle. The Fourier-style readout turns that angle rhythm into a likely bit label.',
     checkpoint: 'The curve arithmetic is the engine; phase estimation is the measuring instrument wrapped around it.',
     deepDive: [
-      'A hidden period means outputs repeat in a structured way. Shor-style algorithms turn that repetition into phase slopes across a control register.',
-      'The inverse QFT is the readout step. It converts a clean phase slope into a sharp measurement peak, similar to how a spectrum analyzer reveals a frequency.',
-      'The expensive part for secp256k1 is not the final readout. It is building the phase slope by repeatedly running controlled elliptic-curve group operations.',
+      'A hidden period means outputs repeat in a structured way. Shor-style algorithms turn that repetition into a regular angle pattern across the control register.',
+      'The inverse QFT is the readout step. It converts a clean angle rhythm into a sharp measurement peak, similar to how a spectrum analyzer reveals a frequency.',
+      'The expensive part for secp256k1 is not the final readout. It is creating the angle rhythm by repeatedly running controlled elliptic-curve group operations.',
     ],
     coreIdeas: [
-      'Hidden period -> phase slope.',
-      'Inverse QFT -> measurement peak.',
+      'A hidden period creates a regular amplitude-angle pattern.',
+      'The inverse QFT turns that pattern into a measurement peak.',
       'Controlled curve arithmetic dominates resource cost.',
     ],
     practicePrompt: 'Move the hidden phase numerator slider. The bars show which bit label becomes most likely after the phase-estimation readout.',
@@ -241,17 +243,18 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The repo’s slot fights are about how many field-sized live registers are needed while computing a point-add boundary.',
     mentalModel:
-      'Affine is a precise street address. Projective is a family of equivalent addresses that avoids expensive division until you really need it.',
-    checkpoint: 'A field slot is one field-sized quantum register, 256 wires for secp256k1, and it must have a counted owner.',
+      'Affine is a precise street address. Projective is a family of equivalent addresses that avoids expensive division until you really need it. A field slot is the storage for one secp256k1 coordinate-sized number.',
+    checkpoint: 'A field slot is one secp256k1 number register: 256 logical wires, all with a counted owner.',
     deepDive: [
       'Affine coordinates store a point directly as x and y. The formulas are compact, but adding points often needs division, which is expensive in reversible arithmetic.',
       'Projective coordinates store an equivalent representative with extra scale information. That usually costs more live field slots but avoids inversion on the hot path.',
+      'The number 256 comes from secp256k1 field arithmetic. Each coordinate is a number modulo a roughly 256-bit prime, so one live coordinate register means 256 live logical wires.',
       'Infinity cases are not optional. Doubling, inverse pairs, accumulator infinity, and lookup infinity must match the same boundary that resource counting claims.',
     ],
     coreIdeas: [
       'Affine saves coordinates but makes inversion painful.',
       'Projective spends slots to use multiply/add formulas.',
-      'Every field slot is 256 counted logical wires.',
+      'Every secp256k1 field slot is 256 counted logical wires.',
     ],
     practicePrompt: 'Move the projective scale first. Then open the overwrite lab and toggle the zero-lift guard to see when an in-place update stops being reversible.',
   },
@@ -566,10 +569,10 @@ export const glossary = [
   ['Schedule', 'The ordered placement of compute, consume, cleanup, and output rows that determines live overlap.'],
   ['Circuit stack', 'The chain from algorithm shell to lookup, point-add, arithmetic lowering, primitive netlist, resource count, and proof boundary.'],
   ['Window scaffold', 'The phase-register schedule that groups control bits into fixed-size windows, with each retained window becoming a point-add leaf.'],
-  ['Field slot', 'A 256-wire secp256k1 field-sized quantum register.'],
+  ['Field slot', 'One secp256k1 coordinate-sized number register. It has 256 logical wires because secp256k1 field elements are 256-bit numbers.'],
   ['QROAM', 'A quantum read-only memory tradeoff for selecting table data.'],
   ['Phase estimation', 'A quantum routine that extracts a hidden eigenphase or period into classical bits.'],
-  ['Fourier transform', 'A change of basis that turns evenly rotating phase slopes into sharp frequency labels.'],
+  ['Fourier transform', 'A change of basis that turns a regular amplitude-angle rhythm into a sharp frequency label.'],
   ['Destructive interference', 'Amplitude cancellation caused by arrows pointing in different directions before measurement.'],
   ['Discrete logarithm', 'The hidden scalar d in Q = dG, where G and Q are known group elements.'],
   ['Oracle', 'A reversible black-box-style operation the quantum algorithm queries in superposition.'],
@@ -577,7 +580,7 @@ export const glossary = [
   ['Peak workspace', 'The live logical-qubit surface reused across repeated calls; unlike gate count, it is not multiplied by the number of sequential leaves.'],
   ['Hidden period', 'A repeated relation in the oracle outputs, such as shifting (a,b) without changing aG + bQ.'],
   ['Phase kickback', 'A pattern where a computed oracle value is returned to zero while its phase imprint remains on the input register.'],
-  ['Fourier label', 'A frequency-state label that converts an oracle output value into a phase slope over the queried inputs.'],
+  ['Fourier label', 'A frequency-state label that converts an oracle output value into a regular angle pattern over the queried inputs.'],
   ['Affine point', 'An elliptic-curve point represented directly as x and y coordinates.'],
   ['Projective point', 'An equivalent point representation using extra scale coordinates to avoid division.'],
   ['Coordinate normalization', 'The step that converts a projective representative back into direct affine coordinates.'],
@@ -657,7 +660,7 @@ export const quiz = [
     correctIndex: 0,
   },
   {
-    prompt: 'Why does the inverse QFT produce a sharp label for a clean phase slope?',
+    prompt: 'Why does the inverse QFT produce a sharp label for a clean angle rhythm?',
     answers: [
       'The correct label aligns all phase arrows, while wrong labels make arrows cancel by destructive interference.',
       'It measures every possible label and keeps the smallest one.',
@@ -677,7 +680,7 @@ export const quiz = [
   {
     prompt: 'What does phase kickback do for the toy ECDLP oracle?',
     answers: [
-      'It turns f(a,b) into a phase slope over the input lattice while the output register can be uncomputed.',
+      'It turns f(a,b) into an angle pattern over the input lattice while the output register can be uncomputed.',
       'It measures the secret d directly before running any group operation.',
       'It replaces QROAM lookup workspace with a classical cache.',
     ],

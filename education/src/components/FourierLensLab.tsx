@@ -59,13 +59,13 @@ export function FourierLensLab() {
         <h3>Fourier lens lab</h3>
       </div>
       <p>
-        Inverse QFT is a phase-slope detector. For each possible output label it asks:
-        if I subtract this slope, do all arrows align?
+        Inverse QFT is an angle-rhythm detector. For each possible output label it asks:
+        if I subtract this candidate rhythm, do all arrows align?
       </p>
 
       <div className="fourier-controls">
         <label className="slider-label">
-          Hidden phase slope: {frequency}/16
+          Hidden angle rhythm: {frequency}/16
           <input
             aria-label="Fourier hidden frequency"
             max="15"
@@ -108,8 +108,8 @@ export function FourierLensLab() {
             vector sum length {selectedLength.toFixed(0)}/16 for candidate {formatBinary(candidateOutput)}
           </p>
           <p>
-            Matching the hidden slope makes every arrow point the same way. Wrong labels spread
-            the arrows around the circle and destructively interfere.
+            Matching the hidden rhythm makes every arrow point the same way. Wrong labels
+            spread the arrows around the circle and destructively interfere.
           </p>
         </article>
 
@@ -125,7 +125,7 @@ export function FourierLensLab() {
           </div>
           <p className="mono-line">peak: {formatBinary(peak.candidate)} with {(peak.weight * 100).toFixed(0)}%</p>
           <p>
-            The real secp256k1 attack builds this phase slope with controlled group operations;
+            The real secp256k1 attack builds this angle rhythm with controlled group operations;
             the semiclassical inverse-QFT shell reads it out one bit at a time.
           </p>
         </article>

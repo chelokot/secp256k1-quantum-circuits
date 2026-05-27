@@ -402,6 +402,57 @@ code {
   grid-template-columns: 1fr;
 }
 
+.lab-route {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.11);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: rgba(14, 21, 29, 0.72);
+}
+
+.lab-route ol {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.6rem;
+  margin: 0.9rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lab-route li {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: start;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.lab-route li > span {
+  display: grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  border-radius: 999rem;
+  color: #071018;
+  background: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.lab-route strong {
+  display: block;
+  color: #ffffff;
+}
+
+.lab-route p {
+  margin: 0.25rem 0 0;
+  color: #b9c7d6;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .core-idea-list {
   display: grid;
   gap: 0.45rem;

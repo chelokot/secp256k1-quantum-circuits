@@ -152,7 +152,7 @@ export function PhaseKickbackLab() {
           <article>
             <span>Fourier gradient</span>
             <strong>({derived.gradientA}, {derived.gradientB})</strong>
-            <p>Because t * (a + b*d) has slope t*d in the b direction.</p>
+            <p>Because t * (a + b*d) changes by t*d when b moves by one step.</p>
           </article>
           <article>
             <span>Hidden period check</span>
