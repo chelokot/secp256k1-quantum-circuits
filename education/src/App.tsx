@@ -10,6 +10,7 @@ import { CircuitBuilder } from './components/CircuitBuilder';
 import { SlotLiveness } from './components/SlotLiveness';
 import { QuizPanel } from './components/QuizPanel';
 import { PhaseEstimationLab } from './components/PhaseEstimationLab';
+import { FourierLensLab } from './components/FourierLensLab';
 import { ToyCurveLab } from './components/ToyCurveLab';
 import { CoordinateModelLab } from './components/CoordinateModelLab';
 import { ReversibleOverwriteLab } from './components/ReversibleOverwriteLab';
@@ -192,6 +193,7 @@ export function App() {
           <StateVectorLab />
           <StabilizerMagicLab />
           <PhaseEstimationLab />
+          <FourierLensLab />
           <CircuitBuilder />
           <QuantumDslLab />
           <CleanupPuzzleLab />

@@ -33,7 +33,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('yes');
   await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('50%');
-  await page.getByRole('button', { name: 'Interference' }).click();
+  await page.getByTestId('state-vector-lab').getByRole('button', { name: 'Interference' }).click();
   await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('0%');
   await expect(page.getByTestId('state-vector-lab')).toContainText('|10>');
@@ -61,6 +61,15 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('largest measurement peak');
   await page.getByTestId('phase-estimation-lab').getByRole('slider').fill('5');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('0101');
+
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('Fourier lens lab');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('peak: 0011 with 100%');
+  await page.getByLabel('Fourier hidden frequency').fill('5');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('peak: 0101 with 100%');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 0/16');
+  await page.getByLabel('Fourier candidate output').fill('5');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
 
   await expect(page.getByTestId('toy-curve-lab')).toContainText('Toy elliptic curve group');
   await page.getByTestId('toy-curve-lab').getByRole('slider').fill('2');
@@ -478,5 +487,5 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
   await page.getByRole('button', { name: 'None yet.' }).click();
-  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/31');
+  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/32');
 });

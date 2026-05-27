@@ -17,6 +17,8 @@ It is intentionally built as an interactive course, not a static report:
   rows, operands, owners, liveness intervals, and non-Clifford cost
 - reversible cleanup and uncompute puzzle
 - phase-estimation and inverse-QFT intuition
+- a Fourier lens lab that shows inverse QFT as phase-slope alignment and
+  destructive interference over candidate output labels
 - a phase-kickback hidden-period lab showing how an ECDLP oracle output becomes
   a Fourier slope over `(a,b)` inputs
 - a windowed attack scaffold lab connecting 512 phase bits, 32 raw windows,

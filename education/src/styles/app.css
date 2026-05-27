@@ -573,6 +573,48 @@ code {
   writing-mode: vertical-rl;
 }
 
+.fourier-controls {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.fourier-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.fourier-grid article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.fourier-phasor-sum {
+  width: 100%;
+  max-height: 13rem;
+}
+
+.fourier-phasor-sum circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.25);
+  stroke-width: 1.1;
+}
+
+.fourier-phasor-sum line {
+  stroke: rgba(245, 207, 107, 0.5);
+  stroke-width: 1.4;
+}
+
+.fourier-phasor-sum .sum-dot {
+  fill: #63e6be;
+  stroke: #071018;
+  stroke-width: 1.5;
+}
+
 .curve-svg {
   display: block;
   width: min(100%, 20rem);
@@ -2822,6 +2864,8 @@ legend {
   .metric-row,
   .tradeoff-controls,
   .tradeoff-grid,
+  .fourier-controls,
+  .fourier-grid,
   .state-vector-grid,
   .magic-status-grid,
   .stack-map-grid,
@@ -2893,6 +2937,8 @@ legend {
   .metric-row,
   .tradeoff-controls,
   .tradeoff-grid,
+  .fourier-controls,
+  .fourier-grid,
   .state-vector-grid,
   .magic-status-grid,
   .stack-map-grid,
