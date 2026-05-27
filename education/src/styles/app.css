@@ -174,6 +174,10 @@ code {
   font-size: clamp(2rem, 4vw, 4.2rem);
 }
 
+.hero-panel:not(.no-status) h2 {
+  font-size: clamp(2rem, 3vw, 3.2rem);
+}
+
 .hero-copy {
   max-width: 58rem;
   color: #c9d6e2;
@@ -216,6 +220,33 @@ code {
 
 .lesson-pager button:last-child {
   justify-self: end;
+}
+
+.lesson-task-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.lesson-task-strip article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(14, 21, 29, 0.7);
+}
+
+.lesson-task-strip span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.lesson-task-strip p {
+  margin: 0.35rem 0 0;
+  color: #dce7f2;
+  line-height: 1.45;
 }
 
 .baseline-strip {
@@ -3391,6 +3422,7 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .lesson-task-strip,
   .amplitude-bridge-grid,
   .content-grid.learning-grid,
   .path-stage-grid,
@@ -3499,6 +3531,7 @@ legend {
   .metric-row,
   .content-grid,
   .content-grid.learning-grid,
+  .lesson-task-strip,
   .amplitude-bridge-grid,
   .path-stage-grid,
   .readiness-strip,

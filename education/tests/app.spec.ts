@@ -15,6 +15,10 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
+  await expect(page.getByTestId('lesson-task-strip')).toContainText('Focus');
+  await expect(page.getByTestId('lesson-task-strip')).toContainText('Do');
+  await expect(page.getByTestId('lesson-task-strip')).toContainText('Check');
+  await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with the learning path map below');
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
 });
@@ -127,6 +131,7 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
   await openLesson(page, 'ecdlp');
 
+  await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with the Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
 

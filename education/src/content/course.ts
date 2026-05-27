@@ -219,6 +219,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'The quantum computer asks the curve many structured “what if I add this point?” questions in superposition, then phase estimation extracts the hidden rhythm.',
     checkpoint: 'The project is a circuit-engineering problem around a repeated secp256k1 point-add leaf, not a generic black-box quantum threat claim.',
+    deepDive: [
+      'ECDLP means: given G and Q = dG, recover the hidden scalar d. The quantum attack builds reversible group operations whose repeated structure exposes d.',
+      'The toy oracle uses aG + bQ = (a + b*d)G. Different (a,b) pairs can collide in a way that encodes the secret scalar.',
+      'The real circuit does not use tiny toy points. It repeats lookup-fed secp256k1 point-add leaves many times, which is why point-add resources dominate this repo.',
+    ],
+    coreIdeas: [
+      'Public input: G and Q = dG.',
+      'Oracle shape: aG + bQ hides d in a period relation.',
+      'Resource bottleneck: repeated controlled point-add leaves.',
+    ],
+    practicePrompt: 'Start with the Whole attack map, then use the Discrete-log oracle toy. Change the secret scalar and watch the hidden-period relation change before opening phase kickback.',
   },
   {
     id: 'coordinates',
@@ -232,6 +243,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Affine is a precise street address. Projective is a family of equivalent addresses that avoids expensive division until you really need it.',
     checkpoint: 'A field slot is one field-sized quantum register, 256 wires for secp256k1, and it must have a counted owner.',
+    deepDive: [
+      'Affine coordinates store a point directly as x and y. The formulas are compact, but adding points often needs division, which is expensive in reversible arithmetic.',
+      'Projective coordinates store an equivalent representative with extra scale information. That usually costs more live field slots but avoids inversion on the hot path.',
+      'Infinity cases are not optional. Doubling, inverse pairs, accumulator infinity, and lookup infinity must match the same boundary that resource counting claims.',
+    ],
+    coreIdeas: [
+      'Affine saves coordinates but makes inversion painful.',
+      'Projective spends slots to use multiply/add formulas.',
+      'Every field slot is 256 counted logical wires.',
+    ],
+    practicePrompt: 'Move the projective scale first. Then open the overwrite lab and toggle the zero-lift guard to see when an in-place update stops being reversible.',
   },
   {
     id: 'lookup-qroam',
@@ -243,8 +265,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'Several earlier low-qubit stories failed because a lookup output lane or QROAM junk register was treated as if it were not live.',
     mentalModel:
-      'QROAM is a warehouse robot: it can fetch one box by address, but the address decoder, target shelf, and cleanup route all occupy space.',
+      'A QROAM lookup is a reversible table-selection circuit. The address controls, selected target bits, workspace, and cleanup rows are all part of the resource model.',
     checkpoint: 'A lookup output is only free if the executable liveness artifact proves it aliases already-counted capacity.',
+    deepDive: [
+      'The attack uses precomputed point chunks. A quantum address cannot simply index a classical array for free; the table selection has controls, targets, workspace, and cleanup.',
+      'A low-qubit claim fails if lookup target lanes or QROAM junk registers are omitted from live capacity. This was one of the central bug classes in the repo.',
+      'The useful question is not “is there a lookup?” but “which bits are selected, where does the selected data live, and when is the selection workspace uncomputed?”',
+    ],
+    coreIdeas: [
+      'Lookup address, target, junk, and cleanup all count.',
+      'QROAM trades gate count against workspace.',
+      'Free output lanes require liveness proof, not assertion.',
+    ],
+    practicePrompt: 'Select table bits in the QROAM toy, then use the QROAMClean tradeoff dial. Compare how workspace and non-Clifford pressure move in opposite directions.',
   },
   {
     id: 'programming',
@@ -258,6 +291,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Every quantum program is a contract between state transformation and cleanup. The debugger is liveness.',
     checkpoint: 'A useful contributor can translate an attractive algebraic trick into a reversible wire-level contract.',
+    deepDive: [
+      'The toy DSL is intentionally small: H, X, CX, CCX, and M. The point is to feel that even simple rows have concrete wire operands and countable costs.',
+      'Invalid opcodes are useful. They show that a compiler must reject unknown operations instead of silently pretending a circuit was produced.',
+      'The same habit scales up: an arithmetic optimization is not real until it becomes primitive rows with owners, costs, and cleanup.',
+    ],
+    coreIdeas: [
+      'Write rows before trusting formulas.',
+      'Unknown operations must fail loudly.',
+      'Tiny netlists train the same audit reflex used on large lowerings.',
+    ],
+    practicePrompt: 'Edit the DSL into an invalid program, then fix it with H, CX, and CCX rows. Check that the parser, non-Clifford count, and row list agree.',
   },
   {
     id: 'cleanup',
@@ -269,8 +313,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The modular accumulator work in this repo is largely about proving that partial-product scratch can be consumed and uncomputed without hidden garbage.',
     mentalModel:
-      'Compute is walking into a maze while laying string. Uncompute is following the same string back so the maze has no trace of you.',
+      'A temporary value is safe only if it is used as intended and then returned to zero by reversing the computation that created it.',
     checkpoint: 'A cleanup proof must identify the source controls, target, inverse operation, and liveness interval.',
+    deepDive: [
+      'Compute creates a temporary wire from source controls. Use consumes that temporary into the intended destination.',
+      'Uncompute must replay the matching source controls so the temporary target returns to zero. Merely dropping the variable name is not cleanup.',
+      'The modular accumulator blocker is this pattern at scale: many temporary AND targets need consume rows and source-uncompute rows.',
+    ],
+    coreIdeas: [
+      'Temporary value = live quantum state.',
+      'Cleanup = inverse path with the same sources.',
+      'No cleanup means garbage still counts or breaks semantics.',
+    ],
+    practicePrompt: 'In the cleanup puzzle, select the matching uncompute row. Then open the scratch lifecycle lab and compare the consume-row and source-control requirements.',
   },
   {
     id: 'modular-lowering',
@@ -284,6 +339,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Multiplication is not one operation. It is a factory line: partial products, columns, carries, reductions, and cleanup receipts.',
     checkpoint: 'A lowering is convincing only when every temporary bit has a route, owner, and inverse or measured cleanup.',
+    deepDive: [
+      'A field multiply starts as many bit-level partial products. Each product is a temporary quantum value unless it is immediately consumed and cleaned.',
+      'Modular reduction folds high columns back into the field range. Those fold rows are part of the primitive stream, not post-hoc arithmetic narration.',
+      'The repo blocker is promotion: candidate accumulator rows must become the counted executable stream, with source-uncompute and Clifford expansion accounted for.',
+    ],
+    coreIdeas: [
+      'Multiply = partial products plus carries plus reduction.',
+      'Every temporary product needs a lifecycle.',
+      'Promotion requires one primitive stream, not a side artifact.',
+    ],
+    practicePrompt: 'Use the partial-product grid first. Then inspect accumulator lowering and switch to promoted-only facts to see what is still not accepted.',
   },
   {
     id: 'owner-capacity',
@@ -295,8 +361,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'This is the exact class of error behind “free lookup lane” and “one-bit guard” mistakes.',
     mentalModel:
-      'An owner is a parking garage. A wire assignment is a car. The audit fails when rush hour has more cars than spaces.',
+      'An owner is a counted capacity bucket. A live wire group assigned to that owner is valid only when peak assigned width fits inside the owner budget.',
     checkpoint: 'Every wire group needs exactly one owner, and every owner capacity must cover peak assigned live width.',
+    deepDive: [
+      'Naming an owner is not proof. The engine must sum live assigned widths and compare them with the owner capacity at the busiest row.',
+      'A borrowed wire is suspicious because it may be live at the same time as the resource it claims to replace.',
+      'The owner-capacity game intentionally starts failing so the learner has to assign the missing guard workspace explicitly.',
+    ],
+    coreIdeas: [
+      'Exactly one owner per live wire group.',
+      'Owner capacity must cover peak assigned width.',
+      'Borrowed lanes are invalid until liveness proves aliasing.',
+    ],
+    practicePrompt: 'Inject the hidden scratch lane in the invariant lab, then fix owner assignment in the capacity game until the numeric load fits.',
   },
   {
     id: 'resource-engine',
@@ -310,19 +387,41 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A good engine is a typechecker for quantum accounting: every wire must have exactly one owner and every owner must have enough capacity.',
     checkpoint: 'If a number is not generated from executable liveness, it is a hypothesis until proven otherwise.',
+    deepDive: [
+      'The engine takes primitive rows as input, derives live intervals, assigns owners, checks capacity, and computes peak logical qubits.',
+      'The key architectural goal is one source of truth: the same stream should drive execution tests, liveness, resource totals, docs, and proof inputs.',
+      'A resource result becomes stronger when fewer numbers are manually selected and more are generated from the executable circuit path.',
+    ],
+    coreIdeas: [
+      'Executable primitive stream is the source of truth.',
+      'Liveness derives qubits mechanically.',
+      'Generated artifacts should feed docs and proofs.',
+    ],
+    practicePrompt: 'Open the circuit stack map and click Primitive netlist engine. Then use the mini engine to make the audit pass by fixing owner capacity and cleanup.',
   },
   {
     id: 'mini-engine',
     module: 'Repo engine',
-    title: 'Derive peak qubits from liveness, not vibes',
+    title: 'Derive peak qubits from live intervals',
     icon: Cpu,
     intuition:
       'A resource engine scans primitive rows, derives live intervals, assigns each live wire to one owner, then takes the maximum concurrent width.',
     whyItMatters:
       'This is the mechanical habit needed to attack the repo constructively: every proposed optimization must survive the same liveness derivation.',
     mentalModel:
-      'Imagine a tiny garbage-collected runtime where values have birth rows, death rows, owners, and heap capacities. The qubit count is max heap pressure.',
+      'Treat the toy engine as the smallest version of the repo resource counter: rows create values, cleanup kills values, owners provide capacity, and the peak row determines qubits.',
     checkpoint: 'To improve a circuit, you need to move births earlier/later, shorten deaths with cleanup, or give owners enough counted capacity.',
+    deepDive: [
+      'The mini engine starts with a failing assignment so the learner sees why owner names are insufficient.',
+      'Adding a source-uncompute row shortens a live interval. The output is unchanged, but the peak live width can drop.',
+      'Opcode lowering shows the next layer down: one abstract operation expands into primitive rows with operands, cleanup, and non-Clifford cost.',
+    ],
+    coreIdeas: [
+      'Birth/death rows define live intervals.',
+      'Owner assignment and capacity are checked numerically.',
+      'Lowering connects abstract operations to primitive rows.',
+    ],
+    practicePrompt: 'Make the mini engine pass by assigning the scratch owner and adding source uncompute. Then remove cleanup in opcode lowering and watch the audit fail.',
   },
   {
     id: 'optimization',
@@ -334,8 +433,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'A numeric row can look brilliant while failing because it is not executable, misses gate budget, or hides lookup workspace. Real improvements pass every axis.',
     mentalModel:
-      'Think of each candidate as a point in a resource landscape. A breakthrough is not the closest point to the target; it is a path that also has a bridge to executable proof.',
+      'A candidate is only useful if it improves a resource number and still has a path to executable semantics, owner capacity, primitive lowering, and proof input.',
     checkpoint: 'A useful optimization proposal must say which constraint it relaxes, which cost it pays, and how it will be promoted into the engine.',
+    deepDive: [
+      'The target is multi-axis: reduce logical qubits, keep non-Clifford under budget, preserve point-add semantics, and avoid hidden lookup or scratch capacity.',
+      'Some rows are promising hypotheses rather than accepted results. The app should make that status visible instead of letting the smallest number win by default.',
+      'A real optimization should explain what changed, which invariant still holds, what new cost appears, and which artifact proves the promotion.',
+    ],
+    coreIdeas: [
+      'Lower qubits alone is not enough.',
+      'Gate budget, semantics, capacity, and promotion all matter.',
+      'Rejected and hypothesis rows are useful only when clearly labeled.',
+    ],
+    practicePrompt: 'Switch optimization candidates with both targets required. Then temporarily relax executable promotion to see why an attractive row can pass a toy gate but remain unpublishable.',
   },
   {
     id: 'point-add-boundary',
@@ -347,8 +457,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'Earlier attractive schedules looked plausible on the hot path while failing exact point-add boundaries. The counted family has to execute the same edge-case contract it claims.',
     mentalModel:
-      'The point-add leaf is an API with branch tests, not a single formula. Random tests knock on the front door; edge cases check every emergency exit.',
+      'The point-add leaf is an API with branch tests, not a single formula. Random cases cover the ordinary branch; edge cases cover distinct branches with different algebraic behavior.',
     checkpoint: 'A reviewer should reject a lower-qubit point-add result until every boundary family passes against the counted executable interface.',
+    deepDive: [
+      'Ordinary random additions test the hot path. They do not prove doubling, inverse pairs, accumulator infinity, or lookup infinity behavior.',
+      'The counted resource family must execute the same interface that the semantic artifact tests. Otherwise a proof can certify the wrong boundary.',
+      'The debugger starts from passing evidence and lets you deliberately narrow coverage so the missing edge cases become visible.',
+    ],
+    coreIdeas: [
+      'Point-add is an executable API boundary.',
+      'Edge cases are part of semantics, not rare extras.',
+      'Counted interface and tested interface must match.',
+    ],
+    practicePrompt: 'Click inverse pair and lookup infinity in the boundary debugger. Then enable random-only testing and watch the covered-case count collapse.',
   },
   {
     id: 'contribution',
@@ -362,6 +483,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Treat every patch as a mission packet: what object changes, what evidence is new, which blocker it closes, and which claim level is now justified.',
     checkpoint: 'Before proposing an optimization, state the mission, the required evidence, and the exact claim status after the patch.',
+    deepDive: [
+      'Useful repo work starts with a narrow claim. “Improve the circuit” is too vague; “promote this source-uncompute row into the primitive stream” is testable.',
+      'Each claim level needs different evidence. A semantic candidate, a strict primitive result, and an accepted baseline are not interchangeable.',
+      'The contribution page is the handoff from learning to action: choose a mission, complete its evidence checklist, and state the remaining blocker.',
+    ],
+    coreIdeas: [
+      'Small claim, explicit evidence, clear status.',
+      'Claim classification prevents accidental overstatement.',
+      'Mission packets connect learning to repo patches.',
+    ],
+    practicePrompt: 'Use the mission board first. Then classify a claim in the audit drill and require the evidence items until the audit passes.',
   },
   {
     id: 'zkp-boundary',
@@ -375,6 +507,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A ZKP is a notarized receipt. It is powerful only after you inspect exactly what was purchased, which input hash it binds, and whether that item is the thing you wanted.',
     checkpoint: 'A reviewer should ask: what input, what corpus, what public values, what resource digest, and what remaining macro boundary?',
+    deepDive: [
+      'A verifier can say “this proof is valid” while the proved statement is stale, smoke-sized, or weaker than the current resource claim.',
+      'The public values are the verifier-visible contract. They must bind the selected family, resource digest, case corpus, and proof statement being published.',
+      'Compressed and Groth16 proofs are release evidence only after the checked input, verifier key, proof bundle, and physical baseline status agree.',
+    ],
+    coreIdeas: [
+      'Proof validity is not the same as claim validity.',
+      'Public values define what the verifier actually sees.',
+      'Fresh artifacts and current resource contract must agree.',
+    ],
+    practicePrompt: 'Use the ZKP boundary lab to close fixtures, macro boundary, and proof verification. Then compare the confidence ladder before changing claim wording.',
   },
   {
     id: 'repo-baselines',
@@ -388,6 +531,17 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Treat every resource result as a contract with a status: accepted, candidate, consequence, rejected, or hypothesis.',
     checkpoint: 'The next useful work is not more hype; it is converting remaining macro boundaries into executable primitive evidence.',
+    deepDive: [
+      'Google rows are external public comparison lines. They are useful context, but they are not artifacts generated by this repo.',
+      'Repo rows must be read with status. A macro/ZKP wrapper reference, a strict candidate, and an accepted physical baseline would justify different wording.',
+      'The current honest state is stronger than marketing but weaker than final victory: there are candidates, blockers, and a path to improve the evidence.',
+    ],
+    coreIdeas: [
+      'External baselines are comparison rows.',
+      'Repo results require status labels.',
+      'Accepted baseline remains blocked until all gates close.',
+    ],
+    practicePrompt: 'Filter the baseline explorer by status, then use the promotion lab. Close blockers deliberately and check when the wording becomes allowed.',
   },
 ];
 

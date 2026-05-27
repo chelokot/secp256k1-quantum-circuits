@@ -71,6 +71,8 @@ export function App() {
   const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showReviewPanels = activeLesson.id === 'repo-baselines';
+  const pageFocus = activeLesson.coreIdeas?.[0] ?? activeLesson.intuition;
+  const pageExercise = activeLesson.practicePrompt ?? 'Use the labs on this page. Change one control, then read which output, audit, or count changed.';
 
   const groupedLessons = useMemo(() => {
     return lessons.reduce<Record<string, typeof lessons>>((groups, lesson) => {
@@ -362,6 +364,21 @@ export function App() {
             <ArrowRight size={18} />
           </button>
         </nav>
+
+        <section className="lesson-task-strip" data-testid="lesson-task-strip" aria-label="How to use this lesson">
+          <article>
+            <span>Focus</span>
+            <p>{pageFocus}</p>
+          </article>
+          <article>
+            <span>Do</span>
+            <p>{pageExercise}</p>
+          </article>
+          <article>
+            <span>Check</span>
+            <p>{activeLesson.checkpoint}</p>
+          </article>
+        </section>
 
         <section className={showRepoContract ? 'content-grid' : 'content-grid learning-grid'}>
           <article className="concept-panel">
