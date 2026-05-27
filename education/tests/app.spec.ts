@@ -30,6 +30,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-brief')).toContainText('Try next');
   await expect(page.getByTestId('lesson-brief')).not.toContainText('Check');
   await expect(page.getByTestId('lesson-brief')).toContainText('Start with “What has to be proved,” then use the learning path map');
+  await expect(page.getByRole('heading', { name: 'Try this page' })).toHaveCount(0);
   await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Start');
   await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Next unlocks');
   await expect(page.getByTestId('lesson-flow-bridge')).toContainText('Qubits as vectors you can steer');

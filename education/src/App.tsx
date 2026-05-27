@@ -669,12 +669,6 @@ export function App() {
             ) : null}
             <h4>Why it matters here</h4>
             <p>{activeLesson.whyItMatters}</p>
-            {activeLesson.practicePrompt ? (
-              <>
-                <h4>Try this page</h4>
-                <p>{activeLesson.practicePrompt}</p>
-              </>
-            ) : null}
             <section className={checkpointRevealed ? 'checkpoint revealed' : 'checkpoint'} data-testid="lesson-recall-check">
               <CheckCircle2 size={18} />
               <div>
