@@ -3,7 +3,10 @@
 This is a personal educational web subproject for learning the quantum-circuit
 and resource-accounting ideas behind this repository.
 
-It is intentionally built as an interactive course, not a static report:
+It is intentionally built as a paged interactive course, not a static report or
+one giant lab dump. Each lesson has its own hash route such as `/#qubit` or
+`/#ecdlp`, focused explanatory text, and only the labs that belong to that
+stage of the learning path:
 
 - concept lessons from qubits to secp256k1 resource contracts
 - a zero-to-contributor learning path that groups prerequisites into quantum

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { BookOpen, CheckCircle2, Circle, Code2, GitBranch, Play, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
@@ -51,9 +51,15 @@ import { LearningPathMap } from './components/LearningPathMap';
 import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
+const lessonIds = new Set(lessons.map((lesson) => lesson.id));
+
+function lessonFromHash() {
+  const hash = window.location.hash.replace('#', '');
+  return lessonIds.has(hash as LessonId) ? hash as LessonId : 'zero';
+}
 
 export function App() {
-  const [activeLessonId, setActiveLessonId] = useState<LessonId>('zero');
+  const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
   const [completed, setCompleted] = useState<Set<LessonId>>(() => new Set());
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
   const completionPercent = Math.round((completed.size / lessons.length) * 100);
@@ -71,6 +77,193 @@ export function App() {
   const markComplete = () => {
     setCompleted((previous) => new Set(previous).add(activeLesson.id));
   };
+
+  const selectLesson = (lessonId: LessonId) => {
+    setActiveLessonId(lessonId);
+    window.history.replaceState(null, '', `#${lessonId}`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    const syncHash = () => setActiveLessonId(lessonFromHash());
+    window.addEventListener('hashchange', syncHash);
+    return () => window.removeEventListener('hashchange', syncHash);
+  }, []);
+
+  const activeLabs = (() => {
+    switch (activeLesson.id) {
+      case 'zero':
+        return (
+          <>
+            <LearningPathMap
+              activeLessonId={activeLessonId}
+              completedLessonIds={completed}
+              lessons={lessons}
+              onSelectLesson={selectLesson}
+            />
+            <AttackPipelineLab />
+            <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />
+          </>
+        );
+      case 'qubit':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <BlochPlayground />
+            <StateVectorLab />
+          </section>
+        );
+      case 'gates':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <CircuitBuilder />
+            <QuantumDslLab />
+            <CleanupPuzzleLab />
+          </section>
+        );
+      case 'clifford':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <StabilizerMagicLab />
+            <MagicBudgetLab projectData={projectData} />
+          </section>
+        );
+      case 'logic-physical':
+        return (
+          <>
+            <LogicalPhysicalBridgeLab projectData={projectData} />
+            <ErrorCorrectionToyLab projectData={projectData} />
+          </>
+        );
+      case 'phase-estimation':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <PhaseEstimationLab />
+            <FourierLensLab />
+          </section>
+        );
+      case 'netlists':
+        return (
+          <>
+            <CircuitStackMap projectData={projectData} />
+            <MiniResourceEngineLab />
+            <OpcodeLoweringLab />
+            <ScheduleOptimizerLab />
+          </>
+        );
+      case 'ecdlp':
+        return (
+          <>
+            <DiscreteLogOracleLab />
+            <PhaseKickbackLab />
+            <ToyCurveLab />
+            <WindowScaffoldLab projectData={projectData} />
+            <OracleResourceComposerLab projectData={projectData} />
+          </>
+        );
+      case 'coordinates':
+        return (
+          <>
+            <CoordinateModelLab />
+            <ReversibleOverwriteLab projectData={projectData} />
+            <PointAddFormulaLab />
+            <PointAddBoundaryDebugger projectData={projectData} />
+          </>
+        );
+      case 'lookup-qroam':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <QroamLab projectData={projectData} />
+            <QroamTradeoffLab />
+          </section>
+        );
+      case 'programming':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <CircuitBuilder />
+            <QuantumDslLab />
+            <OpcodeLoweringLab />
+          </section>
+        );
+      case 'cleanup':
+        return (
+          <>
+            <CleanupPuzzleLab />
+            <AccumulatorScratchLifecycleLab projectData={projectData} />
+          </>
+        );
+      case 'modular-lowering':
+        return (
+          <>
+            <MultiplierGridLab />
+            <ModularReductionLab />
+            <AccumulatorLoweringLab projectData={projectData} />
+            <AccumulatorScratchLifecycleLab projectData={projectData} />
+          </>
+        );
+      case 'owner-capacity':
+        return (
+          <section className="lab-grid" aria-label="Interactive labs">
+            <SlotLiveness projectData={projectData} />
+            <EngineInvariantLab />
+            <OwnerCapacityGame />
+          </section>
+        );
+      case 'resource-engine':
+        return (
+          <>
+            <CircuitStackMap projectData={projectData} />
+            <MiniResourceEngineLab />
+            <ScheduleOptimizerLab />
+          </>
+        );
+      case 'mini-engine':
+        return (
+          <>
+            <MiniResourceEngineLab />
+            <OpcodeLoweringLab />
+          </>
+        );
+      case 'optimization':
+        return (
+          <>
+            <OptimizationMissionLab projectData={projectData} />
+            <BaselineTradeoffLab projectData={projectData} />
+          </>
+        );
+      case 'point-add-boundary':
+        return (
+          <>
+            <PointAddBoundaryDebugger projectData={projectData} />
+            <ArtifactAtlasLab projectData={projectData} />
+          </>
+        );
+      case 'contribution':
+        return (
+          <>
+            <ContributorMissionBoard projectData={projectData} />
+            <ClaimAuditDrill projectData={projectData} />
+            <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />
+          </>
+        );
+      case 'zkp-boundary':
+        return (
+          <>
+            <ProofBoundaryLab projectData={projectData} />
+            <ConfidenceLadderLab projectData={projectData} />
+            <ArtifactAtlasLab projectData={projectData} />
+          </>
+        );
+      case 'repo-baselines':
+        return (
+          <>
+            <BaselineExplorer projectData={projectData} />
+            <BaselineTradeoffLab projectData={projectData} />
+            <BaselinePromotionLab projectData={projectData} />
+            <BaselineChart projectData={projectData} />
+          </>
+        );
+    }
+  })();
 
   return (
     <main className="app-shell">
@@ -101,7 +294,7 @@ export function App() {
                   <button
                     key={lesson.id}
                     className={isActive ? 'lesson-link active' : 'lesson-link'}
-                    onClick={() => setActiveLessonId(lesson.id)}
+                    onClick={() => selectLesson(lesson.id)}
                     type="button"
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -147,11 +340,27 @@ export function App() {
           <article className="concept-panel">
             <div className="panel-heading">
               <BookOpen size={20} />
-              <h3>Idea first</h3>
+              <h3>Lesson page</h3>
             </div>
             <p>{activeLesson.mentalModel}</p>
+            {activeLesson.deepDive?.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+            {activeLesson.coreIdeas ? (
+              <div className="core-idea-list">
+                {activeLesson.coreIdeas.map((idea) => (
+                  <span key={idea}>{idea}</span>
+                ))}
+              </div>
+            ) : null}
             <h4>Why it matters here</h4>
             <p>{activeLesson.whyItMatters}</p>
+            {activeLesson.practicePrompt ? (
+              <>
+                <h4>Try this page</h4>
+                <p>{activeLesson.practicePrompt}</p>
+              </>
+            ) : null}
             <div className="checkpoint">
               <CheckCircle2 size={18} />
               <span>{activeLesson.checkpoint}</span>
@@ -161,7 +370,7 @@ export function App() {
                 <CheckCircle2 size={18} />
                 Mark understood
               </button>
-              <button className="secondary-action" type="button" onClick={() => setActiveLessonId(nextLesson.id)}>
+              <button className="secondary-action" type="button" onClick={() => selectLesson(nextLesson.id)}>
                 <Play size={18} />
                 Next concept
               </button>
@@ -185,62 +394,9 @@ export function App() {
           </article>
         </section>
 
-        <LearningPathMap
-          activeLessonId={activeLessonId}
-          completedLessonIds={completed}
-          lessons={lessons}
-          onSelectLesson={setActiveLessonId}
-        />
-
-        <AttackPipelineLab />
-        <DiscreteLogOracleLab />
-        <PhaseKickbackLab />
-        <WindowScaffoldLab projectData={projectData} />
-        <CircuitStackMap projectData={projectData} />
-        <OracleResourceComposerLab projectData={projectData} />
-
-        <section className="lab-grid" aria-label="Interactive labs">
-          <BlochPlayground />
-          <StateVectorLab />
-          <StabilizerMagicLab />
-          <PhaseEstimationLab />
-          <FourierLensLab />
-          <CircuitBuilder />
-          <QuantumDslLab />
-          <CleanupPuzzleLab />
-          <ToyCurveLab />
-          <PointAddFormulaLab />
-          <MultiplierGridLab />
-          <ModularReductionLab />
-          <QroamLab projectData={projectData} />
-          <QroamTradeoffLab />
-          <SlotLiveness projectData={projectData} />
-          <EngineInvariantLab />
-          <OwnerCapacityGame />
-          <BaselineChart projectData={projectData} />
+        <section className="lesson-labs" aria-label={`${activeLesson.title} labs`}>
+          {activeLabs}
         </section>
-
-        <CoordinateModelLab />
-        <ReversibleOverwriteLab projectData={projectData} />
-        <BaselineExplorer projectData={projectData} />
-        <BaselineTradeoffLab projectData={projectData} />
-        <ErrorCorrectionToyLab projectData={projectData} />
-        <LogicalPhysicalBridgeLab projectData={projectData} />
-        <MagicBudgetLab projectData={projectData} />
-        <OptimizationMissionLab projectData={projectData} />
-        <PointAddBoundaryDebugger projectData={projectData} />
-        <MiniResourceEngineLab />
-        <OpcodeLoweringLab />
-        <ScheduleOptimizerLab />
-        <AccumulatorLoweringLab projectData={projectData} />
-        <AccumulatorScratchLifecycleLab projectData={projectData} />
-        <BaselinePromotionLab projectData={projectData} />
-        <ClaimAuditDrill projectData={projectData} />
-        <ArtifactAtlasLab projectData={projectData} />
-        <ConfidenceLadderLab projectData={projectData} />
-        <ContributorMissionBoard projectData={projectData} />
-        <ProofBoundaryLab projectData={projectData} />
-        <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />
 
         <section className="wide-panel">
           <div className="panel-heading">

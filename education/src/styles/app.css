@@ -239,6 +239,26 @@ code {
   color: #ffffff;
 }
 
+.lesson-labs {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.core-idea-list {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1rem 0;
+}
+
+.core-idea-list span {
+  border-left: 0.25rem solid #63e6be;
+  border-radius: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(99, 230, 190, 0.08);
+  color: #dffbf5;
+}
+
 .checkpoint {
   display: flex;
   gap: 0.625rem;

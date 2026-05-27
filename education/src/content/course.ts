@@ -33,6 +33,9 @@ export type CourseLesson = {
   whyItMatters: string;
   mentalModel: string;
   checkpoint: string;
+  deepDive?: string[];
+  coreIdeas?: string[];
+  practicePrompt?: string;
 };
 
 export const lessons: CourseLesson[] = [
@@ -42,12 +45,22 @@ export const lessons: CourseLesson[] = [
     title: 'What the project is trying to prove',
     icon: Route,
     intuition:
-      'The repo is not just estimating a number. It is trying to turn an attack idea into an executable, auditable circuit boundary where every live quantum wire has an owner.',
+      'The repo is trying to make one exact object exist: a reversible secp256k1 oracle whose behavior, live wires, resource count, and proof statement all refer to the same boundary.',
     whyItMatters:
-      'If a qubit count is not derived from the same object that executes and gets tested, the number can become a story instead of evidence.',
+      'Most wrong low-qubit results fail because two layers silently talk about different objects: a semantic point-add formula, a lookup abstraction, a liveness list, or a proof input. The course trains you to notice those layer changes.',
     mentalModel:
-      'Think of the project as a compiler court case: algorithm, lowering, netlist, liveness, resource count, and ZKP all need to testify about the same object.',
+      'The useful mental model is a chain of lossless translations. If any link summarizes away a quantum wire, forgets cleanup, or changes the boundary cases, the final number may still look precise while no longer describing an executable circuit.',
     checkpoint: 'A result is trustworthy only when semantics, liveness, resource owners, and proof inputs all bind the same circuit boundary.',
+    deepDive: [
+      'A classical program can often hide temporary storage behind a compiler. A quantum circuit cannot: every coherent temporary value remains physically present until it is uncomputed, measured under an allowed rule, or declared as part of the output. That is why this repo is mostly about boundaries, not formulas.',
+      'The attack idea is high level: use phase estimation around many controlled elliptic-curve additions. The hard part is proving that the repeated point-add leaf, lookup data, modular arithmetic, owner capacities, and ZKP public values are all describing the same repeated operation.',
+    ],
+    coreIdeas: [
+      'Semantic correctness is about the mathematical map.',
+      'Resource correctness is about every live wire at every row.',
+      'Publication correctness is about the exact artifact and proof input being current.',
+    ],
+    practicePrompt: 'Use the learning path map below first. Then open the attack map and ask which layer would catch a hidden lookup-output wire.',
   },
   {
     id: 'qubit',
@@ -55,12 +68,23 @@ export const lessons: CourseLesson[] = [
     title: 'Qubits as vectors you can steer',
     icon: Atom,
     intuition:
-      'A qubit is a two-dimensional complex state. You do not inspect both amplitudes directly; you steer the vector with gates, then measurement samples one classical outcome.',
+      'A qubit is not a fuzzy bit. It is a two-amplitude state whose direction can be rotated, entangled with other wires, and made to interfere before one classical answer is sampled.',
     whyItMatters:
-      'Quantum algorithms are programs over reversible state evolution. Resource counts are about how much coherent state must stay alive while those transformations happen.',
+      'This project counts coherent information, not variables in source code. A 256-bit field value is 256 quantum wires whose amplitudes must stay phase-consistent while arithmetic, lookup, and cleanup happen.',
     mentalModel:
-      'A bit is a switch. A qubit is a compass needle on a sphere, but the compass only answers one chosen yes/no question when measured.',
+      'Think of a qubit as a tiny two-number vector with a private phase angle. A single qubit is already richer than a probability coin because phases can later add or cancel. A useful quantum computation is built by arranging those cancellations so wrong answers erase themselves and useful structure survives measurement.',
     checkpoint: 'The useful power is not “many classical worlds”; it is controlled interference before measurement.',
+    deepDive: [
+      'The state a|0> + b|1> has two complex amplitudes. Measurement does not reveal a and b; it samples 0 with probability |a|^2 and 1 with probability |b|^2. Gates matter because they change the amplitudes before that irreversible sampling step.',
+      'The phase of one isolated amplitude is not directly visible. Relative phase becomes visible only when paths are recombined. That is the core intuition behind the Fourier parts of Shor-style algorithms: phase slopes are converted into measurement peaks.',
+      'When many qubits represent a field element, they are not 256 independent UI toggles. They are one coherent register that can be in a superposition of many field values, and the circuit must transform the whole register reversibly.',
+    ],
+    coreIdeas: [
+      'Amplitudes are not observed directly; probabilities are.',
+      'Relative phase becomes information through interference.',
+      'A field slot is many qubits treated as one coherent register.',
+    ],
+    practicePrompt: 'Use H in the Bloch playground, then run the interference program in the state-vector lab and watch a 50/50-looking intermediate state become a deterministic output.',
   },
   {
     id: 'gates',

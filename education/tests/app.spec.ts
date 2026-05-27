@@ -1,4 +1,9 @@
 import { expect, test } from '@playwright/test';
+import type { Page } from '@playwright/test';
+
+const openLesson = async (page: Page, lessonId: string) => {
+  await page.goto(`/#${lessonId}`);
+};
 
 test('loads the personal quantum circuit course and generated repo status', async ({ page }) => {
   await page.goto('/');
@@ -9,8 +14,9 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByText('none yet').first()).toBeVisible();
   await expect(page.getByLabel('Current repository resource status')).toContainText('1,968q');
   await expect(page.getByLabel('Current repository resource status')).toContainText('2,222q');
-  await expect(page.getByTestId('circuit-stack-map')).toContainText('End-to-end circuit stack map');
-  await expect(page.getByTestId('baseline-chart')).toContainText('Google low-q');
+  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('chain of lossless translations');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
 });
 
 test('lets the learner navigate concepts and complete progress', async ({ page }) => {
@@ -18,8 +24,12 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
 
   await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
+  await expect(page).toHaveURL(/#qubit$/);
+  await expect(page.getByRole('heading', { name: 'Lesson page' }).locator('xpath=ancestor::article')).toContainText('Relative phase becomes information through interference');
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
+  await page.getByRole('button', { name: 'Next concept' }).click();
+  await expect(page).toHaveURL(/#gates$/);
 });
 
 test('turns the lab collection into a zero-to-contributor learning path', async ({ page }) => {
@@ -35,12 +45,14 @@ test('turns the lab collection into a zero-to-contributor learning path', async 
   await expect(page.getByTestId('learning-path-map')).toContainText('Qubits as vectors you can steer');
   await page.getByRole('button', { name: 'Jump to next missing contributor step' }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
+  await expect(page).toHaveURL(/#qubit$/);
   await page.getByRole('button', { name: 'Mark understood' }).click();
+  await page.getByLabel('Course navigation').getByRole('button', { name: /What the project/ }).click();
   await expect(page.getByTestId('learning-path-map')).toContainText('Gates, wires, controls, and reversibility');
 });
 
 test('runs the qubit and netlist interactives', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'qubit');
 
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'H' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
@@ -56,6 +68,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('|10>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('100%');
 
+  await openLesson(page, 'clifford');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Stabilizer vs magic wheel');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('State class');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer');
@@ -67,13 +80,14 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer-friendly');
 
+  await openLesson(page, 'gates');
   await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX' }).click();
   await expect(page.getByTestId('circuit-builder')).toContainText('Non-Clifford');
   await expect(page.getByTestId('circuit-builder')).toContainText('2');
 });
 
 test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'phase-estimation');
 
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('largest measurement peak');
   await page.getByTestId('phase-estimation-lab').getByRole('slider').fill('5');
@@ -88,6 +102,7 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await page.getByLabel('Fourier candidate output').fill('5');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
 
+  await openLesson(page, 'ecdlp');
   await expect(page.getByTestId('toy-curve-lab')).toContainText('Toy elliptic curve group');
   await page.getByTestId('toy-curve-lab').getByRole('slider').fill('2');
   await expect(page.getByTestId('toy-curve-lab')).toContainText('nP');
@@ -99,10 +114,14 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
 
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
+
+  await openLesson(page, 'netlists');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
   await page.getByTestId('circuit-stack-map').getByRole('button', { name: /Primitive netlist engine/ }).click();
   await expect(page.getByTestId('circuit-stack-map')).toContainText('operation stream, live intervals, owner-capacity proof');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
+
+  await openLesson(page, 'coordinates');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('Affine and projective coordinates');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('(15, 3, 3)');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('= (5, 1)');
@@ -124,7 +143,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
 });
 
 test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'ecdlp');
 
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Discrete-log oracle toy');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Q = 5G');
@@ -144,7 +163,7 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
 });
 
 test('teaches the windowed ECDLP scaffold that feeds point-add leaves', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'ecdlp');
 
   await expect(page.getByTestId('window-scaffold-lab')).toContainText('Windowed attack scaffold');
   await expect(page.getByTestId('window-scaffold-lab')).toContainText('32');
@@ -162,7 +181,7 @@ test('teaches the windowed ECDLP scaffold that feeds point-add leaves', async ({
 });
 
 test('teaches whole-oracle resource composition from strict artifacts', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'ecdlp');
 
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('31 point-add leaves');
@@ -184,19 +203,20 @@ test('teaches whole-oracle resource composition from strict artifacts', async ({
 });
 
 test('shows modular reduction and QROAMClean tradeoff pressure', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'modular-lowering');
 
   await expect(page.getByTestId('modular-reduction-lab')).toContainText('Modular multiplication shape');
   await page.getByTestId('modular-reduction-lab').getByRole('slider').first().fill('4');
   await expect(page.getByTestId('modular-reduction-lab')).toContainText('reduce');
 
+  await openLesson(page, 'lookup-qroam');
   await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('QROAMClean tradeoff dial');
   await page.getByTestId('qroam-tradeoff-lab').getByRole('slider').fill('16');
   await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Workspace');
 });
 
 test('separates external baselines, reference boundaries, and unaccepted candidates', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'repo-baselines');
 
   await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-qubit public line');
   await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-gate public line');
@@ -207,7 +227,7 @@ test('separates external baselines, reference boundaries, and unaccepted candida
 });
 
 test('teaches baseline tradeoff landscape and claim status', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'repo-baselines');
 
   await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('Baseline tradeoff landscape');
   await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('1,200q / 90M');
@@ -224,7 +244,7 @@ test('teaches baseline tradeoff landscape and claim status', async ({ page }) =>
 });
 
 test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'logic-physical');
 
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
@@ -238,7 +258,7 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
 });
 
 test('teaches logical encoding with a repetition-code toy decoder', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'logic-physical');
 
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Error-correction toy');
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('majority vote');
@@ -256,7 +276,7 @@ test('teaches logical encoding with a repetition-code toy decoder', async ({ pag
 });
 
 test('teaches non-Clifford magic budget pressure separately from qubits', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'clifford');
 
   await expect(page.getByTestId('magic-budget-lab')).toContainText('Non-Clifford magic budget');
   await expect(page.getByTestId('magic-budget-lab')).toContainText('36,973,222');
@@ -270,19 +290,20 @@ test('teaches non-Clifford magic budget pressure separately from qubits', async 
 });
 
 test('teaches QROAM selection and owner invariant failures', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'lookup-qroam');
 
   await expect(page.getByTestId('qroam-lab')).toContainText('QROAM table selection');
   await page.getByRole('button', { name: 'a0=1' }).click();
   await expect(page.getByTestId('qroam-lab')).toContainText('Selected');
 
+  await openLesson(page, 'owner-capacity');
   await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: pass');
   await page.getByLabel('Inject hidden scratch lane').check();
   await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: fail');
 });
 
 test('lets the learner write and debug a tiny quantum netlist', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'gates');
 
   const editor = page.getByLabel('Quantum DSL editor');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Non-Clifford');
@@ -296,7 +317,7 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
 });
 
 test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'gates');
 
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: fail');
   await page.getByRole('button', { name: /uncompute A with same x,y/ }).click();
@@ -305,7 +326,7 @@ test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
 });
 
 test('shows partial-product lowering pressure', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'modular-lowering');
 
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Partial-product grid');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').first().fill('15');
@@ -315,7 +336,7 @@ test('shows partial-product lowering pressure', async ({ page }) => {
 });
 
 test('requires owner assignment and numeric capacity to pass', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'owner-capacity');
 
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
   await page.getByLabel('Owner for guard ladder').selectOption('guard_workspace');
@@ -324,7 +345,7 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
 });
 
 test('keeps accepted-baseline promotion behind all blockers', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'repo-baselines');
 
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
   await page.getByLabel('Close zero lift guard capacity not promoted').check();
@@ -336,7 +357,7 @@ test('keeps accepted-baseline promotion behind all blockers', async ({ page }) =
 });
 
 test('trains claim classification before publishing resource numbers', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'contribution');
 
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit drill');
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: wrong');
@@ -355,7 +376,7 @@ test('trains claim classification before publishing resource numbers', async ({ 
 });
 
 test('turns learning into contributor-ready mission packets', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'contribution');
 
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Contributor mission board');
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: no');
@@ -387,7 +408,7 @@ test('maps original education requirements to concrete course coverage', async (
 });
 
 test('maps checked artifacts to audit questions and claim limits', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'point-add-boundary');
 
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact atlas');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('current_baseline_status.json');
@@ -399,13 +420,15 @@ test('maps checked artifacts to audit questions and claim limits', async ({ page
   await page.getByLabel('Read status and scope').check();
   await page.getByLabel('State what it does not prove').check();
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact audit: pass');
+
+  await openLesson(page, 'zkp-boundary');
   await page.getByTestId('artifact-atlas-lab').getByRole('button', { name: /Proof publication status/ }).click();
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('proof_publication_status.json');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Publication ready: no');
 });
 
 test('teaches the result confidence ladder before saying accepted baseline', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'zkp-boundary');
 
   await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Result confidence ladder');
   await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Highest justified rung');
@@ -424,7 +447,7 @@ test('teaches the result confidence ladder before saying accepted baseline', asy
 });
 
 test('lets the learner derive peak qubits from a mini engine', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'mini-engine');
 
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Mini resource engine');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: fail');
@@ -436,7 +459,7 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
 });
 
 test('shows how one opcode lowers to primitive rows and liveness intervals', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'mini-engine');
 
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Opcode lowering microscope');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('select_field_if_flag bit slice');
@@ -454,7 +477,7 @@ test('shows how one opcode lowers to primitive rows and liveness intervals', asy
 });
 
 test('teaches schedule optimization by shortening live intervals', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'netlists');
 
   await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule optimizer lab');
   await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule audit: fail');
@@ -466,7 +489,7 @@ test('teaches schedule optimization by shortening live intervals', async ({ page
 });
 
 test('teaches optimization tradeoffs from the hybrid bridge search', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'optimization');
 
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Optimization mission');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: blocked');
@@ -480,7 +503,7 @@ test('teaches optimization tradeoffs from the hybrid bridge search', async ({ pa
 });
 
 test('teaches point-add semantic boundary cases from equivalence artifacts', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'point-add-boundary');
 
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Point-add boundary debugger');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('80/80');
@@ -494,7 +517,7 @@ test('teaches point-add semantic boundary cases from equivalence artifacts', asy
 });
 
 test('shows real modular accumulator lowering obligations', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'modular-lowering');
 
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('Modular accumulator lowering');
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('1,448,433');
@@ -506,7 +529,7 @@ test('shows real modular accumulator lowering obligations', async ({ page }) => 
 });
 
 test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'cleanup');
 
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Scratch lifecycle lab');
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('720,896');
@@ -525,7 +548,7 @@ test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) =
 });
 
 test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'zkp-boundary');
 
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('8 cases');
@@ -538,11 +561,12 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
 });
 
 test('teaches the guard gap and quiz boundary', async ({ page }) => {
-  await page.goto('/');
+  await openLesson(page, 'owner-capacity');
 
   await page.getByLabel('Count clean-ladder zero-lift guard capacity').check();
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
+  await page.goto('/');
   await page.getByRole('button', { name: 'None yet.' }).click();
   await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/34');
 });
