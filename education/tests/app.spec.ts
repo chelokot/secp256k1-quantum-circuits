@@ -13,6 +13,8 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByLabel('Current repository resource status')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('how large and expensive');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
+  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
+  await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
 });
@@ -23,8 +25,13 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
+  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('two complex numbers');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('P(0) = |a|^2');
+  await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();
+  await expect(page).toHaveURL(/#zero$/);
+  await page.getByTestId('lesson-pager').getByRole('button', { name: 'Next' }).click();
+  await expect(page).toHaveURL(/#qubit$/);
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Next concept' }).click();

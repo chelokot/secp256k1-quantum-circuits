@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { BookOpen, CheckCircle2, Circle, Code2, GitBranch, Play, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, Play, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
 import { BaselineChart } from './components/BaselineChart';
@@ -66,6 +66,7 @@ export function App() {
   const completionPercent = Math.round((completed.size / lessons.length) * 100);
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
   const currentIndex = lessons.findIndex((lesson) => lesson.id === activeLesson.id);
+  const previousLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
   const nextLesson = lessons[(currentIndex + 1) % lessons.length];
   const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
@@ -341,6 +342,26 @@ export function App() {
             </div>
           ) : null}
         </header>
+
+        <nav className="lesson-pager" aria-label="Lesson pager" data-testid="lesson-pager">
+          <button
+            className="secondary-action"
+            disabled={previousLesson === null}
+            onClick={() => previousLesson && selectLesson(previousLesson.id)}
+            type="button"
+          >
+            <ArrowLeft size={18} />
+            Previous
+          </button>
+          <div>
+            <span>{activeLesson.module}</span>
+            <strong>Lesson {currentIndex + 1} of {lessons.length}</strong>
+          </div>
+          <button className="primary-action" type="button" onClick={() => selectLesson(nextLesson.id)}>
+            Next
+            <ArrowRight size={18} />
+          </button>
+        </nav>
 
         <section className={showRepoContract ? 'content-grid' : 'content-grid learning-grid'}>
           <article className="concept-panel">
