@@ -143,6 +143,7 @@ export function App() {
   const currentIndex = lessons.findIndex((lesson) => lesson.id === activeLesson.id);
   const previousLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
   const nextLesson = lessons[(currentIndex + 1) % lessons.length];
+  const resumeLesson = lessons.find((lesson) => !completed.has(lesson.id)) ?? null;
   const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showReviewPanels = activeLesson.id === 'repo-baselines';
@@ -432,15 +433,26 @@ export function App() {
             <span>{completed.size}/{lessons.length}</span>
           </div>
           <div className="progress-track"><div style={{ width: `${completionPercent}%` }} /></div>
-          <button
-            className="progress-reset"
-            disabled={completed.size === 0}
-            onClick={resetProgress}
-            type="button"
-          >
-            <RotateCcw size={14} />
-            Reset progress
-          </button>
+          <div className="progress-actions">
+            <button
+              className="progress-resume"
+              disabled={resumeLesson === null}
+              onClick={() => resumeLesson && selectLesson(resumeLesson.id)}
+              type="button"
+            >
+              <Play size={14} />
+              {resumeLesson === null ? 'Course complete' : 'Resume next lesson'}
+            </button>
+            <button
+              className="progress-reset"
+              disabled={completed.size === 0}
+              onClick={resetProgress}
+              type="button"
+            >
+              <RotateCcw size={14} />
+              Reset progress
+            </button>
+          </div>
         </div>
         <button
           className="nav-mode-toggle"

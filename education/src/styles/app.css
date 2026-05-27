@@ -107,11 +107,17 @@ code {
   background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
+.progress-actions {
+  display: grid;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.progress-resume,
 .progress-reset {
   display: inline-flex;
   gap: 0.4rem;
   align-items: center;
-  margin-top: 0.65rem;
   border: 0;
   padding: 0;
   color: #aebdca;
@@ -119,11 +125,14 @@ code {
   cursor: pointer;
 }
 
+.progress-resume:disabled,
 .progress-reset:disabled {
   color: #566472;
   cursor: not-allowed;
 }
 
+.progress-resume:not(:disabled):hover,
+.progress-resume:not(:disabled):focus-visible,
 .progress-reset:not(:disabled):hover,
 .progress-reset:not(:disabled):focus-visible {
   color: #f5cf6b;
@@ -673,7 +682,7 @@ code {
 
 .path-stage-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: 0.75rem;
   margin: 1rem 0;
 }
@@ -707,7 +716,6 @@ code {
 }
 
 .path-stage-grid p {
-  min-height: 4.2rem;
   color: #b4c4d6;
   font-size: 0.9rem;
 }
@@ -719,7 +727,7 @@ code {
 
 .path-lesson-list button {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 3rem;
+  grid-template-columns: minmax(0, 1fr) auto;
   gap: 0.5rem;
   align-items: center;
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);

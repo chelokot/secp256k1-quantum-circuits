@@ -48,6 +48,15 @@ test('loads the personal quantum circuit course and generated repo status', asyn
 test('lets the learner navigate concepts and complete progress', async ({ page }) => {
   await page.goto('/');
 
+  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await expect(page.getByLabel('Course progress')).toContainText('1/21');
+  await page.reload();
+  await expect(page.getByLabel('Course progress')).toContainText('1/21');
+  await page.getByRole('button', { name: 'Resume next lesson' }).click();
+  await expect(page).toHaveURL(/#qubit$/);
+  await page.getByRole('button', { name: 'Reset progress' }).click();
+  await expect(page.getByLabel('Course progress')).toContainText('0/21');
+
   await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
@@ -60,12 +69,6 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page).toHaveURL(/#zero$/);
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Next' }).click();
   await expect(page).toHaveURL(/#qubit$/);
-  await page.getByRole('button', { name: 'Mark understood' }).click();
-  await expect(page.getByLabel('Course progress')).toContainText('1/21');
-  await page.reload();
-  await expect(page.getByLabel('Course progress')).toContainText('1/21');
-  await page.getByRole('button', { name: 'Reset progress' }).click();
-  await expect(page.getByLabel('Course progress')).toContainText('0/21');
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Next concept' }).click();
