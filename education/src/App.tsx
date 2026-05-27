@@ -156,11 +156,26 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   ],
 };
 
+const checkpointQuestions: Partial<Record<LessonId, string>> = {
+  zero: 'What chain must the repo connect before a resource number is meaningful?',
+  qubit: 'Why can two states with the same direct measurement chances behave differently after a gate?',
+  gates: 'Why is a scratch wire not free in a quantum circuit?',
+  'phase-estimation': 'What does phase estimation read out, and what creates the expensive phase pattern here?',
+  netlists: 'Why is a primitive netlist stronger evidence than a manually chosen register list?',
+  ecdlp: 'What is hidden in Q = dG, and which circuit operation dominates the cost?',
+  coordinates: 'Why does one extra secp256k1 field slot change the qubit count so much?',
+  'lookup-qroam': 'What has to be counted besides the lookup address bits?',
+  'mini-engine': 'Which three checks make a peak-qubit count believable?',
+  'zkp-boundary': 'Why can a valid proof still be too weak for a headline claim?',
+  'repo-baselines': 'When is a candidate allowed to become the accepted baseline?',
+};
+
 export function App() {
   const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
   const [completed, setCompleted] = useState<Set<LessonId>>(() => loadCompletedLessons());
   const [focusedLabByLesson, setFocusedLabByLesson] = useState<Partial<Record<LessonId, number>>>({});
   const [showAllLabsByLesson, setShowAllLabsByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
+  const [revealedCheckpointByLesson, setRevealedCheckpointByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
   const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
   const completionPercent = Math.round((completed.size / lessons.length) * 100);
@@ -174,6 +189,8 @@ export function App() {
   const showReviewPanels = activeLesson.id === 'repo-baselines';
   const pageFocus = activeLesson.coreIdeas?.[0] ?? activeLesson.intuition;
   const pageExercise = activeLesson.practicePrompt ?? 'Use the labs on this page. Change one control, then read which output, audit, or count changed.';
+  const checkpointQuestion = checkpointQuestions[activeLesson.id] ?? 'What exact claim does this page let you make, and what evidence supports it?';
+  const checkpointRevealed = revealedCheckpointByLesson[activeLesson.id] ?? false;
   const labRoute = labRoutes[activeLesson.id] ?? [];
   const glossaryByTerm = useMemo(() => new Map(glossary.map(([term, definition]) => [term, definition])), []);
   const pageGlossary = (activeLesson.glossaryTerms ?? []).map((term) => ({
@@ -628,10 +645,21 @@ export function App() {
                 <p>{activeLesson.practicePrompt}</p>
               </>
             ) : null}
-            <div className="checkpoint">
+            <section className={checkpointRevealed ? 'checkpoint revealed' : 'checkpoint'} data-testid="lesson-recall-check">
               <CheckCircle2 size={18} />
-              <span>{activeLesson.checkpoint}</span>
-            </div>
+              <div>
+                <span>Answer before reveal</span>
+                <strong>{checkpointQuestion}</strong>
+                {checkpointRevealed ? <p>{activeLesson.checkpoint}</p> : null}
+                <button
+                  className="checkpoint-reveal"
+                  onClick={() => setRevealedCheckpointByLesson((previous) => ({ ...previous, [activeLesson.id]: !checkpointRevealed }))}
+                  type="button"
+                >
+                  {checkpointRevealed ? 'Hide answer' : 'Reveal checkpoint answer'}
+                </button>
+              </div>
+            </section>
             <div className="actions">
               <button className="primary-action" type="button" onClick={markComplete}>
                 <CheckCircle2 size={18} />

@@ -30,6 +30,11 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Do');
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Check');
   await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with “What has to be proved,” then use the learning path map');
+  await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
+  await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');
+  await expect(page.getByTestId('lesson-recall-check')).not.toContainText('public key attack, executable circuit, tests');
+  await page.getByRole('button', { name: 'Reveal checkpoint answer' }).click();
+  await expect(page.getByTestId('lesson-recall-check')).toContainText('public key attack, executable circuit, tests');
   await expect(page.getByTestId('page-vocab')).toContainText('Words for this page');
   await expect(page.getByTestId('page-vocab')).toContainText('secp256k1');
   await expect(page.getByTestId('page-vocab')).toContainText('The elliptic-curve system used by Bitcoin public keys');

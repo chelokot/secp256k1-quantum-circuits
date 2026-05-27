@@ -627,6 +627,48 @@ code {
   color: #ffe9a6;
 }
 
+.checkpoint.revealed {
+  border-left-color: #63e6be;
+  background: rgba(99, 230, 190, 0.08);
+  color: #dffbf5;
+}
+
+.checkpoint div {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.checkpoint span {
+  color: #f5cf6b;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.checkpoint.revealed span {
+  color: #b8f3e6;
+}
+
+.checkpoint strong,
+.checkpoint p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.checkpoint-reveal {
+  justify-self: start;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.45rem;
+  padding: 0.4rem 0.65rem;
+  color: #edf2f7;
+  background: #15212d;
+  cursor: pointer;
+}
+
+.checkpoint-reveal:hover,
+.checkpoint-reveal:focus-visible {
+  border-color: #b8f3e6;
+}
+
 .actions,
 .gate-row {
   display: flex;
