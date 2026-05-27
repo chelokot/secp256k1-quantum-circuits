@@ -81,6 +81,23 @@ export function CoordinateModelLab() {
         <div><span>Projective live coordinates</span><strong>X, Y, Z</strong><em>3 field slots</em></div>
         <div><span>Repo consequence</span><strong>slot pressure</strong><em>every extra field value is 256 logical wires</em></div>
       </div>
+      <div className="slot-audit-strip">
+        <article>
+          <span>Field slot</span>
+          <strong>one coordinate-sized register</strong>
+          <p>For secp256k1, a live x, y, or z value means 256 logical wires.</p>
+        </article>
+        <article>
+          <span>Boundary rule</span>
+          <strong>edge cases share the count</strong>
+          <p>Random, doubling, inverse, accumulator-infinity, and lookup-infinity cases must execute the same counted contract.</p>
+        </article>
+        <article>
+          <span>Audit question</span>
+          <strong>where does each coordinate live?</strong>
+          <p>A coordinate can be overwritten only when the circuit proves a reversible owner-preserving map.</p>
+        </article>
+      </div>
     </section>
   );
 }

@@ -22,6 +22,23 @@ export function QroamTradeoffLab() {
         Block size K={k}
         <input min="1" max="16" type="range" value={k} onChange={(event) => setK(Number(event.currentTarget.value))} />
       </label>
+      <div className="lookup-audit-grid compact">
+        <article>
+          <span>Compute</span>
+          <strong>{cost.compute}</strong>
+          <p>N/K plus data-selection work.</p>
+        </article>
+        <article>
+          <span>Cleanup</span>
+          <strong>{cost.cleanup}</strong>
+          <p>Reverse the temporary selection path.</p>
+        </article>
+        <article>
+          <span>Workspace</span>
+          <strong>{cost.workspace}</strong>
+          <p>Higher K needs extra junk-register capacity.</p>
+        </article>
+      </div>
       <dl className="metric-row">
         <div><dt>Entries</dt><dd>{entries}</dd></div>
         <div><dt>Bits</dt><dd>{bitsize}</dd></div>

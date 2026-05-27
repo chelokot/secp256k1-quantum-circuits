@@ -115,6 +115,10 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
     { name: 'Formula microscope', goal: 'Step through ordinary and lookup-infinity point-add behavior.' },
     { name: 'Boundary debugger', goal: 'Separate random hot-path tests from edge-case coverage.' },
   ],
+  'lookup-qroam': [
+    { name: 'QROAM selection', goal: 'Separate address controls, selected target lane, owner, and cleanup.' },
+    { name: 'QROAMClean tradeoff', goal: 'Increase K and watch gate savings require more counted workspace.' },
+  ],
   'modular-lowering': [
     { name: 'Partial-product grid', goal: 'See why a multiply becomes many temporary bit products.' },
     { name: 'Modular reduction', goal: 'Follow high-column folds back into field range.' },

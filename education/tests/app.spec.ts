@@ -301,7 +301,9 @@ test('shows modular reduction and QROAMClean tradeoff pressure', async ({ page }
   await expect(page.getByTestId('modular-reduction-lab')).toContainText('reduce');
 
   await openLesson(page, 'lookup-qroam');
+  await selectRouteLab(page, /QROAMClean tradeoff/);
   await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('QROAMClean tradeoff dial');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('extra junk-register capacity');
   await page.getByTestId('qroam-tradeoff-lab').getByRole('slider').fill('16');
   await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Workspace');
 });
@@ -384,7 +386,12 @@ test('teaches non-Clifford magic budget pressure separately from qubits', async 
 test('teaches QROAM selection and owner invariant failures', async ({ page }) => {
   await openLesson(page, 'lookup-qroam');
 
+  await expect(page.getByTestId('lab-route')).toContainText('QROAM selection');
+  await expect(page.getByTestId('lab-route')).toContainText('QROAMClean tradeoff');
   await expect(page.getByTestId('qroam-lab')).toContainText('QROAM table selection');
+  await expect(page.getByTestId('qroam-lab')).toContainText('Target lane');
+  await expect(page.getByTestId('qroam-lab')).toContainText('No-free-lane audit');
+  await expect(page.getByTestId('qroam-lab')).toContainText('selected data must have an owner');
   await page.getByRole('button', { name: 'a0=1' }).click();
   await expect(page.getByTestId('qroam-lab')).toContainText('Selected');
 

@@ -1436,6 +1436,57 @@ code {
   background: rgba(245, 207, 107, 0.13);
 }
 
+.lookup-audit-grid,
+.slot-audit-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11.5rem, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.lookup-audit-grid article,
+.slot-audit-strip article,
+.no-free-lane-callout {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lookup-audit-grid.compact {
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+}
+
+.lookup-audit-grid span,
+.slot-audit-strip span,
+.no-free-lane-callout span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.lookup-audit-grid strong,
+.slot-audit-strip strong,
+.no-free-lane-callout strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+}
+
+.lookup-audit-grid p,
+.slot-audit-strip p,
+.no-free-lane-callout p {
+  margin: 0.4rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.no-free-lane-callout {
+  border-color: rgba(245, 207, 107, 0.4);
+  background: rgba(245, 207, 107, 0.08);
+}
+
 .owner-table {
   display: grid;
   gap: 0.35rem;
