@@ -2407,6 +2407,87 @@ code {
   color: #ffffff;
 }
 
+.composer-controls {
+  display: grid;
+  grid-template-columns: minmax(16rem, 1fr) repeat(3, minmax(12rem, 0.8fr));
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.composer-controls label {
+  display: flex;
+  gap: 0.55rem;
+  align-items: center;
+  color: #dce7f2;
+}
+
+.composer-controls .slider-label {
+  display: grid;
+  align-items: stretch;
+}
+
+.composer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.composer-grid article,
+.composer-audit-strip div {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.composer-formula-row,
+.composer-total {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) minmax(8rem, 0.9fr) minmax(9rem, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  border-bottom: 0.0625rem solid rgba(255, 255, 255, 0.08);
+  padding: 0.65rem 0;
+}
+
+.composer-formula-row span,
+.composer-formula-row em,
+.composer-total span,
+.composer-total em,
+.composer-audit-strip span {
+  color: #93a4b7;
+  font-size: 0.82rem;
+  font-style: normal;
+}
+
+.composer-formula-row strong,
+.composer-total strong,
+.composer-audit-strip strong {
+  color: #ffffff;
+}
+
+.composer-total {
+  border-bottom: 0;
+}
+
+.composer-total strong {
+  color: #b8f3e6;
+  font-size: 1.2rem;
+}
+
+.composer-audit-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.composer-audit-strip div {
+  display: grid;
+  gap: 0.35rem;
+}
+
 .formula-rows {
   display: grid;
   gap: 0.45rem;
@@ -2996,6 +3077,9 @@ legend {
   .magic-controls,
   .magic-grid,
   .magic-stack,
+  .composer-controls,
+  .composer-grid,
+  .composer-audit-strip,
   .coordinate-lab-grid,
   .coordinate-slot-row,
   .overwrite-contract-strip,
@@ -3071,6 +3155,11 @@ legend {
   .magic-controls,
   .magic-grid,
   .magic-stack,
+  .composer-controls,
+  .composer-grid,
+  .composer-audit-strip,
+  .composer-formula-row,
+  .composer-total,
   .coordinate-lab-grid,
   .coordinate-slot-row,
   .overwrite-contract-strip,

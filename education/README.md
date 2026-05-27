@@ -26,6 +26,9 @@ It is intentionally built as an interactive course, not a static report:
 - a windowed attack scaffold lab connecting 512 phase bits, 32 raw windows,
   retained point-add leaves, classical tail elisions, and Google's public
   16-window-size / 28-retained-additions comparison line
+- a whole-oracle resource composer that reconstructs the strict non-Clifford
+  and peak-logical-qubit formulas from checked artifacts, including the
+  difference between accumulated gate work and reused peak workspace
 - finite-field elliptic-curve point addition on a toy curve
 - affine/projective coordinate equivalence and field-slot tradeoff lab
 - a reversible overwrite lab for seeing when in-place slot reuse is a

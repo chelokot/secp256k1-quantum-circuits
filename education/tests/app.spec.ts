@@ -161,6 +161,28 @@ test('teaches the windowed ECDLP scaffold that feeds point-add leaves', async ({
   await expect(page.getByTestId('window-scaffold-lab')).toContainText('1,200q / 90,000,000');
 });
 
+test('teaches whole-oracle resource composition from strict artifacts', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('31 point-add leaves');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('512 phase bits');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('36,973,222');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('7 * 256');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Composition audit: pass');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Qubit model audit: pass');
+
+  await page.getByLabel('Include QROAM chunk streams').uncheck();
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Composition audit: fail');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('24,783,526');
+  await page.getByLabel('Include QROAM chunk streams').check();
+
+  await page.getByLabel('Mistakenly sum qubits per leaf').check();
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Wrong serial-sum qubits');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('61,008');
+  await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Qubit model audit: fail');
+});
+
 test('shows modular reduction and QROAMClean tradeoff pressure', async ({ page }) => {
   await page.goto('/');
 
@@ -504,5 +526,5 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
   await page.getByRole('button', { name: 'None yet.' }).click();
-  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/33');
+  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/34');
 });

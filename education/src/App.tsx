@@ -23,6 +23,7 @@ import { DiscreteLogOracleLab } from './components/DiscreteLogOracleLab';
 import { PhaseKickbackLab } from './components/PhaseKickbackLab';
 import { WindowScaffoldLab } from './components/WindowScaffoldLab';
 import { CircuitStackMap } from './components/CircuitStackMap';
+import { OracleResourceComposerLab } from './components/OracleResourceComposerLab';
 import { PointAddFormulaLab } from './components/PointAddFormulaLab';
 import { ModularReductionLab } from './components/ModularReductionLab';
 import { QroamTradeoffLab } from './components/QroamTradeoffLab';
@@ -195,6 +196,7 @@ export function App() {
         <PhaseKickbackLab />
         <WindowScaffoldLab projectData={projectData} />
         <CircuitStackMap projectData={projectData} />
+        <OracleResourceComposerLab projectData={projectData} />
 
         <section className="lab-grid" aria-label="Interactive labs">
           <BlochPlayground />
