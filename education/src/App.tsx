@@ -95,6 +95,12 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
     { name: 'Quantum DSL', goal: 'Write valid rows and make invalid opcodes fail loudly.' },
     { name: 'Cleanup puzzle', goal: 'Prove compute, use, and uncompute as one lifecycle.' },
   ],
+  netlists: [
+    { name: 'Circuit stack map', goal: 'See where a resource claim can drift away from the tested circuit.' },
+    { name: 'Mini resource engine', goal: 'Derive peak qubits from rows, live intervals, owners, and cleanup.' },
+    { name: 'Opcode lowering', goal: 'Expand one abstract opcode into primitive counted rows.' },
+    { name: 'Schedule optimizer', goal: 'Move cleanup earlier and watch peak liveness change.' },
+  ],
   ecdlp: [
     { name: 'Whole attack map', goal: 'Orient the public key, quantum registers, controlled adds, and readout.' },
     { name: 'Discrete-log oracle toy', goal: 'Change d and watch the hidden period relation move.' },
@@ -123,6 +129,11 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   'mini-engine': [
     { name: 'Mini resource engine', goal: 'Derive peak qubits from rows, owners, and cleanup.' },
     { name: 'Opcode lowering', goal: 'Expand one abstract opcode into primitive counted rows.' },
+  ],
+  'resource-engine': [
+    { name: 'Circuit stack map', goal: 'Connect algorithm layers to one executable resource stream.' },
+    { name: 'Mini resource engine', goal: 'Derive peak qubits from executable liveness instead of a register list.' },
+    { name: 'Schedule optimizer', goal: 'Shorten live intervals without changing semantics.' },
   ],
   optimization: [
     { name: 'Optimization mission', goal: 'Compare candidates against qubit, gate, semantic, and promotion gates.' },

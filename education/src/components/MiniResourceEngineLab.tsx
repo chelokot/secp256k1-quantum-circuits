@@ -131,6 +131,24 @@ export function MiniResourceEngineLab() {
         </article>
       </div>
 
+      <div className="engine-audit-grid">
+        <article className="pass">
+          <span>1. Liveness</span>
+          <strong>peak {derived.peak.total} live wires</strong>
+          <p>The peak is derived from intervals, not from a handpicked list.</p>
+        </article>
+        <article className={derived.ownerCapacityPass && derived.exactOwnerPass ? 'pass' : 'fail'}>
+          <span>2. Owner capacity</span>
+          <strong>{derived.ownerCapacityPass && derived.exactOwnerPass ? 'assigned and sized' : 'assignment invalid'}</strong>
+          <p>Each live wire needs exactly one owner whose capacity can hold it.</p>
+        </article>
+        <article className={derived.cleanupPass ? 'pass' : 'fail'}>
+          <span>3. Cleanup</span>
+          <strong>{derived.cleanupPass ? 'scratch dies early' : 'scratch remains live'}</strong>
+          <p>Uncompute must use the source path that created the temporary value.</p>
+        </article>
+      </div>
+
       <div className="liveness-timeline">
         {derived.intervals.map((wire) => (
           <div key={wire.id}>

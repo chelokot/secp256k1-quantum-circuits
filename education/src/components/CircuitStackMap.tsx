@@ -85,6 +85,23 @@ export function CircuitStackMap({ projectData }: { projectData: ProjectData }) {
         emitted by the previous layer, or a lower resource claim can silently stop referring to
         the circuit that is actually tested.
       </p>
+      <div className="trust-repair-strip">
+        <article>
+          <span>Old failure mode</span>
+          <strong>summary numbers looked precise</strong>
+          <p>A manually chosen register list can omit a live lookup lane, scratch value, or cleanup obligation.</p>
+        </article>
+        <article>
+          <span>Engine repair</span>
+          <strong>rows create live intervals</strong>
+          <p>The count comes from executable primitive rows: birth, death, owner, width, and cost.</p>
+        </article>
+        <article>
+          <span>Publication gate</span>
+          <strong>proof binds the same contract</strong>
+          <p>The ZKP statement is credible only when it executes and hashes the same resource contract.</p>
+        </article>
+      </div>
 
       <div className="stack-map-grid">
         <div className="stack-stage-list">

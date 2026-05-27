@@ -196,7 +196,11 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
 
   await openLesson(page, 'netlists');
+  await expect(page.getByTestId('lab-route')).toContainText('Circuit stack map');
+  await expect(page.getByTestId('lab-route')).toContainText('Mini resource engine');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('Old failure mode');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('rows create live intervals');
   await page.getByTestId('circuit-stack-map').getByRole('button', { name: /Primitive netlist engine/ }).click();
   await expect(page.getByTestId('circuit-stack-map')).toContainText('operation stream, live intervals, owner-capacity proof');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
@@ -556,10 +560,14 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Mini resource engine');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: fail');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 10');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Owner capacity');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Cleanup');
   await page.getByLabel('Owner for partial scratch').selectOption('scratch_workspace');
   await page.getByLabel('Add source uncompute row').check();
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: pass');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 9');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('assigned and sized');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('scratch dies early');
 });
 
 test('shows how one opcode lowers to primitive rows and liveness intervals', async ({ page }) => {
@@ -583,6 +591,7 @@ test('shows how one opcode lowers to primitive rows and liveness intervals', asy
 
 test('teaches schedule optimization by shortening live intervals', async ({ page }) => {
   await openLesson(page, 'netlists');
+  await selectRouteLab(page, /Schedule optimizer/);
 
   await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule optimizer lab');
   await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule audit: fail');
