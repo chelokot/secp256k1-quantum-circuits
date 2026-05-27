@@ -1,0 +1,1090 @@
+{
+  "generatedFrom": {
+    "baselineStatus": "compiler_verification_project/artifacts/current_baseline_status.json",
+    "strictHeadline": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json",
+    "engineCompletion": "compiler_verification_project/artifacts/engine_completion_audit.json",
+    "zeroLiftGuard": "compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json",
+    "tailMacroEngine": "compiler_verification_project/artifacts/tail_macro_engine.json",
+    "googleBaseline": "data/public_google_baseline.json",
+    "mainlineScaffold": "artifacts/circuits/ecdlp_scaffold_optimized.json",
+    "fullRaw32Oracle": "compiler_verification_project/artifacts/full_raw32_oracle.json",
+    "proofPublicationStatus": "compiler_verification_project/artifacts/proof_publication_status.json",
+    "proofCorpusProfiles": "compiler_verification_project/artifacts/proof_corpus_profiles.json",
+    "modularAccumulatorRowStream": "compiler_verification_project/artifacts/modular_accumulator_row_stream.json",
+    "modularAccumulatorCarrySave": "compiler_verification_project/artifacts/modular_accumulator_carry_save_candidate.json",
+    "modularAccumulatorFullAdderContract": "compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json",
+    "modularAccumulatorFullAdderStream": "compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json",
+    "modularAccumulatorSourceUncompute": "compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json",
+    "hybridBridgeSearch": "compiler_verification_project/artifacts/hybrid_bridge_search.json",
+    "lookupFedLeafEquivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
+    "streamedLookupTailLeafEquivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json"
+  },
+  "acceptedPhysicalBaseline": null,
+  "currentStrictCandidate": {
+    "status": "not_accepted_as_physical_baseline",
+    "reason": "strict replayed-tail count still depends on unpromoted modular arithmetic and guard-capacity boundaries",
+    "non_clifford": 36973222,
+    "logical_qubits": 1968,
+    "source_artifact": "compiler_verification_project/artifacts/strict_replayed_tail_headline.json"
+  },
+  "guardCorrectedNoAliasCandidate": {
+    "status": "guard_corrected_no_alias_total_not_promoted",
+    "reason": "counts the clean-ladder zero-lift guard workspace if no aliasing/no-ancilla proof exists, but the corrected owner model is not yet promoted into the global primitive stream",
+    "non_clifford": 36973222,
+    "logical_qubits": 2222,
+    "derivation": {
+      "strict_candidate_logical_qubits": 1968,
+      "zero_lift_guard_current_logical_qubits": 1,
+      "zero_lift_guard_clean_ladder_logical_qubits": 255,
+      "additional_logical_qubits_if_no_aliasing_proof": 254,
+      "reconstructed_logical_qubits": 2222
+    }
+  },
+  "acceptedBaselineGate": {
+    "status": "blocked",
+    "decision": "do_not_promote_any_resource_number_to_accepted_physical_baseline",
+    "candidate_under_review": "guard_corrected_no_alias_candidate",
+    "candidate_under_review_logical_qubits": 2222,
+    "candidate_under_review_non_clifford": 36973222,
+    "policy": "accepted_physical_baseline may be populated only when every gate row passes and the accepted totals are recomputed from that same primitive stream",
+    "rows": [
+      {
+        "name": "single_authoritative_primitive_stream",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "engine_completion_audit.clifford_complete_goal_achieved",
+        "required_to_close": "Make the global flat primitive stream the only source for execution, liveness, owner capacity, and resource totals."
+      },
+      {
+        "name": "guard_corrected_no_alias_capacity_promoted_into_liveness",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "zero_lift_guard_resource_audit.promotion_status",
+        "required_to_close": "Promote the zero-lift guard capacity into the scheduled primitive liveness owner model or prove a concrete alias/no-ancilla predicate construction."
+      },
+      {
+        "name": "modular_accumulator_source_uncompute_promoted",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "modular_accumulator_source_uncompute.promotion_status",
+        "required_to_close": "Promote consume/fold/source-uncompute rows into the same scheduled primitive netlist used for the public peak calculation."
+      },
+      {
+        "name": "no_abandoned_synthetic_arithmetic_scratch",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "engine_completion_audit.remaining_macro_boundaries[0].evidence_metrics.synthetic_arithmetic_scratch_abandoned_garbage",
+        "required_to_close": "Replace synthetic modular-arithmetic scratch observations with concrete primitive wires, owners, liveness, and cleanup."
+      },
+      {
+        "name": "publication_gate_allows_resource_headline",
+        "status": "blocked",
+        "pass": false,
+        "evidence": "public_headline_result.pass + publication_blockers",
+        "required_to_close": "Clear public-headline publication blockers before any accepted baseline is advertised outside the candidate layer."
+      }
+    ]
+  },
+  "strictFormula": {
+    "tail_field_slots": 7,
+    "field_bits": 256,
+    "tail_field_qubits": 1792,
+    "lookup_workspace_qubits": 173,
+    "control_qubits": 2,
+    "fused_output_guard_qubits": 1,
+    "phase_qubits": 1,
+    "reconstructed_total": 1968
+  },
+  "strictNonCliffordFormula": {
+    "base_non_clifford_without_streamed_qroam": 24783526,
+    "qroam_chunk_streams": 186,
+    "per_chunk_stream_non_clifford": 65536,
+    "qroam_chunk_non_clifford": 12189696,
+    "reconstructed_total": 36973222
+  },
+  "activeBlockers": [
+    {
+      "name": "zero_lift_guard_capacity_not_promoted",
+      "status": "zero_lift_guard_capacity_gap_not_promoted_to_public_contract",
+      "minimum_clean_ladder_logical_qubits": 255,
+      "missing_logical_qubits_under_clean_ladder": 254
+    },
+    {
+      "name": "modular_accumulator_source_uncompute_not_promoted",
+      "status": "source_uncompute_contract_not_promoted_to_scheduled_primitive_netlist",
+      "partial_product_cleanup_ccx_proven": 720896,
+      "guard_cleanup_ccx_missing_source_controls": 510
+    },
+    {
+      "name": "modular_arithmetic_clifford_expansion_not_flattened",
+      "status": "modular_arithmetic_clifford_expansion",
+      "engine_clifford_complete_goal_achieved": false
+    }
+  ],
+  "engineCompletion": {
+    "cliffordCompleteGoalAchieved": false,
+    "remainingMacroBoundaries": [
+      {
+        "name": "modular_arithmetic_clifford_expansion",
+        "status": "scheduled_modular_primitive_stream_bound_to_zkp_physical_boundary_not_full_clifford_decomposition",
+        "requiredToClose": "Replace every synthetic arithmetic scratch operand in modular primitive rows with exact counted owner/liveness assignments, then decompose every modular add, subtract, multiply, fold, and reduction primitive into exact concrete Clifford/CCX wire operations inside the same global flat schedule as the point-add leaf."
+      }
+    ]
+  },
+  "zeroLiftGuard": {
+    "current": {
+      "owner_id": "tail_fused_output_zero_lift_guard",
+      "logical_qubits": 1,
+      "non_clifford": 510,
+      "construction": "compute and uncompute one L == 0 predicate bit around the Y3-over-C in-place output row"
+    },
+    "cleanLadder": {
+      "control_register": "L",
+      "negative_control_bits": 256,
+      "compute_ccx": 255,
+      "uncompute_ccx": 255,
+      "total_ccx": 510,
+      "prefix_ancilla_bits": 254,
+      "predicate_output_bits": 1,
+      "peak_predicate_workspace_bits": 255,
+      "clifford_x_for_negative_controls_counted_as_non_clifford": false
+    },
+    "gap": {
+      "current_logical_qubits": 1,
+      "minimum_clean_ladder_logical_qubits": 255,
+      "missing_logical_qubits_under_clean_ladder": 254,
+      "corrected_public_qubit_delta_if_no_aliasing_proof": 254
+    }
+  },
+  "reversibleOverwrite": {
+    "status": "fused_output_rows_decomposed_to_counted_field_multiply_accumulate_steps",
+    "overwrittenOutputRowCount": 1,
+    "allOutputOverwritesHaveBoundaryPermutationContract": true,
+    "costMatchesRows": true,
+    "guardOwnerCapacity": {
+      "owner_id": "tail_fused_output_zero_lift_guard",
+      "logical_qubits": 1,
+      "non_clifford": 510,
+      "construction": "compute and uncompute one L == 0 predicate bit around the Y3-over-C in-place output row"
+    },
+    "overwriteRow": {
+      "operation_index": 15,
+      "target": "Y3",
+      "opcode": "field_double_mul_add",
+      "sources": [
+        "N",
+        "M",
+        "C",
+        "L"
+      ],
+      "schedule_overwritten_source": "C",
+      "primitive_steps": [
+        {
+          "kind": "field_mul_accumulate",
+          "sources": [
+            "N",
+            "M"
+          ],
+          "sign": 1,
+          "non_clifford": 71492
+        },
+        {
+          "kind": "field_mul_accumulate",
+          "sources": [
+            "C",
+            "L"
+          ],
+          "sign": 1,
+          "non_clifford": 71492
+        },
+        {
+          "kind": "field_add",
+          "sources": [
+            "first_product_accumulator",
+            "second_product_accumulator"
+          ],
+          "non_clifford": 510
+        },
+        {
+          "kind": "zero_lift_guard_compute_uncompute",
+          "predicate": "L == 0",
+          "non_clifford": 510
+        }
+      ],
+      "reconstructed_non_clifford": 144004,
+      "row_non_clifford": 144004,
+      "cost_matches_row": true,
+      "overwrite_contract": {
+        "kind": "secp256k1_zero_lifted_in_place_field_permutation",
+        "overwritten_source": "C",
+        "coefficient_source": "L",
+        "coefficient_sign": 1,
+        "offset_product_sources": [
+          "N",
+          "M"
+        ],
+        "offset_sign": 1,
+        "domain_rows_checked": 110082,
+        "screen_pass": true,
+        "secp256k1_permutation_pass": true,
+        "guard_owner_id": "tail_fused_output_zero_lift_guard",
+        "guard_non_clifford": 510,
+        "guard_logical_qubits": 1,
+        "ordinary_branch": "C -> N*M + C*L when L != 0",
+        "zero_lift_branch": "C -> C + N*M when L == 0",
+        "cost_model": "two field_mul kernels, one field_add/sub combine, and the counted L == 0 zero-lift predicate compute/uncompute"
+      }
+    },
+    "replay": {
+      "checkedNonInfinityPairs": 110082,
+      "checkedLookupInfinityPairs": 610,
+      "ownerCapacityPass": true,
+      "pass": true
+    }
+  },
+  "attackScaffold": {
+    "publicGoogle": {
+      "windowSize": 16,
+      "retainedWindowAdditions": 28,
+      "lowQubitLogicalQubits": 1200,
+      "lowQubitNonClifford": 90000000,
+      "lowGateLogicalQubits": 1450,
+      "lowGateNonClifford": 70000000
+    },
+    "mainline": {
+      "windowSize": 16,
+      "rawWindowCount": 32,
+      "directSeedWindowIndex": 0,
+      "retainedWindowAdditions": 28,
+      "retainedWindows": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28
+      ],
+      "classicalTailElisions": [
+        29,
+        30,
+        31
+      ],
+      "formulaRelation": "2*n/window_size - 4",
+      "formulaValue": 28,
+      "notes": [
+        "This scaffold is exact and machine-readable for the optimized artifact family.",
+        "Its ordering is a canonical retained-window schedule compatible with the public appendix count, not claimed to reproduce Google's unpublished internal ordering."
+      ]
+    },
+    "compilerRaw32": {
+      "windowSize": 16,
+      "rawWindowCount": 32,
+      "phaseRegisterBitsTotal": 512,
+      "directSeedWindowIndex": 0,
+      "leafCallCount": 31,
+      "leafWindows": [
+        {
+          "callIndex": 0,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 1,
+          "bitStart": 16,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 1,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 2,
+          "bitStart": 32,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 2,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 3,
+          "bitStart": 48,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 3,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 4,
+          "bitStart": 64,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 4,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 5,
+          "bitStart": 80,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 5,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 6,
+          "bitStart": 96,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 6,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 7,
+          "bitStart": 112,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 7,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 8,
+          "bitStart": 128,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 8,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 9,
+          "bitStart": 144,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 9,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 10,
+          "bitStart": 160,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 10,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 11,
+          "bitStart": 176,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 11,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 12,
+          "bitStart": 192,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 12,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 13,
+          "bitStart": 208,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 13,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 14,
+          "bitStart": 224,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 14,
+          "phaseRegister": "phase_a",
+          "windowIndexWithinRegister": 15,
+          "bitStart": 240,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 15,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 0,
+          "bitStart": 0,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 16,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 1,
+          "bitStart": 16,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 17,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 2,
+          "bitStart": 32,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 18,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 3,
+          "bitStart": 48,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 19,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 4,
+          "bitStart": 64,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 20,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 5,
+          "bitStart": 80,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 21,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 6,
+          "bitStart": 96,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 22,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 7,
+          "bitStart": 112,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 23,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 8,
+          "bitStart": 128,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 24,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 9,
+          "bitStart": 144,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 25,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 10,
+          "bitStart": 160,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 26,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 11,
+          "bitStart": 176,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 27,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 12,
+          "bitStart": 192,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 28,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 13,
+          "bitStart": 208,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 29,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 14,
+          "bitStart": 224,
+          "bitWidth": 16
+        },
+        {
+          "callIndex": 30,
+          "phaseRegister": "phase_b",
+          "windowIndexWithinRegister": 15,
+          "bitStart": 240,
+          "bitWidth": 16
+        }
+      ]
+    }
+  },
+  "proofPublication": {
+    "publicationReady": false,
+    "allCurrent": false,
+    "staleSystems": [
+      "core",
+      "compressed",
+      "groth16"
+    ],
+    "systems": [
+      {
+        "system": "compressed",
+        "current": false,
+        "publicValuesMatchCurrent": true,
+        "resourceDigestMatchesInput": false,
+        "proofFileExists": true,
+        "verifierKeyFileExists": null,
+        "staleReasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_resource_digest_does_not_match_current_input"
+        ]
+      },
+      {
+        "system": "core",
+        "current": false,
+        "publicValuesMatchCurrent": true,
+        "resourceDigestMatchesInput": false,
+        "proofFileExists": null,
+        "verifierKeyFileExists": null,
+        "staleReasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_resource_digest_does_not_match_current_input"
+        ]
+      },
+      {
+        "system": "groth16",
+        "current": false,
+        "publicValuesMatchCurrent": false,
+        "resourceDigestMatchesInput": false,
+        "proofFileExists": true,
+        "verifierKeyFileExists": true,
+        "staleReasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_public_values_do_not_match_checked_public_values",
+          "fixture_resource_digest_does_not_match_current_input"
+        ]
+      }
+    ],
+    "blockers": [
+      {
+        "system": "core",
+        "inputBindingStatus": "fixture_declares_no_input_metadata",
+        "staleReasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_resource_digest_does_not_match_current_input"
+        ],
+        "requiredToClose": null
+      },
+      {
+        "system": "compressed",
+        "inputBindingStatus": "fixture_declares_no_input_metadata",
+        "staleReasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_resource_digest_does_not_match_current_input"
+        ],
+        "requiredToClose": null
+      },
+      {
+        "system": "groth16",
+        "inputBindingStatus": "fixture_declares_no_input_metadata",
+        "staleReasons": [
+          "fixture_declares_no_input_metadata",
+          "fixture_public_values_do_not_match_checked_public_values",
+          "fixture_resource_digest_does_not_match_current_input"
+        ],
+        "requiredToClose": null
+      },
+      {
+        "system": "public_headline_result",
+        "inputBindingStatus": "blocked_by_public_result_gate",
+        "staleReasons": [
+          "remaining_macro_boundaries_not_flattened"
+        ],
+        "requiredToClose": "Flatten the remaining modular arithmetic macro boundary into the canonical physical netlist and make engine_completion_audit.clifford_complete_goal_achieved true before publishing checked compressed/Groth16 proof results."
+      }
+    ],
+    "gateCommands": [
+      {
+        "name": "proof_status_publication_gate",
+        "phase": "freshness"
+      },
+      {
+        "name": "fast_zkp_preflight_publication_gate",
+        "phase": "fast_no_prover_preflight"
+      },
+      {
+        "name": "public_headline_compressed_verify",
+        "phase": "proof_verification"
+      },
+      {
+        "name": "public_headline_groth16_verify",
+        "phase": "proof_verification"
+      },
+      {
+        "name": "direct_compressed_verify",
+        "phase": "proof_verification"
+      },
+      {
+        "name": "direct_groth16_verify",
+        "phase": "proof_verification"
+      }
+    ]
+  },
+  "proofCorpusProfiles": {
+    "selectedPublicProfile": "smoke_public_8",
+    "releaseProfile": "google_comparable_9024",
+    "publicCaseCount": 8,
+    "releaseCaseCount": 9024,
+    "publicReleaseGrade": false,
+    "releaseGrade": true,
+    "boundary": [
+      "The current checked public proof profile is an explicit 8-case smoke attestation.",
+      "The Google-comparable release target is tracked as a separate 9024-case profile and must be rebuilt before claiming Google-equivalent proof confidence."
+    ]
+  },
+  "modularAccumulator": {
+    "rowStream": {
+      "pass": true,
+      "status": "row_stream_obligations_not_promoted_to_scheduled_primitive_netlist",
+      "rowCount": 1448433,
+      "segmentCount": 89,
+      "roleCounts": {
+        "partial_product_accumulator_consume": 720896,
+        "pseudo_mersenne_high_column_fold": 2805,
+        "pseudo_mersenne_low_column_fold": 2816,
+        "temporary_and_cleanup": 721406,
+        "zero_lift_guard_consume_cleanup": 510
+      },
+      "routeKindCounts": {
+        "partial_product_column_to_streamed_modular_accumulator": 1441792,
+        "pseudo_mersenne_fold": 5621,
+        "zero_lift_guard_predicate_ladder": 1020
+      },
+      "capacityOwnerCounts": {
+        "guard_ladder_predicate_workspace": 510,
+        "streamed_modular_accumulator_field_lane": 5621,
+        "streamed_product_accumulator_column_space": 720896,
+        "temporary_and_target_wire": 721406
+      },
+      "expandedCounts": {
+        "schoolbook_grid_count": 11,
+        "partial_product_consume_rows": 720896,
+        "zero_lift_guard_rows": 510,
+        "pseudo_mersenne_fold_rows": 5621,
+        "temporary_cleanup_rows": 721406,
+        "total_rows": 1448433
+      },
+      "knownCostStatus": {
+        "promoted_to_public_resource_contract": false,
+        "exact_non_clifford_delta": null,
+        "exact_measurement_delta": null,
+        "reason": "Rows are route and lifecycle obligations. Promotion still requires replacing each role row with concrete primitive Clifford/CCX/measurement gates and deriving liveness from that flat stream."
+      },
+      "requiredToPromote": [
+        "Lower partial_product_accumulator_consume rows to concrete reversible accumulator update gates.",
+        "Lower pseudo_mersenne_*_fold rows to concrete field-lane fold gates with carry/cleanup wires assigned to counted owners.",
+        "Lower temporary_and_cleanup rows to exact uncompute or measurement-cleanup primitive gates.",
+        "Rebuild scheduled_modular_primitive_netlist from those primitive gates and derive non-Clifford, measurements, and peak liveness from the rebuilt stream."
+      ]
+    },
+    "carrySave": {
+      "pass": true,
+      "status": "carry_save_candidate_not_promoted_to_public_resource_contract",
+      "schoolbookGridCount": 11,
+      "singleGrid": {
+        "inputColumnCount": 511,
+        "initialPartialProductBits": 65536,
+        "layerCount": 255,
+        "fullAdderCount": 64770,
+        "finalLiveColumnBits": 766,
+        "finalMaxColumnHeight": 2,
+        "finalCarryPropagateBits": 512,
+        "layers": [
+          {
+            "layer_index": 0,
+            "full_adder_count": 21675,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 171,
+            "live_column_bits_after_layer": 43861
+          },
+          {
+            "layer_index": 1,
+            "full_adder_count": 14450,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 115,
+            "live_column_bits_after_layer": 29411
+          },
+          {
+            "layer_index": 2,
+            "full_adder_count": 9632,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 77,
+            "live_column_bits_after_layer": 19779
+          },
+          {
+            "layer_index": 3,
+            "full_adder_count": 6422,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 52,
+            "live_column_bits_after_layer": 13357
+          },
+          {
+            "layer_index": 4,
+            "full_adder_count": 4281,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 35,
+            "live_column_bits_after_layer": 9076
+          },
+          {
+            "layer_index": 5,
+            "full_adder_count": 2856,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 24,
+            "live_column_bits_after_layer": 6220
+          },
+          {
+            "layer_index": 6,
+            "full_adder_count": 1896,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 17,
+            "live_column_bits_after_layer": 4324
+          },
+          {
+            "layer_index": 7,
+            "full_adder_count": 1260,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 12,
+            "live_column_bits_after_layer": 3064
+          },
+          {
+            "layer_index": 8,
+            "full_adder_count": 828,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 9,
+            "live_column_bits_after_layer": 2236
+          },
+          {
+            "layer_index": 9,
+            "full_adder_count": 567,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 7,
+            "live_column_bits_after_layer": 1669
+          },
+          {
+            "layer_index": 10,
+            "full_adder_count": 340,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 5,
+            "live_column_bits_after_layer": 1329
+          },
+          {
+            "layer_index": 11,
+            "full_adder_count": 230,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 4,
+            "live_column_bits_after_layer": 1099
+          },
+          {
+            "layer_index": 12,
+            "full_adder_count": 89,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 3,
+            "live_column_bits_after_layer": 1010
+          },
+          {
+            "layer_index": 13,
+            "full_adder_count": 3,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 3,
+            "live_column_bits_after_layer": 1007
+          },
+          {
+            "layer_index": 14,
+            "full_adder_count": 1,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 3,
+            "live_column_bits_after_layer": 1006
+          },
+          {
+            "layer_index": 15,
+            "full_adder_count": 1,
+            "column_count_after_layer": 511,
+            "max_column_height_after_layer": 3,
+            "live_column_bits_after_layer": 1005
+          }
+        ]
+      },
+      "allGrids": {
+        "partial_product_rows": 720896,
+        "carry_save_full_adder_count": 712470,
+        "final_carry_propagate_bits": 5632,
+        "candidate_touch_count": 718102,
+        "naive_carry_obligation_rows": 185270272,
+        "touch_reduction_numerator": 185270272,
+        "touch_reduction_denominator": 718102
+      },
+      "requiredToPromote": [
+        "Lower each 3-to-2 compression cell to concrete reversible gates with counted temporary and output owners.",
+        "Prove cleanup or retained-owner semantics for every full-adder carry and sum output.",
+        "Lower the final two-row carry-propagate adder into the global primitive schedule.",
+        "Recompute public non-Clifford and peak-live-qubit totals from the promoted primitive gate stream."
+      ]
+    },
+    "fullAdderContract": {
+      "pass": true,
+      "status": "full_adder_contract_not_promoted_to_public_resource_contract",
+      "totals": {
+        "full_adder_cell_count": 712470,
+        "embedded_full_adder_primitive_counts": {
+          "ccx": 2137410,
+          "cx": 2137410,
+          "x": 0,
+          "measurement": 0
+        },
+        "retained_input_obligation_bits": 2137410,
+        "output_obligation_bits": 1424940,
+        "final_carry_propagate_bits": 5632
+      },
+      "primitiveCountsPerCell": {
+        "ccx": 3,
+        "cx": 3,
+        "x": 0,
+        "measurement": 0
+      },
+      "irreversibleCollisionCount": 4,
+      "requiredToPromote": [
+        "Assign retained input bits, sum output bits, and carry output bits to counted owners in the global liveness engine.",
+        "Prove source uncomputation for retained inputs that are not kept live after compression.",
+        "Splice the per-cell CX/CCX sequence into the materialized primitive netlist with exact owner capacity.",
+        "Recompute public non-Clifford and peak-live-qubit totals from that promoted primitive stream."
+      ]
+    },
+    "fullAdderStream": {
+      "pass": true,
+      "status": "full_adder_stream_not_promoted_to_global_resource_contract",
+      "fullAdderCellCount": 712470,
+      "nonCliffordCount": 2137410,
+      "operationCount": 4274820,
+      "retainedInputObligationBits": 2137410,
+      "outputObligationBits": 1424940,
+      "segmentCount": 261,
+      "requiredToPromote": [
+        "Assign every cell input, sum output, and carry output wire to counted owners in the global liveness engine.",
+        "Prove uncompute/cleanup for retained input wires or keep them in the peak-live resource total.",
+        "Splice this stream into scheduled_modular_primitive_netlist and replace synthetic arithmetic_scratch targets.",
+        "Recompute public non-Clifford and peak-live-qubit totals from the combined global primitive stream."
+      ]
+    },
+    "sourceUncompute": {
+      "pass": true,
+      "status": "source_uncompute_contract_not_promoted_to_scheduled_primitive_netlist",
+      "rowCount": 721406,
+      "segmentCount": 45,
+      "routeKindCounts": {
+        "partial_product_column_to_streamed_modular_accumulator": 720896,
+        "zero_lift_guard_predicate_ladder": 510
+      },
+      "cleanupStatusCounts": {
+        "missing_source_controls_for_cleanup": 510,
+        "source_uncompute_cleanup_ccx_proven": 720896
+      },
+      "requiredToPromote": [
+        "Expose concrete predicate controls for zero-lift guard scratch rows or remove those placeholders from the modular primitive iterator.",
+        "Lower consume_into_counted_accumulator rows to concrete read-only temporary-control accumulator gates.",
+        "Append the proven source-uncompute CCX cleanup rows to the promoted primitive stream and recompute global liveness and non-Clifford totals."
+      ]
+    }
+  },
+  "optimizationMission": {
+    "target": {
+      "logical_qubits_exclusive": 1600,
+      "non_clifford_exclusive": 40000000
+    },
+    "status": "blocked_no_promotable_hybrid_found",
+    "sourceStrictResult": {
+      "name": "folded_standard_qroam_reusable_chunked_coordinate_v1__strict_fused_output_tail_7_slot_v1__semiclassical_qft_v1",
+      "logical_qubits": 1968,
+      "non_clifford": 36973222,
+      "field_slots": 7
+    },
+    "candidateRows": [
+      {
+        "name": "current_strict_projective_seven_slot",
+        "logical_qubits": 1968,
+        "non_clifford": 36973222,
+        "field_slots": 7,
+        "status": "proven_current_strict_baseline",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "qubit_count_above_target"
+      },
+      {
+        "name": "projective_six_slot_with_current_lookup_workspace",
+        "logical_qubits": 1712,
+        "non_clifford": 36973222,
+        "field_slots": 6,
+        "status": "numeric_projection_only_not_lowered",
+        "fits_logical_qubit_limit": false,
+        "fits_non_clifford_limit": true,
+        "blocker": "six field slots still exceed the qubit target with the strict reusable QROAM workspace"
+      },
+      {
+        "name": "projective_six_slot_with_lookup_workspace_reduced_to_fit",
+        "logical_qubits": 1599,
+        "non_clifford": 67447462,
+        "field_slots": 6,
+        "status": "derived_lower_bound_fails_gate_budget",
+        "fits_logical_qubit_limit": true,
+        "fits_non_clifford_limit": false,
+        "blocker": "forcing lookup workspace below the six-slot qubit budget requires enough QROAM chunk streams to exceed the non-Clifford target"
+      },
+      {
+        "name": "projective_five_slot_no_inverse_core",
+        "logical_qubits": 1456,
+        "non_clifford": 36973222,
+        "field_slots": 5,
+        "status": "only_numeric_target_that_would_fit_current_lookup_and_gate_budget",
+        "fits_logical_qubit_limit": true,
+        "fits_non_clifford_limit": true,
+        "blocker": "no executable five-field-slot no-inverse projective schedule or primitive lowering is known"
+      },
+      {
+        "name": "corrected_affine_inversion_public_envelope",
+        "logical_qubits": 1447,
+        "non_clifford": 81105024,
+        "status": "corrected_external_envelope_not_primitive_proven",
+        "fits_logical_qubit_limit": true,
+        "fits_non_clifford_limit": false,
+        "blocker": "normalizing the accumulator to affine after every dependent point addition pays an inverse-heavy gate budget"
+      }
+    ],
+    "sixSlotLookupTradeoff": {
+      "chunk_bits_budget": 42,
+      "chunks_per_coordinate": 7,
+      "coordinate_table_count": 3,
+      "leaf_call_count_total": 31,
+      "qroam_streams": 651,
+      "qroam_non_clifford": 42663936,
+      "base_non_clifford_without_streamed_qroam": 24783526,
+      "total_non_clifford_lower_bound": 67447462
+    },
+    "nextRequiredBreakthrough": {
+      "primary": "executable five-field-slot no-inverse projective core under the strict lookup workspace",
+      "secondary": "new standard-QROM lookup/workspace construction that keeps six projective slots under the qubit target without pushing non-Clifford above the gate target",
+      "not_enough": "affine boundary alone; it fits qubits only by paying inverse-heavy non-Clifford cost"
+    }
+  },
+  "pointAddBoundary": {
+    "lookupFedLeaf": {
+      "total": 80,
+      "pass": 80,
+      "categories": {
+        "random": {
+          "total": 16,
+          "pass": 16
+        },
+        "doubling": {
+          "total": 16,
+          "pass": 16
+        },
+        "inverse": {
+          "total": 16,
+          "pass": 16
+        },
+        "accumulator_infinity": {
+          "total": 16,
+          "pass": 16
+        },
+        "lookup_infinity": {
+          "total": 16,
+          "pass": 16
+        }
+      }
+    },
+    "streamedLookupTailLeaf": {
+      "total": 80,
+      "pass": 80,
+      "categories": {
+        "random": {
+          "total": 16,
+          "pass": 16
+        },
+        "doubling": {
+          "total": 16,
+          "pass": 16
+        },
+        "inverse": {
+          "total": 16,
+          "pass": 16
+        },
+        "accumulator_infinity": {
+          "total": 16,
+          "pass": 16
+        },
+        "lookup_infinity": {
+          "total": 16,
+          "pass": 16
+        }
+      }
+    }
+  },
+  "googleBaseline": {
+    "low_qubit": {
+      "logical_qubits": 1200,
+      "non_clifford": 90000000
+    },
+    "low_gate": {
+      "logical_qubits": 1450,
+      "non_clifford": 70000000
+    }
+  },
+  "baselineRows": [
+    {
+      "id": "google_low_qubit",
+      "label": "Google low-qubit public line",
+      "status": "external_public_baseline",
+      "logicalQubits": 1200,
+      "nonClifford": 90000000,
+      "note": "Rounded public Google/Babbush et al. 2026 comparison line."
+    },
+    {
+      "id": "google_low_gate",
+      "label": "Google low-gate public line",
+      "status": "external_public_baseline",
+      "logicalQubits": 1450,
+      "nonClifford": 70000000,
+      "note": "Rounded public Google/Babbush et al. 2026 comparison line."
+    },
+    {
+      "id": "repo_frontier_reference",
+      "label": "Repo older exact-family reference",
+      "status": "reference_boundary_not_accepted",
+      "logicalQubits": 1044,
+      "nonClifford": 34941606,
+      "note": "Interesting exact-family boundary retained for study; not the accepted physical baseline."
+    },
+    {
+      "id": "repo_strict_candidate",
+      "label": "Current strict candidate",
+      "status": "not_accepted_as_physical_baseline",
+      "logicalQubits": 1968,
+      "nonClifford": 36973222,
+      "note": "Strict replayed-tail candidate; not accepted as physical baseline."
+    },
+    {
+      "id": "repo_guard_corrected",
+      "label": "Guard-corrected no-alias consequence",
+      "status": "guard_corrected_no_alias_total_not_promoted",
+      "logicalQubits": 2222,
+      "nonClifford": 36973222,
+      "note": "Conservative consequence if the zero-lift guard clean-ladder workspace is not aliased."
+    }
+  ]
+}

@@ -1,0 +1,445 @@
+import { expect, test } from '@playwright/test';
+
+test('loads the personal quantum circuit course and generated repo status', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByRole('heading', { name: 'Quantum Circuit Lab' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Current repo contract' }).locator('xpath=ancestor::article')).toContainText('contract states, not as marketing copy');
+  await expect(page.getByRole('heading', { name: 'Current repo contract' }).locator('xpath=ancestor::article')).toContainText('zero lift guard capacity not promoted');
+  await expect(page.getByText('none yet').first()).toBeVisible();
+  await expect(page.getByLabel('Current repository resource status')).toContainText('1,968q');
+  await expect(page.getByLabel('Current repository resource status')).toContainText('2,222q');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('End-to-end circuit stack map');
+  await expect(page.getByTestId('baseline-chart')).toContainText('Google low-q');
+});
+
+test('lets the learner navigate concepts and complete progress', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByRole('button', { name: /Qubits as vectors/ }).click();
+  await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
+  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await expect(page.getByLabel('Course progress')).toContainText('1/21');
+});
+
+test('runs the qubit and netlist interactives', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByTestId('bloch-playground').getByRole('button', { name: 'H' }).click();
+  await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
+
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('yes');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('50%');
+  await page.getByRole('button', { name: 'Interference' }).click();
+  await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('0%');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('|10>');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('100%');
+
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Stabilizer vs magic wheel');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('State class');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer');
+  await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('magic');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('needs magic accounting');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Non-Clifford steps');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('1');
+  await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer-friendly');
+
+  await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX' }).click();
+  await expect(page.getByTestId('circuit-builder')).toContainText('Non-Clifford');
+  await expect(page.getByTestId('circuit-builder')).toContainText('2');
+});
+
+test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('largest measurement peak');
+  await page.getByTestId('phase-estimation-lab').getByRole('slider').fill('5');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('0101');
+
+  await expect(page.getByTestId('toy-curve-lab')).toContainText('Toy elliptic curve group');
+  await page.getByTestId('toy-curve-lab').getByRole('slider').fill('2');
+  await expect(page.getByTestId('toy-curve-lab')).toContainText('nP');
+  await expect(page.getByTestId('toy-curve-lab')).toContainText('(6, 3)');
+});
+
+test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Whole attack map');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
+  await page.getByTestId('circuit-stack-map').getByRole('button', { name: /Primitive netlist engine/ }).click();
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('operation stream, live intervals, owner-capacity proof');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('Affine and projective coordinates');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('(15, 3, 3)');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('= (5, 1)');
+  await page.getByLabel('Projective scale').fill('5');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('(8, 5, 5)');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('3 field slots');
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Reversible overwrite lab');
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Y3 over C');
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Scalar map audit: permutation');
+  await page.getByLabel('Enable zero-lift guard').uncheck();
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Scalar map audit: collision');
+  await page.getByRole('button', { name: 'Singular matrix' }).click();
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Matrix audit: not reversible');
+  await page.getByRole('button', { name: 'Invertible matrix' }).click();
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Matrix audit: reversible permutation');
+  await expect(page.getByTestId('point-add-formula-lab')).toContainText('Point-add formula microscope');
+  await page.getByTestId('point-add-formula-lab').getByRole('slider').fill('4');
+  await expect(page.getByTestId('point-add-formula-lab')).toContainText('lookup infinity no-op');
+});
+
+test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Discrete-log oracle toy');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Q = 5G');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('4 + 2 * 5 = 1 mod 13');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('hidden period (+5, -1)');
+
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('Phase-kickback hidden-period lab');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('phase exponent = 3');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('Fourier gradient');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('(3, 2)');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('dot((d,-1), gradient) = 0 mod 13');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('d = 2 * inverse(3) = 5');
+  await page.getByLabel('Kickback secret scalar').fill('7');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('a + b*d = 5 mod 13');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('(3, 8)');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('d = 8 * inverse(3) = 7');
+});
+
+test('teaches the windowed ECDLP scaffold that feeds point-add leaves', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('Windowed attack scaffold');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('32');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('28');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('Classical tail elisions');
+  await page.getByLabel('Selected scaffold window').fill('30');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('window 30: elided');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('raw-32 compiler path keeps it quantum');
+  await page.getByLabel('Scaffold mode').selectOption('raw32');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('Point-add leaves');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('31');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('window 30: raw32');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('window size 16, retained additions 28');
+  await expect(page.getByTestId('window-scaffold-lab')).toContainText('1,200q / 90,000,000');
+});
+
+test('shows modular reduction and QROAMClean tradeoff pressure', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('modular-reduction-lab')).toContainText('Modular multiplication shape');
+  await page.getByTestId('modular-reduction-lab').getByRole('slider').first().fill('4');
+  await expect(page.getByTestId('modular-reduction-lab')).toContainText('reduce');
+
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('QROAMClean tradeoff dial');
+  await page.getByTestId('qroam-tradeoff-lab').getByRole('slider').fill('16');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Workspace');
+});
+
+test('separates external baselines, reference boundaries, and unaccepted candidates', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-qubit public line');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-gate public line');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Repo older exact-family reference');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('reference boundary not accepted');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('1044q');
+});
+
+test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('450');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('885.6k');
+  await page.getByLabel('Logical resource row').selectOption('repo_guard_corrected');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('2,222');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('999.9k');
+  await page.getByTestId('logical-physical-bridge-lab').getByLabel('Code distance').fill('17');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('578');
+});
+
+test('teaches logical encoding with a repetition-code toy decoder', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Error-correction toy');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('majority vote');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Manual decode: pass');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('11,110');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('0.000985%');
+  await page.getByLabel('Physical carrier 1').click();
+  await page.getByLabel('Physical carrier 3').click();
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Manual decode: fail');
+  await page.getByLabel('Repetition code distance').fill('7');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Code distance: 7');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Manual decode: pass');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('15,554');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('tolerates 3');
+});
+
+test('teaches non-Clifford magic budget pressure separately from qubits', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('Non-Clifford magic budget');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('36,973,222');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('10,000,000');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('3.7 days');
+  await page.getByLabel('Magic budget resource row').selectOption('google_low_qubit');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('90,000,000');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('9.0 days');
+  await page.getByLabel('Parallel magic factories').fill('4');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('4.5 days');
+});
+
+test('teaches QROAM selection and owner invariant failures', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('qroam-lab')).toContainText('QROAM table selection');
+  await page.getByRole('button', { name: 'a0=1' }).click();
+  await expect(page.getByTestId('qroam-lab')).toContainText('Selected');
+
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: pass');
+  await page.getByLabel('Inject hidden scratch lane').check();
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: fail');
+});
+
+test('lets the learner write and debug a tiny quantum netlist', async ({ page }) => {
+  await page.goto('/');
+
+  const editor = page.getByLabel('Quantum DSL editor');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Non-Clifford');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('valid');
+  await editor.fill('H q0\nBAD q0');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('unknown op BAD');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('error');
+  await editor.fill('H q0\nCX q0 q1\nCCX q0 q1 q2');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('valid');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('CCX');
+});
+
+test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: fail');
+  await page.getByRole('button', { name: /uncompute A with same x,y/ }).click();
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: pass');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('scratch returns to |0>');
+});
+
+test('shows partial-product lowering pressure', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Partial-product grid');
+  await page.getByTestId('multiplier-grid-lab').getByRole('slider').first().fill('15');
+  await page.getByTestId('multiplier-grid-lab').getByRole('slider').last().fill('15');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Active ANDs');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('16');
+});
+
+test('requires owner assignment and numeric capacity to pass', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
+  await page.getByLabel('Owner for guard ladder').selectOption('guard_workspace');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: pass');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('255/255');
+});
+
+test('keeps accepted-baseline promotion behind all blockers', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
+  await page.getByLabel('Close zero lift guard capacity not promoted').check();
+  await page.getByLabel('Close modular accumulator source uncompute not promoted').check();
+  await page.getByLabel('Close modular arithmetic clifford expansion not flattened').check();
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: accepted-baseline ready');
+  await page.getByLabel('Use guard-corrected qubit count').uncheck();
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
+});
+
+test('trains claim classification before publishing resource numbers', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit drill');
+  await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: wrong');
+  await page.getByLabel('Claim classification').selectOption('rejected');
+  await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: correct');
+  await page.getByLabel('Require evidence same executable primitive stream').check();
+  await page.getByLabel('Require evidence all physical blockers closed').check();
+  await page.getByLabel('Require evidence proof input bound to selected contract').check();
+  await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit: pass');
+  await page.getByLabel('Claim to review').selectOption('guard-consequence');
+  await page.getByLabel('Claim classification').selectOption('consequence');
+  await page.getByLabel('Require evidence derivation from strict candidate').check();
+  await page.getByLabel('Require evidence clean-ladder guard capacity counted').check();
+  await page.getByLabel('Require evidence not promoted into global primitive stream').check();
+  await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit: pass');
+});
+
+test('turns learning into contributor-ready mission packets', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Contributor mission board');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: no');
+  await page.getByTestId('contributor-mission-board').getByRole('button', { name: /Promote a primitive lowering row/ }).click();
+  await page.getByLabel('Complete mission item identify source controls').check();
+  await page.getByLabel('Complete mission item name target wire').check();
+  await page.getByLabel('Complete mission item assign counted owner').check();
+  await page.getByLabel('Complete mission item prove cleanup or output ownership').check();
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: yes (4/4)');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('modular accumulator source uncompute not promoted');
+});
+
+test('maps checked artifacts to audit questions and claim limits', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact atlas');
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('current_baseline_status.json');
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Gate blocked with 5 required rows');
+  await page.getByTestId('artifact-atlas-lab').getByRole('button', { name: /Point-add equivalence/ }).click();
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('streamed_lookup_tail_leaf_equivalence.json');
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('80/80 checked cases pass');
+  await page.getByLabel('Locate artifact path').check();
+  await page.getByLabel('Read status and scope').check();
+  await page.getByLabel('State what it does not prove').check();
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact audit: pass');
+  await page.getByTestId('artifact-atlas-lab').getByRole('button', { name: /Proof publication status/ }).click();
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('proof_publication_status.json');
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Publication ready: no');
+});
+
+test('teaches the result confidence ladder before saying accepted baseline', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Result confidence ladder');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Highest justified rung');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Semantic boundary');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Wording audit: too strong');
+  await page.getByLabel('Claim wording').selectOption('candidate');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Wording audit: allowed for selected evidence');
+  await page.getByLabel('Evidence Single primitive stream').check();
+  await page.getByLabel('Evidence Owner capacity').check();
+  await page.getByLabel('Evidence Fresh proof wrapper').check();
+  await page.getByLabel('Evidence Accepted baseline gate').check();
+  await page.getByLabel('Claim wording').selectOption('accepted baseline');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Highest justified rung');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Accepted baseline gate');
+  await expect(page.getByTestId('confidence-ladder-lab')).toContainText('Wording audit: allowed for selected evidence');
+});
+
+test('lets the learner derive peak qubits from a mini engine', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Mini resource engine');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: fail');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 10');
+  await page.getByLabel('Owner for partial scratch').selectOption('scratch_workspace');
+  await page.getByLabel('Add source uncompute row').check();
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: pass');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 9');
+});
+
+test('shows how one opcode lowers to primitive rows and liveness intervals', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Opcode lowering microscope');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('select_field_if_flag bit slice');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('ccx');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Non-Clifford');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Lowering audit: pass');
+  await page.getByLabel('Remove cleanup rows').check();
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Lowering audit: fail');
+  await page.getByLabel('Lowering source opcode').selectOption('qroam_load');
+  await page.getByLabel('Remove cleanup rows').uncheck();
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('qroam_chunk_stream target bit');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Non-Clifford');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('2');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('qroam_target');
+});
+
+test('teaches schedule optimization by shortening live intervals', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule optimizer lab');
+  await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule audit: fail');
+  await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Peak live qubits: 14');
+  await page.getByLabel('Alpha scratch cleanup row').fill('4');
+  await page.getByLabel('Beta scratch cleanup row').fill('5');
+  await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Schedule audit: pass');
+  await expect(page.getByTestId('schedule-optimizer-lab')).toContainText('Peak live qubits: 9');
+});
+
+test('teaches optimization tradeoffs from the hybrid bridge search', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Optimization mission');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: blocked');
+  await page.getByLabel('Optimization candidate').selectOption('projective_five_slot_no_inverse_core');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('not executable/promoted');
+  await page.getByLabel('Require executable promoted candidate').uncheck();
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: pass');
+  await page.getByLabel('Optimization candidate').selectOption('projective_six_slot_with_lookup_workspace_reduced_to_fit');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('non-Clifford misses target');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('67.45M');
+});
+
+test('teaches point-add semantic boundary cases from equivalence artifacts', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Point-add boundary debugger');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('80/80');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('lookup infinity');
+  await page.getByTestId('point-add-boundary-debugger').getByRole('button', { name: /inverse pair/ }).click();
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('P == -Q');
+  await page.getByLabel('Test only random point-add cases').check();
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Boundary audit: fail');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Covered checked cases: 16/80');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('doubling');
+});
+
+test('shows real modular accumulator lowering obligations', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('Modular accumulator lowering');
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('1,448,433');
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('2,137,410');
+  await page.getByRole('button', { name: /pseudo mersenne high column fold/ }).click();
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('2,805');
+  await page.getByLabel('Show only promoted accumulator facts').check();
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('No hidden promotion steps displayed.');
+});
+
+test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('8 cases');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('9024 cases');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: blocked');
+  await page.getByLabel('Refresh proof fixtures against current input').check();
+  await page.getByLabel('Close physical macro boundary').check();
+  await page.getByLabel('Verify compressed and Groth16 proofs').check();
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: pass');
+});
+
+test('teaches the guard gap and quiz boundary', async ({ page }) => {
+  await page.goto('/');
+
+  await page.getByLabel('Count clean-ladder zero-lift guard capacity').check();
+  await expect(page.getByTestId('slot-liveness')).toContainText('2222');
+
+  await page.getByRole('button', { name: 'None yet.' }).click();
+  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/29');
+});

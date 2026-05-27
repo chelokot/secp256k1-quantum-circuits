@@ -1,0 +1,119 @@
+import { useMemo, useState } from 'react';
+import { ServerCog } from 'lucide-react';
+
+type BaselineRow = {
+  id: string;
+  label: string;
+  status: string;
+  logicalQubits: number;
+  nonClifford: number;
+  note: string;
+};
+
+type ProjectData = {
+  baselineRows: BaselineRow[];
+};
+
+const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
+const formatCompact = (value: number) => {
+  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
+  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}k`;
+  return formatInt(value);
+};
+
+export function LogicalPhysicalBridgeLab({ projectData }: { projectData: ProjectData }) {
+  const [selectedId, setSelectedId] = useState('repo_strict_candidate');
+  const [distance, setDistance] = useState(15);
+  const [layoutFactor, setLayoutFactor] = useState(2);
+  const selected = projectData.baselineRows.find((row) => row.id === selectedId) ?? projectData.baselineRows[0];
+
+  const estimate = useMemo(() => {
+    const physicalPerLogical = layoutFactor * distance * distance;
+    const physicalTotal = selected.logicalQubits * physicalPerLogical;
+    const magicPressure = selected.nonClifford / selected.logicalQubits;
+    return { physicalPerLogical, physicalTotal, magicPressure };
+  }, [distance, layoutFactor, selected]);
+
+  return (
+    <section className="wide-panel" data-testid="logical-physical-bridge-lab">
+      <div className="panel-heading">
+        <ServerCog size={20} />
+        <h3>Logical to physical bridge</h3>
+      </div>
+      <p>
+        Repo headlines count logical qubits. Hardware planning needs an error-correction and
+        layout model on top. This toy dial is deliberately not a hardware claim; it teaches the
+        extra layer that turns a logical circuit into a physical-qubit envelope.
+      </p>
+
+      <div className="physical-controls">
+        <label>
+          <span>Resource row</span>
+          <select
+            aria-label="Logical resource row"
+            value={selectedId}
+            onChange={(event) => setSelectedId(event.currentTarget.value)}
+          >
+            {projectData.baselineRows.map((row) => (
+              <option key={row.id} value={row.id}>{row.label}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          <span>Code distance: {distance}</span>
+          <input
+            aria-label="Code distance"
+            min="5"
+            max="31"
+            step="2"
+            type="range"
+            value={distance}
+            onChange={(event) => setDistance(Number(event.currentTarget.value))}
+          />
+        </label>
+        <label>
+          <span>Layout factor: {layoutFactor}x</span>
+          <input
+            aria-label="Layout factor"
+            min="1"
+            max="6"
+            step="1"
+            type="range"
+            value={layoutFactor}
+            onChange={(event) => setLayoutFactor(Number(event.currentTarget.value))}
+          />
+        </label>
+      </div>
+
+      <div className="physical-grid">
+        <article>
+          <span>Logical qubits</span>
+          <strong>{formatInt(selected.logicalQubits)}</strong>
+          <p>{selected.status.replaceAll('_', ' ')}</p>
+        </article>
+        <article>
+          <span>Physical per logical</span>
+          <strong>{formatInt(estimate.physicalPerLogical)}</strong>
+          <p>{layoutFactor} * {distance}² toy tiles</p>
+        </article>
+        <article>
+          <span>Toy physical envelope</span>
+          <strong>{formatCompact(estimate.physicalTotal)}</strong>
+          <p>{formatInt(selected.logicalQubits)} logical * {formatInt(estimate.physicalPerLogical)}</p>
+        </article>
+        <article>
+          <span>Magic pressure</span>
+          <strong>{formatCompact(Math.round(estimate.magicPressure))}</strong>
+          <p>non-Clifford per logical qubit</p>
+        </article>
+      </div>
+
+      <div className="physical-stack">
+        <div><strong>Algorithm</strong><span>phase estimation and controlled point-adds</span></div>
+        <div><strong>Logical circuit</strong><span>{formatInt(selected.logicalQubits)} live logical wires at peak</span></div>
+        <div><strong>Error correction</strong><span>distance {distance}, layout factor {layoutFactor}x</span></div>
+        <div><strong>Hardware envelope</strong><span>{formatCompact(estimate.physicalTotal)} toy physical qubits</span></div>
+      </div>
+    </section>
+  );
+}

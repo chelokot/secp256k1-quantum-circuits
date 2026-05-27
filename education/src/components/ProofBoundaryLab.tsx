@@ -1,0 +1,150 @@
+import { useMemo, useState } from 'react';
+import { FileCheck2 } from 'lucide-react';
+
+type ProofSystem = {
+  system: string;
+  current: boolean;
+  publicValuesMatchCurrent: boolean;
+  resourceDigestMatchesInput: boolean;
+  proofFileExists: boolean | null;
+  verifierKeyFileExists: boolean | null;
+  staleReasons: string[];
+};
+
+type ProofBlocker = {
+  system: string;
+  inputBindingStatus: string;
+  staleReasons: string[];
+  requiredToClose: string | null;
+};
+
+type ProjectData = {
+  proofPublication: {
+    publicationReady: boolean;
+    allCurrent: boolean;
+    staleSystems: string[];
+    systems: ProofSystem[];
+    blockers: ProofBlocker[];
+    gateCommands: Array<{ name: string; phase: string }>;
+  };
+  proofCorpusProfiles: {
+    publicCaseCount: number;
+    releaseCaseCount: number;
+    publicReleaseGrade: boolean;
+    releaseGrade: boolean;
+  };
+};
+
+const statusText = (value: boolean | null) => {
+  if (value === null) return 'n/a';
+  return value ? 'yes' : 'no';
+};
+
+const readable = (value: string) => value.replaceAll('_', ' ');
+
+export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) {
+  const [fixturesCurrent, setFixturesCurrent] = useState(projectData.proofPublication.allCurrent);
+  const [macroBoundaryClosed, setMacroBoundaryClosed] = useState(projectData.proofPublication.publicationReady);
+  const [verifiedReleaseProofs, setVerifiedReleaseProofs] = useState(projectData.proofPublication.publicationReady);
+
+  const simulatedStatus = useMemo(() => {
+    const open: string[] = [];
+    if (!fixturesCurrent) open.push('proof fixtures do not bind current input');
+    if (!macroBoundaryClosed) open.push('remaining macro boundary is not flattened');
+    if (!verifiedReleaseProofs) open.push('compressed and Groth16 verification not rerun for release');
+    return { open, pass: open.length === 0 };
+  }, [fixturesCurrent, macroBoundaryClosed, verifiedReleaseProofs]);
+
+  return (
+    <section className="wide-panel" data-testid="proof-boundary-lab">
+      <div className="panel-heading">
+        <FileCheck2 size={20} />
+        <h3>ZKP boundary lab</h3>
+      </div>
+      <div className="proof-grid">
+        <article>
+          <h4>Checked proof status</h4>
+          <dl className="metric-pair">
+            <div>
+              <dt>Public corpus</dt>
+              <dd>{projectData.proofCorpusProfiles.publicCaseCount} cases</dd>
+            </div>
+            <div>
+              <dt>Release target</dt>
+              <dd>{projectData.proofCorpusProfiles.releaseCaseCount} cases</dd>
+            </div>
+          </dl>
+          <p className={projectData.proofPublication.publicationReady ? 'audit-pass' : 'audit-fail'}>
+            Checked artifact status: {projectData.proofPublication.publicationReady ? 'publication ready' : 'not publication ready'}
+          </p>
+          <p>
+            Current public proof corpus is {projectData.proofCorpusProfiles.publicReleaseGrade ? 'release-grade' : 'smoke-only'}.
+            The Google-comparable target is {projectData.proofCorpusProfiles.releaseGrade ? 'release-grade' : 'not release-grade'}.
+          </p>
+        </article>
+
+        <article>
+          <h4>Proof systems</h4>
+          <div className="proof-system-list">
+            {projectData.proofPublication.systems.map((system) => (
+              <div key={system.system}>
+                <strong>{system.system}</strong>
+                <span>current {statusText(system.current)}</span>
+                <span>public values {statusText(system.publicValuesMatchCurrent)}</span>
+                <span>resource digest {statusText(system.resourceDigestMatchesInput)}</span>
+                <span>proof file {statusText(system.proofFileExists)}</span>
+              </div>
+            ))}
+          </div>
+        </article>
+      </div>
+
+      <div className="proof-simulator">
+        <h4>Promotion simulator</h4>
+        <label>
+          <input
+            aria-label="Refresh proof fixtures against current input"
+            checked={fixturesCurrent}
+            onChange={(event) => setFixturesCurrent(event.currentTarget.checked)}
+            type="checkbox"
+          />
+          <span>proof fixtures bind current input and resource digest</span>
+        </label>
+        <label>
+          <input
+            aria-label="Close physical macro boundary"
+            checked={macroBoundaryClosed}
+            onChange={(event) => setMacroBoundaryClosed(event.currentTarget.checked)}
+            type="checkbox"
+          />
+          <span>remaining physical macro boundary is flattened</span>
+        </label>
+        <label>
+          <input
+            aria-label="Verify compressed and Groth16 proofs"
+            checked={verifiedReleaseProofs}
+            onChange={(event) => setVerifiedReleaseProofs(event.currentTarget.checked)}
+            type="checkbox"
+          />
+          <span>compressed and Groth16 verification passed for the checked artifacts</span>
+        </label>
+        <p className={simulatedStatus.pass ? 'audit-pass' : 'audit-fail'}>
+          Proof release gate: {simulatedStatus.pass ? 'pass' : 'blocked'}
+        </p>
+        <p>
+          Open proof issues: {simulatedStatus.open.length === 0 ? 'none' : simulatedStatus.open.join(', ')}
+        </p>
+      </div>
+
+      <div className="proof-blockers">
+        {projectData.proofPublication.blockers.map((blocker) => (
+          <article key={blocker.system}>
+            <strong>{blocker.system}</strong>
+            <span>{readable(blocker.inputBindingStatus)}</span>
+            <p>{blocker.staleReasons.map(readable).join(', ')}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}

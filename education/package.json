@@ -1,0 +1,30 @@
+{
+  "name": "secp256k1-quantum-education",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "sync:data": "node scripts/sync-project-data.mjs",
+    "dev": "npm run sync:data && vite --host 127.0.0.1",
+    "build": "npm run sync:data && tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test:e2e": "npm run sync:data && playwright test",
+    "test": "npm run build && npm run test:e2e"
+  },
+  "dependencies": {
+    "d3": "^7.9.0",
+    "lucide-react": "^1.16.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "@types/d3": "^7.4.3",
+    "@types/node": "^25.9.1",
+    "@types/react": "^19.2.15",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.2",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.14"
+  }
+}
