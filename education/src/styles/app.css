@@ -1352,6 +1352,88 @@ code {
   color: #ffd0d0;
 }
 
+.coverage-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.coverage-summary div,
+.coverage-summary label,
+.coverage-card {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.coverage-summary label {
+  display: flex;
+  gap: 0.65rem;
+  align-items: center;
+  color: #dce7f2;
+}
+
+.coverage-summary span,
+.coverage-summary em,
+.coverage-card header span,
+.coverage-evidence span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.coverage-summary strong {
+  display: block;
+  margin: 0.25rem 0;
+  color: #ffffff;
+  font-size: 1.25rem;
+}
+
+.coverage-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.coverage-card.covered {
+  border-color: rgba(99, 230, 190, 0.35);
+}
+
+.coverage-card.boundary {
+  border-color: rgba(245, 207, 107, 0.48);
+}
+
+.coverage-card header {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+
+.coverage-card header strong {
+  color: #ffffff;
+}
+
+.coverage-card p {
+  margin: 0.65rem 0;
+  font-size: 0.9rem;
+}
+
+.coverage-evidence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.coverage-evidence span {
+  border-radius: 999rem;
+  padding: 0.25rem 0.55rem;
+  background: rgba(99, 230, 190, 0.1);
+  color: #b8f3e6;
+}
+
 .toggle-row,
 .blocker-switches label {
   display: flex;
@@ -3104,7 +3186,9 @@ legend {
   .lowering-grid,
   .schedule-grid,
   .mission-controls,
-  .mission-grid {
+  .mission-grid,
+  .coverage-summary,
+  .coverage-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -3186,6 +3270,8 @@ legend {
   .lowering-grid,
   .mission-controls,
   .mission-grid,
+  .coverage-summary,
+  .coverage-grid,
   .claim-drill-grid,
   .artifact-atlas-grid,
   .confidence-grid,

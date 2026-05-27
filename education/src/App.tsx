@@ -48,6 +48,7 @@ import { ConfidenceLadderLab } from './components/ConfidenceLadderLab';
 import { OptimizationMissionLab } from './components/OptimizationMissionLab';
 import { PointAddBoundaryDebugger } from './components/PointAddBoundaryDebugger';
 import { LearningPathMap } from './components/LearningPathMap';
+import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
@@ -239,6 +240,7 @@ export function App() {
         <ConfidenceLadderLab projectData={projectData} />
         <ContributorMissionBoard projectData={projectData} />
         <ProofBoundaryLab projectData={projectData} />
+        <CourseCoverageAuditLab lessonCount={lessons.length} quizCount={quiz.length} />
 
         <section className="wide-panel">
           <div className="panel-heading">

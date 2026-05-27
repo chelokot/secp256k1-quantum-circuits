@@ -368,6 +368,24 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
   await expect(page.getByTestId('contributor-mission-board')).toContainText('modular accumulator source uncompute not promoted');
 });
 
+test('maps original education requirements to concrete course coverage', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Lessons');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('21');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Quiz questions');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('34');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Requirements mapped');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('12/12');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Start from zero quantum computing');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Teach the whole circuit stack');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Become useful enough to help improve the repo');
+  await page.getByLabel('Show only boundary-aware coverage rows').check();
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('State remaining boundaries instead of pretending the course proves the repo result');
+  await expect(page.getByTestId('course-coverage-audit-lab')).not.toContainText('Start from zero quantum computing');
+});
+
 test('maps checked artifacts to audit questions and claim limits', async ({ page }) => {
   await page.goto('/');
 

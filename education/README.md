@@ -53,6 +53,8 @@ It is intentionally built as an interactive course, not a static report:
 - an optimization mission over the checked hybrid bridge candidate landscape
 - a contributor mission board that turns course skills into evidence-backed
   repo tasks
+- a course coverage audit that maps the original personal education request to
+  concrete lessons, labs, boundaries, and tests
 - an artifact atlas that maps checked JSON paths to the audit questions they
   answer and the claims they do not prove alone
 - a result confidence ladder for practicing when a claim can be called a
