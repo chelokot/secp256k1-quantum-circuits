@@ -50,6 +50,7 @@ import { OptimizationMissionLab } from './components/OptimizationMissionLab';
 import { PointAddBoundaryDebugger } from './components/PointAddBoundaryDebugger';
 import { LearningPathMap } from './components/LearningPathMap';
 import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
+import { ProjectProofMap } from './components/ProjectProofMap';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
@@ -204,7 +205,8 @@ export function App() {
     switch (activeLesson.id) {
       case 'zero':
         return [
-          labItem(0, 'Learning path map',
+          labItem(0, 'What has to be proved', <ProjectProofMap />),
+          labItem(1, 'Learning path map',
             <LearningPathMap
               activeLessonId={activeLessonId}
               completedLessonIds={completed}

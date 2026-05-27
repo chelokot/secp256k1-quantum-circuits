@@ -755,6 +755,64 @@ code {
   text-align: right;
 }
 
+.proof-map {
+  display: grid;
+  gap: 0.9rem;
+}
+
+.proof-step-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0.75rem;
+}
+
+.proof-step-grid article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.proof-step-grid div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  color: #b8f3e6;
+}
+
+.proof-step-grid div span {
+  display: inline-grid;
+  width: 1.65rem;
+  height: 1.65rem;
+  place-items: center;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.36);
+  border-radius: 999rem;
+  color: #ffffff;
+  font-size: 0.82rem;
+}
+
+.proof-step-grid strong,
+.proof-step-grid em {
+  display: block;
+}
+
+.proof-step-grid strong {
+  color: #ffffff;
+}
+
+.proof-step-grid em {
+  margin: 0.15rem 0 0.45rem;
+  color: #f5cf6b;
+  font-style: normal;
+  font-size: 0.82rem;
+}
+
+.proof-map > p,
+.proof-step-grid p {
+  color: #b4c4d6;
+}
+
 .readiness-strip {
   display: grid;
   grid-template-columns: minmax(10rem, 0.65fr) minmax(16rem, 1.35fr) minmax(13rem, 0.9fr);

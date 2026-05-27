@@ -46,23 +46,24 @@ export const lessons: CourseLesson[] = [
     title: 'What the project is trying to prove',
     icon: Route,
     intuition:
-      'The project asks a concrete security question: how large and expensive would a fault-tolerant quantum computation have to be to attack secp256k1, the elliptic-curve system used by Bitcoin public keys?',
+      'The project tries to justify one resource claim: a specified quantum circuit for attacking secp256k1 would need this many live logical qubits and this many expensive non-Clifford operations.',
     whyItMatters:
-      'The answer is not one vague number. We care mainly about two scarce resources: how many logical qubits must be alive at the busiest moment, and how many expensive non-Clifford operations the computation uses overall.',
+      'A precise-looking number is not enough. The number is only meaningful if it comes from the same executable circuit that the tests and proof artifacts bind to.',
     mentalModel:
-      'The first question is: how large and expensive is the quantum computation that would recover a secp256k1 private key from a public key?',
-    checkpoint: 'The repo is trying to justify resource numbers for a quantum attack, not merely explain that quantum computers threaten elliptic curves.',
+      'Given a public key Q, the attack tries to recover the hidden private number d such that Q = dG. This repo asks what the quantum circuit for that recovery actually costs.',
+    checkpoint: 'The repo must connect public key attack, executable circuit, tests, and resource numbers into one auditable chain.',
     deepDive: [
-      'Start with the math attack on a whiteboard. Then force it into machine objects: algorithm, curve operations, arithmetic, reversible gates, and finally a resource count.',
-      'The two headline resources are peak logical qubits and total non-Clifford operations. Peak qubits are the busiest moment in memory; non-Clifford operations are expensive fault-tolerant work over time.',
-      'The repo promise is narrow: if it prints a number such as 1,968 logical qubits, that number should come from an inspectable circuit path rather than from a manually chosen register list.',
+      'The input problem is a public key. The hidden answer is a private number. The quantum algorithm is the method for extracting that number.',
+      'The engineering problem is stricter: the algorithm must become reversible primitive rows over named quantum wires, with every temporary value cleaned or counted.',
+      'The headline resources are peak logical qubits and total non-Clifford operations. Peak qubits mean the busiest live-wire moment; non-Clifford operations mean expensive fault-tolerant work over the whole run.',
+      'The repo promise is narrow: if it prints a number, that number should come from the executable circuit path rather than from a manually chosen register list.',
     ],
     coreIdeas: [
       'Target: secp256k1 discrete logarithm, the hard problem behind public keys.',
       'Main resources: peak logical qubits and total non-Clifford operations.',
       'Trustworthy result: numbers derived from a concrete circuit path, not from a hand-wavy estimate.',
     ],
-    practicePrompt: 'Start with the learning path map below. The only thing to hold in your head for now: every later page explains one step between “quantum attack idea” and “auditable resource number.”',
+    practicePrompt: 'Start with “What has to be proved,” then use the learning path map. The only thing to hold in your head for now: every later page explains one step between “public key attack” and “auditable resource number.”',
     glossaryTerms: ['secp256k1', 'Discrete logarithm', 'Logical qubit', 'Non-Clifford'],
   },
   {
