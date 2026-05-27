@@ -421,6 +421,25 @@ test('shows real modular accumulator lowering obligations', async ({ page }) => 
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('No hidden promotion steps displayed.');
 });
 
+test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Scratch lifecycle lab');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('720,896');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('510');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Current stream status: invalid_abandoned_temporary_and_targets');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Lifecycle audit: blocked');
+  await page.getByLabel('Add consume row').check();
+  await page.getByLabel('Replay cleanup controls').check();
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Lifecycle audit: pass');
+  await page.getByLabel('Scratch lifecycle route').selectOption('zero_lift_guard');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('missing source controls for cleanup');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Lifecycle audit: blocked');
+  await page.getByLabel('Expose guard predicate controls').check();
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Lifecycle audit: pass');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Guard cleanup rows still missing source controls: 510.');
+});
+
 test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
   await page.goto('/');
 
@@ -441,5 +460,5 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
   await page.getByRole('button', { name: 'None yet.' }).click();
-  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/29');
+  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/30');
 });

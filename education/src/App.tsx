@@ -35,6 +35,7 @@ import { OwnerCapacityGame } from './components/OwnerCapacityGame';
 import { BaselinePromotionLab } from './components/BaselinePromotionLab';
 import { ProofBoundaryLab } from './components/ProofBoundaryLab';
 import { AccumulatorLoweringLab } from './components/AccumulatorLoweringLab';
+import { AccumulatorScratchLifecycleLab } from './components/AccumulatorScratchLifecycleLab';
 import { MiniResourceEngineLab } from './components/MiniResourceEngineLab';
 import { ScheduleOptimizerLab } from './components/ScheduleOptimizerLab';
 import { ClaimAuditDrill } from './components/ClaimAuditDrill';
@@ -217,6 +218,7 @@ export function App() {
         <OpcodeLoweringLab />
         <ScheduleOptimizerLab />
         <AccumulatorLoweringLab projectData={projectData} />
+        <AccumulatorScratchLifecycleLab projectData={projectData} />
         <BaselinePromotionLab projectData={projectData} />
         <ClaimAuditDrill projectData={projectData} />
         <ArtifactAtlasLab projectData={projectData} />

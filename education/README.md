@@ -28,6 +28,9 @@ It is intentionally built as an interactive course, not a static report:
   permutation contract rather than destructive assignment
 - bit-level partial-product multiplication grid
 - real modular-accumulator lowering metrics from checked artifacts
+- a scratch lifecycle lab for the current `721,406` abandoned temporary-AND
+  blocker, including the `720,896` partial-product cleanup rows and `510`
+  zero-lift guard source-control gap
 - point-add boundary debugger for random, doubling, inverse, accumulator-infinity,
   and lookup-infinity equivalence cases
 - QROAM table-selection accounting

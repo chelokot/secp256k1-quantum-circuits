@@ -15,6 +15,7 @@
     "modularAccumulatorFullAdderContract": "compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json",
     "modularAccumulatorFullAdderStream": "compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json",
     "modularAccumulatorSourceUncompute": "compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json",
+    "modularMultiplierLifecycle": "compiler_verification_project/artifacts/modular_multiplier_lifecycle.json",
     "hybridBridgeSearch": "compiler_verification_project/artifacts/hybrid_bridge_search.json",
     "lookupFedLeafEquivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
     "streamedLookupTailLeafEquivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json"
@@ -900,6 +901,59 @@
         "Lower consume_into_counted_accumulator rows to concrete read-only temporary-control accumulator gates.",
         "Append the proven source-uncompute CCX cleanup rows to the promoted primitive stream and recompute global liveness and non-Clifford totals."
       ]
+    }
+  },
+  "modularMultiplierLifecycle": {
+    "pass": true,
+    "currentStream": {
+      "operationCount": 1270134,
+      "nonCliffordCount": 1192378,
+      "scratchObservationCount": 721406,
+      "scratchUniqueWireCount": 721406,
+      "scratchSingleUseWireCount": 721406,
+      "scratchCleanupObservationCount": 0,
+      "scratchAbandonedGarbageCount": 721406,
+      "partialProductScratchObservationCount": 720896,
+      "nonPartialProductScratchObservationCount": 510,
+      "physicalLifecycleStatus": "invalid_abandoned_temporary_and_targets"
+    },
+    "streamedCandidate": {
+      "model": "serial_temporary_and_consume_cleanup",
+      "status": "candidate_not_promoted_to_public_resource_contract",
+      "temporaryAndComputeEvents": 721406,
+      "requiredConsumeEvents": 721406,
+      "requiredCleanupEvents": 721406,
+      "peakTemporaryAndWiresIfSerialized": 1,
+      "additionalMeasurementsForMeasuredCleanup": 721406,
+      "notes": [
+        "This is a generated target lifecycle for closing the current gap, not a claimed public lowering.",
+        "Promotion requires replacing each producer-only scratch target with a compute-consume-cleanup sequence that updates a counted accumulator wire and returns the temporary AND wire to zero."
+      ]
+    },
+    "candidateStream": {
+      "eventCount": 2164218,
+      "temporaryAndComputeEvents": 721406,
+      "consumeEvents": 721406,
+      "cleanupEvents": 721406,
+      "segmentCount": 133,
+      "routeKindCounts": {
+        "partial_product_column_to_streamed_modular_accumulator": 720896,
+        "zero_lift_guard_predicate_ladder": 510
+      },
+      "routeStatusCounts": {
+        "candidate_route_requires_guard_ladder_cleanup_lowering": 510,
+        "candidate_route_requires_streamed_pseudo_mersenne_accumulator_lowering": 720896
+      },
+      "routeSummary": {
+        "partial_product_routes": 720896,
+        "zero_lift_guard_routes": 510,
+        "unrouted_scratch_targets": 0,
+        "product_column_min": 0,
+        "product_column_max": 510,
+        "field_bits": 256,
+        "materialized_product_accumulator_bits_required": 512,
+        "materialized_product_accumulator_exceeds_counted_field_slot": true
+      }
     }
   },
   "optimizationMission": {

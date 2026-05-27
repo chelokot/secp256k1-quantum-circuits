@@ -21,6 +21,7 @@ const modularAccumulatorCarrySave = readJson('compiler_verification_project/arti
 const modularAccumulatorFullAdderContract = readJson('compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json');
 const modularAccumulatorFullAdderStream = readJson('compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json');
 const modularAccumulatorSourceUncompute = readJson('compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json');
+const modularMultiplierLifecycle = readJson('compiler_verification_project/artifacts/modular_multiplier_lifecycle.json');
 const hybridBridgeSearch = readJson('compiler_verification_project/artifacts/hybrid_bridge_search.json');
 const lookupFedLeafEquivalence = readJson('compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json');
 const streamedLookupTailLeafEquivalence = readJson('compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json');
@@ -44,6 +45,7 @@ const payload = {
     modularAccumulatorFullAdderContract: 'compiler_verification_project/artifacts/modular_accumulator_full_adder_contract.json',
     modularAccumulatorFullAdderStream: 'compiler_verification_project/artifacts/modular_accumulator_full_adder_stream.json',
     modularAccumulatorSourceUncompute: 'compiler_verification_project/artifacts/modular_accumulator_source_uncompute.json',
+    modularMultiplierLifecycle: 'compiler_verification_project/artifacts/modular_multiplier_lifecycle.json',
     hybridBridgeSearch: 'compiler_verification_project/artifacts/hybrid_bridge_search.json',
     lookupFedLeafEquivalence: 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
     streamedLookupTailLeafEquivalence: 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
@@ -208,6 +210,41 @@ const payload = {
       routeKindCounts: modularAccumulatorSourceUncompute.source_uncompute_stream.route_kind_counts,
       cleanupStatusCounts: modularAccumulatorSourceUncompute.source_uncompute_stream.cleanup_status_counts,
       requiredToPromote: modularAccumulatorSourceUncompute.promotion_status.required_to_promote,
+    },
+  },
+  modularMultiplierLifecycle: {
+    pass: modularMultiplierLifecycle.pass,
+    currentStream: {
+      operationCount: modularMultiplierLifecycle.current_stream.operation_count,
+      nonCliffordCount: modularMultiplierLifecycle.current_stream.non_clifford_count,
+      scratchObservationCount: modularMultiplierLifecycle.current_stream.scratch_observation_count,
+      scratchUniqueWireCount: modularMultiplierLifecycle.current_stream.scratch_unique_wire_count,
+      scratchSingleUseWireCount: modularMultiplierLifecycle.current_stream.scratch_single_use_wire_count,
+      scratchCleanupObservationCount: modularMultiplierLifecycle.current_stream.scratch_cleanup_observation_count,
+      scratchAbandonedGarbageCount: modularMultiplierLifecycle.current_stream.scratch_abandoned_garbage_count,
+      partialProductScratchObservationCount: modularMultiplierLifecycle.current_stream.partial_product_scratch_observation_count,
+      nonPartialProductScratchObservationCount: modularMultiplierLifecycle.current_stream.non_partial_product_scratch_observation_count,
+      physicalLifecycleStatus: modularMultiplierLifecycle.current_stream.physical_lifecycle_status,
+    },
+    streamedCandidate: {
+      model: modularMultiplierLifecycle.streamed_lifecycle_candidate.model,
+      status: modularMultiplierLifecycle.streamed_lifecycle_candidate.status,
+      temporaryAndComputeEvents: modularMultiplierLifecycle.streamed_lifecycle_candidate.temporary_and_compute_events,
+      requiredConsumeEvents: modularMultiplierLifecycle.streamed_lifecycle_candidate.required_consume_events,
+      requiredCleanupEvents: modularMultiplierLifecycle.streamed_lifecycle_candidate.required_cleanup_events,
+      peakTemporaryAndWiresIfSerialized: modularMultiplierLifecycle.streamed_lifecycle_candidate.peak_temporary_and_wires_if_serialized,
+      additionalMeasurementsForMeasuredCleanup: modularMultiplierLifecycle.streamed_lifecycle_candidate.additional_measurements_for_measured_cleanup,
+      notes: modularMultiplierLifecycle.streamed_lifecycle_candidate.notes,
+    },
+    candidateStream: {
+      eventCount: modularMultiplierLifecycle.candidate_lifecycle_stream.event_count,
+      temporaryAndComputeEvents: modularMultiplierLifecycle.candidate_lifecycle_stream.temporary_and_compute_events,
+      consumeEvents: modularMultiplierLifecycle.candidate_lifecycle_stream.consume_events,
+      cleanupEvents: modularMultiplierLifecycle.candidate_lifecycle_stream.cleanup_events,
+      segmentCount: modularMultiplierLifecycle.candidate_lifecycle_stream.segment_count,
+      routeKindCounts: modularMultiplierLifecycle.candidate_lifecycle_stream.route_kind_counts,
+      routeStatusCounts: modularMultiplierLifecycle.candidate_lifecycle_stream.route_status_counts,
+      routeSummary: modularMultiplierLifecycle.candidate_lifecycle_stream.route_summary,
     },
   },
   optimizationMission: {

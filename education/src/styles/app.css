@@ -1450,6 +1450,85 @@ code {
   padding-left: 1rem;
 }
 
+.scratch-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.scratch-summary div,
+.scratch-lifecycle-grid article,
+.scratch-timeline article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.scratch-summary span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.scratch-summary strong {
+  display: block;
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-size: 1.1rem;
+}
+
+.scratch-lifecycle-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.scratch-timeline {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.scratch-timeline article {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.scratch-timeline article.present {
+  border-color: rgba(99, 230, 190, 0.42);
+}
+
+.scratch-timeline article.missing {
+  border-color: rgba(255, 112, 112, 0.38);
+}
+
+.scratch-timeline span {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-items: center;
+  border-radius: 999rem;
+  color: #071018;
+  background: #f5cf6b;
+  font-weight: 800;
+}
+
+.scratch-timeline strong {
+  color: #ffffff;
+}
+
+.warning-note {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  color: #ffdca0;
+}
+
 .mini-engine-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
@@ -2685,6 +2764,9 @@ legend {
   .cleanup-wire,
   .accumulator-summary,
   .accumulator-grid,
+  .scratch-summary,
+  .scratch-lifecycle-grid,
+  .scratch-timeline,
   .mini-engine-grid,
   .lowering-controls,
   .lowering-grid,
@@ -2753,6 +2835,9 @@ legend {
   .cleanup-wire,
   .accumulator-summary,
   .accumulator-grid,
+  .scratch-summary,
+  .scratch-lifecycle-grid,
+  .scratch-timeline,
   .mini-engine-grid,
   .lowering-controls,
   .lowering-grid,
