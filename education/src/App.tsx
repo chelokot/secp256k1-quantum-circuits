@@ -561,6 +561,7 @@ export function App() {
           <div>
             <span>{activeLesson.module}</span>
             <strong>Lesson {currentIndex + 1} of {lessons.length}</strong>
+            <small>{completionPercent}% complete</small>
           </div>
           <button className="primary-action" type="button" onClick={() => selectLesson(nextLesson.id)}>
             Next

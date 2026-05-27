@@ -274,6 +274,11 @@ code {
   color: #ffffff;
 }
 
+.lesson-pager small {
+  color: #b8f3e6;
+  font-size: 0.82rem;
+}
+
 .lesson-pager button:first-child {
   justify-self: start;
 }

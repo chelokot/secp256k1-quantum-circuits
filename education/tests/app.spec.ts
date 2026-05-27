@@ -25,6 +25,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Given a public key Q');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
+  await expect(page.getByTestId('lesson-pager')).toContainText('0% complete');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
   await expect(page.getByTestId('lesson-brief')).toContainText('Page goal');
   await expect(page.getByTestId('lesson-brief')).toContainText('Try next');
@@ -68,6 +69,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.getByRole('button', { name: 'Mark understood and continue' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await expect(page).toHaveURL(/#qubit$/);
+  await expect(page.getByTestId('lesson-pager')).toContainText('5% complete');
   await page.reload();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Resume next lesson' }).click();
