@@ -102,6 +102,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await openLesson(page, 'qubit');
 
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Phase becomes probability');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Two arrows');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Lengths become chances');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Measure now');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 50% / 1: 50%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply H, then measure');
@@ -109,6 +111,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await page.getByLabel('Relative amplitude angle').fill('180');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Relative angle: 180 degrees');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 0% / 1: 100%');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('opposite direction');
 
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'H' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
@@ -137,6 +140,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer-friendly');
 
   await openLesson(page, 'gates');
+  await expect(page.getByTestId('circuit-builder')).toContainText('the row table is the countable object');
+  await expect(page.getByTestId('circuit-builder')).toContainText('q0,q1 -> q2');
+  await expect(page.getByTestId('circuit-builder')).toContainText('expensive controlled product');
   await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX' }).click();
   await expect(page.getByTestId('circuit-builder')).toContainText('Non-Clifford');
   await expect(page.getByTestId('circuit-builder')).toContainText('2');

@@ -965,6 +965,54 @@ code {
   color: #b8f3e6;
 }
 
+.concept-bridge-grid,
+.gate-literacy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.concept-bridge-grid article,
+.gate-literacy-grid article,
+.experiment-checklist {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.concept-bridge-grid span,
+.gate-literacy-grid span,
+.experiment-checklist span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.concept-bridge-grid strong,
+.gate-literacy-grid strong,
+.experiment-checklist strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+}
+
+.concept-bridge-grid p,
+.gate-literacy-grid p,
+.experiment-checklist p {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.experiment-checklist {
+  margin: 0.8rem 0;
+  border-color: rgba(99, 230, 190, 0.3);
+  background: rgba(99, 230, 190, 0.07);
+}
+
 .amplitude-bridge-grid {
   display: grid;
   grid-template-columns: minmax(12rem, 0.8fr) minmax(14rem, 1.2fr);
@@ -1118,6 +1166,44 @@ code {
   border-color: #f5cf6b;
   background: #4a3915;
   color: #fff1b8;
+}
+
+.netlist-table {
+  display: grid;
+  gap: 0.35rem;
+  margin: 1rem 0;
+}
+
+.netlist-header,
+.netlist-row {
+  display: grid;
+  grid-template-columns: 2.5rem 3.4rem minmax(5.5rem, 0.85fr) minmax(9rem, 1.25fr) 5.7rem;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.netlist-header {
+  color: #93a4b7;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.netlist-row {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.5rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
+  font-size: 0.86rem;
+}
+
+.netlist-row.hot {
+  border-color: rgba(245, 207, 107, 0.45);
+  background: rgba(245, 207, 107, 0.09);
+}
+
+.netlist-row strong {
+  color: #ffffff;
 }
 
 .metric-row {
@@ -3738,6 +3824,8 @@ legend {
   .metric-row,
   .lesson-task-strip,
   .amplitude-bridge-grid,
+  .concept-bridge-grid,
+  .gate-literacy-grid,
   .content-grid.learning-grid,
   .path-stage-grid,
   .readiness-strip,
@@ -3859,6 +3947,8 @@ legend {
   .content-grid.learning-grid,
   .lesson-task-strip,
   .amplitude-bridge-grid,
+  .concept-bridge-grid,
+  .gate-literacy-grid,
   .path-stage-grid,
   .readiness-strip,
   .tradeoff-controls,
@@ -3931,6 +4021,8 @@ legend {
 
   .role-bars button,
   .path-lesson-list button,
+  .netlist-header,
+  .netlist-row,
   .mini-netlist div,
   .liveness-timeline div,
   .schedule-timeline div,

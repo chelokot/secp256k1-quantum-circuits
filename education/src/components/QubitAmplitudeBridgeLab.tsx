@@ -19,6 +19,11 @@ export function QubitAmplitudeBridgeLab() {
   const afterHP1 = 1 - afterHP0;
   const zeroArrow = arrowEnd(0, 30);
   const oneArrow = arrowEnd(phaseRadians, 30);
+  const phaseObservation = phaseDegrees === 0
+    ? 'same direction: H makes outcome 0 certain'
+    : phaseDegrees === 180
+      ? 'opposite direction: H makes outcome 1 certain'
+      : 'between the extremes: H turns angle into a probability split';
 
   return (
     <article className="lab-panel" data-testid="qubit-amplitude-bridge-lab">
@@ -32,6 +37,24 @@ export function QubitAmplitudeBridgeLab() {
         1-arrow: direct measurement still sees 50/50, but H mixes the arrows first,
         so the angle changes the final chances.
       </p>
+
+      <div className="concept-bridge-grid" aria-label="Qubit reading order">
+        <article>
+          <span>1</span>
+          <strong>Two arrows</strong>
+          <p>The state has one amplitude for 0 and one amplitude for 1.</p>
+        </article>
+        <article>
+          <span>2</span>
+          <strong>Lengths become chances</strong>
+          <p>Equal lengths give equal direct measurement probabilities.</p>
+        </article>
+        <article>
+          <span>3</span>
+          <strong>Angle waits for a gate</strong>
+          <p>H mixes the arrows, so their relative angle becomes visible.</p>
+        </article>
+      </div>
 
       <label className="slider-label">
         <span>Relative angle: {phaseDegrees} degrees</span>
@@ -75,6 +98,15 @@ export function QubitAmplitudeBridgeLab() {
             <p>H mixes the arrows. Same direction reinforces 0; opposite direction cancels 0.</p>
           </div>
         </div>
+      </div>
+
+      <div className="experiment-checklist">
+        <span>Current observation</span>
+        <strong>{phaseObservation}</strong>
+        <p>
+          The slider never changes the arrow lengths. It only changes the hidden
+          angle relationship that a later gate can expose.
+        </p>
       </div>
 
       <p className="mono-line">state = (|0&gt; + phase({phaseDegrees}deg) * |1&gt;) / sqrt(2)</p>
