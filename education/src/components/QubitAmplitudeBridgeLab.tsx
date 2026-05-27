@@ -1,24 +1,49 @@
 import { useMemo, useState } from 'react';
 import { Waves } from 'lucide-react';
+import { MathTex } from './MathText';
 
 const formatPercent = (value: number) => `${Math.round(value * 100)}%`;
 
-function arrowEnd(angleRadians: number, length: number) {
+type Complex = {
+  re: number;
+  im: number;
+};
+
+const invSqrt2 = 1 / Math.sqrt(2);
+
+function arrowEnd(value: Complex, scale: number) {
   return {
-    x: 50 + Math.cos(angleRadians) * length,
-    y: 50 - Math.sin(angleRadians) * length,
+    x: 50 + value.re * scale,
+    y: 50 - value.im * scale,
   };
 }
+
+const abs2 = (value: Complex) => value.re * value.re + value.im * value.im;
 
 export function QubitAmplitudeBridgeLab() {
   const [phaseDegrees, setPhaseDegrees] = useState(0);
   const phaseRadians = (phaseDegrees / 180) * Math.PI;
-  const directP0 = 0.5;
-  const directP1 = 0.5;
-  const afterHP0 = useMemo(() => (1 + Math.cos(phaseRadians)) / 2, [phaseRadians]);
-  const afterHP1 = 1 - afterHP0;
-  const zeroArrow = arrowEnd(0, 30);
-  const oneArrow = arrowEnd(phaseRadians, 30);
+  const inputZero = useMemo<Complex>(() => ({ re: invSqrt2, im: 0 }), []);
+  const inputOne = useMemo<Complex>(() => ({
+    re: Math.cos(phaseRadians) * invSqrt2,
+    im: Math.sin(phaseRadians) * invSqrt2,
+  }), [phaseRadians]);
+  const outputZero = useMemo<Complex>(() => ({
+    re: (inputZero.re + inputOne.re) * invSqrt2,
+    im: (inputZero.im + inputOne.im) * invSqrt2,
+  }), [inputOne, inputZero]);
+  const outputOne = useMemo<Complex>(() => ({
+    re: (inputZero.re - inputOne.re) * invSqrt2,
+    im: (inputZero.im - inputOne.im) * invSqrt2,
+  }), [inputOne, inputZero]);
+  const directP0 = abs2(inputZero);
+  const directP1 = abs2(inputOne);
+  const afterHP0 = abs2(outputZero);
+  const afterHP1 = abs2(outputOne);
+  const inputZeroArrow = arrowEnd(inputZero, 38);
+  const inputOneArrow = arrowEnd(inputOne, 38);
+  const outputZeroArrow = arrowEnd(outputZero, 38);
+  const outputOneArrow = arrowEnd(outputOne, 38);
   const phaseObservation = phaseDegrees === 0
     ? 'same direction: Hadamard makes outcome 0 certain'
     : phaseDegrees === 180
@@ -39,63 +64,68 @@ export function QubitAmplitudeBridgeLab() {
       </p>
 
       <section className="gate-explainer" aria-label="Hadamard gate explanation">
-        <h4>What a quantum gate is</h4>
+        <h4>From state vector to gate</h4>
         <p>
-          A gate is a controlled physical action applied before measurement. In hardware
-          it is a calibrated pulse or interaction. In the circuit model it is a fixed
-          mathematical rule for replacing the current amplitude arrows with new arrows.
+          A gate is a controlled physical operation applied before measurement. In
+          hardware it is a calibrated pulse or interaction. In the circuit model it is
+          a function from the old amplitude vector to a new amplitude vector.
         </p>
-        <div className="gate-foundation-grid">
-          <article>
-            <span>Physical picture</span>
-            <p>The machine is not reading the qubit yet. It is steering the state, like rotating or recombining the arrows.</p>
-          </article>
-          <article>
-            <span>Mathematical rule</span>
-            <p>The rule must be linear, reversible, and preserve total arrow-length-squared. Such a rule is called unitary.</p>
-          </article>
-          <article>
-            <span>Not arbitrary</span>
-            <p>A rule that loses probability, clones an unknown state, or forgets which input made the output is not a valid quantum gate.</p>
-          </article>
-        </div>
-        <h4>Why Hadamard is valid</h4>
-        <p>
-          Hadamard is one valid one-qubit gate. It recombines the old 0-arrow and old
-          1-arrow, then divides by sqrt(2) so the total probability stays 100%.
-        </p>
-        <div className="gate-rule">
-          <span>new 0-arrow = (old 0-arrow + old 1-arrow) / sqrt(2)</span>
-          <span>new 1-arrow = (old 0-arrow - old 1-arrow) / sqrt(2)</span>
+        <div className="math-stack" aria-label="One-qubit state and linear gate formulas">
+          <div className="math-line">
+            <span className="math-label">state</span>
+            <MathTex tex="|\psi\rangle = a|0\rangle + b|1\rangle,\quad |a|^2 + |b|^2 = 1" />
+          </div>
+          <div className="matrix-equation">
+            <span className="math-label">linear gate</span>
+            <MathTex tex="\begin{bmatrix} a' \\ b' \end{bmatrix} = \begin{bmatrix} \alpha & \beta \\ \gamma & \delta \end{bmatrix}\begin{bmatrix} a \\ b \end{bmatrix}" />
+          </div>
+          <div className="math-line">
+            <span className="math-label">same rule</span>
+            <MathTex tex="a'=\alpha a+\beta b,\quad b'=\gamma a+\delta b" />
+          </div>
         </div>
         <p>
-          The plus output and minus output share the original total length. That is
-          why measurement after the gate still has probabilities summing to 100%.
+          Linearity means the whole candidate gate is described by four complex
+          coefficients. That still allows nonsense rules, so quantum mechanics adds
+          the validity condition.
         </p>
-        <ol>
-          <li><strong>Same direction:</strong> the sum is large and the difference cancels, so measurement becomes 0.</li>
-          <li><strong>Opposite direction:</strong> the sum cancels and the difference is large, so measurement becomes 1.</li>
-          <li><strong>Between:</strong> neither sum nor difference fully wins, so the output is a probability split.</li>
-        </ol>
+        <h4>Valid gates are unitary</h4>
+        <p>
+          <strong>Unitary</strong> means the rule is linear, reversible, and preserves
+          the total probability for every possible input state.
+        </p>
+        <div className="math-stack" aria-label="Unitary normalization constraints">
+          <div className="math-line">
+            <span className="math-label">compact test</span>
+            <MathTex tex="U^\dagger U = I" />
+          </div>
+          <div className="math-line">
+            <span className="math-label">columns</span>
+            <MathTex tex="|\alpha|^2+|\gamma|^2=1,\quad |\beta|^2+|\delta|^2=1,\quad \overline{\alpha}\beta+\overline{\gamma}\delta=0" />
+          </div>
+        </div>
+        <p>
+          So a one-qubit gate is not any formula someone writes down. All complex
+          2×2 linear maps start with eight real knobs. The unitary equations cut that
+          down to four real knobs, and one global phase is physically invisible, so a
+          one-qubit gate has three physical knobs.
+        </p>
+        <h4>First example: Hadamard</h4>
+        <div className="matrix-equation hadamard-equation" aria-label="Hadamard matrix">
+          <MathTex tex="H=\frac{1}{\sqrt{2}}\begin{bmatrix}1&1\\1&-1\end{bmatrix}" />
+        </div>
+        <div className="math-stack" aria-label="Hadamard output amplitudes">
+          <div className="math-line">
+            <span className="math-label">output</span>
+            <MathTex tex="a'=\frac{a+b}{\sqrt{2}},\quad b'=\frac{a-b}{\sqrt{2}}" />
+          </div>
+        </div>
+        <p>
+          Semantically, Hadamard makes a sum channel and a difference channel. Same
+          direction arrows reinforce the sum. Opposite direction arrows cancel the
+          sum. In-between angles produce a probability split.
+        </p>
       </section>
-
-      <div className="concept-bridge-grid" aria-label="Qubit reading order">
-        <article>
-          <span>1</span>
-          <strong>Two arrows</strong>
-          <p>The state has one amplitude for 0 and one amplitude for 1.</p>
-        </article>
-        <article>
-          <span>2</span>
-          <strong>Lengths become chances</strong>
-          <p>Equal lengths give equal direct measurement probabilities.</p>
-        </article>
-        <article>
-          <span>3</span>
-          <strong>Angle waits for a gate</strong>
-          <p>The Hadamard gate mixes the arrows, so their relative angle becomes visible.</p>
-        </article>
-      </div>
 
       <label className="slider-label">
         <span>Relative angle: {phaseDegrees} degrees</span>
@@ -111,20 +141,37 @@ export function QubitAmplitudeBridgeLab() {
       </label>
 
       <div className="amplitude-bridge-grid">
-        <div>
+        <div className="amplitude-visual-stack">
           <div className="amplitude-legend" aria-hidden="true">
             <span><i className="zero-dot" /> 0-arrow</span>
             <span><i className="one-dot" /> 1-arrow</span>
           </div>
-          <svg className="amplitude-arrows" viewBox="0 0 100 100" role="img" aria-label="Two complex amplitude arrows">
-            <circle cx="50" cy="50" r="38" />
-            <line className="axis" x1="12" y1="50" x2="88" y2="50" />
-            <line className="axis" x1="50" y1="12" x2="50" y2="88" />
-            <line className="zero-arrow" x1="50" y1="50" x2={zeroArrow.x} y2={zeroArrow.y} />
-            <circle className="zero-dot" cx={zeroArrow.x} cy={zeroArrow.y} r="3" />
-            <line className="one-arrow" x1="50" y1="50" x2={oneArrow.x} y2={oneArrow.y} />
-            <circle className="one-dot" cx={oneArrow.x} cy={oneArrow.y} r="3" />
-          </svg>
+          <div className="amplitude-snapshot-grid">
+            <figure>
+              <figcaption>Before Hadamard</figcaption>
+              <svg className="amplitude-arrows" viewBox="0 0 100 100" role="img" aria-label="Input amplitude arrows before Hadamard">
+                <circle cx="50" cy="50" r="38" />
+                <line className="axis" x1="12" y1="50" x2="88" y2="50" />
+                <line className="axis" x1="50" y1="12" x2="50" y2="88" />
+                <line className="zero-arrow" x1="50" y1="50" x2={inputZeroArrow.x} y2={inputZeroArrow.y} />
+                <circle className="zero-dot" cx={inputZeroArrow.x} cy={inputZeroArrow.y} r="3" />
+                <line className="one-arrow" x1="50" y1="50" x2={inputOneArrow.x} y2={inputOneArrow.y} />
+                <circle className="one-dot" cx={inputOneArrow.x} cy={inputOneArrow.y} r="3" />
+              </svg>
+            </figure>
+            <figure>
+              <figcaption>After Hadamard</figcaption>
+              <svg className="amplitude-arrows" viewBox="0 0 100 100" role="img" aria-label="Output amplitude arrows after Hadamard">
+                <circle cx="50" cy="50" r="38" />
+                <line className="axis" x1="12" y1="50" x2="88" y2="50" />
+                <line className="axis" x1="50" y1="12" x2="50" y2="88" />
+                <line className="zero-arrow" x1="50" y1="50" x2={outputZeroArrow.x} y2={outputZeroArrow.y} />
+                <circle className="zero-dot" cx={outputZeroArrow.x} cy={outputZeroArrow.y} r="3" />
+                <line className="one-arrow" x1="50" y1="50" x2={outputOneArrow.x} y2={outputOneArrow.y} />
+                <circle className="one-dot" cx={outputOneArrow.x} cy={outputOneArrow.y} r="3" />
+              </svg>
+            </figure>
+          </div>
         </div>
 
         <div className="amplitude-readout">
@@ -150,7 +197,9 @@ export function QubitAmplitudeBridgeLab() {
         </p>
       </div>
 
-      <p className="mono-line">state = (|0&gt; + phase({phaseDegrees}deg) * |1&gt;) / sqrt(2)</p>
+      <div className="mono-line">
+        <MathTex tex={`|\\psi\\rangle=(|0\\rangle+e^{i${phaseDegrees}^{\\circ}}|1\\rangle)/\\sqrt{2}`} />
+      </div>
     </article>
   );
 }

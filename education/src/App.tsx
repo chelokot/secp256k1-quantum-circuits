@@ -51,6 +51,7 @@ import { PointAddBoundaryDebugger } from './components/PointAddBoundaryDebugger'
 import { LearningPathMap } from './components/LearningPathMap';
 import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
 import { ProjectProofMap } from './components/ProjectProofMap';
+import { MathText } from './components/MathText';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
@@ -561,20 +562,20 @@ export function App() {
               <p>{activeLesson.mentalModel}</p>
             </section>
             {activeLesson.deepDive ? (
-              <details className="lesson-detail-steps" data-testid="lesson-detail-steps">
-                <summary>
-                  <span>Step-by-step explanation</span>
+              <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
+                <div className="lesson-detail-heading">
+                  <span>Build it up</span>
                   <strong>{activeLesson.deepDive.length} short steps</strong>
-                </summary>
+                </div>
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => (
                     <li key={paragraph}>
                       <span>{index + 1}</span>
-                      <p>{paragraph}</p>
+                      <p><MathText text={paragraph} /></p>
                     </li>
                   ))}
                 </ol>
-              </details>
+              </section>
             ) : null}
             {activeLesson.coreIdeas ? (
               <div className="core-idea-list">
