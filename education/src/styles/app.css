@@ -326,22 +326,7 @@ code {
 }
 
 .lesson-step-list li {
-  display: grid;
-  grid-template-columns: 1.8rem minmax(0, 1fr);
-  gap: 0.65rem;
-  align-items: start;
-}
-
-.lesson-step-list li > span {
-  display: grid;
-  place-items: center;
-  width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 999rem;
-  color: #061019;
-  background: #f5cf6b;
-  font-weight: 800;
-  font-size: 0.82rem;
+  min-width: 0;
 }
 
 .lesson-step-list p {
@@ -352,6 +337,13 @@ code {
   display: grid;
   gap: 0.65rem;
   min-width: 0;
+}
+
+.lesson-step-body h4 {
+  margin: 0;
+  color: #f5cf6b;
+  font-size: 0.82rem;
+  text-transform: uppercase;
 }
 
 .step-visual {
@@ -368,6 +360,17 @@ code {
 
 .step-visual.formula-step {
   grid-template-columns: minmax(0, auto) minmax(12rem, 1fr);
+}
+
+.step-formula-stack {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.step-formula-stack strong {
+  color: #63e6be;
+  font-size: 0.76rem;
+  text-transform: uppercase;
 }
 
 .step-visual svg {

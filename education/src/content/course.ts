@@ -81,11 +81,11 @@ export const lessons: CourseLesson[] = [
     deepDive: [
       'Notation: $|\\psi\\rangle = a|0\\rangle + b|1\\rangle$. The symbols $a$ and $b$ are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
       'Probability rule: $P(0)=|a|^2$ and $P(1)=|b|^2$. The vertical bars mean arrow length. If both arrows have length $1/\\sqrt{2}$, direct measurement is 50/50.',
-      'A quantum gate is a controlled physical operation applied before measurement. Mathematically it is a unitary rule: linear, reversible, and total-probability preserving.',
+      'Quantum gate: a controlled physical operation applied before measurement. Mathematically it is a unitary rule: linear, reversible, and total-probability preserving.',
       'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a valid gate combines the 0-arrow and 1-arrow.',
-      'In the lab, the Hadamard gate is the combining gate. Circuit diagrams often abbreviate it as H. It computes $(a+b)/\\sqrt{2}$ and $(a-b)/\\sqrt{2}$, so probability remains normalized.',
-      'Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1. That is why direction matters even when the two arrow lengths are unchanged.',
-      'Later Shor-style pages use the same idea at larger scale: phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
+      'Example: Hadamard gate is the combining gate used in the lab. Circuit diagrams often abbreviate it as H. It computes $(a+b)/\\sqrt{2}$ and $(a-b)/\\sqrt{2}$, so probability remains normalized.',
+      'Interference: same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1. That is why direction matters even when the two arrow lengths are unchanged.',
+      'Why this scales: later Shor-style pages use the same idea at larger scale. Phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
     ],
     coreIdeas: [
       'Amplitude = arrow with length and angle.',

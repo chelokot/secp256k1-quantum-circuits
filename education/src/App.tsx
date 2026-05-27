@@ -195,8 +195,11 @@ function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
   if (stepIndex === 2) {
     return (
       <div className="step-visual formula-step" data-testid="qubit-gate-visual" aria-label="Hadamard gate formula sketch">
-        <MathTex tex="H:\ (a,b)\mapsto \left(\frac{a+b}{\sqrt2},\frac{a-b}{\sqrt2}\right)" />
-        <p>A valid gate is a probability-preserving steering rule over the whole amplitude pair.</p>
+        <div className="step-formula-stack">
+          <strong>Example: Hadamard gate</strong>
+          <MathTex tex="H:\ (a,b)\mapsto \left(\frac{a+b}{\sqrt2},\frac{a-b}{\sqrt2}\right)" />
+        </div>
+        <p>One concrete valid gate: it preserves total probability while recombining the two amplitudes.</p>
       </div>
     );
   }
@@ -221,6 +224,21 @@ function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
   }
 
   return null;
+}
+
+function splitLessonStep(paragraph: string) {
+  const separatorIndex = paragraph.indexOf(':');
+  const firstSentenceIndex = paragraph.indexOf('.');
+  const hasShortLabel = separatorIndex > 0 && separatorIndex < 32 && (firstSentenceIndex === -1 || separatorIndex < firstSentenceIndex);
+
+  if (!hasShortLabel) {
+    return { body: paragraph, title: null };
+  }
+
+  return {
+    body: paragraph.slice(separatorIndex + 1).trim(),
+    title: paragraph.slice(0, separatorIndex),
+  };
 }
 
 export function App() {
@@ -607,15 +625,19 @@ export function App() {
             {activeLesson.deepDive ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
-                  {activeLesson.deepDive.map((paragraph, index) => (
-                    <li key={paragraph}>
-                      <span>{index + 1}</span>
-                      <div className="lesson-step-body">
-                        <p><MathText text={paragraph} /></p>
+                  {activeLesson.deepDive.map((paragraph, index) => {
+                    const step = splitLessonStep(paragraph);
+
+                    return (
+                      <li key={paragraph}>
+                        <div className="lesson-step-body">
+                          {step.title ? <h4>{step.title}</h4> : null}
+                          <p><MathText text={step.body} /></p>
                         {activeLesson.id === 'qubit' ? <QubitStepVisual stepIndex={index} /> : null}
-                      </div>
-                    </li>
-                  ))}
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ol>
               </section>
             ) : null}

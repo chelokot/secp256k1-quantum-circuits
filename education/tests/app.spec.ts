@@ -68,9 +68,14 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('A qubit is the smallest quantum state');
   await expect(page.getByTestId('qubit-state-vector-visual')).toContainText('This is one qubit');
-  await expect(page.getByTestId('qubit-gate-visual')).toContainText('probability-preserving steering rule');
+  await expect(page.getByTestId('qubit-gate-visual')).toContainText('Example: Hadamard gate');
+  await expect(page.getByTestId('qubit-gate-visual')).toContainText('One concrete valid gate');
   await expect(page.getByTestId('qubit-mixing-visual')).toContainText('Angle can become visible');
   await expect(page.locator('xpath=//*[@data-tex="|\\psi\\rangle=a|0\\rangle+b|1\\rangle"]')).toBeVisible();
+  await expect(page.locator('.lesson-step-list li > span')).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Notation' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Probability rule' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Quantum gate' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.locator('xpath=//*[@data-tex="P(0)=|a|^2"]')).toBeVisible();
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();
