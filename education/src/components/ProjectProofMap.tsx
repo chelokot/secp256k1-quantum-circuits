@@ -4,13 +4,13 @@ const proofSteps = [
   {
     title: 'Start object',
     label: 'public key',
-    text: 'Someone gives the circuit Q, a public curve point. The hidden answer is the private number d where Q = dG.',
+    text: 'The circuit is given Q, a public curve point. The hidden answer is the private key number d where Q = dG.',
     Icon: KeyRound,
   },
   {
     title: 'Quantum algorithm',
     label: 'period finding',
-    text: 'Shor-style phase estimation turns repeated curve additions into measurements that reveal d.',
+    text: 'Shor-style phase estimation turns repeated curve additions into measurement data that can recover d.',
     Icon: Route,
   },
   {

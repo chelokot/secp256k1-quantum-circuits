@@ -46,7 +46,7 @@ export const lessons: CourseLesson[] = [
     title: 'What the project is trying to prove',
     icon: Route,
     intuition:
-      'The project tries to justify one resource claim: a specified quantum circuit for attacking secp256k1 would need this many live logical qubits and this many expensive non-Clifford operations.',
+      'The project tries to justify one resource claim: a specified quantum circuit that recovers a secp256k1 private key would need this many live logical qubits and this many expensive non-Clifford operations.',
     whyItMatters:
       'A precise-looking number is not enough. The number is only meaningful if it comes from the same executable circuit that the tests and proof artifacts bind to.',
     mentalModel:
