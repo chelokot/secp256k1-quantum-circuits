@@ -675,6 +675,8 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await selectRouteLab(page, /ZKP boundary/);
 
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('what does the proof bind?');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('is the claim physical?');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('8 cases');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('9024 cases');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: blocked');
@@ -690,6 +692,10 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await page.getByLabel('Count clean-ladder zero-lift guard capacity').check();
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
+  await openLesson(page, 'repo-baselines');
+  await selectRouteLab(page, /Promotion audit/);
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('candidate only');
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Close blockers');
   await openLesson(page, 'repo-baselines');
   await expect(page.getByTestId('quiz-panel')).toContainText('Final checkpoint');
   await expect(page.getByTestId('quiz-panel')).toContainText('Question 1 of 34');

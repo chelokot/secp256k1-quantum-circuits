@@ -77,10 +77,10 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
           <p className={projectData.proofPublication.publicationReady ? 'audit-pass' : 'audit-fail'}>
             Checked artifact status: {projectData.proofPublication.publicationReady ? 'publication ready' : 'not publication ready'}
           </p>
-          <p>
-            Current public proof corpus is {projectData.proofCorpusProfiles.publicReleaseGrade ? 'release-grade' : 'smoke-only'}.
-            The Google-comparable target is {projectData.proofCorpusProfiles.releaseGrade ? 'release-grade' : 'not release-grade'}.
-          </p>
+      <p>
+        Current public proof corpus is {projectData.proofCorpusProfiles.publicReleaseGrade ? 'release-grade' : 'smoke-only'}.
+        The Google-comparable target is {projectData.proofCorpusProfiles.releaseGrade ? 'release-grade' : 'not release-grade'}.
+      </p>
         </article>
 
         <article>
@@ -96,6 +96,24 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
               </div>
             ))}
           </div>
+        </article>
+      </div>
+
+      <div className="publication-workflow-strip">
+        <article>
+          <span>1. Statement</span>
+          <strong>what does the proof bind?</strong>
+          <p>Check selected family, resource digest, case corpus, and public values before trusting the verifier.</p>
+        </article>
+        <article>
+          <span>2. Freshness</span>
+          <strong>are artifacts current?</strong>
+          <p>Compressed and Groth16 proof bundles must match the checked input and verifier key.</p>
+        </article>
+        <article>
+          <span>3. Scope</span>
+          <strong>is the claim physical?</strong>
+          <p>A valid proof is not enough if the remaining macro boundary is weaker than the advertised circuit claim.</p>
         </article>
       </div>
 

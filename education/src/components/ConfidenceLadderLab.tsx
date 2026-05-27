@@ -126,6 +126,23 @@ export function ConfidenceLadderLab({ projectData }: { projectData: ProjectData 
         A reviewer should climb claim levels one by one. Passing a lower rung is useful, but it
         does not authorize wording from a higher rung.
       </p>
+      <div className="claim-verdict-strip">
+        <article>
+          <span>Current wording</span>
+          <strong>{claimText}</strong>
+          <p>{audit.claimIsTooStrong ? 'This wording is ahead of the available evidence.' : 'This wording matches the selected evidence.'}</p>
+        </article>
+        <article>
+          <span>Highest justified rung</span>
+          <strong>{audit.highest.title}</strong>
+          <p>{audit.highest.allowedClaim}</p>
+        </article>
+        <article>
+          <span>Next missing gate</span>
+          <strong>{audit.missingRows[0]?.title ?? 'none'}</strong>
+          <p>{audit.missingRows[0]?.missingClaim ?? 'All evidence rungs are selected.'}</p>
+        </article>
+      </div>
 
       <div className="confidence-grid">
         <article>

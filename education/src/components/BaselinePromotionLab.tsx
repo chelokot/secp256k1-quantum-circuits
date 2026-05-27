@@ -42,6 +42,23 @@ export function BaselinePromotionLab({ projectData }: { projectData: ProjectData
         <ShieldCheck size={20} />
         <h3>Accepted-baseline gate</h3>
       </div>
+      <div className="promotion-steps">
+        <article className={promotion.guardIsCounted ? 'pass' : 'fail'}>
+          <span>1. Count guard capacity</span>
+          <strong>{promotion.guardIsCounted ? 'included' : 'missing'}</strong>
+          <p>The headline cannot ignore clean-ladder guard space.</p>
+        </article>
+        <article className={promotion.openBlockers.length === 0 ? 'pass' : 'fail'}>
+          <span>2. Close blockers</span>
+          <strong>{promotion.openBlockers.length === 0 ? 'none open' : `${promotion.openBlockers.length} open`}</strong>
+          <p>Macro expansion, modular cleanup, and capacity gates must be closed deliberately.</p>
+        </article>
+        <article className={promotion.pass ? 'pass' : 'fail'}>
+          <span>3. Publish wording</span>
+          <strong>{promotion.pass ? 'accepted baseline' : 'candidate only'}</strong>
+          <p>The public claim level follows the weakest remaining gate.</p>
+        </article>
+      </div>
       <div className="promotion-grid">
         <article>
           <h4>Candidate being audited</h4>

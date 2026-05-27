@@ -1760,6 +1760,59 @@ code {
   margin: 1rem 0;
 }
 
+.promotion-steps,
+.publication-workflow-strip,
+.claim-verdict-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.promotion-steps article,
+.publication-workflow-strip article,
+.claim-verdict-strip article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.promotion-steps article.pass {
+  border-color: rgba(99, 230, 190, 0.34);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.promotion-steps article.fail {
+  border-color: rgba(255, 112, 112, 0.32);
+  background: rgba(255, 112, 112, 0.08);
+}
+
+.promotion-steps span,
+.publication-workflow-strip span,
+.claim-verdict-strip span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.promotion-steps strong,
+.publication-workflow-strip strong,
+.claim-verdict-strip strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+}
+
+.promotion-steps p,
+.publication-workflow-strip p,
+.claim-verdict-strip p {
+  margin: 0.4rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .promotion-grid article {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
@@ -3983,6 +4036,9 @@ legend {
   .physical-stack,
   .error-code-grid,
   .error-code-summary,
+  .promotion-steps,
+  .publication-workflow-strip,
+  .claim-verdict-strip,
   .magic-controls,
   .magic-grid,
   .magic-stack,
@@ -4108,6 +4164,9 @@ legend {
   .physical-stack,
   .error-code-grid,
   .error-code-summary,
+  .promotion-steps,
+  .publication-workflow-strip,
+  .claim-verdict-strip,
   .magic-controls,
   .magic-grid,
   .magic-stack,
