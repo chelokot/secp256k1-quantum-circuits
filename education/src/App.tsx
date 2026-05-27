@@ -69,6 +69,15 @@ type LabItem = LabRouteItem & {
 };
 
 const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const progressStorageKey = 'secp256k1-education-completed-lessons-v1';
+const lessonIdSet = new Set<LessonId>(lessons.map((lesson) => lesson.id));
+
+function loadCompletedLessons() {
+  const stored = window.localStorage.getItem(progressStorageKey);
+  if (stored === null) return new Set<LessonId>();
+  const parsed = JSON.parse(stored) as LessonId[];
+  return new Set(parsed.filter((lessonId) => lessonIdSet.has(lessonId)));
+}
 
 const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   gates: [
@@ -124,7 +133,7 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
 
 export function App() {
   const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
-  const [completed, setCompleted] = useState<Set<LessonId>>(() => new Set());
+  const [completed, setCompleted] = useState<Set<LessonId>>(() => loadCompletedLessons());
   const [focusedLabByLesson, setFocusedLabByLesson] = useState<Partial<Record<LessonId, number>>>({});
   const [showAllLabsByLesson, setShowAllLabsByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
   const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
@@ -162,6 +171,10 @@ export function App() {
     setCompleted((previous) => new Set(previous).add(activeLesson.id));
   };
 
+  const resetProgress = () => {
+    setCompleted(new Set());
+  };
+
   const selectLesson = (lessonId: LessonId) => {
     setActiveLessonId(lessonId);
     window.history.replaceState(null, '', `#${lessonId}`);
@@ -173,6 +186,10 @@ export function App() {
     window.addEventListener('hashchange', syncHash);
     return () => window.removeEventListener('hashchange', syncHash);
   }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem(progressStorageKey, JSON.stringify([...completed]));
+  }, [completed]);
 
   const activeLabItems: LabItem[] = (() => {
     const labItem = (index: number, fallbackName: string, element: ReactNode): LabItem => {
@@ -415,6 +432,15 @@ export function App() {
             <span>{completed.size}/{lessons.length}</span>
           </div>
           <div className="progress-track"><div style={{ width: `${completionPercent}%` }} /></div>
+          <button
+            className="progress-reset"
+            disabled={completed.size === 0}
+            onClick={resetProgress}
+            type="button"
+          >
+            <RotateCcw size={14} />
+            Reset progress
+          </button>
         </div>
         <button
           className="nav-mode-toggle"

@@ -62,6 +62,12 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page).toHaveURL(/#qubit$/);
   await page.getByRole('button', { name: 'Mark understood' }).click();
   await expect(page.getByLabel('Course progress')).toContainText('1/21');
+  await page.reload();
+  await expect(page.getByLabel('Course progress')).toContainText('1/21');
+  await page.getByRole('button', { name: 'Reset progress' }).click();
+  await expect(page.getByLabel('Course progress')).toContainText('0/21');
+  await page.getByRole('button', { name: 'Mark understood' }).click();
+  await expect(page.getByLabel('Course progress')).toContainText('1/21');
   await page.getByRole('button', { name: 'Next concept' }).click();
   await expect(page).toHaveURL(/#gates$/);
 });

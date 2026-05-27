@@ -107,6 +107,28 @@ code {
   background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
+.progress-reset {
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.65rem;
+  border: 0;
+  padding: 0;
+  color: #aebdca;
+  background: transparent;
+  cursor: pointer;
+}
+
+.progress-reset:disabled {
+  color: #566472;
+  cursor: not-allowed;
+}
+
+.progress-reset:not(:disabled):hover,
+.progress-reset:not(:disabled):focus-visible {
+  color: #f5cf6b;
+}
+
 .nav-mode-toggle {
   display: inline-flex;
   justify-content: center;
