@@ -139,6 +139,26 @@ export function StateVectorLab() {
         Program lines use compact circuit names: H means Hadamard, X means bit flip,
         Z means phase flip, and CX means controlled-X.
       </p>
+      <section className="controlled-x-explainer" aria-label="Controlled-X explanation">
+        <div className="cx-wire-diagram" aria-hidden="true">
+          <div>
+            <span>q0 control</span>
+            <i />
+            <strong>1?</strong>
+          </div>
+          <div>
+            <span>q1 target</span>
+            <i />
+            <strong>X</strong>
+          </div>
+        </div>
+        <p>
+          <strong>Controlled-X</strong> means: look at the control qubit. On every branch
+          where the control is 1, apply a bit flip to the target qubit. On branches
+          where the control is 0, leave the target alone.
+        </p>
+        <p className="mono-line">CX q0 q1 = control q0, bit-flip target q1 only when q0 is 1</p>
+      </section>
       <textarea
         aria-label="State vector program editor"
         className="dsl-editor"

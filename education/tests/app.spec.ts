@@ -141,6 +141,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 
   await selectRouteLab(page, /Two-qubit state vector/);
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Controlled-X');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('control q0, bit-flip target q1 only when q0 is 1');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled');
   await expect(page.getByTestId('state-vector-lab')).toContainText('yes');
   await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');

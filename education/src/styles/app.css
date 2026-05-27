@@ -1723,6 +1723,61 @@ code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
+.controlled-x-explainer {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.7fr) minmax(18rem, 1.3fr);
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0.9rem 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.controlled-x-explainer p {
+  margin: 0;
+}
+
+.controlled-x-explainer .mono-line {
+  grid-column: 1 / -1;
+  margin-top: 0;
+}
+
+.cx-wire-diagram {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.cx-wire-diagram div {
+  display: grid;
+  grid-template-columns: 5.6rem minmax(3rem, 1fr) 2rem;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.cx-wire-diagram span {
+  color: #c9d6e2;
+  font-size: 0.82rem;
+}
+
+.cx-wire-diagram i {
+  display: block;
+  height: 0.12rem;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.cx-wire-diagram strong {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.42);
+  border-radius: 999rem;
+  color: #ffffff;
+  background: rgba(99, 230, 190, 0.11);
+}
+
 .probability-track {
   height: 0.5rem;
   overflow: hidden;
