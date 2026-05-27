@@ -561,18 +561,14 @@ export function App() {
           </button>
         </nav>
 
-        <section className="lesson-task-strip" data-testid="lesson-task-strip" aria-label="How to use this lesson">
+        <section className="lesson-brief" data-testid="lesson-brief" aria-label="How to use this lesson">
           <article>
-            <span>Focus</span>
+            <span>Page goal</span>
             <p>{pageFocus}</p>
           </article>
           <article>
-            <span>Do</span>
+            <span>Try next</span>
             <p>{pageExercise}</p>
-          </article>
-          <article>
-            <span>Check</span>
-            <p>{activeLesson.checkpoint}</p>
           </article>
         </section>
 

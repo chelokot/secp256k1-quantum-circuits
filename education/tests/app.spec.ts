@@ -26,10 +26,10 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('peak logical qubits and total non-Clifford operations');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
-  await expect(page.getByTestId('lesson-task-strip')).toContainText('Focus');
-  await expect(page.getByTestId('lesson-task-strip')).toContainText('Do');
-  await expect(page.getByTestId('lesson-task-strip')).toContainText('Check');
-  await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with “What has to be proved,” then use the learning path map');
+  await expect(page.getByTestId('lesson-brief')).toContainText('Page goal');
+  await expect(page.getByTestId('lesson-brief')).toContainText('Try next');
+  await expect(page.getByTestId('lesson-brief')).not.toContainText('Check');
+  await expect(page.getByTestId('lesson-brief')).toContainText('Start with “What has to be proved,” then use the learning path map');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');
   await expect(page.getByTestId('lesson-recall-check')).not.toContainText('public key attack, executable circuit, tests');
@@ -187,7 +187,7 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
   await openLesson(page, 'ecdlp');
 
-  await expect(page.getByTestId('lesson-task-strip')).toContainText('Start with the Whole attack map');
+  await expect(page.getByTestId('lesson-brief')).toContainText('Start with the Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Lab route');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Resource composer');

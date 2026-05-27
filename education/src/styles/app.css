@@ -216,6 +216,7 @@ code {
 .hero-panel.no-status {
   grid-template-columns: minmax(0, 44rem);
   align-items: start;
+  padding: 1.25rem;
 }
 
 .hero-panel.compact-hero {
@@ -229,6 +230,10 @@ code {
   font-size: clamp(2rem, 4vw, 4.2rem);
 }
 
+.hero-panel.no-status h2 {
+  font-size: clamp(2rem, 3.2vw, 3.45rem);
+}
+
 .hero-panel.compact-hero h2 {
   font-size: clamp(2rem, 3vw, 3.2rem);
 }
@@ -236,8 +241,8 @@ code {
 .hero-copy {
   max-width: 58rem;
   color: #c9d6e2;
-  font-size: 1.08rem;
-  line-height: 1.7;
+  font-size: 1rem;
+  line-height: 1.62;
 }
 
 .lesson-pager {
@@ -277,28 +282,28 @@ code {
   justify-self: end;
 }
 
-.lesson-task-strip {
+.lesson-brief {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   gap: 0.75rem;
   margin-top: 1rem;
 }
 
-.lesson-task-strip article {
+.lesson-brief article {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   padding: 0.85rem;
   background: rgba(14, 21, 29, 0.7);
 }
 
-.lesson-task-strip span {
+.lesson-brief span {
   display: block;
   color: #93a4b7;
   font-size: 0.78rem;
   text-transform: uppercase;
 }
 
-.lesson-task-strip p {
+.lesson-brief p {
   margin: 0.35rem 0 0;
   color: #dce7f2;
   line-height: 1.45;
@@ -4058,7 +4063,7 @@ legend {
 
   .resource-status-strip,
   .metric-row,
-  .lesson-task-strip,
+  .lesson-brief,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
@@ -4187,7 +4192,7 @@ legend {
   .metric-row,
   .content-grid,
   .content-grid.learning-grid,
-  .lesson-task-strip,
+  .lesson-brief,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
