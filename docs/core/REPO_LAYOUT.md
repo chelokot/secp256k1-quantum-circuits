@@ -54,6 +54,7 @@ Key files:
 - `compiler_verification_project/README.md`
 - `compiler_verification_project/scripts/build.py`
 - `compiler_verification_project/scripts/build_zkp_attestation_input.py`
+- `compiler_verification_project/scripts/update_baseline_hardening_report.py`
 - `compiler_verification_project/scripts/proof_status.py`
 - `compiler_verification_project/scripts/run_zkp_attestation_guarded.py`
 - `compiler_verification_project/scripts/verify_public_headline.py`
@@ -101,6 +102,8 @@ Key files:
 ## Documentation
 
 - `docs/core/CLAIMS_AND_BOUNDARIES.md` — exact claim boundary
+- `docs/core/BASELINE_HARDENING.md` — generated promotion checklist for the
+  conservative `36,973,222 / 2,222` hardening track
 - `docs/references/GOOGLE_BASELINE_COMPARISON.md` — baseline definition and headline ratios
 - `docs/core/EXTENDED_VERIFICATION.md` — extended verification coverage
 - `docs/research/LOOKUP_FOLDING_RESEARCH_PASS.md` — signed folded lookup contract

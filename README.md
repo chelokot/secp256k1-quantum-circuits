@@ -87,6 +87,8 @@ number is promoted as the final physical baseline until the guard capacity and
 modular accumulator boundaries are in the same executable primitive liveness
 model. The release authority for that decision is
 `compiler_verification_project/artifacts/current_baseline_status.json`.
+The generated human-readable promotion checklist is
+`docs/core/BASELINE_HARDENING.md`.
 That artifact also carries the machine-readable acceptance gate for the next
 baseline promotion. Today every gate row is blocked: there is no single
 Clifford-complete primitive stream, the guard-corrected `2,222` capacity is not
@@ -427,7 +429,9 @@ headline JSON without rebuilding every compiler artifact. It also refreshes
 together drive the conservative `2,222` hardening-target presentation. Use
 `compiler_verification_project/scripts/update_readme_headline.py` after that
 build to rewrite the generated README headline block from those checked
-artifacts, or pass `--check` in CI/review. Use
+artifacts, and `compiler_verification_project/scripts/update_baseline_hardening_report.py`
+to refresh `docs/core/BASELINE_HARDENING.md`, or pass `--check` to either
+script in CI/review. Use
 `build.py --target public-engine-manifest` after changing only the no-ZKP public
 engine manifest layer. Use `build.py --target engine-completion-audit` after
 changing only the no-ZKP completion/status layer that classifies covered engine

@@ -119,7 +119,8 @@ The conservative hardening target is selected by
 `compiler_verification_project/artifacts/current_baseline_status.json` from the
 guard-corrected no-alias consequence. It is the number this repository should
 show by default while the physical-baseline gate is closed, but it is not an
-accepted baseline and not a fresh compressed/Groth16 proof claim.
+accepted baseline and not a fresh compressed/Groth16 proof claim. The generated
+human-readable hardening checklist is `docs/core/BASELINE_HARDENING.md`.
 
 The strict replayed-tail candidate is selected in
 `compiler_verification_project/artifacts/strict_replayed_tail_headline.json`.

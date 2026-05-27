@@ -27,7 +27,10 @@ Its `accepted_baseline_gate` is the repo-wide promotion rule: no resource number
 may become the accepted physical baseline until every listed gate row passes and
 the accepted totals are recomputed from that same executable primitive stream.
 At the current branch state, the gate explicitly blocks promotion of the
-`2,222` guard-corrected consequence.
+`2,222` guard-corrected consequence. The generated reviewer-facing version of
+that promotion checklist is `docs/core/BASELINE_HARDENING.md`; it is derived
+from the same status artifact and should be regenerated instead of edited by
+hand.
 
 The strict candidate is selected in
 `compiler_verification_project/artifacts/primary_strict_result.json`, with the

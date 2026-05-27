@@ -16,6 +16,27 @@ repository-supported answer to each one.
 | “The previous streamed lookup model mixed full-coordinate QROAM gates with one-bit workspace.” | High | Closed for the counted lookup resource. The reusable-chunk certificate uses standard QROAMClean `K = 1`, pays `65,536` non-Clifford per chunk stream, and counts the live `155`-bit QROAM chunk target inside the `173`-qubit lookup workspace. The strict replayed-tail candidate also replaces the old four-slot macro tail with the guarded replayed fused-output seven-slot tail, giving `36,973,222 / 1,968`; the conservative hardening target is `36,973,222 / 2,222`, and `current_baseline_status.json` keeps both out of accepted physical-baseline status until the gate closes. | Partly |
 | “No end-to-end physical machine proof is shipped.” | Medium | True. The repository ships exact logicalCounts, explicit Microsoft Resource Estimator target profiles, recorded estimator outputs, and a separate Cain transfer study, but it does not ship a hardware-independent theorem-proved physical realization. | Yes |
 
+## Current baseline-hardening P0s
+
+The current central number for repo presentation is the conservative
+`36,973,222 / 2,222` hardening target, not an accepted physical baseline. The
+generated promotion checklist is `docs/core/BASELINE_HARDENING.md`, and its
+source of truth is
+`compiler_verification_project/artifacts/current_baseline_status.json`.
+
+The remaining P0s before calling any number a Clifford-complete physical
+baseline are:
+
+- make the global flat primitive stream the only source for execution,
+  liveness, owner capacity, and resource totals;
+- promote the zero-lift guard clean-ladder capacity into the scheduled
+  primitive liveness owner model, or prove a concrete executable alias/no-ancilla
+  guard construction;
+- promote modular accumulator consume/fold/source-uncompute rows into the same
+  scheduled primitive netlist used for the public peak calculation;
+- remove abandoned synthetic arithmetic scratch from the physical boundary;
+- clear the public-headline publication gate before advertising proof freshness.
+
 ## Statements the repository can defend directly
 
 - the optimized leaf's basis-state arithmetic semantics

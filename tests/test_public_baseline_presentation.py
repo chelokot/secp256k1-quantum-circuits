@@ -7,10 +7,15 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 UPDATE_SCRIPT = REPO_ROOT / 'compiler_verification_project' / 'scripts' / 'update_readme_headline.py'
+BASELINE_REPORT_SCRIPT = REPO_ROOT / 'compiler_verification_project' / 'scripts' / 'update_baseline_hardening_report.py'
 SPEC = importlib.util.spec_from_file_location('update_readme_headline', UPDATE_SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC is not None and SPEC.loader is not None
 SPEC.loader.exec_module(MODULE)
+BASELINE_SPEC = importlib.util.spec_from_file_location('update_baseline_hardening_report', BASELINE_REPORT_SCRIPT)
+BASELINE_MODULE = importlib.util.module_from_spec(BASELINE_SPEC)
+assert BASELINE_SPEC is not None and BASELINE_SPEC.loader is not None
+BASELINE_SPEC.loader.exec_module(BASELINE_MODULE)
 
 
 def _read(path: str) -> str:
@@ -35,10 +40,27 @@ def test_readme_headline_block_is_generated_from_baseline_status() -> None:
     assert '**strict replayed-tail engine candidate:** `36,973,222 non-Clifford`, `1,968 logical qubits`' in readme
 
 
+def test_baseline_hardening_report_is_generated_from_acceptance_gate() -> None:
+    report = _read('docs/core/BASELINE_HARDENING.md')
+    baseline = _artifact('current_baseline_status.json')
+
+    assert report == BASELINE_MODULE.render_report()
+    assert baseline['accepted_physical_baseline'] is None
+    assert 'Conservative hardening target under review: **36,973,222 non-Clifford / 2,222 logical qubits**.' in report
+    assert 'Lower strict replayed-tail candidate: **36,973,222 non-Clifford / 1,968 logical qubits**, not accepted.' in report
+    assert 'Acceptance gate: **blocked**' in report
+    assert '`single_authoritative_primitive_stream`' in report
+    assert '`guard_corrected_no_alias_capacity_promoted_into_liveness`' in report
+    assert '`modular_accumulator_source_uncompute_promoted`' in report
+    assert 'Guard cleanup rows still missing source controls: 510.' in report
+    assert 'Use `36,973,222 / 2,222` as the central hardening track' in report
+
+
 def test_public_docs_do_not_promote_candidate_numbers_as_accepted_baseline() -> None:
     paths = [
         'README.md',
         'compiler_verification_project/README.md',
+        'docs/core/BASELINE_HARDENING.md',
         'docs/core/CLAIMS_AND_BOUNDARIES.md',
         'docs/core/RED_TEAM_REVIEW.md',
         'docs/references/GOOGLE_BASELINE_COMPARISON.md',

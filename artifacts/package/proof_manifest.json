@@ -175,8 +175,12 @@
       "bytes": 9464
     },
     "compiler_verification_project/README.md": {
-      "sha256": "d9c34753ed38b3339a78f60892a3bd2642889c40d752c5f70abc323c9c9c31d7",
-      "bytes": 38098
+      "sha256": "f1366cbd984a953d9126b9bfabb6b47947f149fae3e753f008ae36dc359fae21",
+      "bytes": 38185
+    },
+    "docs/core/BASELINE_HARDENING.md": {
+      "sha256": "d7edd3ce3dedcd86fcbac46fa2d302a9c5fcd8ed3ec0718bda64639127d2b21d",
+      "bytes": 4416
     },
     "compiler_verification_project/src/artifact_registry.py": {
       "sha256": "9b8e207c275b58668acd2dd59807dbdd024f684a1b63e5745f1cd632f172fe7a",
@@ -465,6 +469,10 @@
     "compiler_verification_project/scripts/update_readme_headline.py": {
       "sha256": "d346e6746f17dcaebe3356db11d97efc885d2e5e32233a89206b2946ad9d7996",
       "bytes": 4031
+    },
+    "compiler_verification_project/scripts/update_baseline_hardening_report.py": {
+      "sha256": "8402e4fd2019d4e6846b8177931ff3883380b4500fc27587936aeee6b33fb233",
+      "bytes": 6033
     },
     "compiler_verification_project/scripts/verify_public_headline.py": {
       "sha256": "2fc6df131ebe27fe40807a1275902e81f6e7f627d9ee9d974479dfe79f3dac28",
