@@ -153,8 +153,26 @@ test('separates external baselines, reference boundaries, and unaccepted candida
   await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-qubit public line');
   await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-gate public line');
   await expect(page.getByTestId('baseline-explorer')).toContainText('Repo older exact-family reference');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Repo macro/ZKP wrapper reference');
   await expect(page.getByTestId('baseline-explorer')).toContainText('reference boundary not accepted');
   await expect(page.getByTestId('baseline-explorer')).toContainText('1044q');
+});
+
+test('teaches baseline tradeoff landscape and claim status', async ({ page }) => {
+  await page.goto('/');
+
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('Baseline tradeoff landscape');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('1,200q / 90M');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('1,450q / 70M');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('Google low-gate public line');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('70.0M');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('external public baseline');
+  await page.getByLabel('Selected baseline row').selectOption('repo_macro_wrapper_reference');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('Repo macro/ZKP wrapper reference');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('1,199');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('do not call this accepted baseline');
+  await page.getByLabel('Baseline status lens').selectOption('accepted');
+  await expect(page.getByTestId('baseline-tradeoff-lab')).toContainText('No accepted physical baseline rows yet.');
 });
 
 test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page }) => {
@@ -460,5 +478,5 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('slot-liveness')).toContainText('2222');
 
   await page.getByRole('button', { name: 'None yet.' }).click();
-  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/30');
+  await expect(page.getByTestId('quiz-panel')).toContainText('Score: 1/31');
 });

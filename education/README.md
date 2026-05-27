@@ -55,6 +55,9 @@ It is intentionally built as an interactive course, not a static report:
 - current repo candidate numbers synced from checked artifacts
 - a baseline explorer that separates Google public lines, older repo reference
   boundaries, current candidates, and non-promoted consequences
+- a baseline tradeoff landscape for comparing `1,200q / 90M`, `1,450q / 70M`,
+  historical repo reference rows, the current strict candidate, and the
+  guard-corrected hardening target without promoting any unaccepted row
 - an accepted-baseline gate that shows why `2,222q` is still blocked until every
   release blocker is closed against the same executable artifact
 - a claim-audit drill for classifying result statements before repeating them

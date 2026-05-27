@@ -2326,6 +2326,90 @@ code {
   font-size: 0.92rem;
 }
 
+.tradeoff-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.tradeoff-controls label {
+  display: grid;
+  gap: 0.4rem;
+  color: #dce7f2;
+}
+
+.tradeoff-controls select {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.5rem;
+  padding: 0.55rem;
+  color: #edf2f7;
+  background: #121c27;
+}
+
+.tradeoff-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(18rem, 0.75fr);
+  gap: 1rem;
+}
+
+.tradeoff-grid article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tradeoff-plane {
+  width: 100%;
+  min-height: 18rem;
+}
+
+.tradeoff-plane line {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1;
+}
+
+.tradeoff-plane .grid-line {
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+.tradeoff-plane circle {
+  cursor: pointer;
+  stroke: #071018;
+  stroke-width: 2;
+}
+
+.tradeoff-plane text {
+  fill: #93a4b7;
+  font-size: 0.72rem;
+}
+
+.tradeoff-plane .point-label {
+  fill: #edf2f7;
+  font-size: 0.7rem;
+}
+
+.tradeoff-plane .axis-label {
+  fill: #dce7f2;
+  font-size: 0.76rem;
+  text-anchor: middle;
+}
+
+.tradeoff-plane .rotated {
+  transform: rotate(-90deg);
+}
+
+.empty-tradeoff {
+  display: grid;
+  min-height: 18rem;
+  align-items: center;
+  justify-items: center;
+  border: 0.0625rem dashed rgba(255, 255, 255, 0.18);
+  border-radius: 0.5rem;
+  color: #ffdca0;
+}
+
 .physical-controls {
   display: grid;
   grid-template-columns: minmax(16rem, 1.1fr) minmax(12rem, 0.9fr) minmax(12rem, 0.9fr);
@@ -2736,6 +2820,8 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .tradeoff-controls,
+  .tradeoff-grid,
   .state-vector-grid,
   .magic-status-grid,
   .stack-map-grid,
@@ -2805,6 +2891,8 @@ legend {
 
   .baseline-strip,
   .metric-row,
+  .tradeoff-controls,
+  .tradeoff-grid,
   .state-vector-grid,
   .magic-status-grid,
   .stack-map-grid,

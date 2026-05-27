@@ -10,6 +10,7 @@ const strictHeadline = readJson('compiler_verification_project/artifacts/strict_
 const engineCompletion = readJson('compiler_verification_project/artifacts/engine_completion_audit.json');
 const zeroLiftGuard = readJson('compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json');
 const tailMacroEngine = readJson('compiler_verification_project/artifacts/tail_macro_engine.json');
+const publicHeadlineResult = readJson('compiler_verification_project/artifacts/public_headline_result.json');
 const googleBaseline = readJson('data/public_google_baseline.json');
 const mainlineScaffold = readJson('artifacts/circuits/ecdlp_scaffold_optimized.json');
 const fullRaw32Oracle = readJson('compiler_verification_project/artifacts/full_raw32_oracle.json');
@@ -35,6 +36,7 @@ const payload = {
     engineCompletion: 'compiler_verification_project/artifacts/engine_completion_audit.json',
     zeroLiftGuard: 'compiler_verification_project/artifacts/zero_lift_guard_resource_audit.json',
     tailMacroEngine: 'compiler_verification_project/artifacts/tail_macro_engine.json',
+    publicHeadlineResult: 'compiler_verification_project/artifacts/public_headline_result.json',
     googleBaseline: 'data/public_google_baseline.json',
     mainlineScaffold: 'artifacts/circuits/ecdlp_scaffold_optimized.json',
     fullRaw32Oracle: 'compiler_verification_project/artifacts/full_raw32_oracle.json',
@@ -292,6 +294,14 @@ const payload = {
       logicalQubits: frontierReference.total_logical_qubits,
       nonClifford: frontierReference.full_oracle_non_clifford,
       note: 'Interesting exact-family boundary retained for study; not the accepted physical baseline.',
+    },
+    {
+      id: 'repo_macro_wrapper_reference',
+      label: 'Repo macro/ZKP wrapper reference',
+      status: publicHeadlineResult.legacy_wrapper_reference.status,
+      logicalQubits: publicHeadlineResult.legacy_wrapper_reference.selected_result.logical_qubits,
+      nonClifford: publicHeadlineResult.legacy_wrapper_reference.selected_result.non_clifford,
+      note: publicHeadlineResult.legacy_wrapper_reference.reason,
     },
     {
       id: 'repo_strict_candidate',

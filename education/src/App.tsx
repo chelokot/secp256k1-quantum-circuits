@@ -26,6 +26,7 @@ import { PointAddFormulaLab } from './components/PointAddFormulaLab';
 import { ModularReductionLab } from './components/ModularReductionLab';
 import { QroamTradeoffLab } from './components/QroamTradeoffLab';
 import { BaselineExplorer } from './components/BaselineExplorer';
+import { BaselineTradeoffLab } from './components/BaselineTradeoffLab';
 import { LogicalPhysicalBridgeLab } from './components/LogicalPhysicalBridgeLab';
 import { ErrorCorrectionToyLab } from './components/ErrorCorrectionToyLab';
 import { MagicBudgetLab } from './components/MagicBudgetLab';
@@ -209,6 +210,7 @@ export function App() {
         <CoordinateModelLab />
         <ReversibleOverwriteLab projectData={projectData} />
         <BaselineExplorer projectData={projectData} />
+        <BaselineTradeoffLab projectData={projectData} />
         <ErrorCorrectionToyLab projectData={projectData} />
         <LogicalPhysicalBridgeLab projectData={projectData} />
         <MagicBudgetLab projectData={projectData} />
