@@ -83,6 +83,7 @@ export const lessons: CourseLesson[] = [
       'Probability rule: P(0) = |a|^2 and P(1) = |b|^2. The vertical bars mean arrow length. If both arrows have length 1/sqrt(2), direct measurement is 50/50.',
       'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a gate combines the 0-arrow and 1-arrow.',
       'In the lab, the Hadamard gate is the combining gate. Circuit diagrams often abbreviate it as H. Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1.',
+      'The useful beginner formula is: Hadamard makes the new 0-arrow from old 0 plus old 1, and the new 1-arrow from old 0 minus old 1. That is why direction matters even when the two arrow lengths are unchanged.',
       'Later Shor-style pages use the same idea at larger scale: phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
     ],
     coreIdeas: [

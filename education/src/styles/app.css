@@ -1000,6 +1000,57 @@ code {
   margin: 1rem 0;
 }
 
+.gate-explainer {
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.24);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.gate-explainer h4 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.gate-explainer p,
+.gate-explainer li {
+  color: #c9d6e2;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.gate-explainer p {
+  margin: 0.45rem 0 0;
+}
+
+.gate-rule {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.75rem 0;
+}
+
+.gate-rule span {
+  border-left: 0.2rem solid #f5cf6b;
+  border-radius: 0.35rem;
+  padding: 0.45rem 0.6rem;
+  color: #fff7cf;
+  background: rgba(245, 207, 107, 0.08);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.gate-explainer ol {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.gate-explainer strong {
+  color: #ffffff;
+}
+
 .concept-bridge-grid article,
 .gate-literacy-grid article,
 .experiment-checklist {

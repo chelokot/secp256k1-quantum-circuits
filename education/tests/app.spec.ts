@@ -109,6 +109,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Phase becomes probability');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Two arrows');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Lengths become chances');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('What the Hadamard gate is doing');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('new 0-arrow = old 0-arrow + old 1-arrow');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('new 1-arrow = old 0-arrow - old 1-arrow');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Measure now');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 50% / 1: 50%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply Hadamard, then measure');

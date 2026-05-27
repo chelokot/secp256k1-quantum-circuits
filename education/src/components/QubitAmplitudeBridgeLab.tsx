@@ -38,6 +38,24 @@ export function QubitAmplitudeBridgeLab() {
         the two arrows, so their angle changes the final chances.
       </p>
 
+      <section className="gate-explainer" aria-label="Hadamard gate explanation">
+        <h4>What the Hadamard gate is doing</h4>
+        <p>
+          A gate is a fixed rule for replacing the current arrows with new arrows.
+          Hadamard is the rule that makes a new 0-arrow from the sum of the old arrows,
+          and a new 1-arrow from their difference.
+        </p>
+        <div className="gate-rule">
+          <span>new 0-arrow = old 0-arrow + old 1-arrow</span>
+          <span>new 1-arrow = old 0-arrow - old 1-arrow</span>
+        </div>
+        <ol>
+          <li><strong>Same direction:</strong> the sum is large and the difference cancels, so measurement becomes 0.</li>
+          <li><strong>Opposite direction:</strong> the sum cancels and the difference is large, so measurement becomes 1.</li>
+          <li><strong>Between:</strong> neither sum nor difference fully wins, so the output is a probability split.</li>
+        </ol>
+      </section>
+
       <div className="concept-bridge-grid" aria-label="Qubit reading order">
         <article>
           <span>1</span>
