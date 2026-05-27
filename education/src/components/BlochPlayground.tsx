@@ -14,6 +14,12 @@ const gateLabels: Record<Exclude<Gate, 'I'>, string> = {
   S: 'Phase turn',
 };
 
+const gateDescriptions: Record<Exclude<Gate, 'I'>, string> = {
+  H: 'mixes 0 and 1 amplitudes',
+  X: 'swaps the 0 and 1 amplitudes',
+  S: 'rotates only the 1-amplitude phase',
+};
+
 const initialState: State = { zero: { re: 1, im: 0 }, one: { re: 0, im: 0 } };
 
 const add = (left: Complex, right: Complex): Complex => ({ re: left.re + right.re, im: left.im + right.im });
@@ -62,18 +68,22 @@ export function BlochPlayground() {
         <line className="state-vector" x1="50" y1="50" x2={vectorX} y2={vectorY} />
         <circle className="state-dot" cx={vectorX} cy={vectorY} r="3" />
       </svg>
-      <div className="gate-row">
+      <div className="gate-row steering-gate-row" aria-label="One-qubit gate choices">
         {steerableGates.map((gate) => (
           <button key={gate} type="button" onClick={() => setGates((items) => [...items, gate])}>
-            {gateLabels[gate]}
+            <strong>{gateLabels[gate]}</strong>
+            <span>{gateDescriptions[gate]}</span>
           </button>
         ))}
-        <button type="button" aria-label="Reset qubit" onClick={() => setGates([])}>
+        <button className="icon-only" type="button" aria-label="Reset qubit" onClick={() => setGates([])}>
           <RotateCcw size={16} />
         </button>
       </div>
       <p className="mono-line">|0|²={fmt(p0)} |1|²={fmt(p1)} gates={gates.join(' ') || 'I'}</p>
-      <p>Try Hadamard, then bit flip, then phase turn. The compact circuit names are H, X, and S.</p>
+      <p>
+        Try the gates in sequence. Hadamard mixes amplitudes, bit flip swaps outcomes,
+        and phase turn changes an angle that only becomes visible after later mixing.
+      </p>
     </article>
   );
 }

@@ -670,6 +670,34 @@ code {
   border-color: #b8f3e6;
 }
 
+.steering-gate-row {
+  align-items: stretch;
+}
+
+.steering-gate-row button:not(.icon-only) {
+  display: grid;
+  gap: 0.2rem;
+  align-content: center;
+  min-width: 10.5rem;
+  text-align: left;
+}
+
+.steering-gate-row button strong {
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.steering-gate-row button span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  line-height: 1.3;
+}
+
+.steering-gate-row .icon-only {
+  justify-content: center;
+  min-width: 2.75rem;
+}
+
 .blocker-list {
   display: grid;
   gap: 0.5rem;
