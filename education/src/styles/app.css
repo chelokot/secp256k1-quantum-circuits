@@ -317,97 +317,102 @@ code {
   margin: 0.35rem 0 0;
 }
 
-.page-vocab {
-  margin: 1.1rem 0 0;
-  border: 0.0625rem solid rgba(143, 182, 255, 0.22);
+.core-visual {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr 1fr;
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.core-visual article {
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
   border-radius: 0.5rem;
-  background: rgba(143, 182, 255, 0.06);
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.055);
 }
 
-.page-vocab summary {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  gap: 0.65rem;
-  align-items: center;
-  padding: 0.75rem 0.85rem;
-  cursor: pointer;
-  list-style: none;
-}
-
-.page-vocab summary::marker,
-.page-vocab summary::-webkit-details-marker {
-  display: none;
-}
-
-.page-vocab summary::before {
-  content: '+';
-  display: grid;
-  place-items: center;
-  width: 1.25rem;
-  height: 1.25rem;
-  border: 0.0625rem solid rgba(143, 182, 255, 0.38);
-  border-radius: 999rem;
-  color: #8fb6ff;
+.core-visual article > span {
+  color: #63e6be;
+  font-size: 0.76rem;
   font-weight: 800;
+  text-transform: uppercase;
 }
 
-.page-vocab[open] summary::before {
-  content: '-';
+.core-visual svg {
+  width: min(100%, 10rem);
+  justify-self: center;
 }
 
-.page-vocab summary span {
-  color: #93a4b7;
-  font-weight: 800;
+.core-visual svg circle,
+.core-visual svg line {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 1;
 }
 
-.page-vocab summary strong {
-  color: #c6d2df;
-  font-size: 0.82rem;
+.core-visual svg .zero-arrow {
+  stroke: #63e6be;
+  stroke-width: 2.8;
 }
 
-.vocab-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  padding: 0 0.85rem;
+.core-visual svg .one-arrow {
+  stroke: #f5cf6b;
+  stroke-width: 2.8;
 }
 
-.vocab-tabs button {
-  border: 0.0625rem solid rgba(255, 255, 255, 0.12);
-  border-radius: 999rem;
-  padding: 0.35rem 0.6rem;
-  color: #dce7f2;
-  background: rgba(255, 255, 255, 0.045);
-  cursor: pointer;
+.core-visual svg .zero-dot {
+  fill: #63e6be;
+  stroke: none;
 }
 
-.vocab-tabs button[aria-selected='true'] {
-  border-color: rgba(99, 230, 190, 0.6);
-  color: #061019;
-  background: #63e6be;
+.core-visual svg .one-dot {
+  fill: #f5cf6b;
+  stroke: none;
 }
 
-.vocab-definition {
-  display: grid;
-  gap: 0.65rem;
-  margin: 0.75rem 0.85rem 0.85rem;
-}
-
-.vocab-definition div {
-  display: grid;
-  gap: 0.2rem;
-}
-
-.vocab-definition dt {
-  color: #ffffff;
-  font-weight: 800;
-}
-
-.vocab-definition dd {
+.core-visual p {
   margin: 0;
-  color: #c6d2df;
-  font-size: 0.9rem;
+  font-size: 0.86rem;
   line-height: 1.45;
+}
+
+.core-visual-formula {
+  display: grid;
+  min-height: 5.75rem;
+  place-items: center;
+  border-left: 0.2rem solid #f5cf6b;
+  border-radius: 0.4rem;
+  padding: 0.75rem;
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.probability-mini-chart {
+  display: grid;
+  gap: 0.55rem;
+  min-height: 5.75rem;
+  align-content: center;
+}
+
+.probability-mini-chart div {
+  display: grid;
+  grid-template-columns: 1.2rem minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.probability-mini-chart strong {
+  color: #ffffff;
+}
+
+.probability-mini-chart i {
+  display: block;
+  height: 0.55rem;
+  border-radius: 999rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
 .lesson-detail-steps {
@@ -4165,6 +4170,7 @@ legend {
 
   .resource-status-strip,
   .metric-row,
+  .core-visual,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
@@ -4293,6 +4299,7 @@ legend {
   .metric-row,
   .content-grid,
   .content-grid.learning-grid,
+  .core-visual,
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,

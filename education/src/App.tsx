@@ -51,7 +51,7 @@ import { PointAddBoundaryDebugger } from './components/PointAddBoundaryDebugger'
 import { LearningPathMap } from './components/LearningPathMap';
 import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
 import { ProjectProofMap } from './components/ProjectProofMap';
-import { MathText } from './components/MathText';
+import { MathTex, MathText } from './components/MathText';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
@@ -171,13 +171,57 @@ const checkpointQuestions: Partial<Record<LessonId, string>> = {
   'repo-baselines': 'When is a candidate allowed to become the accepted baseline?',
 };
 
+function CoreIdeaVisual({ lessonId }: { lessonId: LessonId }) {
+  if (lessonId !== 'qubit') return null;
+
+  return (
+    <section className="core-visual" data-testid="core-idea-visual" aria-label="Qubit amplitude sketch">
+      <article>
+        <span>State vector</span>
+        <svg viewBox="0 0 120 92" role="img" aria-label="Two equal-length amplitude arrows">
+          <circle cx="46" cy="46" r="32" />
+          <line className="axis" x1="14" y1="46" x2="78" y2="46" />
+          <line className="axis" x1="46" y1="14" x2="46" y2="78" />
+          <line className="zero-arrow" x1="46" y1="46" x2="78" y2="46" />
+          <circle className="zero-dot" cx="78" cy="46" r="3.2" />
+          <line className="one-arrow" x1="46" y1="46" x2="70" y2="25" />
+          <circle className="one-dot" cx="70" cy="25" r="3.2" />
+        </svg>
+        <MathTex tex="|\psi\rangle=a|0\rangle+b|1\rangle" />
+        <p>Two amplitudes: one arrow for 0, one arrow for 1.</p>
+      </article>
+      <article>
+        <span>Valid gate</span>
+        <div className="core-visual-formula">
+          <MathTex tex="H:\ (a,b)\mapsto \left(\frac{a+b}{\sqrt2},\frac{a-b}{\sqrt2}\right)" />
+        </div>
+        <p>Hadamard recombines the arrows into a sum channel and a difference channel.</p>
+      </article>
+      <article>
+        <span>After mixing</span>
+        <div className="probability-mini-chart" aria-label="Probability split after mixing">
+          <div>
+            <strong>0</strong>
+            <i style={{ width: '76%' }} />
+          </div>
+          <div>
+            <strong>1</strong>
+            <i style={{ width: '24%' }} />
+          </div>
+        </div>
+        <MathTex tex="P(0)=|a'|^2,\quad P(1)=|b'|^2" />
+        <p>Angle can become visible only after the gate changes arrow lengths.</p>
+      </article>
+    </section>
+  );
+}
+
 export function App() {
   const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
   const [completed, setCompleted] = useState<Set<LessonId>>(() => loadCompletedLessons());
   const [focusedLabByLesson, setFocusedLabByLesson] = useState<Partial<Record<LessonId, number>>>({});
   const [showAllLabsByLesson, setShowAllLabsByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
   const [revealedCheckpointByLesson, setRevealedCheckpointByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
-  const [selectedVocabByLesson, setSelectedVocabByLesson] = useState<Partial<Record<LessonId, string>>>({});
   const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
   const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
@@ -190,13 +234,6 @@ export function App() {
   const checkpointQuestion = checkpointQuestions[activeLesson.id] ?? 'What exact claim does this page let you make, and what evidence supports it?';
   const checkpointRevealed = revealedCheckpointByLesson[activeLesson.id] ?? false;
   const labRoute = labRoutes[activeLesson.id] ?? [];
-  const glossaryByTerm = useMemo(() => new Map(glossary.map(([term, definition]) => [term, definition])), []);
-  const pageGlossary = (activeLesson.glossaryTerms ?? []).map((term) => ({
-    term,
-    definition: glossaryByTerm.get(term) ?? '',
-  }));
-  const selectedVocab = pageGlossary.find(({ term }) => term === selectedVocabByLesson[activeLesson.id]) ?? pageGlossary[0] ?? null;
-
   const groupedLessons = useMemo(() => {
     return lessons.reduce<Record<string, typeof lessons>>((groups, lesson) => {
       groups[lesson.module] = [...(groups[lesson.module] ?? []), lesson];
@@ -561,6 +598,7 @@ export function App() {
               <span>Start here</span>
               <p>{activeLesson.mentalModel}</p>
             </section>
+            <CoreIdeaVisual lessonId={activeLesson.id} />
             {activeLesson.deepDive ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <div className="lesson-detail-heading">
@@ -586,33 +624,6 @@ export function App() {
             ) : null}
             <h4>Why it matters here</h4>
             <p>{activeLesson.whyItMatters}</p>
-            {pageGlossary.length > 0 && selectedVocab !== null ? (
-              <details className="page-vocab" data-testid="page-vocab">
-                <summary>
-                  <span>Glossary for this page</span>
-                  <strong>{pageGlossary.length} terms</strong>
-                </summary>
-                <div className="vocab-tabs" role="tablist" aria-label={`${activeLesson.title} vocabulary`}>
-                  {pageGlossary.map(({ term }) => (
-                    <button
-                      aria-selected={term === selectedVocab.term}
-                      key={term}
-                      onClick={() => setSelectedVocabByLesson((previous) => ({ ...previous, [activeLesson.id]: term }))}
-                      role="tab"
-                      type="button"
-                    >
-                      {term}
-                    </button>
-                  ))}
-                </div>
-                <dl className="vocab-definition">
-                  <div>
-                    <dt>{selectedVocab.term}</dt>
-                    <dd>{selectedVocab.definition}</dd>
-                  </div>
-                </dl>
-              </details>
-            ) : null}
           </article>
 
           {showRepoContract ? (
