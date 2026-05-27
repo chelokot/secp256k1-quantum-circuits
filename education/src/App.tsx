@@ -81,6 +81,11 @@ function loadCompletedLessons() {
 }
 
 const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
+  qubit: [
+    { name: 'Phase-to-probability bridge', goal: 'Change only relative angle and see when it becomes measurable.' },
+    { name: 'Qubit steering', goal: 'Apply H, X, and S as state-vector steering moves before measurement.' },
+    { name: 'Two-qubit state vector', goal: 'Run a tiny two-wire state to see superposition and entanglement.' },
+  ],
   gates: [
     { name: 'Primitive netlist toy', goal: 'See rows, touched wires, and non-Clifford cost.' },
     { name: 'Quantum DSL', goal: 'Write valid rows and make invalid opcodes fail loudly.' },

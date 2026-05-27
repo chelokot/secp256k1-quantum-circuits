@@ -113,9 +113,11 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 0% / 1: 100%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('opposite direction');
 
+  await selectRouteLab(page, /Qubit steering/);
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'H' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
 
+  await selectRouteLab(page, /Two-qubit state vector/);
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled');
   await expect(page.getByTestId('state-vector-lab')).toContainText('yes');
