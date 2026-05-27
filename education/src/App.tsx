@@ -6,6 +6,7 @@ import { BaselineChart } from './components/BaselineChart';
 import { BlochPlayground } from './components/BlochPlayground';
 import { StateVectorLab } from './components/StateVectorLab';
 import { QubitAmplitudeBridgeLab } from './components/QubitAmplitudeBridgeLab';
+import { OneQubitPatternsLab } from './components/OneQubitPatternsLab';
 import { StabilizerMagicLab } from './components/StabilizerMagicLab';
 import { CircuitBuilder } from './components/CircuitBuilder';
 import { SlotLiveness } from './components/SlotLiveness';
@@ -85,6 +86,7 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   qubit: [
     { name: 'Phase-to-probability bridge', goal: 'Change only relative angle and see when it becomes measurable.' },
     { name: 'Qubit steering', goal: 'Apply named one-qubit gates as steering moves before measurement.' },
+    { name: 'One-qubit patterns', goal: 'Feel cycles, reversible gate groups, and why gates do not converge like attractors.' },
     { name: 'Two-qubit state vector', goal: 'Run a tiny two-wire state to see superposition and entanglement.' },
   ],
   'phase-estimation': [
@@ -318,7 +320,8 @@ export function App() {
         return [
           labItem(0, 'Phase-to-probability bridge', <QubitAmplitudeBridgeLab />),
           labItem(1, 'Qubit steering', <BlochPlayground />),
-          labItem(2, 'Two-qubit state vector', <StateVectorLab />),
+          labItem(2, 'One-qubit patterns', <OneQubitPatternsLab />),
+          labItem(3, 'Two-qubit state vector', <StateVectorLab />),
         ];
       case 'gates':
         return [

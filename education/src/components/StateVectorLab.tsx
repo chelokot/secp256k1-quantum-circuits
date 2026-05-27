@@ -139,6 +139,41 @@ export function StateVectorLab() {
         Program lines use compact circuit names: H means Hadamard, X means bit flip,
         Z means phase flip, and CX means controlled-X.
       </p>
+      <section className="two-qubit-primer" aria-label="Two-qubit state primer">
+        <article>
+          <strong>Two qubits, four labels</strong>
+          <p>The state now has four amplitudes: |00&gt;, |01&gt;, |10&gt;, and |11&gt;.</p>
+        </article>
+        <article>
+          <strong>Product state</strong>
+          <p>Sometimes the two wires can still be described as two independent one-qubit states.</p>
+        </article>
+        <article>
+          <strong>Entangled state</strong>
+          <p>Sometimes only the joint four-amplitude pattern describes the state correctly.</p>
+        </article>
+        <article>
+          <strong>Measurement</strong>
+          <p>Measurement samples one full two-bit label, such as |00&gt; or |11&gt;.</p>
+        </article>
+      </section>
+      <section className="two-qubit-schemes" aria-label="Two-qubit scheme examples">
+        <article>
+          <strong>Bell pair</strong>
+          <p>Split q0, then use q0 as a control. The only live branches are |00&gt; and |11&gt;.</p>
+          <span>H q0; CX q0 q1</span>
+        </article>
+        <article>
+          <strong>Interference</strong>
+          <p>Mixing twice can cancel one branch and reinforce another.</p>
+          <span>H q0; X q0; H q0</span>
+        </article>
+        <article>
+          <strong>Entangle + flip</strong>
+          <p>After branches are linked, a later flip moves the joint labels together.</p>
+          <span>H q0; CX q0 q1; X q1</span>
+        </article>
+      </section>
       <section className="controlled-x-explainer" aria-label="Controlled-X explanation">
         <div className="cx-wire-diagram" aria-hidden="true">
           <div>

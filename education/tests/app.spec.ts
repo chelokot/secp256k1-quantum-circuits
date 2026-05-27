@@ -139,8 +139,25 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'Hadamard' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
 
+  await selectRouteLab(page, /One-qubit patterns/);
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('closed quantum gates are reversible');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Prepare a split');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Store a hidden angle');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Cycles and groups');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('X² = I');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('No attractor under gates');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Measurement is different');
+  await page.getByTestId('one-qubit-patterns-lab').getByRole('button', { name: /Four phase turns/ }).click();
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('sequence = S S S S');
+
   await selectRouteLab(page, /Two-qubit state vector/);
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Two qubits, four labels');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Product state');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled state');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Measurement samples one full two-bit label');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Split q0, then use q0 as a control');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Mixing twice can cancel one branch');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Controlled-X');
   await expect(page.getByTestId('state-vector-lab')).toContainText('control q0, bit-flip target q1 only when q0 is 1');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled');
