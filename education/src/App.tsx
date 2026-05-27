@@ -171,13 +171,10 @@ const checkpointQuestions: Partial<Record<LessonId, string>> = {
   'repo-baselines': 'When is a candidate allowed to become the accepted baseline?',
 };
 
-function CoreIdeaVisual({ lessonId }: { lessonId: LessonId }) {
-  if (lessonId !== 'qubit') return null;
-
-  return (
-    <section className="core-visual" data-testid="core-idea-visual" aria-label="Qubit amplitude sketch">
-      <article>
-        <span>State vector</span>
+function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
+  if (stepIndex === 0) {
+    return (
+      <div className="step-visual" data-testid="qubit-state-vector-visual" aria-label="Qubit state vector sketch">
         <svg viewBox="0 0 120 92" role="img" aria-label="Two equal-length amplitude arrows">
           <circle cx="46" cy="46" r="32" />
           <line className="axis" x1="14" y1="46" x2="78" y2="46" />
@@ -187,19 +184,27 @@ function CoreIdeaVisual({ lessonId }: { lessonId: LessonId }) {
           <line className="one-arrow" x1="46" y1="46" x2="70" y2="25" />
           <circle className="one-dot" cx="70" cy="25" r="3.2" />
         </svg>
-        <MathTex tex="|\psi\rangle=a|0\rangle+b|1\rangle" />
-        <p>Two amplitudes: one arrow for 0, one arrow for 1.</p>
-      </article>
-      <article>
-        <span>Valid gate</span>
-        <div className="core-visual-formula">
-          <MathTex tex="H:\ (a,b)\mapsto \left(\frac{a+b}{\sqrt2},\frac{a-b}{\sqrt2}\right)" />
+        <div>
+          <MathTex tex="|\psi\rangle=a|0\rangle+b|1\rangle" />
+          <p>This is one qubit: two amplitudes stored as one coherent state.</p>
         </div>
-        <p>Hadamard recombines the arrows into a sum channel and a difference channel.</p>
-      </article>
-      <article>
-        <span>After mixing</span>
-        <div className="probability-mini-chart" aria-label="Probability split after mixing">
+      </div>
+    );
+  }
+
+  if (stepIndex === 2) {
+    return (
+      <div className="step-visual formula-step" data-testid="qubit-gate-visual" aria-label="Hadamard gate formula sketch">
+        <MathTex tex="H:\ (a,b)\mapsto \left(\frac{a+b}{\sqrt2},\frac{a-b}{\sqrt2}\right)" />
+        <p>A valid gate is a probability-preserving steering rule over the whole amplitude pair.</p>
+      </div>
+    );
+  }
+
+  if (stepIndex === 4) {
+    return (
+      <div className="step-visual" data-testid="qubit-mixing-visual" aria-label="Probability split after Hadamard mixing">
+        <div className="probability-mini-chart">
           <div>
             <strong>0</strong>
             <i style={{ width: '76%' }} />
@@ -211,9 +216,11 @@ function CoreIdeaVisual({ lessonId }: { lessonId: LessonId }) {
         </div>
         <MathTex tex="P(0)=|a'|^2,\quad P(1)=|b'|^2" />
         <p>Angle can become visible only after the gate changes arrow lengths.</p>
-      </article>
-    </section>
-  );
+      </div>
+    );
+  }
+
+  return null;
 }
 
 export function App() {
@@ -594,22 +601,19 @@ export function App() {
               <BookOpen size={20} />
               <h3>Core idea</h3>
             </div>
-            <section className="lesson-primer" aria-label="Start here">
-              <span>Start here</span>
+            <section className="lesson-primer" aria-label="Lesson introduction">
               <p>{activeLesson.mentalModel}</p>
             </section>
-            <CoreIdeaVisual lessonId={activeLesson.id} />
             {activeLesson.deepDive ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
-                <div className="lesson-detail-heading">
-                  <span>Build it up</span>
-                  <strong>{activeLesson.deepDive.length} short steps</strong>
-                </div>
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => (
                     <li key={paragraph}>
                       <span>{index + 1}</span>
-                      <p><MathText text={paragraph} /></p>
+                      <div className="lesson-step-body">
+                        <p><MathText text={paragraph} /></p>
+                        {activeLesson.id === 'qubit' ? <QubitStepVisual stepIndex={index} /> : null}
+                      </div>
                     </li>
                   ))}
                 </ol>

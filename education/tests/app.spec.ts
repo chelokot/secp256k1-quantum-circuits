@@ -30,7 +30,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-brief')).toHaveCount(0);
   await expect(page.getByTestId('lesson-flow-bridge')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Try this page' })).toHaveCount(0);
-  await expect(page.getByTestId('lesson-detail-steps')).toContainText('Build it up');
+  await expect(page.getByTestId('lesson-detail-steps')).toContainText('The input problem is a public key');
   await expect(page.getByText('The input problem is a public key')).toBeVisible();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');
@@ -66,9 +66,10 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
-  await expect(page.getByTestId('core-idea-visual')).toContainText('State vector');
-  await expect(page.getByTestId('core-idea-visual')).toContainText('Valid gate');
-  await expect(page.getByTestId('core-idea-visual')).toContainText('After mixing');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('A qubit is the smallest quantum state');
+  await expect(page.getByTestId('qubit-state-vector-visual')).toContainText('This is one qubit');
+  await expect(page.getByTestId('qubit-gate-visual')).toContainText('probability-preserving steering rule');
+  await expect(page.getByTestId('qubit-mixing-visual')).toContainText('Angle can become visible');
   await expect(page.locator('xpath=//*[@data-tex="|\\psi\\rangle=a|0\\rangle+b|1\\rangle"]')).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.locator('xpath=//*[@data-tex="P(0)=|a|^2"]')).toBeVisible();

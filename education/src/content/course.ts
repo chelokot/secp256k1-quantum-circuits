@@ -76,7 +76,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'Measurement sees arrow lengths as probabilities. Gates can also use the angles before measurement, which is why a quantum circuit can make answers reinforce or cancel.',
     mentalModel:
-      'Picture a 0-arrow and a 1-arrow. Longer arrow means a more likely direct measurement outcome. A gate is a valid steering rule applied before measurement: it may rotate or recombine arrows, but it must preserve total probability.',
+      'A qubit is the smallest quantum state we use: it has one amplitude for outcome 0 and one amplitude for outcome 1. Picture those amplitudes as two arrows. Longer arrow means a more likely direct measurement outcome.',
     checkpoint: 'A probability coin has only chances. A qubit has chances plus amplitude angles that later gates can turn into changed chances.',
     deepDive: [
       'Notation: $|\\psi\\rangle = a|0\\rangle + b|1\\rangle$. The symbols $a$ and $b$ are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
