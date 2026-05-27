@@ -20,10 +20,10 @@ export function QubitAmplitudeBridgeLab() {
   const zeroArrow = arrowEnd(0, 30);
   const oneArrow = arrowEnd(phaseRadians, 30);
   const phaseObservation = phaseDegrees === 0
-    ? 'same direction: H makes outcome 0 certain'
+    ? 'same direction: Hadamard makes outcome 0 certain'
     : phaseDegrees === 180
-      ? 'opposite direction: H makes outcome 1 certain'
-      : 'between the extremes: H turns angle into a probability split';
+      ? 'opposite direction: Hadamard makes outcome 1 certain'
+      : 'between the extremes: Hadamard turns angle into a probability split';
 
   return (
     <article className="lab-panel" data-testid="qubit-amplitude-bridge-lab">
@@ -34,8 +34,8 @@ export function QubitAmplitudeBridgeLab() {
       <p>
         Start with two equal-length arrows: the 0-amplitude and the 1-amplitude.
         Equal lengths mean direct measurement is 50/50. Move only the angle of the
-        1-arrow: direct measurement still sees 50/50, but H mixes the arrows first,
-        so the angle changes the final chances.
+        1-arrow: direct measurement still sees 50/50. Then the Hadamard gate combines
+        the two arrows, so their angle changes the final chances.
       </p>
 
       <div className="concept-bridge-grid" aria-label="Qubit reading order">
@@ -52,7 +52,7 @@ export function QubitAmplitudeBridgeLab() {
         <article>
           <span>3</span>
           <strong>Angle waits for a gate</strong>
-          <p>H mixes the arrows, so their relative angle becomes visible.</p>
+          <p>The Hadamard gate mixes the arrows, so their relative angle becomes visible.</p>
         </article>
       </div>
 
@@ -93,9 +93,9 @@ export function QubitAmplitudeBridgeLab() {
             <p>Arrow lengths are unchanged, so direct probabilities are unchanged.</p>
           </div>
           <div>
-            <span>Apply H, then measure</span>
+            <span>Apply Hadamard, then measure</span>
             <strong>0: {formatPercent(afterHP0)} / 1: {formatPercent(afterHP1)}</strong>
-            <p>H mixes the arrows. Same direction reinforces 0; opposite direction cancels 0.</p>
+            <p>Hadamard mixes the arrows. Same direction reinforces 0; opposite direction cancels 0.</p>
           </div>
         </div>
       </div>

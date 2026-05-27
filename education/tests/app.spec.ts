@@ -111,7 +111,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Lengths become chances');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Measure now');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 50% / 1: 50%');
-  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply H, then measure');
+  await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Apply Hadamard, then measure');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 100% / 1: 0%');
   await page.getByLabel('Relative amplitude angle').fill('180');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('Relative angle: 180 degrees');
@@ -119,7 +119,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('opposite direction');
 
   await selectRouteLab(page, /Qubit steering/);
-  await page.getByTestId('bloch-playground').getByRole('button', { name: 'H' }).click();
+  await page.getByTestId('bloch-playground').getByRole('button', { name: 'Hadamard' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
 
   await selectRouteLab(page, /Two-qubit state vector/);

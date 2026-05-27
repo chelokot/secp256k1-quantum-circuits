@@ -82,7 +82,7 @@ export const lessons: CourseLesson[] = [
       'Notation: a|0> + b|1>. The symbols a and b are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
       'Probability rule: P(0) = |a|^2 and P(1) = |b|^2. The vertical bars mean arrow length. If both arrows have length 1/sqrt(2), direct measurement is 50/50.',
       'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a gate combines the 0-arrow and 1-arrow.',
-      'In the lab, H is the combining gate. Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1.',
+      'In the lab, the Hadamard gate is the combining gate. Circuit diagrams often abbreviate it as H. Same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1.',
       'Later Shor-style pages use the same idea at larger scale: phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
     ],
     coreIdeas: [
@@ -90,8 +90,8 @@ export const lessons: CourseLesson[] = [
       'Measurement probability = squared arrow length.',
       'Relative angle becomes observable only after a gate mixes amplitudes.',
     ],
-    practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after H flips from always 0 to always 1.',
-    glossaryTerms: ['Qubit', 'Amplitude', 'Destructive interference'],
+    practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after the Hadamard gate flips from always 0 to always 1.',
+    glossaryTerms: ['Qubit', 'Amplitude', 'Hadamard gate', 'Destructive interference'],
   },
   {
     id: 'gates',
@@ -115,7 +115,7 @@ export const lessons: CourseLesson[] = [
       'Gate row = one transformation applied to specific wires.',
       'Cleanup = inverse work that removes temporary garbage.',
     ],
-    practicePrompt: 'Add H, CX, and CCX in the primitive netlist toy. Watch rows and non-Clifford count change, then compare with the cleanup puzzle.',
+    practicePrompt: 'Add Hadamard, controlled-X, and Toffoli rows in the primitive netlist toy. Watch rows and non-Clifford count change, then compare with the cleanup puzzle.',
     glossaryTerms: ['Netlist', 'Primitive row', 'Uncompute'],
   },
   {
@@ -140,7 +140,7 @@ export const lessons: CourseLesson[] = [
       'Non-Clifford = expensive resource enabling arithmetic.',
       'Qubits and non-Clifford count are separate axes.',
     ],
-    practicePrompt: 'Use the stabilizer vs magic wheel. Add H and S first, then add T and notice when the state class changes.',
+    practicePrompt: 'Use the stabilizer vs magic wheel. Add cheap Clifford moves first, then add a T gate and notice when the state class changes.',
     glossaryTerms: ['Clifford', 'Stabilizer state', 'Non-Clifford', 'Magic state'],
   },
   {
@@ -575,6 +575,7 @@ export const glossary = [
   ['secp256k1', 'The elliptic-curve system used by Bitcoin public keys; this repo studies the quantum circuit cost of attacking its discrete logarithm problem.'],
   ['Qubit', 'A coherent two-state quantum system used as one wire in a circuit.'],
   ['Amplitude', 'A complex state-vector component whose squared magnitude gives a measurement probability.'],
+  ['Hadamard gate', 'A one-qubit gate that combines the 0-amplitude and 1-amplitude so their relative angle can change measured probabilities. Circuit diagrams often abbreviate it as H.'],
   ['Entanglement', 'A joint quantum state that cannot be decomposed into independent per-qubit states.'],
   ['Logical qubit', 'An error-corrected qubit abstraction counted by this repo.'],
   ['Physical qubit', 'A hardware qubit used by an error-correcting implementation.'],

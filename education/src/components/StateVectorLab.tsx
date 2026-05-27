@@ -56,7 +56,7 @@ function parseProgram(program: string) {
       continue;
     }
 
-    errors.push(`line ${index + 1}: expected H/X/Z q0|q1 or CX q0|q1 q0|q1`);
+    errors.push(`line ${index + 1}: expected one-qubit gate H/X/Z plus q0 or q1, or controlled-X as CX q0 q1`);
   }
 
   return { gates, errors };
@@ -135,6 +135,10 @@ export function StateVectorLab() {
         <button type="button" onClick={() => setProgram(examples.interference)}>Interference</button>
         <button type="button" onClick={() => setProgram(examples.entangleThenFlip)}>Entangle + flip</button>
       </div>
+      <p>
+        Program lines use compact circuit names: H means Hadamard, X means bit flip,
+        Z means phase flip, and CX means controlled-X.
+      </p>
       <textarea
         aria-label="State vector program editor"
         className="dsl-editor"

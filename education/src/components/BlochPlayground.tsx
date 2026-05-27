@@ -6,6 +6,14 @@ type Gate = 'I' | 'X' | 'H' | 'S';
 type Complex = { re: number; im: number };
 type State = { zero: Complex; one: Complex };
 
+const steerableGates = ['H', 'X', 'S'] as const;
+
+const gateLabels: Record<Exclude<Gate, 'I'>, string> = {
+  H: 'Hadamard',
+  X: 'Bit flip',
+  S: 'Phase turn',
+};
+
 const initialState: State = { zero: { re: 1, im: 0 }, one: { re: 0, im: 0 } };
 
 const add = (left: Complex, right: Complex): Complex => ({ re: left.re + right.re, im: left.im + right.im });
@@ -55,9 +63,9 @@ export function BlochPlayground() {
         <circle className="state-dot" cx={vectorX} cy={vectorY} r="3" />
       </svg>
       <div className="gate-row">
-        {(['H', 'X', 'S'] as Gate[]).map((gate) => (
+        {steerableGates.map((gate) => (
           <button key={gate} type="button" onClick={() => setGates((items) => [...items, gate])}>
-            {gate}
+            {gateLabels[gate]}
           </button>
         ))}
         <button type="button" aria-label="Reset qubit" onClick={() => setGates([])}>
@@ -65,7 +73,7 @@ export function BlochPlayground() {
         </button>
       </div>
       <p className="mono-line">|0|²={fmt(p0)} |1|²={fmt(p1)} gates={gates.join(' ') || 'I'}</p>
-      <p>Try <code>H</code>, then <code>X</code>, then <code>S</code>. You are programming state evolution before measurement.</p>
+      <p>Try Hadamard, then bit flip, then phase turn. The compact circuit names are H, X, and S.</p>
     </article>
   );
 }
