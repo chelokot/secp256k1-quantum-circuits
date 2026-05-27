@@ -348,10 +348,20 @@ export function App() {
               <BookOpen size={20} />
               <h3>Core idea</h3>
             </div>
-            <p>{activeLesson.mentalModel}</p>
-            {activeLesson.deepDive?.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+            <section className="lesson-primer" aria-label="Start here">
+              <span>Start here</span>
+              <p>{activeLesson.mentalModel}</p>
+            </section>
+            {activeLesson.deepDive ? (
+              <ol className="lesson-step-list">
+                {activeLesson.deepDive.map((paragraph, index) => (
+                  <li key={paragraph}>
+                    <span>{index + 1}</span>
+                    <p>{paragraph}</p>
+                  </li>
+                ))}
+              </ol>
+            ) : null}
             {activeLesson.coreIdeas ? (
               <div className="core-idea-list">
                 {activeLesson.coreIdeas.map((idea) => (

@@ -253,6 +253,54 @@ code {
   color: #ffffff;
 }
 
+.lesson-primer {
+  margin: 1rem 0;
+  border-left: 0.25rem solid #8fb6ff;
+  padding-left: 0.85rem;
+}
+
+.lesson-primer span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.lesson-primer p {
+  margin: 0.35rem 0 0;
+}
+
+.lesson-step-list {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lesson-step-list li {
+  display: grid;
+  grid-template-columns: 1.8rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: start;
+}
+
+.lesson-step-list li > span {
+  display: grid;
+  place-items: center;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 999rem;
+  color: #061019;
+  background: #f5cf6b;
+  font-weight: 800;
+  font-size: 0.82rem;
+}
+
+.lesson-step-list p {
+  margin: 0;
+}
+
 .lesson-labs {
   display: grid;
   gap: 1rem;

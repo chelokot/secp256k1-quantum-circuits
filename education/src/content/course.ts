@@ -49,12 +49,12 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The answer is not one vague number. We care mainly about two scarce resources: how many logical qubits must be alive at the busiest moment, and how many expensive non-Clifford operations the computation uses overall.',
     mentalModel:
-      'The first question is: how large and expensive is the quantum computation that would recover a secp256k1 private key from a public key? Imagine starting with that math attack on a whiteboard, then forcing it step by step into something machine-like: first an algorithm, then curve operations, then arithmetic, then tiny reversible gates, then a resource count.',
+      'The first question is: how large and expensive is the quantum computation that would recover a secp256k1 private key from a public key?',
     checkpoint: 'The repo is trying to justify resource numbers for a quantum attack, not merely explain that quantum computers threaten elliptic curves.',
     deepDive: [
-      'A normal software estimate can hide many details behind a compiler. Quantum resource estimates cannot be that casual: if the computation needs a temporary value, that value occupies quantum memory until the circuit removes it correctly. Later pages explain the exact rule; for now, remember that “we stopped mentioning it” is not a valid way to save qubits.',
-      'The attack idea is high level: a quantum algorithm repeatedly performs controlled elliptic-curve additions and uses interference to recover the secret key. This course starts before those words are assumed. First you learn what qubits and gates are; then you climb toward why point addition, lookup tables, arithmetic, and proof artifacts matter.',
-      'So the first promise of the repo is modest but important: when it says “this candidate uses 1,968 logical qubits and 36,973,222 non-Clifford operations,” those numbers should come from a circuit-like object that can be inspected, tested, and challenged.',
+      'Start with the math attack on a whiteboard. Then force it into machine objects: algorithm, curve operations, arithmetic, reversible gates, and finally a resource count.',
+      'The two headline resources are peak logical qubits and total non-Clifford operations. Peak qubits are the busiest moment in memory; non-Clifford operations are expensive fault-tolerant work over time.',
+      'The repo promise is narrow: if it prints a number such as 1,968 logical qubits, that number should come from an inspectable circuit path rather than from a manually chosen register list.',
     ],
     coreIdeas: [
       'Target: secp256k1 discrete logarithm, the hard problem behind public keys.',
@@ -97,8 +97,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'A temporary wire that is computed and not cleaned remains entangled garbage. It still counts and can break the algorithm.',
     mentalModel:
-      'Reversible computing is a workshop where every jig you build must either become part of the output or be disassembled using the same evidence that built it.',
+      'A gate changes named wires. A controlled gate changes a target wire only when its control wire has the selected value. A reversible circuit must leave enough information to run the transformation backward.',
     checkpoint: 'A “scratch” bit is not free. It is a quantum wire with lifetime, owner, and cleanup obligations.',
+    deepDive: [
+      'Classical code can overwrite a temporary variable and forget how it was made. A quantum circuit cannot generally do that: the old information is part of the state.',
+      'The usual pattern is compute, use, uncompute. If a temporary value was made from inputs, the circuit later runs the inverse steps to return that temporary wire to zero.',
+      'The toy netlist shows rows over q0, q1, and q2. The real repo uses the same idea at much larger scale: primitive rows over concrete wires.',
+    ],
+    coreIdeas: [
+      'Wire = named quantum storage across time.',
+      'Gate row = one transformation applied to specific wires.',
+      'Cleanup = inverse work that removes temporary garbage.',
+    ],
+    practicePrompt: 'Add H, CX, and CCX in the primitive netlist toy. Watch rows and non-Clifford count change, then compare with the cleanup puzzle.',
   },
   {
     id: 'clifford',
@@ -110,8 +121,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The project optimizes two scarce resources at once: logical qubits for peak live state and non-Clifford count for expensive fault-tolerant work.',
     mentalModel:
-      'Clifford gates are cheap rails. Non-Clifford gates are scarce switches that let the train leave the stabilizer railway.',
+      'For this course, treat Clifford gates as the cheap structural moves and non-Clifford gates as the costly moves that make universal arithmetic possible.',
     checkpoint: 'A low-qubit circuit can be bad if it explodes non-Clifford count, and a low-gate circuit can be bad if it needs too many live qubits.',
+    deepDive: [
+      'Clifford-only circuits are special: their states can be tracked efficiently by a classical stabilizer description. That makes them relatively cheap in many fault-tolerant models.',
+      'Non-Clifford operations break out of that efficiently tracked family. Fault-tolerant machines usually pay for them using prepared magic-state resources.',
+      'This repo mostly counts Toffoli-like non-Clifford work, because reversible arithmetic and table selection are full of controlled bit products.',
+    ],
+    coreIdeas: [
+      'Clifford = cheap stabilizer-preserving structure.',
+      'Non-Clifford = expensive resource enabling arithmetic.',
+      'Qubits and non-Clifford count are separate axes.',
+    ],
+    practicePrompt: 'Use the stabilizer vs magic wheel. Add H and S first, then add T and notice when the state class changes.',
   },
   {
     id: 'logic-physical',
@@ -123,8 +145,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'This repo’s numbers are logical-resource counts. They are not a hardware layout, wall-clock runtime, or physical-qubit bill.',
     mentalModel:
-      'A logical qubit is a reliable database record. Physical qubits are the replication, checksums, and recovery machinery beneath it.',
+      'A physical qubit is hardware. A logical qubit is the protected information unit built from many physical qubits plus repeated error checks.',
     checkpoint: 'Logical counts let us compare algorithms; hardware execution needs an additional error-correction and architecture model.',
+    deepDive: [
+      'Quantum hardware is noisy. Fault-tolerant algorithms therefore encode one logical wire across many physical carriers so small errors can be detected and corrected.',
+      'The repo headline counts logical wires and logical operations. That is the right layer for comparing circuit designs before choosing a hardware architecture.',
+      'To estimate hardware, you still need an error-correction code, target failure rate, factory model, connectivity, timing, and layout assumptions.',
+    ],
+    coreIdeas: [
+      'Physical qubit = device-level carrier.',
+      'Logical qubit = error-corrected circuit wire.',
+      'Repo numbers are logical resources, not a machine bill.',
+    ],
+    practicePrompt: 'Use the logical-to-physical bridge and change the code distance. Notice that the same logical circuit can imply very different hardware envelopes.',
   },
   {
     id: 'phase-estimation',
@@ -132,12 +165,23 @@ export const lessons: CourseLesson[] = [
     title: 'Phase estimation turns rhythm into bits',
     icon: Sigma,
     intuition:
-      'Shor-style attacks use quantum phase estimation to convert a hidden periodic structure into a measurable binary estimate.',
+      'Phase estimation is the measurement wrapper: it turns a hidden repeating pattern into bits that can be read.',
     whyItMatters:
       'The secp256k1 circuit is expensive because phase estimation asks for many controlled group operations, and each one expands into point-add arithmetic.',
     mentalModel:
-      'Imagine many clock hands rotating by the same secret rhythm. The inverse QFT is the lens that makes the hands agree on a binary label.',
+      'The circuit prepares many possible exponents at once, attaches phase patterns to them, and then applies a Fourier-style readout that concentrates probability on the matching bit label.',
     checkpoint: 'The curve arithmetic is the engine; phase estimation is the measuring instrument wrapped around it.',
+    deepDive: [
+      'A hidden period means outputs repeat in a structured way. Shor-style algorithms turn that repetition into phase slopes across a control register.',
+      'The inverse QFT is the readout step. It converts a clean phase slope into a sharp measurement peak, similar to how a spectrum analyzer reveals a frequency.',
+      'The expensive part for secp256k1 is not the final readout. It is building the phase slope by repeatedly running controlled elliptic-curve group operations.',
+    ],
+    coreIdeas: [
+      'Hidden period -> phase slope.',
+      'Inverse QFT -> measurement peak.',
+      'Controlled curve arithmetic dominates resource cost.',
+    ],
+    practicePrompt: 'Move the hidden phase numerator slider. The bars show which bit label becomes most likely after the phase-estimation readout.',
   },
   {
     id: 'netlists',
@@ -149,8 +193,19 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'Every bug we found was a mismatch between an attractive boundary and the wires a real primitive circuit would have to keep alive.',
     mentalModel:
-      'A netlist is an electrical city map. Liveness is rush-hour traffic. The qubit count is the maximum number of roads occupied at once.',
+      'A netlist is a table of primitive rows. Liveness says when each wire value is born, when it dies, and which owner must have capacity for it.',
     checkpoint: 'The best future engine is one source of truth that executes, counts, tests, and feeds proof inputs.',
+    deepDive: [
+      'A formula such as “point add” is too high-level to count directly. The engine must lower it into rows like compute partial product, add column, clean scratch, and produce output.',
+      'Peak logical qubits come from overlapping live intervals. If a value is still needed, it counts even if a human stopped writing it in the summary.',
+      'The long-term target is one executable stream that drives tests, liveness, owner capacity, resource totals, and proof inputs.',
+    ],
+    coreIdeas: [
+      'Primitive rows are the countable object.',
+      'Live intervals determine peak qubits.',
+      'One engine should feed execution, tests, counts, and ZKP input.',
+    ],
+    practicePrompt: 'Open the stack map and then the mini resource engine. The important habit is to ask where each wire is born, where it dies, and who owns it.',
   },
   {
     id: 'ecdlp',
