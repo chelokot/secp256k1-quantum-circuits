@@ -222,7 +222,7 @@ export function App() {
   };
 
   const jumpToCurrentLab = () => {
-    document.getElementById('active-lesson-labs')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('active-lesson-labs')?.scrollIntoView({ behavior: 'auto', block: 'start' });
   };
 
   const resetProgress = () => {

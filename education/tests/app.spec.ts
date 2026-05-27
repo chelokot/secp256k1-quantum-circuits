@@ -695,6 +695,8 @@ test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) =
 
 test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
   await openLesson(page, 'zkp-boundary');
+  await page.getByRole('button', { name: 'Jump to current lab' }).click();
+  await expect(page.getByTestId('proof-boundary-lab')).toBeInViewport();
   await selectRouteLab(page, /ZKP boundary/);
 
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
