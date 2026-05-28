@@ -213,7 +213,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'This repo’s numbers are logical-resource counts. They are not a hardware layout, wall-clock runtime, or physical-qubit bill.',
     mentalModel:
-      'A physical qubit is hardware. A logical qubit is the protected information unit built from many physical qubits plus repeated error checks.',
+      'Read the repo headline as an algorithm-layer statement: how many protected logical wires are live in the circuit, and how much logical non-Clifford work is needed. A hardware machine adds another layer: error-correcting code, code distance, physical error rates, layout, timing, decoding, and magic factories.',
     checkpoint: 'Logical counts let us compare algorithms; hardware execution needs an additional error-correction and architecture model.',
     deepDive: [
       'Quantum hardware is noisy. Fault-tolerant algorithms therefore encode one logical wire across many physical carriers so small errors can be detected and corrected.',
@@ -222,8 +222,8 @@ export const lessons: CourseLesson[] = [
     ],
     coreIdeas: [
       'Physical qubit = device-level carrier.',
-      'Logical qubit = error-corrected circuit wire.',
-      'Repo numbers are logical resources, not a machine bill.',
+      'Logical qubit = protected encoded circuit wire.',
+      'Hardware estimates require a QEC and architecture model on top of repo resources.',
     ],
     practicePrompt: 'Use the logical-to-physical bridge and change the code distance. Notice that the same logical circuit can imply very different hardware envelopes.',
     glossaryTerms: ['Physical qubit', 'Logical qubit', 'Code distance', 'Logical failure'],

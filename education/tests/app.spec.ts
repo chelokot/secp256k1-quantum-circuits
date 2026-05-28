@@ -414,6 +414,10 @@ test('teaches baseline tradeoff landscape and claim status', async ({ page }) =>
 test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page }) => {
   await openLesson(page, 'logic-physical');
 
+  await expect(page.getByTestId('logical-physical-story')).toContainText('The repo counts the algorithm layer');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('A logical qubit is protected information');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('Code distance');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('What the labs are allowed to claim');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('450');

@@ -697,6 +697,120 @@ function CliffordStoryPanel() {
   );
 }
 
+function LogicalPhysicalStoryPanel() {
+  return (
+    <section className="logical-physical-story" data-testid="logical-physical-story" aria-label="Logical and physical qubit story">
+      <article className="story-question">
+        <h4>The repo counts the algorithm layer</h4>
+        <p>
+          The repo headline qubit count is not the number of hardware devices in a
+          machine. It is the peak number of logical quantum wires the algorithm needs
+          after lowering and scheduling. That layer is the right place to compare
+          circuit designs before choosing a hardware architecture.
+        </p>
+        <div className="resource-layer-stack" aria-hidden="true">
+          <span>algorithm idea</span>
+          <i />
+          <span>logical circuit rows</span>
+          <i />
+          <span>physical layout</span>
+        </div>
+      </article>
+
+      <article className="story-rule encoding-rule">
+        <div>
+          <h4>A logical qubit is protected information</h4>
+          <p>
+            A physical qubit is a device-level carrier. A logical qubit is one qubit of
+            encoded information protected by an error-correcting code. The code spreads
+            the information across many physical carriers and repeatedly checks for
+            error patterns without directly reading the logical state.
+          </p>
+          <p>
+            That protection is why a single logical wire can correspond to many physical
+            qubits, measurement rounds, classical decoding, and layout constraints.
+          </p>
+        </div>
+        <div className="logical-encoding-sketch" aria-hidden="true">
+          <strong>logical wire</strong>
+          <div>
+            {Array.from({ length: 9 }, (_, index) => <span key={index} />)}
+          </div>
+          <em>physical carriers + checks</em>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Code distance</h4>
+          <p>
+            Distance is a protection parameter. Larger distance usually means more
+            physical resources and lower logical failure risk, assuming the hardware
+            noise is below the code threshold.
+          </p>
+          <div className="distance-ladder" aria-hidden="true">
+            <span>d=3</span>
+            <span>d=5</span>
+            <span>d=7</span>
+          </div>
+        </article>
+        <article>
+          <h4>Syndrome checks</h4>
+          <p>
+            Error correction does not copy the quantum value. It measures check
+            information that points to likely errors while preserving the encoded
+            logical state.
+          </p>
+          <div className="syndrome-row" aria-hidden="true">
+            <span>data</span>
+            <i />
+            <span>checks</span>
+            <i />
+            <span>decoder</span>
+          </div>
+        </article>
+        <article>
+          <h4>Factories are extra</h4>
+          <p>
+            Non-Clifford magic work can require dedicated factory space and time. A
+            full hardware estimate must place both the algorithmic logical qubits and
+            the factory resources.
+          </p>
+          <div className="factory-layout-mini" aria-hidden="true">
+            <span>algorithm</span>
+            <span>factory</span>
+          </div>
+        </article>
+      </div>
+
+      <article className="story-rule physical-estimate-rule">
+        <div>
+          <h4>Why the same logical result can imply many machines</h4>
+          <p>
+            Physical estimates depend on the selected code, code distance, physical
+            error rates, operation times, connectivity, routing, classical decoding,
+            and magic-state factories. Change those assumptions and the same logical
+            circuit can produce a very different physical-qubit envelope.
+          </p>
+        </div>
+        <div className="estimate-equation" aria-hidden="true">
+          <MathTex tex="\text{logical circuit}+\text{QEC model}+\text{layout}\Rightarrow\text{hardware estimate}" />
+        </div>
+      </article>
+
+      <article className="story-question">
+        <h4>What the labs are allowed to claim</h4>
+        <p>
+          The first lab is a toy bridge from logical rows to a physical envelope. The
+          second lab is a repetition-code intuition demo. Neither is the repo’s hardware
+          claim. They exist to teach why a logical result is a circuit-design claim, and
+          why hardware claims need an additional fault-tolerance model.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1190,8 +1304,9 @@ export function App() {
             {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
             {activeLesson.id === 'two-qubit' ? <TwoQubitStoryPanel /> : null}
             {activeLesson.id === 'clifford' ? <CliffordStoryPanel /> : null}
+            {activeLesson.id === 'logic-physical' ? <LogicalPhysicalStoryPanel /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {
