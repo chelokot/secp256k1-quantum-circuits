@@ -168,6 +168,11 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('sequence = H S');
 
   await openLesson(page, 'two-qubit');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('The new object is a joint table');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('Sometimes two wires are still independent');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('Controlled-X is not a measurement');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('How the Bell pair is born');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('No pair of private one-qubit states');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Two qubits, four labels');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Product state');

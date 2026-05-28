@@ -1008,6 +1008,7 @@ code {
 }
 
 .one-qubit-story h4,
+.two-qubit-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -1176,6 +1177,149 @@ code {
   padding: 0.12rem 0.5rem;
   color: #071018;
   background: #f5cf6b;
+}
+
+.two-qubit-story {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.joint-state-table,
+.state-table-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.joint-state-table span,
+.state-table-grid span {
+  display: grid;
+  gap: 0.35rem;
+  place-items: center;
+  min-height: 3.3rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  color: #ffffff;
+  background: rgba(99, 230, 190, 0.07);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-weight: 800;
+}
+
+.joint-state-table i {
+  display: block;
+  width: 70%;
+  height: 0.35rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.product-rule,
+.cx-rule {
+  border-color: rgba(99, 230, 190, 0.2);
+}
+
+.product-factor,
+.cx-permutation {
+  display: grid;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.product-factor {
+  text-align: center;
+}
+
+.product-factor span {
+  color: #b4c4d6;
+  font-size: 0.84rem;
+}
+
+.cx-permutation span {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.4rem;
+  padding: 0.42rem 0.55rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.cx-permutation span:nth-child(n + 3) {
+  border-color: rgba(245, 207, 107, 0.3);
+  background: rgba(245, 207, 107, 0.07);
+}
+
+.bell-steps {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.7fr) 2rem minmax(12rem, 1.1fr) 2rem minmax(12rem, 1.1fr);
+  gap: 0.55rem;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.bell-steps div {
+  display: grid;
+  gap: 0.35rem;
+  min-height: 5.4rem;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(143, 182, 255, 0.08);
+}
+
+.bell-steps strong {
+  color: #63e6be;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+}
+
+.bell-steps i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.state-table-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.state-table-grid span.empty {
+  color: #5e6b78;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.bell-grid span:not(.empty) {
+  border-color: rgba(245, 207, 107, 0.36);
+  background: rgba(245, 207, 107, 0.09);
+}
+
+.entanglement-test {
+  display: inline-block;
+  margin-top: 0.7rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.34);
+  border-radius: 999px;
+  padding: 0.24rem 0.62rem;
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.07);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.measurement-repeat {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.65rem;
+}
+
+.measurement-repeat span {
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.08);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
 }
 
 .story-rule {
@@ -4921,6 +5065,7 @@ legend {
   .computer-flow-grid,
   .comparison-table > div,
   .qubit-motion-strip,
+  .bell-steps,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5065,6 +5210,7 @@ legend {
   .computer-flow-grid,
   .comparison-table > div,
   .qubit-motion-strip,
+  .bell-steps,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,

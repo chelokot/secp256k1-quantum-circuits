@@ -135,7 +135,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The moment operations can connect wires, the circuit can create joint structure that no pair of independent one-qubit descriptions can capture.',
     mentalModel:
-      'With two qubits, the state is a four-slot amplitude table. Some tables factor into two independent one-qubit states. Entangled tables do not: only the joint pattern tells the truth.',
+      'Adding a second qubit changes the object from two amplitudes to a four-entry joint table: 00, 01, 10, and 11. Some tables are just two independent one-qubit states multiplied together. Entangled tables are different: the joint pattern is the smallest honest description.',
     checkpoint: 'A two-qubit state is entangled when the four-amplitude pattern cannot be factored into separate one-qubit states.',
     deepDive: [
       'State size: one qubit has two amplitudes. Two qubits have four amplitudes: $|00\\rangle$, $|01\\rangle$, $|10\\rangle$, and $|11\\rangle$. Three qubits would have eight.',
@@ -146,9 +146,9 @@ export const lessons: CourseLesson[] = [
       'Observation: measurement samples one full two-bit label. Repeating the same circuit many times reveals the probability pattern.',
     ],
     coreIdeas: [
-      'Two qubits have four joint amplitudes.',
-      'Controlled gates can link branches across wires.',
-      'Entanglement is joint state structure, not just ordinary correlation text.',
+      'Two qubits are represented by four joint amplitudes.',
+      'Controlled-X is a reversible branch permutation, not a measurement.',
+      'Entanglement means the four-entry table cannot factor into two one-qubit states.',
     ],
     practicePrompt: 'Run the two-qubit missions. First make a product split, then make a Bell pair, then use interference to cancel one branch.',
     glossaryTerms: ['State vector', 'Controlled-X', 'CNOT', 'Bell pair', 'Entanglement'],

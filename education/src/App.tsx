@@ -444,6 +444,142 @@ function OneQubitStoryPanel() {
   );
 }
 
+function TwoQubitStoryPanel() {
+  return (
+    <section className="two-qubit-story" data-testid="two-qubit-story" aria-label="Two-qubit state story">
+      <article className="story-question">
+        <h4>The new object is a joint table</h4>
+        <p>
+          With one qubit, the state had two amplitudes. With two qubits, the state
+          has four amplitudes, one for each possible two-bit label. The labels look
+          classical, but before measurement they are branches of one coherent state.
+        </p>
+        <div className="joint-state-table" aria-hidden="true">
+          {['|00>', '|01>', '|10>', '|11>'].map((label) => (
+            <span key={label}>{label}<i /></span>
+          ))}
+        </div>
+      </article>
+
+      <article className="story-rule product-rule">
+        <div>
+          <h4>Sometimes two wires are still independent</h4>
+          <p>
+            If q0 has amplitudes <MathTex tex="a_0,a_1" /> and q1 has amplitudes{' '}
+            <MathTex tex="b_0,b_1" />, an independent two-qubit state is built by
+            multiplying choices. That special shape is called a product state.
+          </p>
+          <p>
+            Product states can still be in superposition. They are just not entangled:
+            each wire still has its own one-qubit description.
+          </p>
+        </div>
+        <div className="product-factor" aria-hidden="true">
+          <MathTex displayMode tex="\begin{bmatrix}a_0\\a_1\end{bmatrix}\otimes\begin{bmatrix}b_0\\b_1\end{bmatrix}=\begin{bmatrix}a_0b_0\\a_0b_1\\a_1b_0\\a_1b_1\end{bmatrix}" />
+          <span>four amplitudes, but generated from two private one-qubit states</span>
+        </div>
+      </article>
+
+      <article className="story-rule cx-rule">
+        <div>
+          <h4>Controlled-X is not a measurement</h4>
+          <p>
+            Controlled-X, also called CNOT or CX, does not peek at q0 and choose one
+            classical branch. It is a reversible permutation of the joint labels:
+            branches with q0 = 0 stay put, branches with q0 = 1 swap the q1 label.
+          </p>
+          <p>
+            That matters because if q0 is in a split, CX applies coherently to every
+            live branch and can tie the two wires into one joint pattern.
+          </p>
+        </div>
+        <div className="cx-permutation" aria-hidden="true">
+          <span>|00&gt; -&gt; |00&gt;</span>
+          <span>|01&gt; -&gt; |01&gt;</span>
+          <span>|10&gt; -&gt; |11&gt;</span>
+          <span>|11&gt; -&gt; |10&gt;</span>
+        </div>
+      </article>
+
+      <article className="story-question">
+        <h4>How the Bell pair is born</h4>
+        <div className="bell-steps" aria-hidden="true">
+          <div>
+            <strong>start</strong>
+            <MathTex tex="|00\rangle" />
+          </div>
+          <i />
+          <div>
+            <strong>split q0</strong>
+            <MathTex tex="(|00\rangle+|10\rangle)/\sqrt{2}" />
+          </div>
+          <i />
+          <div>
+            <strong>control q1</strong>
+            <MathTex tex="(|00\rangle+|11\rangle)/\sqrt{2}" />
+          </div>
+        </div>
+        <p>
+          After the split, the q0 = 1 branch is <MathTex tex="|10\rangle" />. CX turns
+          that branch into <MathTex tex="|11\rangle" />. Now only matching labels remain:
+          00 and 11. Repeated measurement gives random individual bits, but the two
+          bits agree in the same run.
+        </p>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Product split</h4>
+          <p>
+            H on both wires makes four equal branches. This is a big state, but it
+            still factors into q0's state times q1's state.
+          </p>
+          <div className="state-table-grid" aria-hidden="true">
+            {['00', '01', '10', '11'].map((label) => <span key={label}>{label}</span>)}
+          </div>
+        </article>
+        <article>
+          <h4>Entangled pattern</h4>
+          <p>
+            A Bell pair has only 00 and 11 branches. No pair of private one-qubit
+            states can reproduce exactly that table.
+          </p>
+          <div className="state-table-grid bell-grid" aria-hidden="true">
+            <span>00</span>
+            <span className="empty">01</span>
+            <span className="empty">10</span>
+            <span>11</span>
+          </div>
+        </article>
+        <article>
+          <h4>Separable or not?</h4>
+          <p>
+            For a pure two-qubit table, the quick algebraic check is whether
+            {' '}<MathTex tex="a_{00}a_{11}-a_{01}a_{10}" /> is zero. Nonzero means the table
+            cannot factor into two one-qubit states.
+          </p>
+          <div className="entanglement-test" aria-hidden="true">det = 0 ? product : entangled</div>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>What measurement shows</h4>
+        <p>
+          One run samples one full label, such as 00 or 11. The state vector is not
+          visible in a single run; it is inferred by preparing the same circuit many
+          times and looking at the distribution and correlations.
+        </p>
+        <div className="measurement-repeat" aria-hidden="true">
+          <span>run 1: 00</span>
+          <span>run 2: 11</span>
+          <span>run 3: 11</span>
+          <span>run 4: 00</span>
+        </div>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -935,8 +1071,9 @@ export function App() {
             </section>
             {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
             {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
+            {activeLesson.id === 'two-qubit' ? <TwoQubitStoryPanel /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {
