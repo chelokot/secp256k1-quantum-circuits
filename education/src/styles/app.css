@@ -1118,6 +1118,66 @@ code {
   background: #f5cf6b;
 }
 
+.qubit-motion-strip {
+  display: grid;
+  grid-template-columns: minmax(11rem, 0.42fr) 2.5rem minmax(12rem, 0.58fr);
+  gap: 0.75rem;
+  align-items: center;
+  margin-top: 0.85rem;
+}
+
+.qubit-motion-strip figure {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+  margin: 0;
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.qubit-motion-strip figcaption {
+  color: #b4c4d6;
+  font-size: 0.82rem;
+  text-align: center;
+}
+
+.qubit-motion-strip > i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.swap-sketch {
+  display: grid;
+  grid-template-columns: minmax(3.8rem, 1fr) 2.2rem minmax(3.8rem, 1fr);
+  gap: 0.35rem;
+  align-items: center;
+  margin-top: 0.7rem;
+  color: #dce7f2;
+}
+
+.swap-sketch span {
+  border-radius: 0.45rem;
+  padding: 0.45rem;
+  background: rgba(99, 230, 190, 0.08);
+  text-align: center;
+}
+
+.swap-sketch i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #f5cf6b, #63e6be);
+  transform: rotate(-12deg);
+}
+
+.swap-sketch b {
+  grid-column: 1 / -1;
+  justify-self: center;
+  border-radius: 999px;
+  padding: 0.12rem 0.5rem;
+  color: #071018;
+  background: #f5cf6b;
+}
+
 .story-rule {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.42fr);
@@ -4860,6 +4920,7 @@ legend {
   .orientation-model-strip,
   .computer-flow-grid,
   .comparison-table > div,
+  .qubit-motion-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5003,6 +5064,7 @@ legend {
   .orientation-model-strip,
   .computer-flow-grid,
   .comparison-table > div,
+  .qubit-motion-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5085,6 +5147,10 @@ legend {
 
   .physical-bit-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .qubit-motion-strip > i {
+    display: none;
   }
 
   .window-grid {

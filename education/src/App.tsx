@@ -261,18 +261,79 @@ function OneQubitStoryPanel() {
   return (
     <section className="one-qubit-story" data-testid="one-qubit-story" aria-label="One-qubit gate story">
       <article className="story-question">
-        <h4>The first question</h4>
+        <h4>What is allowed to move?</h4>
         <p>
-          If a qubit is two amplitude arrows, a gate is not just a button labeled
-          “make 0 more likely.” A gate is a physical move we apply before measurement.
-          The interesting question is: which moves are useful, and which moves are even legal?
+          A qubit is one coherent two-amplitude state, not two independent probability
+          sliders. Before measurement we are allowed to steer the pair of arrows. The
+          steering can change lengths and angles, but it must transform the whole pair
+          as one object.
         </p>
+        <div className="qubit-motion-strip" aria-hidden="true">
+          <figure>
+            <svg className="mini-phase-wheel" viewBox="0 0 120 72">
+              <circle cx="36" cy="36" r="25" />
+              <line x1="36" y1="36" x2="61" y2="36" />
+              <line className="phase-line" x1="36" y1="36" x2="52" y2="17" />
+            </svg>
+            <figcaption>two arrows before measurement</figcaption>
+          </figure>
+          <i />
+          <figure>
+            <div className="mini-prob-bars">
+              <span>measure 0</span>
+              <i style={{ width: '82%' }} />
+              <span>measure 1</span>
+              <i className="alt" style={{ width: '28%' }} />
+            </div>
+            <figcaption>lengths become probabilities only at readout</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <article className="story-rule">
+        <div>
+          <h4>Why a gate is a two-by-two rule</h4>
+          <p>
+            If the input is a mixture of a 0-branch and a 1-branch, the output must be
+            the same mixture of what the rule would do to each branch. That is the
+            linearity requirement. For one qubit, every linear rule has four complex
+            coefficients.
+          </p>
+        </div>
+        <div className="unitary-rule-box">
+          <MathTex displayMode tex="\begin{bmatrix}a'\\ b'\end{bmatrix}=\begin{bmatrix}\alpha&\beta\\ \gamma&\delta\end{bmatrix}\begin{bmatrix}a\\ b\end{bmatrix}" />
+          <span>the gate acts on the amplitude vector, not on sampled bits</span>
+        </div>
+      </article>
+
+      <article className="story-rule">
+        <div>
+          <h4>Why most formulas are not legal gates</h4>
+          <p>
+            Measurement probabilities come from squared lengths, so a valid closed gate
+            must preserve the total length for every possible input state. That is what
+            unitary means here: linear, reversible, and total-probability preserving.
+          </p>
+          <p>
+            This is stronger than “works on the examples we tried.” The inverse must
+            exist for the whole amplitude plane, otherwise two different starting states
+            could be crushed into one final state.
+          </p>
+        </div>
+        <div className="unitary-rule-box">
+          <MathTex tex="|a|^2+|b|^2=1" />
+          <MathTex tex="U^\dagger U=I" />
+          <span>normalization stays true after every closed gate</span>
+        </div>
       </article>
 
       <div className="story-card-grid">
         <article>
-          <strong>Useful move 1: create a split</strong>
-          <p>Start at definite 0. A Hadamard move can turn that into equal 0 and 1 amplitudes.</p>
+          <strong>Hadamard: create and recombine a split</strong>
+          <p>
+            Start at definite 0. A Hadamard move creates equal 0 and 1 amplitudes. Run
+            Hadamard again and the sum/difference channels recombine back to the start.
+          </p>
           <div className="mini-arrow-split" aria-hidden="true">
             <span>0</span>
             <i />
@@ -282,8 +343,24 @@ function OneQubitStoryPanel() {
           </div>
         </article>
         <article>
-          <strong>Useful move 2: store phase</strong>
-          <p>A phase move can rotate one arrow while direct measurement still sees the same lengths.</p>
+          <strong>Bit flip: rename the two outcomes</strong>
+          <p>
+            X swaps the two amplitude slots. It behaves like a classical NOT only on
+            definite inputs, but on a superposition it swaps the whole two-arrow state.
+          </p>
+          <div className="swap-sketch" aria-hidden="true">
+            <span>0-slot</span>
+            <i />
+            <span>1-slot</span>
+            <b>X</b>
+          </div>
+        </article>
+        <article>
+          <strong>Phase turn: store information in angle</strong>
+          <p>
+            S, T, or a rotation can turn only the 1-amplitude arrow. Direct measurement
+            may still see the same 50/50 lengths, but later mixing can expose the angle.
+          </p>
           <svg className="mini-phase-wheel" viewBox="0 0 120 72" aria-hidden="true">
             <circle cx="36" cy="36" r="25" />
             <line x1="36" y1="36" x2="61" y2="36" />
@@ -292,36 +369,11 @@ function OneQubitStoryPanel() {
             <path className="phase-line" d="M93 22 a18 18 0 0 1 0 28" />
           </svg>
         </article>
-        <article>
-          <strong>Useful move 3: reveal phase</strong>
-          <p>Mixing after a phase move can turn angle into changed measurement probabilities.</p>
-          <div className="mini-prob-bars" aria-hidden="true">
-            <span>before H: 50 / 50</span>
-            <i style={{ width: '50%' }} />
-            <span>after H: 0 / 100</span>
-            <i className="alt" style={{ width: '100%' }} />
-          </div>
-        </article>
       </div>
-
-      <article className="story-rule">
-        <div>
-          <h4>The catch: a closed gate must be reversible</h4>
-          <p>
-            A classical program can erase a variable. A closed quantum gate cannot erase
-            which state it came from. It has to preserve total probability and keep enough
-            information for an inverse operation to run backward.
-          </p>
-        </div>
-        <div className="unitary-rule-box">
-          <MathTex tex="U^\dagger U=I" />
-          <span>linear + reversible + probability preserving</span>
-        </div>
-      </article>
 
       <div className="story-motion-grid">
         <article>
-          <h4>Finite cycles</h4>
+          <h4>Short cycles</h4>
           <p>
             Some moves loop back quickly. Do H twice and you are back where you started.
             Do X twice and the swap undoes itself. Do S four times and the phase has made
@@ -334,7 +386,7 @@ function OneQubitStoryPanel() {
           </div>
         </article>
         <article>
-          <h4>Long motion</h4>
+          <h4>Long reversible walks</h4>
           <p>
             A rotation by an awkward angle does not have to close after a few repeats.
             It can keep visiting new angles. That is still reversible motion, not
@@ -360,11 +412,11 @@ function OneQubitStoryPanel() {
           </svg>
         </article>
         <article>
-          <h4>No attractor</h4>
+          <h4>No closed-gate attractor</h4>
           <p>
-            Suppose many different starting states all drifted into the same final state.
-            The inverse gate would be impossible: from one final state it would have to
-            recover many different starts.
+            If many different starting states all drifted into the same final state,
+            the inverse gate would be impossible. Convergence belongs to measurement,
+            noise, or deliberate reset, not to a closed gate.
           </p>
           <svg className="no-attractor-sketch" viewBox="0 0 170 86" aria-hidden="true">
             <circle cx="24" cy="20" r="5" />
@@ -380,12 +432,12 @@ function OneQubitStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>Where does irreversibility enter?</h4>
+        <h4>The lab is a small control room</h4>
         <p>
-          Measurement is the boundary. Before measurement, the circuit carefully moves
-          amplitudes without throwing information away. At measurement, one outcome is
-          sampled and the other possibilities are no longer available in that run. That
-          is why the course separates gates from measurement so aggressively.
+          The buttons below are deliberately tiny examples of the same discipline used
+          later in the resource engine: apply named reversible operations, inspect the
+          state they produce, then verify a concrete mission. Make a split, hide phase,
+          reveal phase, and return by a cycle before moving to two-qubit gates.
         </p>
       </article>
     </section>

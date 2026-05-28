@@ -139,10 +139,11 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 
   await openLesson(page, 'one-qubit');
   await expect(page.getByRole('heading', { name: 'One-qubit gates as reversible motion' })).toBeVisible();
-  await expect(page.getByTestId('one-qubit-story')).toContainText('The first question');
-  await expect(page.getByTestId('one-qubit-story')).toContainText('Useful move 1: create a split');
-  await expect(page.getByTestId('one-qubit-story')).toContainText('The catch: a closed gate must be reversible');
-  await expect(page.getByTestId('one-qubit-story')).toContainText('Where does irreversibility enter');
+  await expect(page.getByTestId('one-qubit-story')).toContainText('What is allowed to move');
+  await expect(page.getByTestId('one-qubit-story')).toContainText('Why a gate is a two-by-two rule');
+  await expect(page.getByTestId('one-qubit-story')).toContainText('Why most formulas are not legal gates');
+  await expect(page.getByTestId('one-qubit-story')).toContainText('Hadamard: create and recombine a split');
+  await expect(page.getByTestId('one-qubit-story')).toContainText('No closed-gate attractor');
   await selectRouteLab(page, /Qubit steering/);
   await expect(page.getByTestId('bloch-playground')).toContainText('0-amplitude');
   await expect(page.getByTestId('bloch-playground')).toContainText('1-amplitude');

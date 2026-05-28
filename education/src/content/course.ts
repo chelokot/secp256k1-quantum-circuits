@@ -107,7 +107,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'This is the first place where “quantum speedup” stops sounding like magic. Gates do not push probabilities downhill toward the answer. They preserve information while arranging amplitude directions so later steps can make wrong branches cancel and useful branches reinforce.',
     mentalModel:
-      'Start with a practical question: if a qubit is two arrows, what kinds of moves are we allowed to make before measurement? We want moves that can create a split, hide information in angle, and later reveal that angle as a probability change. The catch is that closed quantum gates must be reversible.',
+      'Start from one question: if a qubit is two amplitude arrows, which physical moves are legal before measurement? A legal closed gate is a two-by-two linear rule that preserves total probability, so it can split, swap, rotate, and recombine amplitudes without erasing where the state came from.',
     checkpoint: 'A one-qubit gate can make probabilities change, but a closed gate cannot be a many-to-one convergence rule because it must have an inverse.',
     deepDive: [
       'Valid gate: a quantum gate is a controlled physical operation applied before measurement. Mathematically it is unitary: linear, reversible, and total-probability preserving.',
@@ -118,9 +118,9 @@ export const lessons: CourseLesson[] = [
       'Measurement exception: measurement can collapse many possible states into one sampled result. That is why measurement is treated differently from reversible gates.',
     ],
     coreIdeas: [
-      'One-qubit gates are reversible steering moves.',
-      'Finite cycles and long rotations are both possible.',
-      'Convergence belongs to measurement/noise, not to closed unitary gates.',
+      'A one-qubit gate is a two-by-two rule over the amplitude vector.',
+      'Unitary means linear, reversible, and probability preserving.',
+      'Measurement can collapse; a closed gate cannot be an attractor.',
     ],
     practicePrompt: 'Use the one-qubit labs as missions: make a balanced state, return to the start, create a hidden phase, then expose that phase by mixing again.',
     glossaryTerms: ['Quantum gate', 'Unitary', 'Hadamard gate', 'Destructive interference'],
