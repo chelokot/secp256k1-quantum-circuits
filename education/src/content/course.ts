@@ -105,9 +105,9 @@ export const lessons: CourseLesson[] = [
     intuition:
       'A one-qubit gate is a valid steering rule for the two-amplitude state. It can rotate, swap, and recombine amplitudes, but as a closed gate it must remain reversible.',
     whyItMatters:
-      'Quantum algorithms use gates to arrange interference. The useful mental model is not “probabilities flow downhill,” but “amplitudes move through reversible patterns until measurement samples them.”',
+      'This is the first place where “quantum speedup” stops sounding like magic. Gates do not push probabilities downhill toward the answer. They preserve information while arranging amplitude directions so later steps can make wrong branches cancel and useful branches reinforce.',
     mentalModel:
-      'Think of one-qubit gates as moves on a sphere or arrow pair. Some moves form short cycles like doing H twice. Some rotations can have long or effectively non-repeating cycles. None of the closed gates collapses many possible states into one attractor.',
+      'Start with a practical question: if a qubit is two arrows, what kinds of moves are we allowed to make before measurement? We want moves that can create a split, hide information in angle, and later reveal that angle as a probability change. The catch is that closed quantum gates must be reversible.',
     checkpoint: 'A one-qubit gate can make probabilities change, but a closed gate cannot be a many-to-one convergence rule because it must have an inverse.',
     deepDive: [
       'Valid gate: a quantum gate is a controlled physical operation applied before measurement. Mathematically it is unitary: linear, reversible, and total-probability preserving.',

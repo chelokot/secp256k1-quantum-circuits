@@ -995,6 +995,184 @@ code {
   font-size: 0.88rem;
 }
 
+.one-qubit-story {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.one-qubit-story h4 {
+  margin: 0 0 0.45rem;
+  color: #f5cf6b;
+}
+
+.story-question,
+.story-rule,
+.story-card-grid article,
+.story-motion-grid article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.story-question {
+  border-left: 0.25rem solid #8fb6ff;
+}
+
+.story-card-grid,
+.story-motion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.story-card-grid strong {
+  display: block;
+  color: #63e6be;
+}
+
+.story-card-grid p,
+.story-motion-grid p,
+.story-rule p {
+  margin: 0;
+}
+
+.mini-arrow-split {
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.7rem;
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.mini-arrow-split i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.mini-arrow-split b {
+  border-radius: 999px;
+  padding: 0.16rem 0.45rem;
+  color: #071018;
+  background: #f5cf6b;
+}
+
+.mini-phase-wheel {
+  width: min(100%, 11rem);
+  margin-top: 0.55rem;
+}
+
+.mini-phase-wheel circle,
+.mini-phase-wheel line,
+.mini-phase-wheel path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 2;
+}
+
+.mini-phase-wheel .phase-line {
+  stroke: #f5cf6b;
+}
+
+.mini-prob-bars {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.65rem;
+}
+
+.mini-prob-bars span {
+  color: #b4c4d6;
+  font-size: 0.82rem;
+}
+
+.mini-prob-bars i {
+  display: block;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #63e6be;
+}
+
+.mini-prob-bars i.alt {
+  background: #f5cf6b;
+}
+
+.story-rule {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.42fr);
+  gap: 0.9rem;
+  align-items: center;
+  border-color: rgba(245, 207, 107, 0.22);
+}
+
+.unitary-rule-box {
+  display: grid;
+  gap: 0.4rem;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(245, 207, 107, 0.08);
+  text-align: center;
+}
+
+.unitary-rule-box span {
+  color: #b4c4d6;
+  font-size: 0.84rem;
+}
+
+.cycle-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+
+.cycle-badges span {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.35);
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.06);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.long-rotation-sketch,
+.no-attractor-sketch {
+  width: min(100%, 13rem);
+  margin-top: 0.55rem;
+}
+
+.long-rotation-sketch circle,
+.long-rotation-sketch path,
+.no-attractor-sketch circle,
+.no-attractor-sketch path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.32);
+  stroke-width: 2;
+}
+
+.long-rotation-sketch circle:not(:first-child),
+.no-attractor-sketch circle {
+  fill: #63e6be;
+  stroke: none;
+}
+
+.long-rotation-sketch circle.last {
+  fill: #f5cf6b;
+}
+
+.no-attractor-sketch circle.bad {
+  fill: rgba(245, 107, 107, 0.16);
+  stroke: #f56b6b;
+}
+
+.long-rotation-sketch text,
+.no-attractor-sketch text {
+  fill: #b4c4d6;
+  font-size: 0.72rem;
+}
+
 .steering-amplitude-view {
   justify-items: center;
   margin: 1rem 0;
@@ -4570,6 +4748,9 @@ legend {
   .orientation-model-strip,
   .computer-flow-grid,
   .comparison-table > div,
+  .story-card-grid,
+  .story-motion-grid,
+  .story-rule,
   .one-qubit-capability-row,
   .gate-palette-panel,
   .pattern-lab-grid,
@@ -4708,6 +4889,9 @@ legend {
   .orientation-model-strip,
   .computer-flow-grid,
   .comparison-table > div,
+  .story-card-grid,
+  .story-motion-grid,
+  .story-rule,
   .one-qubit-capability-row,
   .gate-palette-panel,
   .pattern-lab-grid,

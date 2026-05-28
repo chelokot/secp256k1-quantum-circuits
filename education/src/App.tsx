@@ -257,6 +257,141 @@ function OrientationModelVisual() {
   );
 }
 
+function OneQubitStoryPanel() {
+  return (
+    <section className="one-qubit-story" data-testid="one-qubit-story" aria-label="One-qubit gate story">
+      <article className="story-question">
+        <h4>The first question</h4>
+        <p>
+          If a qubit is two amplitude arrows, a gate is not just a button labeled
+          “make 0 more likely.” A gate is a physical move we apply before measurement.
+          The interesting question is: which moves are useful, and which moves are even legal?
+        </p>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Useful move 1: create a split</strong>
+          <p>Start at definite 0. A Hadamard move can turn that into equal 0 and 1 amplitudes.</p>
+          <div className="mini-arrow-split" aria-hidden="true">
+            <span>0</span>
+            <i />
+            <b>H</b>
+            <i />
+            <span>0 + 1</span>
+          </div>
+        </article>
+        <article>
+          <strong>Useful move 2: store phase</strong>
+          <p>A phase move can rotate one arrow while direct measurement still sees the same lengths.</p>
+          <svg className="mini-phase-wheel" viewBox="0 0 120 72" aria-hidden="true">
+            <circle cx="36" cy="36" r="25" />
+            <line x1="36" y1="36" x2="61" y2="36" />
+            <line className="phase-line" x1="36" y1="36" x2="52" y2="17" />
+            <path d="M78 36 h24" />
+            <path className="phase-line" d="M93 22 a18 18 0 0 1 0 28" />
+          </svg>
+        </article>
+        <article>
+          <strong>Useful move 3: reveal phase</strong>
+          <p>Mixing after a phase move can turn angle into changed measurement probabilities.</p>
+          <div className="mini-prob-bars" aria-hidden="true">
+            <span>before H: 50 / 50</span>
+            <i style={{ width: '50%' }} />
+            <span>after H: 0 / 100</span>
+            <i className="alt" style={{ width: '100%' }} />
+          </div>
+        </article>
+      </div>
+
+      <article className="story-rule">
+        <div>
+          <h4>The catch: a closed gate must be reversible</h4>
+          <p>
+            A classical program can erase a variable. A closed quantum gate cannot erase
+            which state it came from. It has to preserve total probability and keep enough
+            information for an inverse operation to run backward.
+          </p>
+        </div>
+        <div className="unitary-rule-box">
+          <MathTex tex="U^\dagger U=I" />
+          <span>linear + reversible + probability preserving</span>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Finite cycles</h4>
+          <p>
+            Some moves loop back quickly. Do H twice and you are back where you started.
+            Do X twice and the swap undoes itself. Do S four times and the phase has made
+            a full turn.
+          </p>
+          <div className="cycle-badges" aria-hidden="true">
+            <span>H² = I</span>
+            <span>X² = I</span>
+            <span>S⁴ = I</span>
+          </div>
+        </article>
+        <article>
+          <h4>Long motion</h4>
+          <p>
+            A rotation by an awkward angle does not have to close after a few repeats.
+            It can keep visiting new angles. That is still reversible motion, not
+            convergence.
+          </p>
+          <svg className="long-rotation-sketch" viewBox="0 0 160 86" aria-hidden="true">
+            <circle cx="43" cy="43" r="30" />
+            {[0, 1, 2, 3, 4, 5].map((index) => {
+              const angle = index * 0.92;
+              return (
+                <circle
+                  className={index === 5 ? 'last' : ''}
+                  cx={43 + Math.cos(angle) * 30}
+                  cy={43 - Math.sin(angle) * 30}
+                  key={index}
+                  r="3"
+                />
+              );
+            })}
+            <path d="M88 43 h46" />
+            <text x="92" y="32">same rule</text>
+            <text x="92" y="58">new angle</text>
+          </svg>
+        </article>
+        <article>
+          <h4>No attractor</h4>
+          <p>
+            Suppose many different starting states all drifted into the same final state.
+            The inverse gate would be impossible: from one final state it would have to
+            recover many different starts.
+          </p>
+          <svg className="no-attractor-sketch" viewBox="0 0 170 86" aria-hidden="true">
+            <circle cx="24" cy="20" r="5" />
+            <circle cx="24" cy="43" r="5" />
+            <circle cx="24" cy="66" r="5" />
+            <path d="M34 20 C70 20 80 43 119 43" />
+            <path d="M34 43 H119" />
+            <path d="M34 66 C70 66 80 43 119 43" />
+            <circle className="bad" cx="128" cy="43" r="8" />
+            <text x="143" y="48">not a gate</text>
+          </svg>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>Where does irreversibility enter?</h4>
+        <p>
+          Measurement is the boundary. Before measurement, the circuit carefully moves
+          amplitudes without throwing information away. At measurement, one outcome is
+          sampled and the other possibilities are no longer available in that run. That
+          is why the course separates gates from measurement so aggressively.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function splitLessonStep(paragraph: string) {
   const separatorIndex = paragraph.indexOf(':');
   const firstSentenceIndex = paragraph.indexOf('.');
@@ -662,7 +797,8 @@ export function App() {
               <p>{activeLesson.mentalModel}</p>
             </section>
             {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
-            {activeLesson.deepDive ? (
+            {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
+            {activeLesson.deepDive && activeLesson.id !== 'one-qubit' ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {
