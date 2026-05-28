@@ -580,6 +580,123 @@ function TwoQubitStoryPanel() {
   );
 }
 
+function CliffordStoryPanel() {
+  return (
+    <section className="clifford-story" data-testid="clifford-story" aria-label="Clifford and non-Clifford cost story">
+      <article className="story-question">
+        <h4>Why there is a second cost axis</h4>
+        <p>
+          Counting live qubits answers “how much quantum memory is occupied at the
+          busiest moment?” It does not answer “how hard is the circuit to run fault
+          tolerantly?” The second question appears because some gates are cheap inside
+          the stabilizer world, while other gates need scarce prepared magic resources.
+        </p>
+        <div className="cost-axis-strip" aria-hidden="true">
+          <div><strong>logical qubits</strong><span>peak live storage</span></div>
+          <div><strong>non-Clifford</strong><span>magic-state work</span></div>
+        </div>
+      </article>
+
+      <article className="story-rule stabilizer-rule">
+        <div>
+          <h4>The stabilizer map is a restricted but useful world</h4>
+          <p>
+            Clifford gates include familiar moves like H, S, and CX. They can create
+            superposition, interference, and some entanglement, so they are not
+            “classical gates.” Their special property is narrower: they keep Pauli
+            axes mapped to Pauli axes, which lets a stabilizer description stay compact.
+          </p>
+          <p>
+            That is why Clifford-only circuits are a big, useful class that can still
+            be tracked efficiently by classical stabilizer simulators.
+          </p>
+        </div>
+        <div className="stabilizer-map" aria-hidden="true">
+          <span>+X</span>
+          <span>+Y</span>
+          <span>-X</span>
+          <span>-Y</span>
+          <i />
+        </div>
+      </article>
+
+      <article className="story-rule magic-rule">
+        <div>
+          <h4>A magic step leaves the cheap map</h4>
+          <p>
+            A T gate is a 45-degree phase step. On the toy wheel it lands halfway
+            between stabilizer axes. That “between axes” state is exactly the point:
+            Clifford gates alone cannot synthesize it.
+          </p>
+          <p>
+            Fault-tolerant designs commonly implement such non-Clifford steps by
+            preparing and consuming magic states. Those factories can dominate runtime,
+            so the repo treats non-Clifford count as a first-class resource.
+          </p>
+        </div>
+        <div className="magic-step-map" aria-hidden="true">
+          <span>Clifford axis</span>
+          <i />
+          <b>T</b>
+          <i className="magic" />
+          <span>magic region</span>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Cheap does not mean useless</h4>
+          <p>
+            Clifford gates still move quantum information and wire correlations around.
+            They are cheap because of the stabilizer structure, not because nothing
+            quantum happened.
+          </p>
+          <div className="clifford-stack" aria-hidden="true">
+            <span>H</span>
+            <span>S</span>
+            <span>CX</span>
+          </div>
+        </article>
+        <article>
+          <h4>Expensive does not mean optional</h4>
+          <p>
+            Arithmetic needs controlled products, comparisons, and table selection.
+            Those decisions are where Toffoli-like non-Clifford work enters.
+          </p>
+          <div className="clifford-stack magic-stack-mini" aria-hidden="true">
+            <span>AND</span>
+            <span>CCX</span>
+            <span>select</span>
+          </div>
+        </article>
+        <article>
+          <h4>The result is a tradeoff</h4>
+          <p>
+            A low-qubit design can spend too much magic work. A low-magic design can
+            keep too many values live. Peak qubits and non-Clifford count are separate
+            headline axes, so the repo has to report them together.
+          </p>
+          <div className="tradeoff-mini-chart" aria-hidden="true">
+            <span>q</span>
+            <i />
+            <span>magic</span>
+          </div>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>What the labs are proving</h4>
+        <p>
+          The wheel makes the boundary visible: S and Z stay on stabilizer axes, while
+          T moves into the magic region and increments the non-Clifford counter. The
+          budget lab then scales the same distinction to repo-sized claims: a headline
+          needs live-qubit accounting and magic-work accounting at the same time.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1072,8 +1189,9 @@ export function App() {
             {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
             {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
             {activeLesson.id === 'two-qubit' ? <TwoQubitStoryPanel /> : null}
+            {activeLesson.id === 'clifford' ? <CliffordStoryPanel /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

@@ -186,9 +186,9 @@ export const lessons: CourseLesson[] = [
     intuition:
       'Clifford gates are the easy stabilizer backbone. Non-Clifford gates, especially Toffoli-like resources in this repo, are the expensive magic-state fuel.',
     whyItMatters:
-      'The project optimizes two scarce resources at once: logical qubits for peak live state and non-Clifford count for expensive fault-tolerant work.',
+      'The project optimizes two scarce resources at once: logical qubits for peak live state and non-Clifford count for expensive fault-tolerant magic work. A result is not meaningful if it wins one axis by quietly losing the other.',
     mentalModel:
-      'For this course, treat Clifford gates as the cheap structural moves and non-Clifford gates as the costly moves that make universal arithmetic possible.',
+      'Think of Clifford gates as motion inside a stabilizer map: still quantum, still useful, but structurally cheap to track and usually cheap to implement fault tolerantly. A non-Clifford step leaves that map and spends magic-state fuel. Arithmetic needs those escapes, so the repo reports them separately from qubits.',
     checkpoint: 'A low-qubit circuit can be bad if it explodes non-Clifford count, and a low-gate circuit can be bad if it needs too many live qubits.',
     deepDive: [
       'Clifford-only circuits are special: their states can be tracked efficiently by a classical stabilizer description. That makes them relatively cheap in many fault-tolerant models.',
@@ -196,9 +196,9 @@ export const lessons: CourseLesson[] = [
       'This repo mostly counts Toffoli-like non-Clifford work, because reversible arithmetic and table selection are full of controlled bit products.',
     ],
     coreIdeas: [
-      'Clifford = cheap stabilizer-preserving structure.',
-      'Non-Clifford = expensive resource enabling arithmetic.',
-      'Qubits and non-Clifford count are separate axes.',
+      'Clifford gates preserve a compact stabilizer description.',
+      'Non-Clifford gates supply the magic needed for universal arithmetic.',
+      'Peak qubits and non-Clifford count are separate headline axes.',
     ],
     practicePrompt: 'Use the stabilizer vs magic wheel. Add cheap Clifford moves first, then add a T gate and notice when the state class changes.',
     glossaryTerms: ['Clifford', 'Stabilizer state', 'Non-Clifford', 'Magic state'],

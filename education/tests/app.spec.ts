@@ -196,6 +196,10 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('100%');
 
   await openLesson(page, 'clifford');
+  await expect(page.getByTestId('clifford-story')).toContainText('Why there is a second cost axis');
+  await expect(page.getByTestId('clifford-story')).toContainText('The stabilizer map is a restricted but useful world');
+  await expect(page.getByTestId('clifford-story')).toContainText('A magic step leaves the cheap map');
+  await expect(page.getByTestId('clifford-story')).toContainText('Peak qubits and non-Clifford count are separate headline axes');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Stabilizer vs magic wheel');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('State class');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer');
