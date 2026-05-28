@@ -4,6 +4,8 @@ import type { LucideIcon } from 'lucide-react';
 export type LessonId =
   | 'zero'
   | 'qubit'
+  | 'one-qubit'
+  | 'two-qubit'
   | 'gates'
   | 'clifford'
   | 'logic-physical'
@@ -69,31 +71,85 @@ export const lessons: CourseLesson[] = [
   {
     id: 'qubit',
     module: 'Quantum substrate',
-    title: 'Qubits as vectors you can steer',
+    title: 'Qubit basics: amplitudes and measurement',
     icon: Atom,
     intuition:
-      'A qubit stores two amplitudes: one for outcome 0 and one for outcome 1. In the lab we draw each amplitude as an arrow, because it has both a length and an angle.',
+      'A qubit is one coherent two-amplitude state. Direct measurement sees squared arrow lengths as probabilities; it does not directly show the arrow angle.',
     whyItMatters:
-      'Measurement sees arrow lengths as probabilities. Gates can also use the angles before measurement, which is why a quantum circuit can make answers reinforce or cancel.',
+      'The whole course depends on this split: measurement reads probabilities, while gates can use hidden relative angle before measurement.',
     mentalModel:
-      'A qubit is the smallest quantum state we use: it has one amplitude for outcome 0 and one amplitude for outcome 1. Picture those amplitudes as two arrows. Longer arrow means a more likely direct measurement outcome.',
-    checkpoint: 'A probability coin has only chances. A qubit has chances plus amplitude angles that later gates can turn into changed chances.',
+      'Start with only one qubit. It has one amplitude for outcome 0 and one amplitude for outcome 1. Picture each amplitude as an arrow: its length affects direct measurement, and its direction can matter later.',
+    checkpoint: 'A probability coin has only chances. A qubit has amplitude lengths plus a relative angle that can matter before measurement.',
     deepDive: [
       'Notation: $|\\psi\\rangle = a|0\\rangle + b|1\\rangle$. The symbols $a$ and $b$ are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
       'Probability rule: $P(0)=|a|^2$ and $P(1)=|b|^2$. The vertical bars mean arrow length. If both arrows have length $1/\\sqrt{2}$, direct measurement is 50/50.',
-      'Quantum gate: a controlled physical operation applied before measurement. Mathematically it is a unitary rule: linear, reversible, and total-probability preserving.',
-      'Angle rule: two states can have the same direct 50/50 probabilities but different relative angles. The difference becomes visible only after a valid gate combines the 0-arrow and 1-arrow.',
-      'Example: Hadamard gate is the combining gate used in the lab. Circuit diagrams often abbreviate it as H. It computes $(a+b)/\\sqrt{2}$ and $(a-b)/\\sqrt{2}$, so probability remains normalized.',
-      'Interference: same-direction arrows reinforce outcome 0; opposite-direction arrows cancel outcome 0 and leave outcome 1. That is why direction matters even when the two arrow lengths are unchanged.',
-      'Why this scales: later Shor-style pages use the same idea at larger scale. Phase patterns are arranged so wrong answers cancel and the hidden period creates measurement peaks.',
+      'Relative angle: two states can have the same direct 50/50 probabilities but different arrow directions. Direct measurement cannot see that difference by itself.',
+      'Measurement: a measurement samples one outcome and changes what remains. It is not a passive screen capture of both arrows.',
+      'Bridge to gates: a gate is applied before measurement. The next page studies how valid gates can turn relative angle into a changed probability.',
     ],
     coreIdeas: [
       'Amplitude = arrow with length and angle.',
       'Measurement probability = squared arrow length.',
-      'Relative angle becomes observable only after a gate mixes amplitudes.',
+      'Relative angle is real circuit information even when direct measurement cannot see it.',
     ],
-    practicePrompt: 'First use the phase-to-probability bridge. Set the angle to 0 degrees, then 180 degrees. Notice that direct measurement stays 50/50, while measurement after the Hadamard gate flips from always 0 to always 1.',
-    glossaryTerms: ['Qubit', 'Amplitude', 'Quantum gate', 'Unitary', 'Hadamard gate', 'Destructive interference'],
+    practicePrompt: 'Use the phase-to-probability bridge only as a measurement experiment: keep the arrow lengths fixed and move the angle. Direct measurement stays 50/50.',
+    glossaryTerms: ['Qubit', 'Amplitude'],
+  },
+  {
+    id: 'one-qubit',
+    module: 'Quantum substrate',
+    title: 'One-qubit gates as reversible motion',
+    icon: GitCompareArrows,
+    intuition:
+      'A one-qubit gate is a valid steering rule for the two-amplitude state. It can rotate, swap, and recombine amplitudes, but as a closed gate it must remain reversible.',
+    whyItMatters:
+      'Quantum algorithms use gates to arrange interference. The useful mental model is not “probabilities flow downhill,” but “amplitudes move through reversible patterns until measurement samples them.”',
+    mentalModel:
+      'Think of one-qubit gates as moves on a sphere or arrow pair. Some moves form short cycles like doing H twice. Some rotations can have long or effectively non-repeating cycles. None of the closed gates collapses many possible states into one attractor.',
+    checkpoint: 'A one-qubit gate can make probabilities change, but a closed gate cannot be a many-to-one convergence rule because it must have an inverse.',
+    deepDive: [
+      'Valid gate: a quantum gate is a controlled physical operation applied before measurement. Mathematically it is unitary: linear, reversible, and total-probability preserving.',
+      'Hadamard: H recombines the two amplitudes into a sum channel and a difference channel. That is why equal arrows can become always-0 or always-1 depending on relative angle.',
+      'Cycles: some gates return after a few repeats. X twice returns to identity, H twice returns to identity, and four S phase turns return to identity.',
+      'Long rotations: a rotation by an angle that is not a neat fraction of a full turn will keep visiting new positions instead of closing quickly.',
+      'No attractor: a closed gate cannot steadily erase all starting states into one final point. If it did, the inverse would not know which starting state to recover.',
+      'Measurement exception: measurement can collapse many possible states into one sampled result. That is why measurement is treated differently from reversible gates.',
+    ],
+    coreIdeas: [
+      'One-qubit gates are reversible steering moves.',
+      'Finite cycles and long rotations are both possible.',
+      'Convergence belongs to measurement/noise, not to closed unitary gates.',
+    ],
+    practicePrompt: 'Use the one-qubit labs as missions: make a balanced state, return to the start, create a hidden phase, then expose that phase by mixing again.',
+    glossaryTerms: ['Quantum gate', 'Unitary', 'Hadamard gate', 'Destructive interference'],
+  },
+  {
+    id: 'two-qubit',
+    module: 'Quantum substrate',
+    title: 'Two qubits: joint states and entanglement',
+    icon: Binary,
+    intuition:
+      'Two qubits are not just two separate arrows. The full state has four amplitudes, one for each joint label: 00, 01, 10, and 11.',
+    whyItMatters:
+      'The moment operations can connect wires, the circuit can create joint structure that no pair of independent one-qubit descriptions can capture.',
+    mentalModel:
+      'With two qubits, the state is a four-slot amplitude table. Some tables factor into two independent one-qubit states. Entangled tables do not: only the joint pattern tells the truth.',
+    checkpoint: 'A two-qubit state is entangled when the four-amplitude pattern cannot be factored into separate one-qubit states.',
+    deepDive: [
+      'State size: one qubit has two amplitudes. Two qubits have four amplitudes: $|00\\rangle$, $|01\\rangle$, $|10\\rangle$, and $|11\\rangle$. Three qubits would have eight.',
+      'Product state: if the four-amplitude table can be built from one state for q0 and one state for q1, the qubits are still independent in this sense.',
+      'Controlled gate: controlled-X, also called CNOT or CX, flips the target branch only where the control branch is 1. It is still a reversible gate.',
+      'Bell pair: H on q0 followed by CX q0 q1 creates a state with only $|00\\rangle$ and $|11\\rangle$ branches. The two measurements agree even though neither qubit alone has a definite value.',
+      'Entanglement: the Bell pair is not two private one-qubit states hiding behind the scenes. The compact description is the joint four-amplitude pattern.',
+      'Observation: measurement samples one full two-bit label. Repeating the same circuit many times reveals the probability pattern.',
+    ],
+    coreIdeas: [
+      'Two qubits have four joint amplitudes.',
+      'Controlled gates can link branches across wires.',
+      'Entanglement is joint state structure, not just ordinary correlation text.',
+    ],
+    practicePrompt: 'Run the two-qubit missions. First make a product split, then make a Bell pair, then use interference to cancel one branch.',
+    glossaryTerms: ['State vector', 'Controlled-X', 'CNOT', 'Bell pair', 'Entanglement'],
   },
   {
     id: 'gates',

@@ -18,6 +18,8 @@ const initialState = [one, zero, zero, zero];
 const examples = {
   bell: `H q0
 CX q0 q1`,
+  productSplit: `H q0
+H q1`,
   interference: `H q0
 Z q0
 H q0`,
@@ -113,6 +115,8 @@ const formatComplex = (value: Complex) => {
   return `${real.toFixed(2)}${imaginary > 0 ? '+' : ''}${imaginary.toFixed(2)}i`;
 };
 
+const near = (value: number, target: number) => Math.abs(value - target) < 0.03;
+
 export function StateVectorLab() {
   const [program, setProgram] = useState(examples.bell);
   const parsed = useMemo(() => parseProgram(program), [program]);
@@ -120,6 +124,23 @@ export function StateVectorLab() {
   const probabilities = state.map(abs2);
   const separabilityDeterminant = sub(mul(state[0], state[3]), mul(state[1], state[2]));
   const entangled = Math.sqrt(abs2(separabilityDeterminant)) > 0.01;
+  const missions = [
+    {
+      label: 'Product split',
+      pass: !entangled && probabilities.every((probability) => near(probability, 0.25)),
+      hint: 'Use H on both wires: H q0 and H q1.',
+    },
+    {
+      label: 'Bell correlation',
+      pass: entangled && near(probabilities[0], 0.5) && near(probabilities[3], 0.5),
+      hint: 'Use H q0, then CX q0 q1.',
+    },
+    {
+      label: 'Cancel to |10>',
+      pass: near(probabilities[2], 1),
+      hint: 'Use H q0, Z q0, H q0.',
+    },
+  ];
 
   return (
     <article className="lab-panel" data-testid="state-vector-lab">
@@ -132,6 +153,7 @@ export function StateVectorLab() {
           <Wand2 size={16} />
           Bell pair
         </button>
+        <button type="button" onClick={() => setProgram(examples.productSplit)}>Product split</button>
         <button type="button" onClick={() => setProgram(examples.interference)}>Interference</button>
         <button type="button" onClick={() => setProgram(examples.entangleThenFlip)}>Entangle + flip</button>
       </div>
@@ -193,6 +215,15 @@ export function StateVectorLab() {
           where the control is 0, leave the target alone.
         </p>
         <p className="mono-line">CX q0 q1 = control q0, bit-flip target q1 only when q0 is 1</p>
+      </section>
+      <section className="two-qubit-mission-grid" aria-label="Two-qubit verified missions">
+        {missions.map((mission) => (
+          <article className={mission.pass ? 'mission-pass' : ''} key={mission.label}>
+            <strong>{mission.pass ? 'pass' : 'try'}</strong>
+            <span>{mission.label}</span>
+            <p>{mission.hint}</p>
+          </article>
+        ))}
       </section>
       <textarea
         aria-label="State vector program editor"

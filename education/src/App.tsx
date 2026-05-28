@@ -85,8 +85,12 @@ function loadCompletedLessons() {
 const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   qubit: [
     { name: 'Phase-to-probability bridge', goal: 'Change only relative angle and see when it becomes measurable.' },
+  ],
+  'one-qubit': [
     { name: 'Qubit steering', goal: 'Apply named one-qubit gates as steering moves before measurement.' },
-    { name: 'One-qubit patterns', goal: 'Feel cycles, reversible gate groups, and why gates do not converge like attractors.' },
+    { name: 'Gate pattern missions', goal: 'Feel finite cycles, long motion, reversible groups, and no-attractor behavior.' },
+  ],
+  'two-qubit': [
     { name: 'Two-qubit state vector', goal: 'Run a tiny two-wire state to see superposition and entanglement.' },
   ],
   'phase-estimation': [
@@ -161,7 +165,9 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
 
 const checkpointQuestions: Partial<Record<LessonId, string>> = {
   zero: 'What chain must the repo connect before a resource number is meaningful?',
-  qubit: 'Why can two states with the same direct measurement chances behave differently after a gate?',
+  qubit: 'What does direct measurement read from a one-qubit amplitude pair?',
+  'one-qubit': 'Why can a closed one-qubit gate cycle or rotate forever but not converge many starts to one point?',
+  'two-qubit': 'What changes when the state has four joint amplitudes instead of two one-qubit amplitude pairs?',
   gates: 'Why is a scratch wire not free in a quantum circuit?',
   'phase-estimation': 'What does phase estimation read out, and what creates the expensive phase pattern here?',
   netlists: 'Why is a primitive netlist stronger evidence than a manually chosen register list?',
@@ -319,9 +325,15 @@ export function App() {
       case 'qubit':
         return [
           labItem(0, 'Phase-to-probability bridge', <QubitAmplitudeBridgeLab />),
-          labItem(1, 'Qubit steering', <BlochPlayground />),
-          labItem(2, 'One-qubit patterns', <OneQubitPatternsLab />),
-          labItem(3, 'Two-qubit state vector', <StateVectorLab />),
+        ];
+      case 'one-qubit':
+        return [
+          labItem(0, 'Qubit steering', <BlochPlayground />),
+          labItem(1, 'Gate pattern missions', <OneQubitPatternsLab />),
+        ];
+      case 'two-qubit':
+        return [
+          labItem(0, 'Two-qubit state vector', <StateVectorLab />),
         ];
       case 'gates':
         return [
@@ -443,7 +455,7 @@ export function App() {
   const hasGuidedLabFocus = labRoute.length > 0 && activeLabItems.length > 1;
   const showAllLabs = showAllLabsByLesson[activeLesson.id] ?? false;
   const visibleLabItems = hasGuidedLabFocus && !showAllLabs ? [activeLabItems[focusedLabIndex]] : activeLabItems;
-  const gridLabLessons = new Set<LessonId>(['qubit', 'clifford', 'phase-estimation', 'lookup-qroam']);
+  const gridLabLessons = new Set<LessonId>(['qubit', 'one-qubit', 'two-qubit', 'clifford', 'phase-estimation', 'lookup-qroam']);
   const labCollectionClass = hasGuidedLabFocus && !showAllLabs
     ? 'lab-focus-stage'
     : gridLabLessons.has(activeLesson.id) ? 'lab-grid' : 'lab-stack';

@@ -20,7 +20,7 @@ const stages: LearningStage[] = [
     id: 'substrate',
     title: '1. Quantum substrate',
     description: 'Build the mental model for amplitudes, gates, reversibility, and fault-tolerant cost.',
-    lessonIds: ['zero', 'qubit', 'gates', 'clifford', 'logic-physical', 'phase-estimation'],
+    lessonIds: ['zero', 'qubit', 'one-qubit', 'two-qubit', 'gates', 'clifford', 'logic-physical', 'phase-estimation'],
   },
   {
     id: 'attack',
@@ -44,6 +44,8 @@ const stages: LearningStage[] = [
 
 const contributorGate: LessonId[] = [
   'qubit',
+  'one-qubit',
+  'two-qubit',
   'gates',
   'phase-estimation',
   'ecdlp',

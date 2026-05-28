@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
-import { GitCompareArrows } from 'lucide-react';
+import { GitCompareArrows, RotateCcw } from 'lucide-react';
 
-type Gate = 'H' | 'X' | 'S';
+type Gate = 'H' | 'X' | 'S' | 'T' | 'R';
 type Complex = { re: number; im: number };
 type State = { zero: Complex; one: Complex };
 
@@ -9,21 +9,36 @@ const zero: Complex = { re: 0, im: 0 };
 const one: Complex = { re: 1, im: 0 };
 const initialState: State = { zero: one, one: zero };
 const presets = {
-  hh: { label: 'Hadamard twice', sequence: ['H', 'H'] as Gate[], result: 'returns to the starting state' },
-  xx: { label: 'Bit flip twice', sequence: ['X', 'X'] as Gate[], result: 'returns to the starting state' },
-  ssss: { label: 'Four phase turns', sequence: ['S', 'S', 'S', 'S'] as Gate[], result: 'rotates phase through a cycle' },
-  hsh: { label: 'Mix, phase, mix', sequence: ['H', 'S', 'H'] as Gate[], result: 'turns hidden phase into new probabilities' },
+  split: { label: 'Balanced split', sequence: ['H'] as Gate[], result: 'creates a 50/50 measurement' },
+  hiddenPhase: { label: 'Hidden phase', sequence: ['H', 'S'] as Gate[], result: 'changes angle while measurement stays 50/50' },
+  exposePhase: { label: 'Expose phase', sequence: ['H', 'S', 'S', 'H'] as Gate[], result: 'turns hidden phase into outcome 1' },
+  finiteCycle: { label: 'Finite cycle', sequence: ['H', 'H'] as Gate[], result: 'returns to the starting state' },
+  longWalk: { label: 'Long rotation', sequence: ['H', 'R', 'R', 'R', 'R', 'R'] as Gate[], result: 'keeps walking instead of closing quickly' },
+};
+const gatePalette = ['H', 'X', 'S', 'T', 'R'] as const;
+const gateDescriptions: Record<Gate, string> = {
+  H: 'mix',
+  X: 'swap',
+  S: '90deg phase',
+  T: '45deg phase',
+  R: 'aperiodic phase',
 };
 
 const add = (left: Complex, right: Complex): Complex => ({ re: left.re + right.re, im: left.im + right.im });
 const sub = (left: Complex, right: Complex): Complex => ({ re: left.re - right.re, im: left.im - right.im });
 const mulI = (value: Complex): Complex => ({ re: -value.im, im: value.re });
+const phase = (value: Complex, angle: number): Complex => ({
+  re: value.re * Math.cos(angle) - value.im * Math.sin(angle),
+  im: value.re * Math.sin(angle) + value.im * Math.cos(angle),
+});
 const scale = (value: Complex, factor: number): Complex => ({ re: value.re * factor, im: value.im * factor });
 const abs2 = (value: Complex) => value.re * value.re + value.im * value.im;
 
 function applyGate(state: State, gate: Gate): State {
   if (gate === 'X') return { zero: state.one, one: state.zero };
   if (gate === 'S') return { zero: state.zero, one: mulI(state.one) };
+  if (gate === 'T') return { zero: state.zero, one: phase(state.one, Math.PI / 4) };
+  if (gate === 'R') return { zero: state.zero, one: phase(state.one, (Math.PI * Math.SQRT2) / 4) };
   const factor = 1 / Math.sqrt(2);
   return {
     zero: scale(add(state.zero, state.one), factor),
@@ -42,14 +57,27 @@ function formatPercent(value: number) {
   return `${Math.round(value * 100)}%`;
 }
 
+function near(value: number, target: number) {
+  return Math.abs(value - target) < 0.03;
+}
+
+function hasVisiblePhase(value: Complex) {
+  return Math.abs(value.im) > 0.1 || value.re < -0.1;
+}
+
 export function OneQubitPatternsLab() {
-  const [selected, setSelected] = useState<keyof typeof presets>('hsh');
-  const preset = presets[selected];
-  const state = useMemo(() => preset.sequence.reduce(applyGate, initialState), [preset]);
+  const [sequence, setSequence] = useState<Gate[]>(presets.exposePhase.sequence);
+  const state = useMemo(() => sequence.reduce(applyGate, initialState), [sequence]);
   const zeroArrow = arrowEnd(state.zero);
   const oneArrow = arrowEnd(state.one);
   const p0 = abs2(state.zero);
   const p1 = abs2(state.one);
+  const missions = [
+    { label: 'Make a balanced measurement', pass: near(p0, 0.5) && near(p1, 0.5), hint: 'H from the starting state is enough.' },
+    { label: 'Hide information in phase', pass: near(p0, 0.5) && near(p1, 0.5) && hasVisiblePhase(state.one), hint: 'Try H then a phase turn.' },
+    { label: 'Expose phase as outcome 1', pass: near(p1, 1), hint: 'Try H, two S turns, then H.' },
+    { label: 'Return by a finite cycle', pass: sequence.length > 0 && near(p0, 1) && near(p1, 0), hint: 'Try H H or X X.' },
+  ];
 
   return (
     <article className="lab-panel" data-testid="one-qubit-patterns-lab">
@@ -78,9 +106,8 @@ export function OneQubitPatternsLab() {
       <div className="pattern-choice-row">
         {Object.entries(presets).map(([id, item]) => (
           <button
-            aria-pressed={selected === id}
             key={id}
-            onClick={() => setSelected(id as keyof typeof presets)}
+            onClick={() => setSequence(item.sequence)}
             type="button"
           >
             <strong>{item.label}</strong>
@@ -88,6 +115,23 @@ export function OneQubitPatternsLab() {
           </button>
         ))}
       </div>
+      <section className="gate-palette-panel" aria-label="One-qubit gate palette">
+        <div>
+          <strong>Build your own sequence</strong>
+          <p>Closed gates move the state reversibly. Measurement goals below verify what your sequence achieved.</p>
+        </div>
+        <div className="gate-row steering-gate-row">
+          {gatePalette.map((gate) => (
+            <button key={gate} type="button" onClick={() => setSequence((items) => [...items, gate])}>
+              <strong>{gate}</strong>
+              <span>{gateDescriptions[gate]}</span>
+            </button>
+          ))}
+          <button className="icon-only" type="button" aria-label="Reset one-qubit sequence" onClick={() => setSequence([])}>
+            <RotateCcw size={16} />
+          </button>
+        </div>
+      </section>
       <div className="pattern-lab-grid">
         <section className="pattern-state-panel" aria-label="Selected one-qubit state">
           <div className="amplitude-legend" aria-hidden="true">
@@ -107,7 +151,7 @@ export function OneQubitPatternsLab() {
             <div><span>Measure 0</span><strong>{formatPercent(p0)}</strong></div>
             <div><span>Measure 1</span><strong>{formatPercent(p1)}</strong></div>
           </div>
-          <p className="mono-line">sequence = {preset.sequence.join(' ')}; {preset.result}</p>
+          <p className="mono-line">sequence = {sequence.join(' ') || 'I'}; {Object.values(presets).find((preset) => preset.sequence.join(' ') === sequence.join(' '))?.result ?? 'custom reversible path'}</p>
         </section>
         <section className="pattern-explainer" aria-label="One-qubit gate intuitions">
           <article>
@@ -127,6 +171,13 @@ export function OneQubitPatternsLab() {
             </p>
           </article>
           <article>
+            <strong>Long rotations</strong>
+            <p>
+              A neat fraction of a turn closes into a short cycle. An aperiodic phase step keeps
+              producing new angles for a very long walk.
+            </p>
+          </article>
+          <article>
             <strong>Measurement is different</strong>
             <p>
               Measurement samples one outcome and changes what remains. That collapse is not the
@@ -135,6 +186,15 @@ export function OneQubitPatternsLab() {
           </article>
         </section>
       </div>
+      <section className="one-qubit-mission-grid" aria-label="One-qubit verified missions">
+        {missions.map((mission) => (
+          <article className={mission.pass ? 'mission-pass' : ''} key={mission.label}>
+            <strong>{mission.pass ? 'pass' : 'try'}</strong>
+            <span>{mission.label}</span>
+            <p>{mission.hint}</p>
+          </article>
+        ))}
+      </section>
     </article>
   );
 }

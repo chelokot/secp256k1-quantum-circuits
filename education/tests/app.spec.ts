@@ -24,7 +24,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByLabel('Current repository resource status')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Given a public key Q');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('maximum live protected wires and total expensive quantum operations');
-  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 21');
+  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 23');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' })).toBeDisabled();
   await expect(page.getByLabel('Course progress')).toHaveCount(0);
   await expect(page.getByTestId('lesson-brief')).toHaveCount(0);
@@ -62,20 +62,18 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.reload();
   await expect(page).toHaveURL(/#qubit$/);
 
-  await page.getByLabel('Course navigation').getByRole('button', { name: /Qubits as vectors/ }).click();
-  await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
+  await page.getByLabel('Course navigation').getByRole('button', { name: /Qubit basics/ }).click();
+  await expect(page.getByRole('heading', { name: 'Qubit basics: amplitudes and measurement' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
-  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 21');
-  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('A qubit is the smallest quantum state');
+  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 23');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Start with only one qubit');
   await expect(page.getByTestId('qubit-state-vector-visual')).toContainText('This is one qubit');
-  await expect(page.getByTestId('qubit-gate-visual')).toContainText('Example: Hadamard gate');
-  await expect(page.getByTestId('qubit-gate-visual')).toContainText('One concrete valid gate');
-  await expect(page.getByTestId('qubit-mixing-visual')).toContainText('Angle can become visible');
   await expect(page.locator('xpath=//*[@data-tex="|\\psi\\rangle=a|0\\rangle+b|1\\rangle"]')).toBeVisible();
   await expect(page.locator('.lesson-step-list li > span')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Notation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Probability rule' })).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Quantum gate' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Relative angle' })).toBeVisible();
+  await expect(page.getByTestId('lesson-detail-steps').getByRole('heading', { name: 'Measurement' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.locator('xpath=//*[@data-tex="P(0)=|a|^2"]')).toBeVisible();
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();
@@ -83,7 +81,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Next' }).click();
   await expect(page).toHaveURL(/#qubit$/);
   await page.getByRole('button', { name: 'Mark understood and continue' }).click();
-  await expect(page).toHaveURL(/#gates$/);
+  await expect(page).toHaveURL(/#one-qubit$/);
 });
 
 test('turns the lab collection into a zero-to-contributor learning path', async ({ page }) => {
@@ -96,13 +94,15 @@ test('turns the lab collection into a zero-to-contributor learning path', async 
   await expect(page.getByTestId('learning-path-map')).toContainText('4. Audit and contribution');
   await expect(page.getByTestId('learning-path-map')).toContainText('Contributor readiness');
   await expect(page.getByTestId('learning-path-map')).toContainText('not ready');
-  await expect(page.getByTestId('learning-path-map')).toContainText('Qubits as vectors you can steer');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Qubit basics: amplitudes and measurement');
+  await expect(page.getByTestId('learning-path-map')).toContainText('One-qubit gates as reversible motion');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Two qubits: joint states and entanglement');
   await page.getByRole('button', { name: 'Jump to next missing contributor step' }).click();
-  await expect(page.getByRole('heading', { name: 'Qubits as vectors you can steer' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Qubit basics: amplitudes and measurement' })).toBeVisible();
   await expect(page).toHaveURL(/#qubit$/);
   await page.getByRole('button', { name: 'Mark understood and continue' }).click();
   await page.getByLabel('Course navigation').getByRole('button', { name: /What the project/ }).click();
-  await expect(page.getByTestId('learning-path-map')).toContainText('Gates, wires, controls, and reversibility');
+  await expect(page.getByTestId('learning-path-map')).toContainText('One-qubit gates as reversible motion');
 });
 
 test('runs the qubit and netlist interactives', async ({ page }) => {
@@ -129,6 +129,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('0: 0% / 1: 100%');
   await expect(page.getByTestId('qubit-amplitude-bridge-lab')).toContainText('opposite direction');
 
+  await openLesson(page, 'one-qubit');
+  await expect(page.getByRole('heading', { name: 'One-qubit gates as reversible motion' })).toBeVisible();
   await selectRouteLab(page, /Qubit steering/);
   await expect(page.getByTestId('bloch-playground')).toContainText('0-amplitude');
   await expect(page.getByTestId('bloch-playground')).toContainText('1-amplitude');
@@ -139,18 +141,20 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'Hadamard' }).click();
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
 
-  await selectRouteLab(page, /One-qubit patterns/);
+  await selectRouteLab(page, /Gate pattern missions/);
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('closed quantum gates are reversible');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Prepare a split');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Store a hidden angle');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Cycles and groups');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('X² = I');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('No attractor under gates');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Long rotations');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Measurement is different');
-  await page.getByTestId('one-qubit-patterns-lab').getByRole('button', { name: /Four phase turns/ }).click();
-  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('sequence = S S S S');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Expose phase as outcome 1');
+  await page.getByTestId('one-qubit-patterns-lab').getByRole('button', { name: /Hidden phase/ }).click();
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('sequence = H S');
 
-  await selectRouteLab(page, /Two-qubit state vector/);
+  await openLesson(page, 'two-qubit');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Two qubits, four labels');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Product state');
@@ -158,6 +162,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('Measurement samples one full two-bit label');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Split q0, then use q0 as a control');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Mixing twice can cancel one branch');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Product split');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Bell correlation');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Cancel to |10>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Controlled-X');
   await expect(page.getByTestId('state-vector-lab')).toContainText('control q0, bit-flip target q1 only when q0 is 1');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled');
@@ -738,7 +745,7 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('candidate only');
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Close blockers');
   await openLesson(page, 'repo-baselines');
-  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 21 of 21');
+  await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 23 of 23');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'End' })).toBeDisabled();
   await page.getByRole('button', { name: 'Mark understood and finish course' }).click();
   await expect(page).toHaveURL(/#repo-baselines$/);
