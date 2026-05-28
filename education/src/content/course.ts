@@ -161,9 +161,9 @@ export const lessons: CourseLesson[] = [
     intuition:
       'A quantum circuit is a time-ordered netlist of gates over named wires. Most useful arithmetic has to be reversible or explicitly uncomputed.',
     whyItMatters:
-      'A temporary wire that is computed and not cleaned remains entangled garbage. It still counts and can break the algorithm.',
+      'This is the bridge from “quantum ideas” to repo engineering. Once a value is a named quantum wire, it has a lifetime. If a temporary value is not cleaned, it is not just messy bookkeeping; it can remain correlated with the result and must still be counted.',
     mentalModel:
-      'A gate changes named wires. A controlled gate changes a target wire only when its control wire has the selected value. A reversible circuit must leave enough information to run the transformation backward.',
+      'Read a circuit from left to right like a dataflow story. Wires carry quantum state through time. Gates touch specific wires. Controls make a target move only on selected branches. A useful temporary value follows a lifecycle: compute it, use it, then uncompute it back to zero.',
     checkpoint: 'A “scratch” bit is not free. It is a quantum wire with lifetime, owner, and cleanup obligations.',
     deepDive: [
       'Classical code can overwrite a temporary variable and forget how it was made. A quantum circuit cannot generally do that: the old information is part of the state.',

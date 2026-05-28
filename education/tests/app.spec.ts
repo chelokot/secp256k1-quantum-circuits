@@ -202,6 +202,11 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer-friendly');
 
   await openLesson(page, 'gates');
+  await expect(page.getByTestId('gates-story')).toContainText('From formula to circuit row');
+  await expect(page.getByTestId('gates-story')).toContainText('Wire');
+  await expect(page.getByTestId('gates-story')).toContainText('Controlled gate');
+  await expect(page.getByTestId('gates-story')).toContainText('Why cleanup is not optional');
+  await expect(page.getByTestId('gates-story')).toContainText('scratch returned to |0>');
   await expect(page.getByTestId('circuit-builder')).toContainText('the row table is the countable object');
   await expect(page.getByTestId('circuit-builder')).toContainText('q0,q1 -> q2');
   await expect(page.getByTestId('circuit-builder')).toContainText('expensive controlled product');

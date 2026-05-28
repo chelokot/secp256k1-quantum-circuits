@@ -392,6 +392,91 @@ function OneQubitStoryPanel() {
   );
 }
 
+function GatesStoryPanel() {
+  return (
+    <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
+      <article className="story-question">
+        <h4>From formula to circuit row</h4>
+        <p>
+          A high-level formula says what should happen. A circuit row says exactly
+          which named wires are touched at one moment in time. That difference is
+          why this repo cares about netlists: rows are countable, formulas are not.
+        </p>
+      </article>
+
+      <div className="wire-timeline-panel" aria-label="Wire timeline sketch">
+        <div className="wire-labels">
+          <span>q0 control</span>
+          <span>q1 control</span>
+          <span>scratch A</span>
+          <span>accumulator</span>
+        </div>
+        <div className="wire-timelines">
+          {[0, 1, 2, 3].map((wire) => <i key={wire} />)}
+          <b style={{ gridColumn: '2', gridRow: '1 / 4' }}>compute</b>
+          <b className="use" style={{ gridColumn: '3', gridRow: '3 / 5' }}>use</b>
+          <b className="clean" style={{ gridColumn: '4', gridRow: '1 / 4' }}>uncompute</b>
+        </div>
+      </div>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Wire</strong>
+          <p>A wire is not just a drawing lane. It is named quantum storage across time.</p>
+          <span className="story-token">q2 lives from row 1 to row 7</span>
+        </article>
+        <article>
+          <strong>Controlled gate</strong>
+          <p>A control does not measure. It says: on branches where this wire is 1, move the target.</p>
+          <span className="story-token">CX q0 -&gt; q1</span>
+        </article>
+        <article>
+          <strong>Toffoli-like step</strong>
+          <p>Two controls can compute a product bit into a target. This is why arithmetic becomes expensive.</p>
+          <span className="story-token">CCX q0,q1 -&gt; q2</span>
+        </article>
+      </div>
+
+      <article className="story-rule cleanup-rule">
+        <div>
+          <h4>Why cleanup is not optional</h4>
+          <p>
+            Classical code can compute a temporary variable, use it, and let the variable
+            disappear from your attention. In a quantum circuit, that temporary value may
+            still be entangled with the rest of the state. The standard pattern is compute,
+            copy or consume the useful effect, then run the computation backward.
+          </p>
+        </div>
+        <div className="cleanup-equation">
+          <span>compute</span>
+          <i />
+          <span>use</span>
+          <i />
+          <span>uncompute</span>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>If cleanup is missing</h4>
+          <p>The scratch wire is still live. It counts against peak qubits and can carry unwanted correlation.</p>
+          <div className="audit-fail">scratch is still live</div>
+        </article>
+        <article>
+          <h4>If cleanup is wrong</h4>
+          <p>Running an inverse with stale controls does not restore zero. The circuit no longer implements the promised function.</p>
+          <div className="audit-fail">inverse precondition failed</div>
+        </article>
+        <article>
+          <h4>If cleanup is proven</h4>
+          <p>The temporary wire returns to zero and can stop being counted as a live value.</p>
+          <div className="audit-pass">scratch returned to |0&gt;</div>
+        </article>
+      </div>
+    </section>
+  );
+}
+
 function splitLessonStep(paragraph: string) {
   const separatorIndex = paragraph.indexOf(':');
   const firstSentenceIndex = paragraph.indexOf('.');
@@ -798,7 +883,8 @@ export function App() {
             </section>
             {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
             {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
-            {activeLesson.deepDive && activeLesson.id !== 'one-qubit' ? (
+            {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
+            {activeLesson.deepDive && !['one-qubit', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {
