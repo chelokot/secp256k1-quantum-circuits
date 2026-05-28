@@ -52,6 +52,7 @@ import { PointAddBoundaryDebugger } from './components/PointAddBoundaryDebugger'
 import { LearningPathMap } from './components/LearningPathMap';
 import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
 import { ProjectProofMap } from './components/ProjectProofMap';
+import { ComputationModelBridge } from './components/ComputationModelBridge';
 import { MathTex, MathText } from './components/MathText';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
@@ -234,6 +235,28 @@ function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
   return null;
 }
 
+function OrientationModelVisual() {
+  return (
+    <div className="orientation-model-strip" data-testid="orientation-model-strip">
+      <article>
+        <strong>Classical</strong>
+        <MathTex tex="\text{bits}\rightarrow\text{instructions}\rightarrow\text{bits}" />
+        <p>One definite memory state is updated by discrete operations.</p>
+      </article>
+      <article>
+        <strong>Quantum</strong>
+        <MathTex tex="\text{amplitudes}\rightarrow\text{gates}\rightarrow\text{amplitudes}" />
+        <p>A vector of amplitudes is transformed by reversible linear gates.</p>
+      </article>
+      <article>
+        <strong>Readout</strong>
+        <MathTex tex="\text{amplitudes}\rightarrow\text{measured bits}" />
+        <p>The calculation is continuous internally, but the observed answer is discrete.</p>
+      </article>
+    </div>
+  );
+}
+
 function splitLessonStep(paragraph: string) {
   const separatorIndex = paragraph.indexOf(':');
   const firstSentenceIndex = paragraph.indexOf('.');
@@ -312,8 +335,9 @@ export function App() {
     switch (activeLesson.id) {
       case 'zero':
         return [
-          labItem(0, 'What has to be proved', <ProjectProofMap />),
-          labItem(1, 'Learning path map',
+          labItem(0, 'Classical vs quantum program', <ComputationModelBridge />),
+          labItem(1, 'What has to be proved', <ProjectProofMap />),
+          labItem(2, 'Learning path map',
             <LearningPathMap
               activeLessonId={activeLessonId}
               completedLessonIds={completed}
@@ -637,6 +661,7 @@ export function App() {
             <section className="lesson-primer" aria-label="Lesson introduction">
               <p>{activeLesson.mentalModel}</p>
             </section>
+            {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
             {activeLesson.deepDive ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">

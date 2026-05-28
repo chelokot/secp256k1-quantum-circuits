@@ -885,6 +885,116 @@ code {
   cursor: default;
 }
 
+.computation-bridge > p {
+  max-width: 58rem;
+}
+
+.computer-flow-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.computer-flow-grid article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.computer-flow-grid svg {
+  color: #63e6be;
+}
+
+.computer-flow-grid strong {
+  display: block;
+  margin: 0.35rem 0;
+  color: #ffffff;
+}
+
+.computer-flow-grid p {
+  margin: 0.45rem 0 0;
+  color: #b4c4d6;
+}
+
+.comparison-table {
+  display: grid;
+  gap: 0.35rem;
+  margin-top: 0.8rem;
+}
+
+.comparison-table > div {
+  display: grid;
+  grid-template-columns: 0.7fr 1.15fr 1.15fr;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.comparison-table span,
+.comparison-table strong {
+  border-radius: 0.45rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.comparison-table strong {
+  color: #63e6be;
+  background: rgba(99, 230, 190, 0.08);
+}
+
+.comparison-table span:first-child {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.bridge-takeaway {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  margin-top: 0.9rem;
+  border-left: 0.2rem solid #f5cf6b;
+  border-radius: 0.35rem;
+  padding: 0.65rem 0.75rem;
+  background: rgba(245, 207, 107, 0.06);
+}
+
+.bridge-takeaway svg {
+  flex: 0 0 auto;
+  color: #f5cf6b;
+}
+
+.bridge-takeaway p {
+  margin: 0;
+  color: #d8e3ef;
+}
+
+.orientation-model-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.8rem 0 1rem;
+}
+
+.orientation-model-strip article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.orientation-model-strip strong {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #63e6be;
+}
+
+.orientation-model-strip p {
+  margin: 0.45rem 0 0;
+  color: #b4c4d6;
+  font-size: 0.88rem;
+}
+
 .steering-amplitude-view {
   justify-items: center;
   margin: 1rem 0;
@@ -4457,6 +4567,9 @@ legend {
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
+  .orientation-model-strip,
+  .computer-flow-grid,
+  .comparison-table > div,
   .one-qubit-capability-row,
   .gate-palette-panel,
   .pattern-lab-grid,
@@ -4592,6 +4705,9 @@ legend {
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
+  .orientation-model-strip,
+  .computer-flow-grid,
+  .comparison-table > div,
   .one-qubit-capability-row,
   .gate-palette-panel,
   .pattern-lab-grid,

@@ -48,24 +48,26 @@ export const lessons: CourseLesson[] = [
     title: 'What the project is trying to prove',
     icon: Route,
     intuition:
-      'The project tries to justify one resource claim: a specified quantum circuit that recovers a Bitcoin-style secp256k1 private key would need this many live protected circuit wires, called logical qubits, and this many especially expensive quantum operations, called non-Clifford operations.',
+      'A quantum circuit is still a computer program in the broad sense: it stores state, applies operations, and finally reads an answer. The difference is the kind of state and the rules operations must obey.',
     whyItMatters:
-      'A precise-looking number is not enough. The number is only meaningful if it comes from the same executable circuit that the tests and proof artifacts bind to.',
+      'The repo result is a resource claim about that program: how many protected quantum memory wires are live at once, and how many expensive quantum operations the circuit uses.',
     mentalModel:
-      'Given a public key Q, the attack tries to recover the hidden private number d such that Q = dG. This repo asks what the quantum circuit for that recovery actually costs.',
-    checkpoint: 'The repo must connect public key attack, executable circuit, tests, and resource numbers into one auditable chain.',
+      'Compare it to an ordinary computer first. Classical memory stores one discrete bit string at a time. Quantum memory stores amplitudes over many bit strings, and gates transform those amplitudes by strict reversible linear rules before measurement gives a discrete answer.',
+    checkpoint: 'The repo must connect the mathematical attack, the quantum state-and-gate program, tests, and resource numbers into one auditable chain.',
     deepDive: [
-      'The input problem is a public key. The hidden answer is a private number. The quantum algorithm is the method for extracting that number.',
-      'The engineering problem is stricter: the algorithm must become concrete reversible steps over named quantum wires, with every temporary value cleaned or counted.',
-      'The headline resources are peak logical qubits and total non-Clifford operations. Peak logical qubits means the largest number of protected wires alive at once. Non-Clifford operations means the expensive quantum work summed over the whole run.',
-      'The repo promise is narrow: if it prints a number, that number should come from the executable circuit path rather than from a manually chosen register list.',
+      'Same skeleton: both models have memory, operations, intermediate state, and readout. A normal CPU step updates a bit string. A quantum gate updates an amplitude vector.',
+      'Different state: classical state is one point such as 0101. Quantum state is a vector of complex amplitudes over labels such as |0000>, |0001>, and so on.',
+      'Different operations: classical code may erase or overwrite freely. A closed quantum gate must be reversible and probability-preserving, so temporary values need cleanup instead of being forgotten.',
+      'Math chain: a quantum circuit is a chain of mathematical transformations. The transformations are continuous at the amplitude level, but measurement still returns ordinary discrete bits.',
+      'Project target: given a public key Q, the attack tries to recover the hidden private number d such that Q = dG. This repo asks what the quantum circuit for that recovery actually costs.',
+      'Resource claim: peak logical qubits means the largest number of protected quantum wires alive at once. Non-Clifford count means the expensive quantum work summed over the whole run.',
     ],
     coreIdeas: [
-      'Target: secp256k1 discrete logarithm, the hard problem behind public keys.',
-      'Main resources: maximum live protected wires and total expensive quantum operations.',
-      'Trustworthy result: numbers derived from a concrete circuit path, not from a hand-wavy estimate.',
+      'Classical program: bit string plus discrete updates.',
+      'Quantum circuit: amplitude vector plus reversible linear updates.',
+      'Repo claim: resource numbers for one executable quantum attack circuit.',
     ],
-    practicePrompt: 'Start with “What has to be proved,” then use the learning path map. The only thing to hold in your head for now: every later page explains one step between “public key attack” and “auditable resource number.”',
+    practicePrompt: 'Start with the classical-vs-quantum bridge. The only thing to hold in your head for now: this project counts the concrete quantum program, not an abstract threat slogan.',
     glossaryTerms: ['secp256k1', 'Discrete logarithm', 'Logical qubit', 'Non-Clifford'],
   },
   {
