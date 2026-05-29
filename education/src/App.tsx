@@ -811,6 +811,131 @@ function LogicalPhysicalStoryPanel() {
   );
 }
 
+function PhaseEstimationStoryPanel() {
+  return (
+    <section className="phase-estimation-story" data-testid="phase-estimation-story" aria-label="Phase estimation story">
+      <article className="story-question">
+        <h4>The problem is not “measure the answer directly”</h4>
+        <p>
+          The hidden value is not sitting in one readable qubit. The circuit creates a
+          repeating phase pattern across a control register. Phase estimation is the
+          readout shell that turns that angle pattern into ordinary bits.
+        </p>
+        <div className="phase-readout-strip" aria-hidden="true">
+          <span>hidden rhythm</span>
+          <i />
+          <span>phase pattern</span>
+          <i />
+          <span>bit label</span>
+        </div>
+      </article>
+
+      <article className="story-rule phase-powers-rule">
+        <div>
+          <h4>Controlled powers write a binary rhythm</h4>
+          <p>
+            The control register asks for powers of the same operation: one copy, two
+            copies, four copies, eight copies, and so on. Each power turns the phase by
+            a related amount, so the bits of the hidden phase are written as a pattern
+            of rotating arrows.
+          </p>
+          <p>
+            In textbook phase estimation that operation is a unitary <MathTex tex="U" />.
+            In this repo’s attack, the expensive controlled operation is elliptic-curve
+            group arithmetic over secp256k1.
+          </p>
+        </div>
+        <div className="controlled-power-sketch" aria-hidden="true">
+          {['U', 'U^2', 'U^4', 'U^8'].map((label, index) => (
+            <div key={label}>
+              <span>{label}</span>
+              <i style={{ transform: `rotate(${index * 35}deg)` }} />
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article className="story-rule fourier-readout-rule">
+        <div>
+          <h4>The inverse QFT is a rhythm matcher</h4>
+          <p>
+            Fourier readout tries candidate output labels. The matching label makes the
+            phase arrows line up, so amplitudes reinforce. Wrong labels leave the arrows
+            spread around the circle, so they cancel.
+          </p>
+          <p>
+            That is why the lab shows bars: after the inverse QFT, measurement is likely
+            to return the label whose rhythm best matches the phase pattern.
+          </p>
+        </div>
+        <div className="fourier-match-sketch" aria-hidden="true">
+          <div>
+            <strong>match</strong>
+            <span />
+            <span />
+            <span />
+          </div>
+          <div>
+            <strong>wrong</strong>
+            <span className="wrong-a" />
+            <span className="wrong-b" />
+            <span className="wrong-c" />
+          </div>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Precision bits</h4>
+          <p>
+            More control bits give more binary places of the phase estimate, but they
+            also require more controlled powers and more readout work.
+          </p>
+          <div className="precision-bit-row" aria-hidden="true">
+            <span>1/2</span>
+            <span>1/4</span>
+            <span>1/8</span>
+            <span>1/16</span>
+          </div>
+        </article>
+        <article>
+          <h4>Semiclassical readout</h4>
+          <p>
+            Large circuits often use a semiclassical inverse QFT: measure one bit, feed
+            the result forward, and continue. The concept is the same rhythm matching.
+          </p>
+          <div className="semiclassical-strip" aria-hidden="true">
+            <span>measure</span>
+            <i />
+            <span>correct phase</span>
+          </div>
+        </article>
+        <article>
+          <h4>Cost lives before readout</h4>
+          <p>
+            The inverse QFT is the lens. The costly object is the repeated controlled
+            group operation that creates the phase pattern the lens can read.
+          </p>
+          <div className="cost-before-readout" aria-hidden="true">
+            <span>point-adds</span>
+            <span>QFT lens</span>
+          </div>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>What to do in the labs</h4>
+        <p>
+          First move the hidden phase and watch the likely binary label move. Then use
+          the Fourier lens to compare a matching candidate against a wrong one. The
+          important lesson is the direction of causality: controlled arithmetic creates
+          the phase rhythm, and inverse QFT turns that rhythm into bits.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1305,8 +1430,9 @@ export function App() {
             {activeLesson.id === 'two-qubit' ? <TwoQubitStoryPanel /> : null}
             {activeLesson.id === 'clifford' ? <CliffordStoryPanel /> : null}
             {activeLesson.id === 'logic-physical' ? <LogicalPhysicalStoryPanel /> : null}
+            {activeLesson.id === 'phase-estimation' ? <PhaseEstimationStoryPanel /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

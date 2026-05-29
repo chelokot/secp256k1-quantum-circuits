@@ -1011,6 +1011,7 @@ code {
 .two-qubit-story h4,
 .clifford-story h4,
 .logical-physical-story h4,
+.phase-estimation-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -1620,6 +1621,163 @@ code {
   padding: 0.8rem;
   background: rgba(143, 182, 255, 0.08);
   text-align: center;
+}
+
+.phase-estimation-story {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.phase-readout-strip {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) 1.5rem minmax(8rem, 1fr) 1.5rem minmax(8rem, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.phase-readout-strip span {
+  display: grid;
+  place-items: center;
+  min-height: 3.4rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.28);
+  border-radius: 0.5rem;
+  color: #dce7f2;
+  background: rgba(245, 207, 107, 0.07);
+}
+
+.phase-readout-strip i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #f5cf6b, #63e6be);
+}
+
+.phase-powers-rule,
+.fourier-readout-rule {
+  border-color: rgba(245, 207, 107, 0.22);
+}
+
+.controlled-power-sketch {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(245, 207, 107, 0.07);
+}
+
+.controlled-power-sketch div {
+  display: grid;
+  gap: 0.35rem;
+  justify-items: center;
+}
+
+.controlled-power-sketch span {
+  color: #f5cf6b;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-weight: 800;
+}
+
+.controlled-power-sketch i {
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 0.12rem solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background:
+    linear-gradient(90deg, transparent 0 48%, #63e6be 48% 52%, transparent 52%),
+    radial-gradient(circle at center, #63e6be 0 0.22rem, transparent 0.24rem);
+}
+
+.fourier-match-sketch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.fourier-match-sketch div {
+  display: grid;
+  gap: 0.3rem;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.fourier-match-sketch strong {
+  color: #63e6be;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+}
+
+.fourier-match-sketch span {
+  display: block;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: #63e6be;
+}
+
+.fourier-match-sketch span.wrong-a {
+  width: 90%;
+  background: #f5cf6b;
+}
+
+.fourier-match-sketch span.wrong-b {
+  width: 48%;
+  background: #f5cf6b;
+}
+
+.fourier-match-sketch span.wrong-c {
+  width: 24%;
+  background: #f5cf6b;
+}
+
+.precision-bit-row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-top: 0.7rem;
+}
+
+.precision-bit-row span {
+  border-radius: 0.45rem;
+  padding: 0.45rem 0.35rem;
+  color: #071018;
+  background: #63e6be;
+  text-align: center;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-weight: 800;
+}
+
+.semiclassical-strip,
+.cost-before-readout {
+  display: grid;
+  grid-template-columns: minmax(5rem, 1fr) 1.4rem minmax(5rem, 1fr);
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.semiclassical-strip span,
+.cost-before-readout span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border-radius: 0.45rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.08);
+  text-align: center;
+}
+
+.semiclassical-strip i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.cost-before-readout {
+  grid-template-columns: 1.3fr 0.7fr;
+}
+
+.cost-before-readout span:first-child {
+  background: rgba(245, 207, 107, 0.12);
 }
 
 .story-rule {
@@ -5369,6 +5527,7 @@ legend {
   .cost-axis-strip,
   .magic-step-map,
   .resource-layer-stack,
+  .phase-readout-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5517,6 +5676,7 @@ legend {
   .cost-axis-strip,
   .magic-step-map,
   .resource-layer-stack,
+  .phase-readout-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5606,6 +5766,10 @@ legend {
   }
 
   .resource-layer-stack i {
+    display: none;
+  }
+
+  .phase-readout-strip i {
     display: none;
   }
 

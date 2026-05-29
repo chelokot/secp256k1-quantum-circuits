@@ -228,6 +228,10 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await openLesson(page, 'phase-estimation');
 
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('The problem is not “measure the answer directly”');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('Controlled powers write a binary rhythm');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('The inverse QFT is a rhythm matcher');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('Cost lives before readout');
   await expect(page.getByTestId('lab-route')).toContainText('Phase estimation lens');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('Hidden phase');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('Current readout');

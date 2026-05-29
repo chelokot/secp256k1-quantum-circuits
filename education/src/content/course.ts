@@ -238,7 +238,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The secp256k1 circuit is expensive because phase estimation asks for many controlled group operations, and each one expands into point-add arithmetic.',
     mentalModel:
-      'The circuit prepares many possible exponents at once. The repeated group operation gives each exponent a related amplitude angle. The Fourier-style readout turns that angle rhythm into a likely bit label.',
+      'Do not picture the answer as a stored bit waiting to be read. The controlled powers of a unitary create a rhythm of phases across a control register. The inverse-QFT readout tests candidate rhythms and turns the matching phase pattern into a likely binary label.',
     checkpoint: 'The curve arithmetic is the engine; phase estimation is the measuring instrument wrapped around it.',
     deepDive: [
       'A hidden period means outputs repeat in a structured way. Shor-style algorithms turn that repetition into a regular angle pattern across the control register.',
@@ -246,9 +246,9 @@ export const lessons: CourseLesson[] = [
       'The expensive part for secp256k1 is not the final readout. It is creating the angle rhythm by repeatedly running controlled elliptic-curve group operations.',
     ],
     coreIdeas: [
-      'A hidden period creates a regular amplitude-angle pattern.',
-      'The inverse QFT turns that pattern into a measurement peak.',
-      'Controlled curve arithmetic dominates resource cost.',
+      'Controlled powers create a binary phase rhythm.',
+      'The inverse QFT turns the matching rhythm into a measurement peak.',
+      'For secp256k1, controlled curve arithmetic creates the expensive rhythm.',
     ],
     practicePrompt: 'Move the hidden phase numerator slider. The bars show which bit label becomes most likely after the phase-estimation readout.',
     glossaryTerms: ['Phase estimation', 'Hidden period', 'Fourier transform', 'Fourier label'],
