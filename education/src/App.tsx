@@ -2290,6 +2290,48 @@ function ContributionStoryPanel({ data }: { data: typeof projectData }) {
           ))}
         </div>
       </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Choose the smallest claim</strong>
+          <p>
+            Start from one named boundary: a row, artifact, verifier input, liveness
+            interval, or documentation claim. A small claim is easier to falsify and
+            easier to merge.
+          </p>
+          <span className="story-token">one boundary</span>
+        </article>
+        <article>
+          <strong>Attach executable evidence</strong>
+          <p>
+            Pair the patch with the check that would fail if the claim were false:
+            semantic replay, owner-capacity audit, artifact digest check, or focused
+            browser/course regression.
+          </p>
+          <span className="story-token">failing test first</span>
+        </article>
+        <article>
+          <strong>Match the public wording</strong>
+          <p>
+            Do not let a local improvement upgrade the headline. Claim only the level
+            the evidence proves: toy intuition, internal candidate, guard consequence,
+            or accepted baseline.
+          </p>
+          <span className="story-token">claim level</span>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>How to use the three labs</h4>
+        <p>
+          The mission board turns blockers into concrete patches. The claim drill
+          trains the habit of rejecting attractive but under-proved statements. The
+          coverage audit checks whether the course itself still teaches the route from
+          first principles to useful repo work. A useful contributor should be able to
+          move between all three: choose work, prove it, and describe it without
+          overstating it.
+        </p>
+      </article>
     </section>
   );
 }

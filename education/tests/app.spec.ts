@@ -53,6 +53,23 @@ test('keeps every lesson free of legacy scaffolding and page overflow', async ({
   }
 });
 
+test('keeps multi-lab lessons behind a focused route', async ({ page }) => {
+  for (const lesson of lessons) {
+    await openLesson(page, lesson.id);
+
+    const routeButtons = await page.getByTestId('lab-route').getByRole('button').count();
+    const visibleLabSteps = await page.locator('[data-testid^="lab-step-"]').count();
+
+    if (routeButtons > 1) {
+      await expect(page.getByTestId('lab-route').locator('li.active')).toHaveCount(1);
+      await expect(page.getByRole('button', { name: 'Show all labs' })).toBeVisible();
+      expect(visibleLabSteps, `${lesson.id} focused visible lab count`).toBe(1);
+    } else {
+      expect(visibleLabSteps, `${lesson.id} unguided visible lab count`).toBeLessThanOrEqual(1);
+    }
+  }
+});
+
 test('loads the personal quantum circuit course and generated repo status', async ({ page }) => {
   await page.goto('/');
 
@@ -631,6 +648,8 @@ test('trains claim classification before publishing resource numbers', async ({ 
 
   await expect(page.getByTestId('contribution-story')).toContainText('A useful patch is a small claim plus evidence');
   await expect(page.getByTestId('contribution-story')).toContainText('The open blockers define useful work');
+  await expect(page.getByTestId('contribution-story')).toContainText('Choose the smallest claim');
+  await expect(page.getByTestId('contribution-story')).toContainText('How to use the three labs');
   await selectRouteLab(page, /Claim audit drill/);
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit drill');
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: wrong');
@@ -652,6 +671,7 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
   await openLesson(page, 'contribution');
 
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Contributor mission board');
+  await expect(page.getByTestId('contribution-story')).toContainText('The mission board turns blockers into concrete patches');
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: no');
   await page.getByTestId('contributor-mission-board').getByRole('button', { name: /Promote a primitive lowering row/ }).click();
   await page.getByLabel('Complete mission item identify source controls').check();
