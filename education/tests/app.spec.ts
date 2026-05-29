@@ -79,7 +79,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Start with only one qubit');
   await expect(page.getByTestId('qubit-state-vector-visual')).toContainText('This is one qubit');
   await expect(page.getByTestId('qubit-story').locator('xpath=.//*[@data-tex="|\\psi\\rangle=a|0\\rangle+b|1\\rangle"]').first()).toBeVisible();
-  await expect(page.locator('.lesson-step-list li > span')).toHaveCount(0);
+  await expect(page.getByTestId('lesson-detail-steps')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Notation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Probability rule' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Relative angle' })).toBeVisible();

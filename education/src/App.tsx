@@ -53,7 +53,7 @@ import { LearningPathMap } from './components/LearningPathMap';
 import { CourseCoverageAuditLab } from './components/CourseCoverageAuditLab';
 import { ProjectProofMap } from './components/ProjectProofMap';
 import { ComputationModelBridge } from './components/ComputationModelBridge';
-import { MathTex, MathText } from './components/MathText';
+import { MathTex } from './components/MathText';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
@@ -2412,21 +2412,6 @@ function GatesStoryPanel() {
   );
 }
 
-function splitLessonStep(paragraph: string) {
-  const separatorIndex = paragraph.indexOf(':');
-  const firstSentenceIndex = paragraph.indexOf('.');
-  const hasShortLabel = separatorIndex > 0 && separatorIndex < 32 && (firstSentenceIndex === -1 || separatorIndex < firstSentenceIndex);
-
-  if (!hasShortLabel) {
-    return { body: paragraph, title: null };
-  }
-
-  return {
-    body: paragraph.slice(separatorIndex + 1).trim(),
-    title: paragraph.slice(0, separatorIndex),
-  };
-}
-
 export function App() {
   const [activeLessonId, setActiveLessonId] = useState<LessonId>(() => lessonFromHash());
   const [completed, setCompleted] = useState<Set<LessonId>>(() => loadCompletedLessons());
@@ -2839,25 +2824,6 @@ export function App() {
             {activeLesson.id === 'contribution' ? <ContributionStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'repo-baselines' ? <RepoBaselineStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['zero', 'qubit', 'one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines', 'gates'].includes(activeLesson.id) ? (
-              <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
-                <ol className="lesson-step-list">
-                  {activeLesson.deepDive.map((paragraph, index) => {
-                    const step = splitLessonStep(paragraph);
-
-                    return (
-                      <li key={paragraph}>
-                        <div className="lesson-step-body">
-                          {step.title ? <h4>{step.title}</h4> : null}
-                          <p><MathText text={step.body} /></p>
-                        {activeLesson.id === 'qubit' ? <QubitStepVisual stepIndex={index} /> : null}
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </section>
-            ) : null}
             {activeLesson.coreIdeas ? (
               <div className="core-idea-list">
                 {activeLesson.coreIdeas.map((idea) => (
