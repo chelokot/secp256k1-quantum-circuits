@@ -282,9 +282,12 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('gates-story')).toContainText('From formula to circuit row');
   await expect(page.getByTestId('gates-story')).toContainText('Read a circuit left to right');
   await expect(page.getByTestId('gates-story')).toContainText('Measurement is different');
+  await expect(page.getByTestId('gates-story')).toContainText('A control is a branch condition');
+  await expect(page.getByTestId('gates-story')).toContainText('A row is a small contract');
   await expect(page.getByTestId('gates-story')).toContainText('Wire');
   await expect(page.getByTestId('gates-story')).toContainText('Controlled gate');
   await expect(page.getByTestId('gates-story')).toContainText('Why cleanup is not optional');
+  await expect(page.getByTestId('gates-story')).toContainText('How to use the labs');
   await expect(page.getByTestId('gates-story')).toContainText('scratch returned to |0>');
   await expect(page.getByTestId('circuit-builder')).toContainText('the row table is the countable object');
   await expect(page.getByTestId('circuit-builder')).toContainText('q0,q1 -> q2');
@@ -353,6 +356,9 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('lab-route')).toContainText('Mini resource engine');
   await expect(page.getByTestId('netlist-story')).toContainText('A formula is too smooth to count');
   await expect(page.getByTestId('netlist-story')).toContainText('Rows turn intuition into receipts');
+  await expect(page.getByTestId('netlist-story')).toContainText('Lowering is where trust usually leaks');
+  await expect(page.getByTestId('netlist-story')).toContainText('Scheduling changes the peak');
+  await expect(page.getByTestId('netlist-story')).toContainText('How to use the labs');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Old failure mode');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('rows create live intervals');

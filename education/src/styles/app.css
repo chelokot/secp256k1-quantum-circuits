@@ -2319,6 +2319,10 @@ code {
 
 .netlist-rule,
 .circuit-reading-rule,
+.control-branch-rule,
+.row-contract-rule,
+.lowering-boundary-rule,
+.schedule-liveness-rule,
 .reversible-half-adder-rule,
 .row-schema-rule,
 .parser-rule,
@@ -2343,7 +2347,9 @@ code {
 .row-schema-strip,
 .bennett-cycle,
 .half-adder-compare,
-.circuit-reading-strip {
+.circuit-reading-strip,
+.controlled-branch-card,
+.schedule-peak-strip {
   display: grid;
   gap: 0.4rem;
 }
@@ -2351,7 +2357,10 @@ code {
 .row-schema-strip span,
 .bennett-cycle span,
 .half-adder-compare div,
-.circuit-reading-strip span {
+.circuit-reading-strip span,
+.controlled-branch-card span,
+.controlled-branch-card strong,
+.schedule-peak-strip div {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.45rem;
   padding: 0.42rem 0.55rem;
@@ -2382,6 +2391,44 @@ code {
 .circuit-reading-strip span:first-child {
   border-color: rgba(245, 207, 107, 0.3);
   background: rgba(245, 207, 107, 0.08);
+}
+
+.controlled-branch-card {
+  grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+}
+
+.controlled-branch-card span,
+.controlled-branch-card strong,
+.schedule-peak-strip span,
+.schedule-peak-strip strong {
+  display: block;
+}
+
+.controlled-branch-card span,
+.schedule-peak-strip span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.controlled-branch-card strong,
+.schedule-peak-strip strong {
+  color: #ffffff;
+  font-size: 0.88rem;
+}
+
+.schedule-peak-strip div {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.schedule-peak-strip div:first-child {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.schedule-peak-strip div:last-child {
+  border-color: rgba(99, 230, 190, 0.28);
+  background: rgba(99, 230, 190, 0.07);
 }
 
 .parser-fail-card {
@@ -6442,6 +6489,8 @@ legend {
   .program-contract-split,
   .half-adder-compare,
   .circuit-reading-strip,
+  .controlled-branch-card,
+  .schedule-peak-strip,
   .eigenphase-card,
   .scratch-story-strip,
   .modular-pipeline-strip,
@@ -6607,6 +6656,8 @@ legend {
   .program-contract-split,
   .half-adder-compare,
   .circuit-reading-strip,
+  .controlled-branch-card,
+  .schedule-peak-strip,
   .eigenphase-card,
   .scratch-story-strip,
   .modular-pipeline-strip,

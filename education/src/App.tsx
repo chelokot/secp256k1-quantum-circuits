@@ -2065,6 +2065,47 @@ function NetlistStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule lowering-boundary-rule">
+        <div>
+          <h4>Lowering is where trust usually leaks</h4>
+          <p>
+            A high-level opcode can be honest as an algorithm idea and still be too
+            vague for a resource claim. The lowerer has to replace that opcode with
+            primitive rows whose operands, owner capacities, and cleanup rows are
+            explicit. If the macro summary says “lookup output” but the primitive
+            stream never creates a counted target, the count is proving the wrong
+            object.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>macro opcode</span>
+          <span>primitive rows</span>
+          <span>owner ledger</span>
+          <span>cleanup rows</span>
+        </div>
+      </article>
+
+      <article className="story-rule schedule-liveness-rule">
+        <div>
+          <h4>Scheduling changes the peak, not the function</h4>
+          <p>
+            Two row streams can compute the same boundary function while using different
+            peak qubits. If a temporary value is cleaned immediately after its last
+            use, it stops overlapping later values. If cleanup is delayed, the answer
+            can still be right while the peak live count grows.
+          </p>
+          <p>
+            That is the optimization loop in miniature: preserve semantics, move rows
+            only when dependencies allow it, then recompute the peak from the generated
+            live intervals.
+          </p>
+        </div>
+        <div className="schedule-peak-strip" aria-hidden="true">
+          <div><span>late cleanup</span><strong>more overlap</strong></div>
+          <div><span>early cleanup</span><strong>lower peak</strong></div>
+        </div>
+      </article>
+
       <div className="story-card-grid">
         <article>
           <strong>Not a register list</strong>
@@ -2082,6 +2123,17 @@ function NetlistStoryPanel() {
           <span className="story-token">artifact-backed docs</span>
         </article>
       </div>
+
+      <article className="story-question">
+        <h4>How to use the labs</h4>
+        <p>
+          Start with the stack map to locate where a formula can drift away from the
+          counted object. Then run the mini engine and opcode-lowering labs: they are
+          the small version of the desired repo architecture. End with the schedule
+          optimizer to see why the same function can have a different peak live-qubit
+          count after legal cleanup motion.
+        </p>
+      </article>
     </section>
   );
 }
@@ -2715,6 +2767,49 @@ function GatesStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule control-branch-rule">
+        <div>
+          <h4>A control is a branch condition, not a hidden readout</h4>
+          <p>
+            A controlled gate is easiest to misunderstand if you read it like an
+            ordinary <code>if</code> statement. The control wire is not measured. The
+            whole state is transformed branch by branch: every branch whose control
+            bit is 0 keeps the target unchanged, and every branch whose control bit is
+            1 receives the target operation.
+          </p>
+          <p>
+            This is why a controlled gate can create entanglement. If the control wire
+            is in a split, the gate applies coherently to both live branches instead of
+            choosing one classical path.
+          </p>
+        </div>
+        <div className="controlled-branch-card" aria-hidden="true">
+          <span>control = 0</span>
+          <strong>target unchanged</strong>
+          <span>control = 1</span>
+          <strong>target is flipped</strong>
+        </div>
+      </article>
+
+      <article className="story-rule row-contract-rule">
+        <div>
+          <h4>A row is a small contract</h4>
+          <p>
+            Once the diagram becomes an auditable row, the repo needs more than a gate
+            name. It needs the operation, operands, branch condition, target effect,
+            cost class, and cleanup promise. Without that row contract, the later
+            liveness engine cannot know which wires are born, carried, or released.
+          </p>
+        </div>
+        <div className="row-schema-strip" aria-hidden="true">
+          <span>op</span>
+          <span>controls</span>
+          <span>target</span>
+          <span>cost</span>
+          <span>cleanup</span>
+        </div>
+      </article>
+
       <div className="wire-timeline-panel" aria-label="Wire timeline sketch">
         <div className="wire-labels">
           <span>q0 control</span>
@@ -2784,6 +2879,16 @@ function GatesStoryPanel() {
           <div className="audit-pass">scratch returned to |0&gt;</div>
         </article>
       </div>
+
+      <article className="story-question">
+        <h4>How to use the labs</h4>
+        <p>
+          First use the primitive netlist toy to see a button become a row with
+          touched wires and cost. Then type rows in the DSL until invalid opcodes fail
+          loudly. Finish with cleanup: the same row stream is not resource-safe until
+          every temporary wire has a justified end of life.
+        </p>
+      </article>
     </section>
   );
 }
