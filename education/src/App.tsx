@@ -817,6 +817,25 @@ function CliffordStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule clifford-universal-rule">
+        <div>
+          <h4>Why the repo does not report “all gates” as one number</h4>
+          <p>
+            Clifford-only circuits are special enough to have efficient stabilizer
+            bookkeeping, but they are not enough for arbitrary reversible arithmetic.
+            Add a non-Clifford ingredient such as T, CCZ, or Toffoli-style work and the
+            gate set becomes powerful enough for general computation. That is exactly
+            why the repo keeps a separate non-Clifford ledger instead of mixing every
+            row into one undifferentiated gate count.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>Clifford: H, S, CX</span>
+          <span>magic ingredient: T / CCZ / Toffoli</span>
+          <span>arithmetic spends the magic ledger</span>
+        </div>
+      </article>
+
       <div className="story-motion-grid">
         <article>
           <h4>Cheap does not mean useless</h4>
@@ -914,6 +933,28 @@ function LogicalPhysicalStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule code-parameter-rule">
+        <div>
+          <h4>Read code parameters as a hardware contract</h4>
+          <p>
+            Error-correcting codes are often summarized as <MathTex tex="[[n,k,d]]" />.
+            The first number says how many physical data qubits the code uses, the
+            second says how many logical qubits it protects, and the distance says how
+            many errors are needed to silently turn one valid encoded state into another.
+          </p>
+          <p>
+            This is why a repo result like “1,968 logical qubits” is not a device count.
+            A physical estimate still has to choose a code family, distance, syndrome
+            schedule, layout, decoder, and magic factories.
+          </p>
+        </div>
+        <div className="code-parameter-card" aria-hidden="true">
+          <span><MathTex tex="n" /> physical data qubits</span>
+          <span><MathTex tex="k" /> protected logical qubits</span>
+          <span><MathTex tex="d" /> distance / silent-error barrier</span>
+        </div>
+      </article>
+
       <div className="story-motion-grid">
         <article>
           <h4>Code distance</h4>
@@ -1001,6 +1042,32 @@ function PhaseEstimationStoryPanel() {
           <span>phase pattern</span>
           <i />
           <span>bit label</span>
+        </div>
+      </article>
+
+      <article className="story-rule eigenphase-rule">
+        <div>
+          <h4>The exact statement is an eigenphase</h4>
+          <p>
+            Phase estimation starts from a unitary operation and a state that comes back
+            to itself except for phase:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="U|\psi\rangle=e^{2\pi i\theta}|\psi\rangle" />
+          </p>
+          <p>
+            The goal is to learn the ordinary binary digits of <MathTex tex="\theta" />.
+            If the phase is exactly <MathTex tex="y/2^m" />, an ideal inverse QFT on{' '}
+            <MathTex tex="m" /> control qubits maps the phase pattern to the readable
+            label <MathTex tex="|y\rangle" />.
+          </p>
+        </div>
+        <div className="eigenphase-card" aria-hidden="true">
+          <span>state returns</span>
+          <i />
+          <span>phase remains</span>
+          <i />
+          <span>bits reveal it</span>
         </div>
       </article>
 

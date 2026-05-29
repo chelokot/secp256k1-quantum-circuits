@@ -265,6 +265,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('clifford-story')).toContainText('Why there is a second cost axis');
   await expect(page.getByTestId('clifford-story')).toContainText('The stabilizer map is a restricted but useful world');
   await expect(page.getByTestId('clifford-story')).toContainText('A magic step leaves the cheap map');
+  await expect(page.getByTestId('clifford-story')).toContainText('Why the repo does not report “all gates” as one number');
   await expect(page.getByTestId('clifford-story')).toContainText('Peak qubits and non-Clifford count are separate headline axes');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Stabilizer vs magic wheel');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('State class');
@@ -297,6 +298,7 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await openLesson(page, 'phase-estimation');
 
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The problem is not “measure the answer directly”');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('The exact statement is an eigenphase');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Controlled powers write a binary rhythm');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The inverse QFT is a rhythm matcher');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Cost lives before readout');
@@ -501,6 +503,7 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
 
   await expect(page.getByTestId('logical-physical-story')).toContainText('The repo counts the algorithm layer');
   await expect(page.getByTestId('logical-physical-story')).toContainText('A logical qubit is protected information');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('Read code parameters as a hardware contract');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Code distance');
   await expect(page.getByTestId('logical-physical-story')).toContainText('What the labs are allowed to claim');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');

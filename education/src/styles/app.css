@@ -1409,7 +1409,8 @@ code {
 }
 
 .stabilizer-rule,
-.magic-rule {
+.magic-rule,
+.clifford-universal-rule {
   border-color: rgba(245, 207, 107, 0.22);
 }
 
@@ -1547,6 +1548,7 @@ code {
 }
 
 .encoding-rule,
+.code-parameter-rule,
 .physical-estimate-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
@@ -1699,9 +1701,36 @@ code {
   background: linear-gradient(90deg, #f5cf6b, #63e6be);
 }
 
+.eigenphase-rule,
 .phase-powers-rule,
 .fourier-readout-rule {
   border-color: rgba(245, 207, 107, 0.22);
+}
+
+.code-parameter-card,
+.eigenphase-card {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.code-parameter-card span,
+.eigenphase-card span {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.045);
+  text-align: center;
+}
+
+.eigenphase-card {
+  grid-template-columns: minmax(0, 1fr) 1rem minmax(0, 1fr) 1rem minmax(0, 1fr);
+  align-items: center;
+}
+
+.eigenphase-card i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #f5cf6b, #63e6be);
 }
 
 .controlled-power-sketch {
@@ -6408,6 +6437,7 @@ legend {
   .program-contract-split,
   .half-adder-compare,
   .circuit-reading-strip,
+  .eigenphase-card,
   .scratch-story-strip,
   .modular-pipeline-strip,
   .owner-ledger-strip,
@@ -6572,6 +6602,7 @@ legend {
   .program-contract-split,
   .half-adder-compare,
   .circuit-reading-strip,
+  .eigenphase-card,
   .scratch-story-strip,
   .modular-pipeline-strip,
   .owner-ledger-strip,
