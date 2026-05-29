@@ -1473,6 +1473,23 @@ function ProgrammingStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule reversible-half-adder-rule">
+        <div>
+          <h4>The quantum version keeps the inputs</h4>
+          <p>
+            A classical half-adder computes sum with XOR and carry with AND. The AND
+            output alone loses information: three different inputs produce carry 0.
+            A reversible circuit keeps the input wires and writes sum or carry into
+            helper targets initialized to <MathTex tex="|0\rangle" />. That is why a
+            small arithmetic sentence turns into rows with sources, targets, and cleanup.
+          </p>
+        </div>
+        <div className="half-adder-compare" aria-hidden="true">
+          <div><span>classical</span><strong>(x, y) becomes sum, carry</strong></div>
+          <div><span>reversible</span><strong>(x, y, 0, 0) becomes (x, y, sum, carry)</strong></div>
+        </div>
+      </article>
+
       <article className="story-rule row-schema-rule">
         <div>
           <h4>Rows are the smallest auditable unit</h4>
@@ -2552,6 +2569,25 @@ function GatesStoryPanel() {
         </p>
       </article>
 
+      <article className="story-rule circuit-reading-rule">
+        <div>
+          <h4>Read a circuit left to right</h4>
+          <p>
+            A circuit diagram is a time story. Horizontal lines are qubit wires. Boxes
+            or control symbols are gates. A gate touches only the wires connected to it,
+            and the state then continues to the next column. Measurement is different:
+            it turns a quantum wire into a classical outcome, so it usually belongs at
+            an explicit boundary rather than hidden in the middle of arithmetic.
+          </p>
+        </div>
+        <div className="circuit-reading-strip" aria-hidden="true">
+          <span>wire</span>
+          <span>gate</span>
+          <span>next state</span>
+          <span>measure</span>
+        </div>
+      </article>
+
       <div className="wire-timeline-panel" aria-label="Wire timeline sketch">
         <div className="wire-labels">
           <span>q0 control</span>
@@ -2575,7 +2611,7 @@ function GatesStoryPanel() {
         </article>
         <article>
           <strong>Controlled gate</strong>
-          <p>A control does not measure. It says: on branches where this wire is 1, move the target.</p>
+          <p>A control does not measure. It says: on every branch where this wire is 1, move the target.</p>
           <span className="story-token">CX q0 -&gt; q1</span>
         </article>
         <article>

@@ -279,6 +279,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 
   await openLesson(page, 'gates');
   await expect(page.getByTestId('gates-story')).toContainText('From formula to circuit row');
+  await expect(page.getByTestId('gates-story')).toContainText('Read a circuit left to right');
+  await expect(page.getByTestId('gates-story')).toContainText('Measurement is different');
   await expect(page.getByTestId('gates-story')).toContainText('Wire');
   await expect(page.getByTestId('gates-story')).toContainText('Controlled gate');
   await expect(page.getByTestId('gates-story')).toContainText('Why cleanup is not optional');
@@ -572,6 +574,7 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
 test('lets the learner write and debug a tiny quantum netlist', async ({ page }) => {
   await openLesson(page, 'programming');
   await expect(page.getByTestId('programming-story')).toContainText('A circuit program is a contract over wires');
+  await expect(page.getByTestId('programming-story')).toContainText('The quantum version keeps the inputs');
   await expect(page.getByTestId('programming-story')).toContainText('Rows are the smallest auditable unit');
   await expect(page.getByTestId('programming-story')).toContainText('A rejected row is a feature');
   await selectRouteLab(page, /Quantum DSL/);

@@ -2287,6 +2287,8 @@ code {
 }
 
 .netlist-rule,
+.circuit-reading-rule,
+.reversible-half-adder-rule,
 .row-schema-rule,
 .parser-rule,
 .bennett-rule,
@@ -2308,19 +2310,47 @@ code {
 }
 
 .row-schema-strip,
-.bennett-cycle {
+.bennett-cycle,
+.half-adder-compare,
+.circuit-reading-strip {
   display: grid;
   gap: 0.4rem;
 }
 
 .row-schema-strip span,
-.bennett-cycle span {
+.bennett-cycle span,
+.half-adder-compare div,
+.circuit-reading-strip span {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.45rem;
   padding: 0.42rem 0.55rem;
   color: #dce7f2;
   background: rgba(143, 182, 255, 0.08);
   text-align: center;
+}
+
+.half-adder-compare span,
+.half-adder-compare strong {
+  display: block;
+}
+
+.half-adder-compare span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.half-adder-compare strong {
+  color: #ffffff;
+  font-size: 0.86rem;
+}
+
+.circuit-reading-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.circuit-reading-strip span:first-child {
+  border-color: rgba(245, 207, 107, 0.3);
+  background: rgba(245, 207, 107, 0.08);
 }
 
 .parser-fail-card {
@@ -6376,6 +6406,8 @@ legend {
   .qroam-flow-strip,
   .qroam-formula-strip,
   .program-contract-split,
+  .half-adder-compare,
+  .circuit-reading-strip,
   .scratch-story-strip,
   .modular-pipeline-strip,
   .owner-ledger-strip,
@@ -6538,6 +6570,8 @@ legend {
   .qroam-flow-strip,
   .qroam-formula-strip,
   .program-contract-split,
+  .half-adder-compare,
+  .circuit-reading-strip,
   .scratch-story-strip,
   .modular-pipeline-strip,
   .owner-ledger-strip,
