@@ -563,6 +563,10 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
 
 test('keeps accepted-baseline promotion behind all blockers', async ({ page }) => {
   await openLesson(page, 'repo-baselines');
+
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('The repo status is a status table');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('Current numbers and their claim level');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('none yet');
   await selectRouteLab(page, /Promotion audit/);
 
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
@@ -577,6 +581,8 @@ test('keeps accepted-baseline promotion behind all blockers', async ({ page }) =
 test('trains claim classification before publishing resource numbers', async ({ page }) => {
   await openLesson(page, 'contribution');
 
+  await expect(page.getByTestId('contribution-story')).toContainText('A useful patch is a small claim plus evidence');
+  await expect(page.getByTestId('contribution-story')).toContainText('The open blockers define useful work');
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit drill');
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: wrong');
   await page.getByLabel('Claim classification').selectOption('rejected');
@@ -758,6 +764,9 @@ test('teaches optimization tradeoffs from the hybrid bridge search', async ({ pa
 test('teaches point-add semantic boundary cases from equivalence artifacts', async ({ page }) => {
   await openLesson(page, 'point-add-boundary');
 
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('A point-add leaf is an API');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('The counted interface and tested interface must be the same');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('80/80');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Point-add boundary debugger');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('80/80');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('lookup infinity');
@@ -804,6 +813,10 @@ test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) =
 
 test('teaches proof freshness, corpus size, and ZKP release gates', async ({ page }) => {
   await openLesson(page, 'zkp-boundary');
+
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('A valid proof is only a receipt for its exact statement');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('The current checked proof status is deliberately conservative');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('9,024');
   await selectRouteLab(page, /ZKP boundary/);
 
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');

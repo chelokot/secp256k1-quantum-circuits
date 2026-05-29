@@ -1956,6 +1956,235 @@ function OptimizationStoryPanel({ data }: { data: typeof projectData }) {
   );
 }
 
+function PointAddBoundaryStoryPanel({ data }: { data: typeof projectData }) {
+  const boundary = data.pointAddBoundary.streamedLookupTailLeaf;
+  const oldBoundary = data.pointAddBoundary.lookupFedLeaf;
+  const artifactsAgree = boundary.pass === oldBoundary.pass && boundary.total === oldBoundary.total;
+
+  return (
+    <section className="point-add-boundary-story" data-testid="point-add-boundary-story" aria-label="Point-add boundary contract story">
+      <article className="story-question">
+        <h4>A point-add leaf is an API, not one happy-path formula</h4>
+        <p>
+          Ordinary additions are only the branch most people picture first. The same
+          counted leaf must also handle doubling, inverse pairs, an accumulator that
+          starts at infinity, and a lookup entry that is the no-op identity.
+        </p>
+        <div className="source-of-truth-strip" aria-hidden="true">
+          <span>random</span>
+          <i />
+          <span>doubling</span>
+          <i />
+          <span>inverse</span>
+          <i />
+          <span>infinity cases</span>
+        </div>
+      </article>
+
+      <article className="story-rule point-boundary-rule">
+        <div>
+          <h4>The counted interface and tested interface must be the same</h4>
+          <p>
+            A lower-qubit leaf is not proven if tests exercise one boundary while the
+            resource count describes a different interface. The current streamed-tail
+            equivalence artifact reports {boundary.pass}/{boundary.total} checked
+            cases, and the older lookup-fed summary {artifactsAgree ? 'agrees' : 'does not agree'}
+            {' '}with that total.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          {Object.entries(boundary.categories).map(([name, category]) => (
+            <span key={name}>{name.replaceAll('_', ' ')}: {category.pass}/{category.total}</span>
+          ))}
+        </div>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Random-only trap</strong>
+          <p>Random ordinary cases can all pass while edge branches remain untested.</p>
+          <span className="story-token">coverage collapse</span>
+        </article>
+        <article>
+          <strong>Infinity is semantic</strong>
+          <p>Identity and inverse branches define the group operation, not rare extras.</p>
+          <span className="story-token">branch contract</span>
+        </article>
+        <article>
+          <strong>Boundary before headline</strong>
+          <p>Do not lower or publish a point-add result unless the same boundary is executed and counted.</p>
+          <span className="story-token">same leaf, same contract</span>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
+  const publication = data.proofPublication;
+  const corpus = data.proofCorpusProfiles;
+
+  return (
+    <section className="zkp-boundary-story" data-testid="zkp-boundary-story" aria-label="ZKP boundary and publication story">
+      <article className="story-question">
+        <h4>A valid proof is only a receipt for its exact statement</h4>
+        <p>
+          Groth16 or compressed verification can be green while the statement is stale,
+          smoke-sized, or weaker than the physical circuit claim. The reviewer has to
+          inspect the public values, input digest, resource certificate, corpus profile,
+          and remaining macro boundary before repeating the headline.
+        </p>
+        <div className="source-of-truth-strip" aria-hidden="true">
+          <span>input JSON</span>
+          <i />
+          <span>public values</span>
+          <i />
+          <span>proof bundle</span>
+          <i />
+          <span>claim wording</span>
+        </div>
+      </article>
+
+      <article className="story-rule zkp-receipt-rule">
+        <div>
+          <h4>The current checked proof status is deliberately conservative</h4>
+          <p>
+            Publication ready: <code>{String(publication.publicationReady)}</code>.
+            Current systems marked stale: {publication.staleSystems.join(', ')}.
+            The public proof profile has {corpus.publicCaseCount} cases; the
+            Google-comparable release target has {formatInt(corpus.releaseCaseCount)}.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          {publication.systems.map((system) => (
+            <span key={system.system}>
+              {system.system}: current {String(system.current)}, digest {String(system.resourceDigestMatchesInput)}
+            </span>
+          ))}
+        </div>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Verifier says valid</strong>
+          <p>That proves only the relation encoded by the checked input and public values.</p>
+          <span className="story-token">proof validity</span>
+        </article>
+        <article>
+          <strong>Artifact says current</strong>
+          <p>That additionally proves the proof bundle matches the current resource input.</p>
+          <span className="story-token">freshness</span>
+        </article>
+        <article>
+          <strong>Claim says physical</strong>
+          <p>That needs the macro boundary closed, not just a proof wrapper around a weaker statement.</p>
+          <span className="story-token">scope match</span>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function ContributionStoryPanel({ data }: { data: typeof projectData }) {
+  const blockers = data.activeBlockers;
+
+  return (
+    <section className="contribution-story" data-testid="contribution-story" aria-label="Contributor mission story">
+      <article className="story-question">
+        <h4>A useful patch is a small claim plus evidence</h4>
+        <p>
+          “Improve the circuit” is not a reviewable claim. “Promote this cleanup row
+          into the primitive stream and recompute owner capacity” is reviewable because
+          it names the object, the evidence, and the status change it should justify.
+        </p>
+        <div className="source-of-truth-strip" aria-hidden="true">
+          <span>claim</span>
+          <i />
+          <span>artifact</span>
+          <i />
+          <span>test</span>
+          <i />
+          <span>wording</span>
+        </div>
+      </article>
+
+      <article className="story-rule mission-packet-rule">
+        <div>
+          <h4>The open blockers define useful work</h4>
+          <p>
+            A contribution should either close one blocker, sharpen an artifact that
+            proves a blocker, or prevent a class of wrong claims. Current open blockers
+            are listed next to the mission board so learners do not optimize a side path.
+          </p>
+        </div>
+        <div className="engine-blocker-list">
+          {blockers.map((blocker) => (
+            <div key={blocker.name}>
+              <span>{blocker.name}</span>
+              <strong>{blocker.status}</strong>
+            </div>
+          ))}
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
+  const strict = data.currentStrictCandidate;
+  const corrected = data.guardCorrectedNoAliasCandidate;
+  const gate = data.acceptedBaselineGate;
+
+  return (
+    <section className="repo-baseline-story" data-testid="repo-baseline-story" aria-label="Repo baseline status story">
+      <article className="story-question">
+        <h4>The repo status is a status table, not a victory poster</h4>
+        <p>
+          The honest final page should teach readers to separate external comparison
+          rows, strict candidates, guard-corrected consequences, rejected hypotheses,
+          and a future accepted physical baseline. The current accepted baseline is
+          intentionally empty until the gate closes.
+        </p>
+      </article>
+
+      <article className="story-rule baseline-status-rule">
+        <div>
+          <h4>Current numbers and their claim level</h4>
+          <p>
+            Strict candidate: {formatInt(strict.logical_qubits)} qubits /{' '}
+            {formatInt(strict.non_clifford)} non-Clifford. Guard-corrected consequence:
+            {formatInt(corrected.logical_qubits)} qubits / {formatInt(corrected.non_clifford)}
+            {' '}non-Clifford. Accepted-baseline gate: <code>{gate.status}</code>.
+          </p>
+        </div>
+        <div className="optimization-candidate-strip" aria-hidden="true">
+          <div><span>strict candidate</span><strong>{formatInt(strict.logical_qubits)}q</strong><em>{strict.status}</em></div>
+          <div><span>guard corrected</span><strong>{formatInt(corrected.logical_qubits)}q</strong><em>{corrected.status}</em></div>
+          <div><span>accepted baseline</span><strong>none yet</strong><em>{gate.decision}</em></div>
+        </div>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>External baseline</strong>
+          <p>Useful for comparison, but not generated by this repo’s artifacts.</p>
+          <span className="story-token">reference row</span>
+        </article>
+        <article>
+          <strong>Repo candidate</strong>
+          <p>Useful for engineering direction, but wording must preserve blockers.</p>
+          <span className="story-token">candidate row</span>
+        </article>
+        <article>
+          <strong>Accepted baseline</strong>
+          <p>Requires all gates closed against the same primitive stream and proof boundary.</p>
+          <span className="story-token">not populated</span>
+        </article>
+      </div>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -2462,8 +2691,12 @@ export function App() {
             {activeLesson.id === 'resource-engine' ? <ResourceEngineStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'mini-engine' ? <MiniEngineStoryPanel /> : null}
             {activeLesson.id === 'optimization' ? <OptimizationStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'point-add-boundary' ? <PointAddBoundaryStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'zkp-boundary' ? <ZkpBoundaryStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'contribution' ? <ContributionStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'repo-baselines' ? <RepoBaselineStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

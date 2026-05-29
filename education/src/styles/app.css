@@ -1023,6 +1023,10 @@ code {
 .resource-engine-story h4,
 .mini-engine-story h4,
 .optimization-story h4,
+.point-add-boundary-story h4,
+.zkp-boundary-story h4,
+.contribution-story h4,
+.repo-baseline-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -2138,7 +2142,11 @@ code {
 .netlist-story,
 .resource-engine-story,
 .mini-engine-story,
-.optimization-story {
+.optimization-story,
+.point-add-boundary-story,
+.zkp-boundary-story,
+.contribution-story,
+.repo-baseline-story {
   display: grid;
   gap: 0.9rem;
   margin: 1rem 0;
@@ -2261,7 +2269,11 @@ code {
 .engine-status-rule,
 .mini-engine-rule,
 .candidate-frontier-rule,
-.breakthrough-rule {
+.breakthrough-rule,
+.point-boundary-rule,
+.zkp-receipt-rule,
+.mission-packet-rule,
+.baseline-status-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
