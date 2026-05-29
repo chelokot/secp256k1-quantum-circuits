@@ -936,6 +936,131 @@ function PhaseEstimationStoryPanel() {
   );
 }
 
+function EcdlpStoryPanel() {
+  return (
+    <section className="ecdlp-story" data-testid="ecdlp-story" aria-label="secp256k1 discrete-log attack story">
+      <article className="story-question">
+        <h4>What is public, and what is hidden?</h4>
+        <p>
+          A secp256k1 private key is a scalar <MathTex tex="d" />. The corresponding
+          public key is the curve point <MathTex tex="Q=dG" />, where{' '}
+          <MathTex tex="G" /> is the standard generator point. Everyone may know{' '}
+          <MathTex tex="G" /> and <MathTex tex="Q" />. The hard problem is recovering{' '}
+          <MathTex tex="d" />.
+        </p>
+        <div className="key-derivation-strip" aria-hidden="true">
+          <span>secret scalar d</span>
+          <i />
+          <span>repeat point-add from G</span>
+          <i />
+          <span>public point Q</span>
+        </div>
+      </article>
+
+      <article className="story-rule ecdlp-rule">
+        <div>
+          <h4>“Logarithm” means undoing repeated group addition</h4>
+          <p>
+            In ordinary arithmetic, a logarithm asks how many repeated multiplications
+            produced a value. In an elliptic-curve group, the analogous question asks
+            how many repeated additions of <MathTex tex="G" /> produced{' '}
+            <MathTex tex="Q" />.
+          </p>
+          <p>
+            Classical security comes from this one-way shape: computing{' '}
+            <MathTex tex="dG" /> is easy, but recovering <MathTex tex="d" /> from{' '}
+            <MathTex tex="G" /> and <MathTex tex="Q" /> is believed hard for classical
+            computers at secp256k1 size.
+          </p>
+        </div>
+        <div className="repeated-add-sketch" aria-hidden="true">
+          <span>G</span>
+          <span>2G</span>
+          <span>3G</span>
+          <span>...</span>
+          <span>dG = Q</span>
+        </div>
+      </article>
+
+      <article className="story-rule oracle-shape-rule">
+        <div>
+          <h4>The quantum oracle asks two-register questions</h4>
+          <p>
+            Shor-style discrete-log circuits do not test every possible private key.
+            They build a reversible group operation over two registers:
+            <MathTex tex="(a,b)\mapsto aG+bQ" />.
+          </p>
+          <p>
+            Since <MathTex tex="Q=dG" />, the output is really{' '}
+            <MathTex tex="(a+bd)G" />. Different <MathTex tex="(a,b)" /> pairs collide
+            whenever they move along a hidden period direction tied to{' '}
+            <MathTex tex="d" />.
+          </p>
+        </div>
+        <div className="oracle-lattice-sketch" aria-hidden="true">
+          <span className="selected">a,b</span>
+          <span />
+          <span />
+          <span />
+          <span className="paired">a+d,b-1</span>
+          <span />
+          <span />
+          <span />
+          <span />
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Hidden period</h4>
+          <p>
+            Moving from <MathTex tex="(a,b)" /> to <MathTex tex="(a+d,b-1)" /> keeps{' '}
+            <MathTex tex="a+bd" /> unchanged. That invisible slope is what phase
+            estimation can sample.
+          </p>
+          <div className="period-vector-pill" aria-hidden="true">(+d, -1)</div>
+        </article>
+        <article>
+          <h4>Why point-add dominates</h4>
+          <p>
+            The expensive unit is not the final algebra that recovers <MathTex tex="d" />.
+            It is repeatedly and reversibly computing controlled additions of
+            precomputed secp256k1 points.
+          </p>
+          <div className="point-add-chain" aria-hidden="true">
+            <span>lookup point</span>
+            <i />
+            <span>controlled add</span>
+          </div>
+        </article>
+        <article>
+          <h4>Why this repo is narrow</h4>
+          <p>
+            The project does not claim to break wallets on today’s hardware. It audits
+            one circuit-engineering boundary: how costly the repeated secp256k1 point-add
+            leaf is under strict quantum accounting.
+          </p>
+          <div className="scope-badges" aria-hidden="true">
+            <span>not runtime</span>
+            <span>not hardware bill</span>
+            <span>logical circuit</span>
+          </div>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>How the labs fit together</h4>
+        <p>
+          The attack map shows the full pipeline. The discrete-log oracle toy shows the
+          hidden period relation. Phase kickback shows how the oracle leaves a phase
+          imprint. The toy curve lab grounds scalar multiplication as repeated point
+          addition. The resource labs then connect those ideas to repeated point-add leaves.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1431,8 +1556,9 @@ export function App() {
             {activeLesson.id === 'clifford' ? <CliffordStoryPanel /> : null}
             {activeLesson.id === 'logic-physical' ? <LogicalPhysicalStoryPanel /> : null}
             {activeLesson.id === 'phase-estimation' ? <PhaseEstimationStoryPanel /> : null}
+            {activeLesson.id === 'ecdlp' ? <EcdlpStoryPanel /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

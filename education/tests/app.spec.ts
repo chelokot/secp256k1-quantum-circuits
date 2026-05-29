@@ -261,6 +261,10 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 test('shows the whole attack map and point-add formula microscope', async ({ page }) => {
   await openLesson(page, 'ecdlp');
 
+  await expect(page.getByTestId('ecdlp-story')).toContainText('What is public, and what is hidden');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('“Logarithm” means undoing repeated group addition');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum oracle asks two-register questions');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
   await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Resource composer');

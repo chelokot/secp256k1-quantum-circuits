@@ -1012,6 +1012,7 @@ code {
 .clifford-story h4,
 .logical-physical-story h4,
 .phase-estimation-story h4,
+.ecdlp-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -1778,6 +1779,150 @@ code {
 
 .cost-before-readout span:first-child {
   background: rgba(245, 207, 107, 0.12);
+}
+
+.ecdlp-story {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.key-derivation-strip {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) 1.5rem minmax(9rem, 1fr) 1.5rem minmax(8rem, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.key-derivation-strip span {
+  display: grid;
+  place-items: center;
+  min-height: 3.4rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.24);
+  border-radius: 0.5rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.key-derivation-strip i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.ecdlp-rule,
+.oracle-shape-rule {
+  border-color: rgba(99, 230, 190, 0.2);
+}
+
+.repeated-add-sketch {
+  display: grid;
+  gap: 0.4rem;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.repeated-add-sketch span {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.24);
+  border-radius: 0.45rem;
+  padding: 0.4rem 0.55rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
+  text-align: center;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.repeated-add-sketch span:last-child {
+  border-color: rgba(245, 207, 107, 0.32);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.oracle-lattice-sketch {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(143, 182, 255, 0.06);
+}
+
+.oracle-lattice-sketch span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.4rem;
+  background: rgba(255, 255, 255, 0.035);
+  color: #dce7f2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.oracle-lattice-sketch span.selected {
+  border-color: rgba(99, 230, 190, 0.42);
+  background: rgba(99, 230, 190, 0.12);
+}
+
+.oracle-lattice-sketch span.paired {
+  border-color: rgba(245, 207, 107, 0.42);
+  background: rgba(245, 207, 107, 0.12);
+}
+
+.period-vector-pill {
+  display: inline-block;
+  margin-top: 0.7rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.34);
+  border-radius: 999px;
+  padding: 0.24rem 0.62rem;
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.07);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.point-add-chain {
+  display: grid;
+  grid-template-columns: minmax(6rem, 1fr) 1.4rem minmax(6rem, 1fr);
+  gap: 0.4rem;
+  align-items: center;
+  margin-top: 0.7rem;
+}
+
+.point-add-chain span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border-radius: 0.45rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.08);
+  text-align: center;
+}
+
+.point-add-chain span:last-child {
+  background: rgba(245, 207, 107, 0.12);
+}
+
+.point-add-chain i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.scope-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+}
+
+.scope-badges span {
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  color: #dce7f2;
+  background: rgba(143, 182, 255, 0.11);
+  font-size: 0.82rem;
 }
 
 .story-rule {
@@ -5528,6 +5673,7 @@ legend {
   .magic-step-map,
   .resource-layer-stack,
   .phase-readout-strip,
+  .key-derivation-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5677,6 +5823,7 @@ legend {
   .magic-step-map,
   .resource-layer-stack,
   .phase-readout-strip,
+  .key-derivation-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5770,6 +5917,10 @@ legend {
   }
 
   .phase-readout-strip i {
+    display: none;
+  }
+
+  .key-derivation-strip i {
     display: none;
   }
 

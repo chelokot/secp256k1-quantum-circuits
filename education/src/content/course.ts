@@ -288,7 +288,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The expensive repeated operation is controlled elliptic-curve point addition over secp256k1. The repo is mostly about making that operation cheaper and auditable.',
     mentalModel:
-      'The quantum computer asks the curve many structured “what if I add this point?” questions in superposition, then phase estimation extracts the hidden rhythm.',
+      'A private key is a scalar d, and the public key is the point Q = dG. The quantum circuit does not try private keys one by one. It builds reversible two-register group operations of the form aG + bQ = (a + b*d)G, creating a hidden-period structure that phase estimation can sample.',
     checkpoint: 'The project is a circuit-engineering problem around a repeated secp256k1 point-add leaf, not a generic black-box quantum threat claim.',
     deepDive: [
       'ECDLP means: given G and Q = dG, recover the hidden scalar d. The quantum attack builds reversible group operations whose repeated structure exposes d.',
@@ -296,9 +296,9 @@ export const lessons: CourseLesson[] = [
       'The real circuit does not use tiny toy points. It repeats lookup-fed secp256k1 point-add leaves many times, which is why point-add resources dominate this repo.',
     ],
     coreIdeas: [
-      'Public input: G and Q = dG.',
-      'Oracle shape: aG + bQ hides d in a period relation.',
-      'Resource bottleneck: repeated controlled point-add leaves.',
+      'Public input: generator G and public point Q = dG.',
+      'Oracle shape: aG + bQ hides d as a period direction.',
+      'Resource bottleneck: repeated controlled secp256k1 point-add leaves.',
     ],
     practicePrompt: 'Start with the Whole attack map, then use the Discrete-log oracle toy. Change the secret scalar and watch the hidden-period relation change before opening phase kickback.',
     glossaryTerms: ['Discrete logarithm', 'Oracle', 'Hidden period', 'Phase kickback'],
