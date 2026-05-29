@@ -1539,6 +1539,37 @@ function CoordinatesStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule coordinate-slot-rule">
+        <div>
+          <h4>A coordinate name is not the same as counted storage</h4>
+          <p>
+            The math may say “this triple names the same point,” but the circuit still
+            has to carry the current bits of <MathTex tex="X" />, <MathTex tex="Y" />,
+            and <MathTex tex="Z" /> while the formula runs. Each live field element is
+            a bundle of 256 quantum wires that must have an owner and a death row.
+          </p>
+          <p>
+            Projective coordinates are therefore not compression. They are a trade:
+            keep extra scale storage live now so the hot loop can avoid repeated
+            reversible inversions.
+          </p>
+        </div>
+        <div className="coordinate-slot-contract" aria-hidden="true">
+          <div>
+            <span>math object</span>
+            <strong>one curve point</strong>
+          </div>
+          <div>
+            <span>circuit storage</span>
+            <strong>X, Y, Z field slots</strong>
+          </div>
+          <div>
+            <span>audit question</span>
+            <strong>who owns 3 * 256 wires?</strong>
+          </div>
+        </div>
+      </article>
+
       <article className="story-rule coordinate-division-rule">
         <div>
           <h4>Why avoid division in the hot loop?</h4>
@@ -1707,6 +1738,29 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
           <span>coordinate constants</span>
           <span>counted target bits</span>
           <span>cleanup path</span>
+        </div>
+      </article>
+
+      <article className="story-rule qroam-select-rule">
+        <div>
+          <h4>Address decoding is not table selection</h4>
+          <p>
+            A 15-bit address can mark one of 32,768 rows, but marking the row is not
+            the same as loading its coordinate constant. The lowering also needs a
+            reversible data-selection layer that combines the row predicates with the
+            precomputed table bits.
+          </p>
+          <p>
+            For an arbitrary coordinate table, those data bits behave like constants
+            with no useful algebraic pattern. A valid resource model must therefore
+            count the select work and the output capacity for the exact streamed or
+            full-width construction it uses.
+          </p>
+        </div>
+        <div className="qroam-select-stack" aria-hidden="true">
+          <div><span>1</span><strong>decode address</strong><em>which row?</em></div>
+          <div><span>2</span><strong>select data bits</strong><em>which constants?</em></div>
+          <div><span>3</span><strong>count target</strong><em>where do bits live?</em></div>
         </div>
       </article>
 

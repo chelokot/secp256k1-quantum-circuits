@@ -2241,8 +2241,42 @@ code {
 }
 
 .coordinate-division-rule,
-.infinity-rule {
+.infinity-rule,
+.coordinate-slot-rule {
   border-color: rgba(99, 230, 190, 0.2);
+}
+
+.coordinate-slot-contract {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.coordinate-slot-contract div {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.coordinate-slot-contract span,
+.qroam-select-stack span,
+.qroam-select-stack em {
+  display: block;
+}
+
+.coordinate-slot-contract span,
+.qroam-select-stack em {
+  color: #9fb1c3;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.coordinate-slot-contract strong,
+.qroam-select-stack strong {
+  display: block;
+  color: #dce7f2;
+  overflow-wrap: anywhere;
 }
 
 .coordinate-path-compare {
@@ -2362,18 +2396,21 @@ code {
 
 .qroam-cost-rule,
 .qroam-data-rule,
-.qroam-consistency-rule {
+.qroam-consistency-rule,
+.qroam-select-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
 .qroam-parameter-card,
-.qroam-model-split {
+.qroam-model-split,
+.qroam-select-stack {
   display: grid;
   gap: 0.55rem;
 }
 
 .qroam-parameter-card div,
-.qroam-model-split div {
+.qroam-model-split div,
+.qroam-select-stack div {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   padding: 0.65rem;
@@ -2396,6 +2433,30 @@ code {
 .qroam-parameter-card strong,
 .qroam-model-split strong {
   color: #ffffff;
+}
+
+.qroam-select-stack div {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  column-gap: 0.65rem;
+  align-items: center;
+}
+
+.qroam-select-stack span {
+  display: grid;
+  grid-row: span 2;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  color: #071018;
+  background: #63e6be;
+  font-weight: 900;
+}
+
+.qroam-select-stack em {
+  font-style: normal;
+  text-transform: none;
 }
 
 .programming-story,

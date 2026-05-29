@@ -234,7 +234,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Affine saves live coordinates but pays inversion in point-add formulas.',
       'Projective spends scale slots to use multiply/add formulas on the hot path.',
-      'Every live secp256k1 field slot is 256 counted logical wires.',
+      'Projective names are not storage compression; every live field slot is 256 counted logical wires.',
     ],
   },
   {
@@ -251,6 +251,7 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'A lookup output is only free if the executable liveness artifact proves it aliases already-counted capacity.',
     coreIdeas: [
       'Lookup address, target, junk, and cleanup all count.',
+      'Address decoding is not enough; arbitrary table constants still need a data-selection circuit.',
       'QROAM trades gate count against workspace.',
       'Free output lanes require liveness proof, not assertion.',
     ],
