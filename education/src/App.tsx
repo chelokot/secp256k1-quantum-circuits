@@ -1483,6 +1483,234 @@ function CleanupStoryPanel({ data }: { data: typeof projectData }) {
   );
 }
 
+function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
+  const accumulator = data.modularAccumulator;
+  const fieldBits = data.compilerParameters.field.fieldBits;
+  const grid = accumulator.carrySave.singleGrid;
+  const allGrids = accumulator.carrySave.allGrids;
+  const fullAdder = accumulator.fullAdderContract;
+  const sourceUncompute = accumulator.sourceUncompute;
+  const layerSamples = grid.layers.slice(0, 6);
+  const provenCleanup = sourceUncompute.cleanupStatusCounts.source_uncompute_cleanup_ccx_proven;
+  const missingGuardCleanup = sourceUncompute.cleanupStatusCounts.missing_source_controls_for_cleanup;
+
+  return (
+    <section className="modular-lowering-story" data-testid="modular-lowering-story" aria-label="Modular arithmetic lowering story">
+      <article className="story-question">
+        <h4>A tiny formula becomes a large reversible machine</h4>
+        <p>
+          The algebra says <MathTex tex="z=x\cdot y \bmod p" />. A circuit cannot
+          simply write that sentence into a register. It has to create bit products,
+          add them into columns, fold the high columns back into the field range, and
+          erase the temporary evidence without changing the answer.
+        </p>
+        <div className="modular-pipeline-strip" aria-hidden="true">
+          <span><MathTex tex={`${fieldBits}`} />-bit inputs</span>
+          <i />
+          <span>bit product grid</span>
+          <i />
+          <span>column accumulator</span>
+          <i />
+          <span>fold + cleanup</span>
+        </div>
+      </article>
+
+      <article className="story-rule modular-grid-rule">
+        <div>
+          <h4>The first expansion is the product grid</h4>
+          <p>
+            One schoolbook <MathTex tex={`${fieldBits}`} />-bit multiply exposes{' '}
+            <MathTex tex={`${fieldBits}\\cdot${fieldBits}=${grid.initialPartialProductBits}`} />
+            {' '}one-bit product obligations before the accumulator can compress them.
+            The current artifact has {formatInt(accumulator.carrySave.schoolbookGridCount)}
+            {' '}schoolbook grids and {formatInt(allGrids.partial_product_rows)}
+            {' '}partial-product consume rows.
+          </p>
+          <p>
+            Each product bit is a temporary quantum wire unless it is consumed into a
+            counted accumulator and then uncomputed from the same source controls.
+          </p>
+        </div>
+        <div className="modular-number-stack" aria-hidden="true">
+          <div><span>one grid products</span><strong>{formatInt(grid.initialPartialProductBits)}</strong></div>
+          <div><span>all consume rows</span><strong>{formatInt(allGrids.partial_product_rows)}</strong></div>
+          <div><span>source cleanup rows</span><strong>{formatInt(sourceUncompute.rowCount)}</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule carry-compression-rule">
+        <div>
+          <h4>Carry-save compression reduces height, not obligations</h4>
+          <p>
+            A full-adder cell turns three column bits into a sum bit and a carry bit.
+            In this artifact one embedded cell costs{' '}
+            {fullAdder.primitiveCountsPerCell.ccx} CCX and{' '}
+            {fullAdder.primitiveCountsPerCell.cx} CX, and the candidate stream contains{' '}
+            {formatInt(fullAdder.totals.full_adder_cell_count)} such cells.
+          </p>
+          <p>
+            The important audit question is not only “how many adders?” It is also
+            “where did the old inputs, sum wires, carry wires, and cleanup controls
+            live while this was happening?”
+          </p>
+        </div>
+        <div className="carry-layer-sparkline" aria-label="Carry-save live bit samples">
+          {layerSamples.map((layer) => (
+            <span key={layer.layer_index}>
+              <b>L{layer.layer_index}</b>
+              <i style={{ width: `${Math.max(12, (layer.live_column_bits_after_layer / layerSamples[0].live_column_bits_after_layer) * 100)}%` }} />
+              <strong>{formatInt(layer.live_column_bits_after_layer)}</strong>
+            </span>
+          ))}
+        </div>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Rows exist</strong>
+          <p>
+            The row stream has {formatInt(accumulator.rowStream.rowCount)} obligations
+            across {formatInt(accumulator.rowStream.segmentCount)} segments.
+          </p>
+          <span className="story-token">{accumulator.rowStream.status}</span>
+        </article>
+        <article>
+          <strong>Gates are partly known</strong>
+          <p>
+            The full-adder stream contributes {formatInt(accumulator.fullAdderStream.nonCliffordCount)}
+            {' '}CCX, but it is not yet the global public resource stream.
+          </p>
+          <span className="story-token">{accumulator.fullAdderStream.status}</span>
+        </article>
+        <article>
+          <strong>Cleanup still gates promotion</strong>
+          <p>
+            {formatInt(provenCleanup)} cleanup rows are proven; {formatInt(missingGuardCleanup)}
+            {' '}guard rows still lack exposed source controls.
+          </p>
+          <span className="story-token">{sourceUncompute.status}</span>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>How to read the labs</h4>
+        <p>
+          Start with the small product grid to feel why multiplication creates many
+          one-bit temporary products. Then open accumulator lowering: the lesson is
+          not that the candidate is useless, but that promotion requires replacing
+          every obligation row with exact primitive gates, owners, liveness, and cleanup.
+        </p>
+      </article>
+    </section>
+  );
+}
+
+function OwnerCapacityStoryPanel({ data }: { data: typeof projectData }) {
+  const strict = data.strictFormula;
+  const guard = data.zeroLiftGuard;
+  const correctedTotal = strict.reconstructed_total + guard.gap.missing_logical_qubits_under_clean_ladder;
+
+  return (
+    <section className="owner-capacity-story" data-testid="owner-capacity-story" aria-label="Owner capacity audit story">
+      <article className="story-question">
+        <h4>An owner is a budget, not a nickname</h4>
+        <p>
+          A wire group is not counted just because a file writes an owner name next
+          to it. The engine has to derive when the group is live, assign it to exactly
+          one owner, sum all concurrently live widths for that owner, and compare the
+          peak load with the owner&apos;s logical-qubit budget.
+        </p>
+        <div className="owner-ledger-strip" aria-hidden="true">
+          <span>wire group</span>
+          <i />
+          <span>live interval</span>
+          <i />
+          <span>one owner</span>
+          <i />
+          <span>capacity check</span>
+        </div>
+      </article>
+
+      <article className="story-rule capacity-equation-rule">
+        <div>
+          <h4>The mechanical rule</h4>
+          <p>
+            At every row, for every owner, the total live width assigned to that owner
+            must fit inside its declared capacity:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="\max_t\sum_{\text{live }w\to O}|w|\le \mathrm{capacity}(O)" />
+          </p>
+          <p>
+            This is why a borrowed lane is not automatically free. It is free only
+            if executable liveness proves it is already inside a counted owner and is
+            not live at the same time as the resource it replaces.
+          </p>
+        </div>
+        <div className="owner-checklist" aria-hidden="true">
+          <span>exactly one owner</span>
+          <span>numeric capacity</span>
+          <span>peak from liveness</span>
+          <span>alias proof if borrowed</span>
+        </div>
+      </article>
+
+      <article className="story-rule guard-ladder-rule">
+        <div>
+          <h4>The guard gap is the concrete example</h4>
+          <p>
+            The strict candidate currently counts {guard.current.logical_qubits} guard
+            qubit for a predicate around the fused output row. A clean ladder for the
+            <MathTex tex="L=0" /> predicate over a {strict.field_bits}-bit register
+            needs {guard.cleanLadder.prefix_ancilla_bits} prefix ancilla bits plus{' '}
+            {guard.cleanLadder.predicate_output_bits} predicate output bit, so the
+            peak predicate workspace is {guard.cleanLadder.peak_predicate_workspace_bits}.
+          </p>
+          <p>
+            Unless the artifact proves a concrete alias/no-ancilla construction, the
+            conservative correction adds {guard.gap.missing_logical_qubits_under_clean_ladder}
+            {' '}qubits.
+          </p>
+        </div>
+        <div className="guard-capacity-math" aria-hidden="true">
+          <div><span>strict candidate</span><strong>{formatInt(strict.reconstructed_total)}</strong></div>
+          <div><span>guard delta</span><strong>+{formatInt(guard.gap.missing_logical_qubits_under_clean_ladder)}</strong></div>
+          <div><span>guard-corrected candidate</span><strong>{formatInt(correctedTotal)}</strong></div>
+        </div>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Unowned wire</strong>
+          <p>A hidden scratch lane exists in execution but has no counted owner.</p>
+          <span className="story-token">audit fail</span>
+        </article>
+        <article>
+          <strong>Overflowed owner</strong>
+          <p>Several live groups share one owner, but their summed width exceeds capacity.</p>
+          <span className="story-token">load &gt; budget</span>
+        </article>
+        <article>
+          <strong>Valid alias</strong>
+          <p>A borrowed lane reuses counted storage only after liveness proves no overlap.</p>
+          <span className="story-token">capacity + interval proof</span>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>How to read the labs</h4>
+        <p>
+          In slot liveness, toggle the clean-ladder guard and watch the candidate
+          move from {formatInt(strict.reconstructed_total)} to {formatInt(correctedTotal)}
+          qubits. In the capacity game, moving the guard ladder out of lookup workspace
+          is the toy version of the same audit: owner assignment and numeric capacity
+          have to pass together.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1983,8 +2211,10 @@ export function App() {
             {activeLesson.id === 'lookup-qroam' ? <LookupQroamStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'programming' ? <ProgrammingStoryPanel /> : null}
             {activeLesson.id === 'cleanup' ? <CleanupStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'modular-lowering' ? <ModularLoweringStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'owner-capacity' ? <OwnerCapacityStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

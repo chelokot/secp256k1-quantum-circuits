@@ -533,6 +533,10 @@ test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
 test('shows partial-product lowering pressure', async ({ page }) => {
   await openLesson(page, 'modular-lowering');
 
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('A tiny formula becomes a large reversible machine');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('one grid products');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('65,536');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('Cleanup still gates promotion');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Partial-product grid');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').first().fill('15');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').last().fill('15');
@@ -542,6 +546,11 @@ test('shows partial-product lowering pressure', async ({ page }) => {
 
 test('requires owner assignment and numeric capacity to pass', async ({ page }) => {
   await openLesson(page, 'owner-capacity');
+
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('An owner is a budget, not a nickname');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('The mechanical rule');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('The guard gap is the concrete example');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('2,222');
   await selectRouteLab(page, /Capacity game/);
 
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');

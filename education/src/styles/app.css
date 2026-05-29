@@ -1017,6 +1017,8 @@ code {
 .lookup-story h4,
 .programming-story h4,
 .cleanup-story-panel h4,
+.modular-lowering-story h4,
+.owner-capacity-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -1052,12 +1054,14 @@ code {
 .story-token {
   display: inline-block;
   margin-top: 0.6rem;
+  max-width: 100%;
   border-radius: 999px;
   padding: 0.16rem 0.5rem;
   color: #f5cf6b;
   background: rgba(245, 207, 107, 0.08);
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.82rem;
+  overflow-wrap: anywhere;
 }
 
 .story-card-grid p,
@@ -2124,14 +2128,18 @@ code {
 }
 
 .programming-story,
-.cleanup-story-panel {
+.cleanup-story-panel,
+.modular-lowering-story,
+.owner-capacity-story {
   display: grid;
   gap: 0.9rem;
   margin: 1rem 0;
 }
 
 .program-contract-split,
-.scratch-story-strip {
+.scratch-story-strip,
+.modular-pipeline-strip,
+.owner-ledger-strip {
   display: grid;
   grid-template-columns: minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr);
   gap: 0.45rem;
@@ -2143,8 +2151,15 @@ code {
   grid-template-columns: minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr);
 }
 
+.modular-pipeline-strip,
+.owner-ledger-strip {
+  grid-template-columns: minmax(7rem, 1fr) 1.2rem minmax(8rem, 1fr) 1.2rem minmax(8rem, 1fr) 1.2rem minmax(7rem, 1fr);
+}
+
 .program-contract-split div,
-.scratch-story-strip span {
+.scratch-story-strip span,
+.modular-pipeline-strip span,
+.owner-ledger-strip span {
   display: grid;
   place-items: center;
   min-height: 3.2rem;
@@ -2157,6 +2172,12 @@ code {
 }
 
 .program-contract-split div:first-child {
+  border-color: rgba(245, 207, 107, 0.3);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.modular-pipeline-strip span:first-child,
+.owner-ledger-strip span:first-child {
   border-color: rgba(245, 207, 107, 0.3);
   background: rgba(245, 207, 107, 0.08);
 }
@@ -2178,7 +2199,9 @@ code {
 }
 
 .program-contract-split i,
-.scratch-story-strip i {
+.scratch-story-strip i,
+.modular-pipeline-strip i,
+.owner-ledger-strip i {
   height: 0.12rem;
   background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
@@ -2186,7 +2209,11 @@ code {
 .row-schema-rule,
 .parser-rule,
 .bennett-rule,
-.artifact-cleanup-rule {
+.artifact-cleanup-rule,
+.modular-grid-rule,
+.carry-compression-rule,
+.capacity-equation-rule,
+.guard-ladder-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
@@ -2258,6 +2285,85 @@ code {
 
 .cleanup-artifact-numbers strong {
   color: #ffffff;
+}
+
+.modular-number-stack,
+.guard-capacity-math,
+.owner-checklist {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.modular-number-stack div,
+.guard-capacity-math div,
+.owner-checklist span {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.modular-number-stack span,
+.modular-number-stack strong,
+.guard-capacity-math span,
+.guard-capacity-math strong {
+  display: block;
+}
+
+.modular-number-stack span,
+.guard-capacity-math span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.modular-number-stack strong,
+.guard-capacity-math strong {
+  color: #ffffff;
+}
+
+.carry-layer-sparkline {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.carry-layer-sparkline span {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(6rem, 1fr) 5rem;
+  gap: 0.45rem;
+  align-items: center;
+  color: #dce7f2;
+}
+
+.carry-layer-sparkline b {
+  color: #f5cf6b;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.carry-layer-sparkline i {
+  display: block;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.carry-layer-sparkline strong {
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+.capacity-equation {
+  width: fit-content;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.owner-checklist span {
+  color: #dce7f2;
 }
 
 .story-rule {
@@ -6084,6 +6190,8 @@ legend {
   .qroam-formula-strip,
   .program-contract-split,
   .scratch-story-strip,
+  .modular-pipeline-strip,
+  .owner-ledger-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6240,6 +6348,8 @@ legend {
   .qroam-formula-strip,
   .program-contract-split,
   .scratch-story-strip,
+  .modular-pipeline-strip,
+  .owner-ledger-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6344,7 +6454,9 @@ legend {
   .coordinate-equation-strip i,
   .qroam-flow-strip i,
   .program-contract-split i,
-  .scratch-story-strip i {
+  .scratch-story-strip i,
+  .modular-pipeline-strip i,
+  .owner-ledger-strip i {
     display: none;
   }
 
