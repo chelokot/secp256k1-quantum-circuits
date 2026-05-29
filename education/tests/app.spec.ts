@@ -288,6 +288,11 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
 
   await openLesson(page, 'coordinates');
+  await expect(page.getByRole('heading', { name: 'Coordinates, infinity, and field slots' })).toBeVisible();
+  await expect(page.getByTestId('coordinate-story')).toContainText('The same curve point can have several names');
+  await expect(page.getByTestId('coordinate-story')).toContainText('Why avoid division in the hot loop');
+  await expect(page.getByTestId('coordinate-story')).toContainText('Infinity is not a footnote');
+  await expect(page.getByTestId('coordinate-story')).toContainText('Overwrite audit');
   await showAllLabs(page);
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('Affine and projective coordinates');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('(15, 3, 3)');

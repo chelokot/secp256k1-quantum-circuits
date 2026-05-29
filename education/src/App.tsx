@@ -1061,6 +1061,125 @@ function EcdlpStoryPanel() {
   );
 }
 
+function CoordinatesStoryPanel() {
+  return (
+    <section className="coordinate-story" data-testid="coordinate-story" aria-label="Coordinate and field-slot story">
+      <article className="story-question">
+        <h4>The same curve point can have several names</h4>
+        <p>
+          An affine point writes the location directly as <MathTex tex="(x,y)" />.
+          A projective-style point adds a scale coordinate. In the toy chart below,
+          {' '}<MathTex tex="(X,Y,Z)" /> means the same affine point after multiplying
+          by <MathTex tex="Z^{-1}" />. Many triples can therefore name one point.
+        </p>
+        <div className="coordinate-name-strip" aria-hidden="true">
+          <span><MathTex tex="(5,1)" /> affine</span>
+          <i />
+          <span><MathTex tex="(15,3,3)" /></span>
+          <span><MathTex tex="(8,5,5)" /></span>
+          <span><MathTex tex="(12,11,16)" /></span>
+        </div>
+      </article>
+
+      <article className="story-rule coordinate-division-rule">
+        <div>
+          <h4>Why avoid division in the hot loop?</h4>
+          <p>
+            A direct affine point-add computes a slope such as{' '}
+            <MathTex tex="\lambda=(y_2-y_1)/(x_2-x_1)" />. Over a finite field,
+            that division means a modular inverse. Reversible inversion is a large
+            arithmetic subcircuit, so repeatedly paying it inside the oracle is costly.
+          </p>
+          <p>
+            Projective formulas keep scale information live and trade the hot inverse
+            for multiply/add/subtract work. The final inverse is delayed until the
+            circuit actually needs to leave projective space.
+          </p>
+        </div>
+        <div className="coordinate-path-compare" aria-hidden="true">
+          <div>
+            <strong>affine path</strong>
+            <span>slope</span>
+            <b>inverse now</b>
+          </div>
+          <div>
+            <strong>projective path</strong>
+            <span>carry scale</span>
+            <b>multiply now</b>
+          </div>
+        </div>
+      </article>
+
+      <article className="story-rule infinity-rule">
+        <div>
+          <h4>Infinity is not a footnote</h4>
+          <p>
+            Elliptic-curve addition has an identity element, the point at infinity.
+            A counted point-add boundary must handle ordinary additions, doubling,
+            inverse pairs, accumulator infinity, and lookup infinity with the same
+            executable contract.
+          </p>
+          <p>
+            If one edge case secretly needs another field register, the peak-qubit
+            claim has changed. That is why the repo tests these cases at the same
+            boundary that the resource engine counts.
+          </p>
+        </div>
+        <div className="edge-case-stack" aria-hidden="true">
+          <span>random add</span>
+          <span>doubling</span>
+          <span>inverse pair</span>
+          <span>accumulator infinity</span>
+          <span>lookup infinity</span>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Field slot</h4>
+          <p>
+            A secp256k1 coordinate is a 256-bit field element. One live{' '}
+            <MathTex tex="X" />, <MathTex tex="Y" />, or <MathTex tex="Z" /> register
+            is therefore 256 logical quantum wires, not one UI value.
+          </p>
+          <div className="slot-width-meter" aria-hidden="true"><span /></div>
+        </article>
+        <article>
+          <h4>Live interval</h4>
+          <p>
+            A slot counts from the row where its value is created until the row where
+            it is uncomputed, measured, or overwritten by a proven reversible map.
+          </p>
+          <div className="slot-lifetime-sketch" aria-hidden="true">
+            <span>birth</span>
+            <i />
+            <span>last use</span>
+          </div>
+        </article>
+        <article>
+          <h4>Overwrite audit</h4>
+          <p>
+            Reusing a coordinate lane is allowed only when the engine proves the
+            transformation is reversible at the boundary. A name change alone is not
+            a quantum overwrite proof.
+          </p>
+          <div className="overwrite-warning-pill" aria-hidden="true">owner + inverse required</div>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>What to do in the labs</h4>
+        <p>
+          First move the scale slider and verify that different triples normalize to
+          the same affine point. Then use the overwrite and boundary labs to ask the
+          resource question: which coordinate-sized values are live at the same time,
+          and which edge cases execute the same counted contract?
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1557,8 +1676,9 @@ export function App() {
             {activeLesson.id === 'logic-physical' ? <LogicalPhysicalStoryPanel /> : null}
             {activeLesson.id === 'phase-estimation' ? <PhaseEstimationStoryPanel /> : null}
             {activeLesson.id === 'ecdlp' ? <EcdlpStoryPanel /> : null}
+            {activeLesson.id === 'coordinates' ? <CoordinatesStoryPanel /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

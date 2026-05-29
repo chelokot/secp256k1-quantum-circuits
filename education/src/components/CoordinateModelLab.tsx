@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Move3d } from 'lucide-react';
+import { MathTex } from './MathText';
 
 const prime = 17;
 const affinePoint = { x: 5, y: 1 };
@@ -33,12 +34,21 @@ export function CoordinateModelLab() {
         <h3>Affine and projective coordinates</h3>
       </div>
       <p>
-        Affine coordinates name one point directly. Projective coordinates name an equivalence
-        class: many triples normalize back to the same affine point after dividing by Z.
+        This toy uses the field modulo 17 so the arithmetic fits on screen. It shows
+        the circuit tradeoff: projective-style names carry a scale coordinate, and
+        several names normalize back to the same affine point.
       </p>
 
       <div className="coordinate-lab-grid">
         <article>
+          <h4>Scale family</h4>
+          <div className="coordinate-equation-strip" aria-hidden="true">
+            <span><MathTex tex="P=(x,y)" /></span>
+            <i />
+            <span><MathTex tex="(X,Y,Z)=(Zx,Zy,Z)" /></span>
+            <i />
+            <span><MathTex tex="P=(XZ^{-1},YZ^{-1})" /></span>
+          </div>
           <label className="slider-label">
             Projective scale Z: {scale}
             <input
@@ -64,15 +74,24 @@ export function CoordinateModelLab() {
             normalize: ({projective.x} * {projective.inverse}, {projective.y} * {projective.inverse}) mod {prime}
             = ({normalized.x}, {normalized.y})
           </p>
+          <p className="coordinate-confirmation">
+            Same point confirmed: the triple changed, but normalization returned
+            ({affinePoint.x}, {affinePoint.y}).
+          </p>
         </article>
 
         <article>
-          <h4>Why this helps circuits</h4>
+          <h4>Hot-path trade</h4>
           <div className="coordinate-stack">
             <div><strong>Affine hot path</strong><span>2 field slots, but slope uses division/inversion.</span></div>
             <div><strong>Projective hot path</strong><span>more field slots, mostly multiply/add/subtract.</span></div>
             <div><strong>Final normalize</strong><span>pay inversion when leaving projective space.</span></div>
           </div>
+          <p className="coordinate-note">
+            Real secp256k1 formulas use full field arithmetic and projective/Jacobian-style
+            variants, but the audit question is the same: which coordinate-sized registers
+            are live together?
+          </p>
         </article>
       </div>
 

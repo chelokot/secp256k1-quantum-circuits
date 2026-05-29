@@ -306,27 +306,28 @@ export const lessons: CourseLesson[] = [
   {
     id: 'coordinates',
     module: 'Elliptic curve layer',
-    title: 'Affine, projective, infinity, and slots',
+    title: 'Coordinates, infinity, and field slots',
     icon: Sigma,
     intuition:
-      'Affine points are compact but division-heavy. Projective coordinates trade extra registers for multiplication-friendly formulas and explicit infinity cases.',
+      'Affine points are the compact street address. Projective-style coordinates keep scale information live so the hot point-add loop can avoid repeated inversions.',
     whyItMatters:
       'The repo’s slot fights are about how many field-sized live registers are needed while computing a point-add boundary.',
     mentalModel:
-      'Affine is a precise street address. Projective is a family of equivalent addresses that avoids expensive division until you really need it. A field slot is the storage for one secp256k1 coordinate-sized number.',
-    checkpoint: 'A field slot is one secp256k1 number register: 256 logical wires, all with a counted owner.',
+      'Affine is one direct name for a point: x and y. Projective is a family of names for the same point: extra scale data is carried so the circuit can use multiply/add formulas instead of stopping for division inside every point-add. The price is live field slots, and each secp256k1 field slot is 256 logical wires.',
+    checkpoint: 'A field slot is one secp256k1 coordinate-sized quantum register: 256 logical wires with an owner, capacity, birth row, and death row.',
     deepDive: [
-      'Affine coordinates store a point directly as x and y. The formulas are compact, but adding points often needs division, which is expensive in reversible arithmetic.',
-      'Projective coordinates store an equivalent representative with extra scale information. That usually costs more live field slots but avoids inversion on the hot path.',
+      'Affine coordinates store a point directly as x and y. A direct point-add slope contains a division, which means a modular inverse over the field.',
+      'Projective-style coordinates store an equivalent representative with extra scale information. The hot loop pays extra coordinate slots and more multiply/add work to avoid repeated inversion.',
       'The number 256 comes from secp256k1 field arithmetic. Each coordinate is a number modulo a roughly 256-bit prime, so one live coordinate register means 256 live logical wires.',
-      'Infinity cases are not optional. Doubling, inverse pairs, accumulator infinity, and lookup infinity must match the same boundary that resource counting claims.',
+      'Infinity cases are part of the same point-add contract. Doubling, inverse pairs, accumulator infinity, and lookup infinity must execute the same counted boundary.',
+      'Overwrite is a proof obligation. Reusing a coordinate lane is valid only when the engine proves an owner-preserving reversible transformation, not when a human renames a variable.',
     ],
     coreIdeas: [
-      'Affine saves coordinates but makes inversion painful.',
-      'Projective spends slots to use multiply/add formulas.',
-      'Every secp256k1 field slot is 256 counted logical wires.',
+      'Affine saves live coordinates but pays inversion in point-add formulas.',
+      'Projective spends scale slots to use multiply/add formulas on the hot path.',
+      'Every live secp256k1 field slot is 256 counted logical wires.',
     ],
-    practicePrompt: 'Move the projective scale first. Then open the overwrite lab and toggle the zero-lift guard to see when an in-place update stops being reversible.',
+    practicePrompt: 'Move the projective scale first and confirm that several triples name the same affine point. Then open the overwrite and boundary labs and ask which field slots are live at the same time.',
     glossaryTerms: ['Affine point', 'Projective point', 'Field slot', 'Point-add boundary'],
   },
   {

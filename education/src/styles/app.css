@@ -1013,6 +1013,7 @@ code {
 .logical-physical-story h4,
 .phase-estimation-story h4,
 .ecdlp-story h4,
+.coordinate-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -1922,6 +1923,133 @@ code {
   padding: 0.2rem 0.55rem;
   color: #dce7f2;
   background: rgba(143, 182, 255, 0.11);
+  font-size: 0.82rem;
+}
+
+.coordinate-story {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.coordinate-name-strip {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.7fr) 1.4rem repeat(3, minmax(6rem, 1fr));
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.coordinate-name-strip > span {
+  display: grid;
+  place-items: center;
+  min-height: 3.1rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.3rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.coordinate-name-strip > span:first-child {
+  border-color: rgba(245, 207, 107, 0.32);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.coordinate-name-strip i,
+.slot-lifetime-sketch i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.coordinate-division-rule,
+.infinity-rule {
+  border-color: rgba(99, 230, 190, 0.2);
+}
+
+.coordinate-path-compare {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.coordinate-path-compare div {
+  display: grid;
+  gap: 0.25rem;
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.coordinate-path-compare strong,
+.coordinate-path-compare span,
+.coordinate-path-compare b {
+  display: block;
+}
+
+.coordinate-path-compare strong {
+  color: #f5cf6b;
+}
+
+.coordinate-path-compare span {
+  color: #93a4b7;
+}
+
+.coordinate-path-compare b {
+  width: fit-content;
+  border-radius: 999px;
+  padding: 0.18rem 0.55rem;
+  color: #06110f;
+  background: #63e6be;
+  font-size: 0.78rem;
+}
+
+.edge-case-stack {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.edge-case-stack span {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.42rem 0.55rem;
+  color: #dce7f2;
+  background: rgba(143, 182, 255, 0.08);
+}
+
+.slot-width-meter {
+  margin-top: 0.7rem;
+  border-radius: 999px;
+  padding: 0.18rem;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.slot-width-meter span {
+  display: block;
+  width: 100%;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.slot-lifetime-sketch {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.7rem;
+  color: #dce7f2;
+  font-size: 0.82rem;
+}
+
+.overwrite-warning-pill {
+  display: inline-block;
+  margin-top: 0.7rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.34);
+  border-radius: 999px;
+  padding: 0.22rem 0.6rem;
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.07);
   font-size: 0.82rem;
 }
 
@@ -5412,6 +5540,44 @@ code {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.coordinate-equation-strip {
+  display: grid;
+  grid-template-columns: minmax(6rem, 0.7fr) 1.2rem minmax(11rem, 1fr) 1.2rem minmax(11rem, 1fr);
+  gap: 0.4rem;
+  align-items: center;
+  margin: 0 0 0.9rem;
+}
+
+.coordinate-equation-strip > span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.coordinate-equation-strip i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.coordinate-confirmation,
+.coordinate-note {
+  margin: 0.7rem 0 0;
+  color: #b9c6d3;
+  font-size: 0.9rem;
+}
+
+.coordinate-confirmation {
+  border-left: 0.25rem solid #63e6be;
+  border-radius: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(99, 230, 190, 0.08);
+}
+
 .coordinate-stack {
   display: grid;
   gap: 0.55rem;
@@ -5674,6 +5840,8 @@ legend {
   .resource-layer-stack,
   .phase-readout-strip,
   .key-derivation-strip,
+  .coordinate-name-strip,
+  .coordinate-equation-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5824,6 +5992,8 @@ legend {
   .resource-layer-stack,
   .phase-readout-strip,
   .key-derivation-strip,
+  .coordinate-name-strip,
+  .coordinate-equation-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5921,6 +6091,11 @@ legend {
   }
 
   .key-derivation-strip i {
+    display: none;
+  }
+
+  .coordinate-name-strip i,
+  .coordinate-equation-strip i {
     display: none;
   }
 
