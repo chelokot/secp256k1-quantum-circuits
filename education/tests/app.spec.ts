@@ -22,7 +22,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByRole('heading', { name: 'Quantum Circuit Lab' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Current repo contract' })).toHaveCount(0);
   await expect(page.getByLabel('Current repository resource status')).toHaveCount(0);
-  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('given a public key Q');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Given a public key');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Classical memory stores one discrete bit string');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Quantum memory stores amplitudes');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 1 of 23');
@@ -34,7 +34,9 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('orientation-model-strip')).toContainText('Classical');
   await expect(page.getByTestId('orientation-model-strip')).toContainText('Quantum');
   await expect(page.getByTestId('orientation-model-strip')).toContainText('Readout');
-  await expect(page.getByTestId('lesson-detail-steps')).toContainText('A normal CPU step updates a bit string');
+  await expect(page.getByTestId('lesson-detail-steps')).toHaveCount(0);
+  await expect(page.getByTestId('orientation-story')).toContainText('A normal CPU step updates a bit string');
+  await expect(page.getByTestId('orientation-story')).toContainText('The project is not trying to prove that quantum computers are scary in general');
   await expect(page.getByText('A normal CPU step updates a bit string')).toBeVisible();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');

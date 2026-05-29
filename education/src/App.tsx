@@ -246,6 +246,82 @@ function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
   return null;
 }
 
+function OrientationStoryPanel() {
+  return (
+    <section className="orientation-story" data-testid="orientation-story" aria-label="Project proof orientation story">
+      <article className="story-question">
+        <h4>Start from an ordinary computer</h4>
+        <p>
+          A normal CPU step updates a bit string. At one instant memory might be
+          {' '}<MathTex tex="0101" />; after an instruction it might be{' '}<MathTex tex="0111" />.
+          The machine has memory, operations, intermediate states, and final readout.
+        </p>
+        <p>
+          A quantum circuit keeps that same skeleton. The difference is that the
+          memory is not one point. It is an amplitude vector, and each gate is a
+          strict mathematical transformation of that vector before measurement
+          returns ordinary bits.
+        </p>
+      </article>
+
+      <OrientationModelVisual />
+
+      <article className="story-rule orientation-state-rule">
+        <div>
+          <h4>What changes</h4>
+          <p>
+            Classical memory can be pictured as one selected label. Quantum memory is
+            a weighted list of labels, written as
+            {' '}<MathTex tex="|\psi\rangle=\sum_x \alpha_x|x\rangle" />. The labels
+            are still bit strings; the new part is the amplitude attached to each one.
+          </p>
+          <p>
+            Gates must preserve the total probability and remain reversible. That is
+            why this repo keeps talking about wires, cleanup, and liveness instead of
+            treating temporary values as disposable local variables.
+          </p>
+        </div>
+        <div className="state-label-stack" aria-hidden="true">
+          <span><b>classical</b><i>0101</i></span>
+          <span><b>quantum</b><i>a|0000&gt; + b|0101&gt; + ...</i></span>
+        </div>
+      </article>
+
+      <article className="story-question orientation-target">
+        <h4>The concrete target</h4>
+        <p>
+          Given a public key <MathTex tex="Q" />, the hidden private number is
+          {' '}<MathTex tex="d" />. For secp256k1 they are connected by
+          {' '}<MathTex tex="Q=dG" />. The project is not trying to prove that quantum
+          computers are scary in general; it is trying to prove the cost of one
+          executable quantum circuit for recovering <MathTex tex="d" />.
+        </p>
+      </article>
+
+      <article className="story-rule proof-chain-rule">
+        <div>
+          <h4>What would make the number believable</h4>
+          <p>
+            The chain must stay connected end to end: mathematical attack, executable
+            circuit, semantic tests, primitive resource accounting, and checked
+            artifacts. If a link summarizes away a wire, the final number can still
+            look precise while no longer describing the circuit that was tested.
+          </p>
+        </div>
+        <div className="proof-chain-mini" aria-hidden="true">
+          <span>attack</span>
+          <i />
+          <span>circuit</span>
+          <i />
+          <span>resources</span>
+          <i />
+          <span>artifact</span>
+        </div>
+      </article>
+    </section>
+  );
+}
+
 function OrientationModelVisual() {
   return (
     <div className="orientation-model-strip" data-testid="orientation-model-strip">
@@ -2740,7 +2816,7 @@ export function App() {
             <section className="lesson-primer" aria-label="Lesson introduction">
               <p>{activeLesson.mentalModel}</p>
             </section>
-            {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
+            {activeLesson.id === 'zero' ? <OrientationStoryPanel /> : null}
             {activeLesson.id === 'qubit' ? <QubitStoryPanel /> : null}
             {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
             {activeLesson.id === 'two-qubit' ? <TwoQubitStoryPanel /> : null}
@@ -2763,7 +2839,7 @@ export function App() {
             {activeLesson.id === 'contribution' ? <ContributionStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'repo-baselines' ? <RepoBaselineStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['qubit', 'one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['zero', 'qubit', 'one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

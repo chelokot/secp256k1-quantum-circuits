@@ -1006,6 +1006,7 @@ code {
   font-size: 0.88rem;
 }
 
+.orientation-story,
 .qubit-story,
 .one-qubit-story {
   display: grid;
@@ -1019,6 +1020,7 @@ code {
   margin: 1rem 0;
 }
 
+.orientation-story h4,
 .qubit-story h4,
 .one-qubit-story h4,
 .two-qubit-story h4,
@@ -1150,6 +1152,57 @@ code {
 
 .mini-prob-bars i.alt {
   background: #f5cf6b;
+}
+
+.state-label-stack {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.state-label-stack span {
+  display: grid;
+  gap: 0.25rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.state-label-stack b {
+  color: #63e6be;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.state-label-stack i {
+  color: #fff7cf;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.proof-chain-mini {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.proof-chain-mini span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.26);
+  border-radius: 0.5rem;
+  padding: 0.4rem;
+  color: #fff7cf;
+  background: rgba(245, 207, 107, 0.08);
+  font-weight: 800;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.proof-chain-mini i {
+  display: none;
 }
 
 .qubit-motion-strip {
