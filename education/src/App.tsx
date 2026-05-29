@@ -1711,6 +1711,251 @@ function OwnerCapacityStoryPanel({ data }: { data: typeof projectData }) {
   );
 }
 
+function NetlistStoryPanel() {
+  return (
+    <section className="netlist-story" data-testid="netlist-story" aria-label="Primitive netlist and liveness story">
+      <article className="story-question">
+        <h4>A formula is too smooth to count</h4>
+        <p>
+          A formula such as “add this point” describes a mathematical effect. A
+          resource audit needs the rougher object underneath it: named rows, named
+          wires, widths, owners, and the exact row where each temporary value is
+          cleaned or carried forward.
+        </p>
+        <div className="engine-flow-strip" aria-hidden="true">
+          <span>formula</span>
+          <i />
+          <span>primitive rows</span>
+          <i />
+          <span>live intervals</span>
+          <i />
+          <span>peak resources</span>
+        </div>
+      </article>
+
+      <article className="story-rule netlist-rule">
+        <div>
+          <h4>Rows turn intuition into receipts</h4>
+          <p>
+            A primitive row is small enough to audit mechanically: operation, controls,
+            targets, owner, width, and cost. Once rows exist, liveness becomes a scan:
+            a wire is born when a row creates it, remains counted while later rows need
+            it, and dies only when output, cleanup, or measurement justifies that death.
+          </p>
+          <p>
+            That is why a flat netlist feels boring. It is supposed to be boring:
+            boring rows are the thing a reviewer can replay.
+          </p>
+        </div>
+        <div className="row-receipt-card" aria-hidden="true">
+          <span>row 42</span>
+          <strong>ccx partial_product</strong>
+          <em>birth: scratch[17]</em>
+          <em>owner: temporary_and_target_wire</em>
+          <em>cleanup: row 83</em>
+        </div>
+      </article>
+
+      <div className="story-card-grid">
+        <article>
+          <strong>Not a register list</strong>
+          <p>Peak qubits are not chosen by listing registers that seem important.</p>
+          <span className="story-token">derive from intervals</span>
+        </article>
+        <article>
+          <strong>Not a macro summary</strong>
+          <p>A macro can hide temporary wires unless it lowers into primitive rows.</p>
+          <span className="story-token">lower before claiming</span>
+        </article>
+        <article>
+          <strong>Not a doc number</strong>
+          <p>The number in docs should be pulled from the same artifact the engine produced.</p>
+          <span className="story-token">artifact-backed docs</span>
+        </article>
+      </div>
+    </section>
+  );
+}
+
+function ResourceEngineStoryPanel({ data }: { data: typeof projectData }) {
+  const gate = data.acceptedBaselineGate;
+  const completion = data.engineCompletion;
+  const blockerRows = gate.rows.slice(0, 4);
+
+  return (
+    <section className="resource-engine-story" data-testid="resource-engine-story" aria-label="Resource engine source of truth story">
+      <article className="story-question">
+        <h4>The engine exists because precise-looking counts lied</h4>
+        <p>
+          Earlier attempts failed when a lookup lane, guard ladder, or arithmetic
+          scratch value was treated as if it were already paid for. The repair is not
+          a better paragraph. It is one executable primitive stream that every later
+          number has to come from.
+        </p>
+        <div className="source-of-truth-strip" aria-hidden="true">
+          <span>execute rows</span>
+          <i />
+          <span>derive liveness</span>
+          <i />
+          <span>check owners</span>
+          <i />
+          <span>emit artifacts</span>
+        </div>
+      </article>
+
+      <article className="story-rule proof-contract-rule">
+        <div>
+          <h4>One stream should feed every claim surface</h4>
+          <p>
+            The same primitive stream should be used for semantic replay, liveness,
+            non-Clifford cost, generated docs, public values, and proof input. If any
+            surface uses a different summary, the result can be internally consistent
+            while proving the wrong object.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>execution tests</span>
+          <span>owner capacity</span>
+          <span>resource certificate</span>
+          <span>ZKP public values</span>
+        </div>
+      </article>
+
+      <article className="story-rule engine-status-rule">
+        <div>
+          <h4>Current status is intentionally not “accepted baseline”</h4>
+          <p>
+            The engine completion artifact says Clifford-complete goal achieved:{' '}
+            <code>{String(completion.cliffordCompleteGoalAchieved)}</code>. The accepted
+            baseline gate is <code>{gate.status}</code> because the public baseline may
+            be populated only after every gate row passes and totals are recomputed
+            from that same primitive stream.
+          </p>
+        </div>
+        <div className="engine-blocker-list">
+          {blockerRows.map((row) => (
+            <div key={row.name}>
+              <span>{row.name}</span>
+              <strong>{row.status}</strong>
+            </div>
+          ))}
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function MiniEngineStoryPanel() {
+  return (
+    <section className="mini-engine-story" data-testid="mini-engine-story" aria-label="Mini resource engine story">
+      <article className="story-question">
+        <h4>The toy engine is the real rule at small scale</h4>
+        <p>
+          The lab uses tiny widths so the whole resource derivation fits on one page.
+          The rule is the same as the repo rule: rows create wire groups, cleanup
+          shortens lifetimes, owners provide capacity, and the maximum overlapping
+          live width is the qubit pressure.
+        </p>
+        <div className="mini-engine-flow-strip" aria-hidden="true">
+          <span>birth row</span>
+          <i />
+          <span>live interval</span>
+          <i />
+          <span>owner load</span>
+          <i />
+          <span>peak row</span>
+        </div>
+      </article>
+
+      <article className="story-rule mini-engine-rule">
+        <div>
+          <h4>Cleanup can lower qubits without changing the answer</h4>
+          <p>
+            Source-uncompute does not mean “delete a variable from the report.” It
+            means run the inverse of the temporary computation while the sources are
+            still available. The output behavior is the same, but the scratch interval
+            ends earlier, so the peak overlap can drop.
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="\mathrm{peak}=\max_t\sum_{\text{live at }t}|w|" />
+          </p>
+        </div>
+        <div className="mini-lifecycle-compare" aria-hidden="true">
+          <div><span>without cleanup</span><strong>scratch lives to the end</strong></div>
+          <div><span>with cleanup</span><strong>scratch dies after use</strong></div>
+        </div>
+      </article>
+    </section>
+  );
+}
+
+function OptimizationStoryPanel({ data }: { data: typeof projectData }) {
+  const mission = data.optimizationMission;
+  const current = mission.candidateRows[0];
+  const sixFitsQubits = mission.candidateRows[2];
+  const fiveSlot = mission.candidateRows[3];
+
+  return (
+    <section className="optimization-story" data-testid="optimization-story" aria-label="Optimization search story">
+      <article className="story-question">
+        <h4>The smallest number is not automatically the best result</h4>
+        <p>
+          Optimization here is a constrained search. A candidate must improve qubits,
+          keep non-Clifford under the gate budget, preserve the point-add contract,
+          expose every owner capacity, lower into executable primitives, and then feed
+          the proof boundary. Missing one axis changes the claim status.
+        </p>
+        <div className="optimization-gate-strip" aria-hidden="true">
+          <span>qubits</span>
+          <i />
+          <span>non-Clifford</span>
+          <i />
+          <span>semantics</span>
+          <i />
+          <span>promotion</span>
+        </div>
+      </article>
+
+      <article className="story-rule candidate-frontier-rule">
+        <div>
+          <h4>Why the current frontier is blocked</h4>
+          <p>
+            The active target is below {formatInt(mission.target.logical_qubits_exclusive)}
+            {' '}logical qubits and below {formatInt(mission.target.non_clifford_exclusive)}
+            {' '}non-Clifford. The current strict row keeps gates under budget but is
+            at {formatInt(current.logical_qubits)} qubits. A six-slot lookup squeeze
+            can fit qubits only by raising non-Clifford to {formatInt(sixFitsQubits.non_clifford)}.
+            A five-slot row would fit both numbers, but no executable promoted schedule
+            is known.
+          </p>
+        </div>
+        <div className="optimization-candidate-strip" aria-hidden="true">
+          <div><span>current strict</span><strong>{formatInt(current.logical_qubits)}q</strong><em>{formatInt(current.non_clifford)}</em></div>
+          <div><span>six-slot squeeze</span><strong>{formatInt(sixFitsQubits.logical_qubits)}q</strong><em>{formatInt(sixFitsQubits.non_clifford)}</em></div>
+          <div><span>five-slot hope</span><strong>{formatInt(fiveSlot.logical_qubits)}q</strong><em>{fiveSlot.status}</em></div>
+        </div>
+      </article>
+
+      <article className="story-rule breakthrough-rule">
+        <div>
+          <h4>The next useful patch must close a specific gate</h4>
+          <p>
+            The primary breakthrough is: {mission.nextRequiredBreakthrough.primary}.
+            The secondary route is: {mission.nextRequiredBreakthrough.secondary}.
+            Merely changing the headline number is not enough.
+          </p>
+        </div>
+        <div className="owner-checklist" aria-hidden="true">
+          <span>state what changed</span>
+          <span>show the paid cost</span>
+          <span>prove semantic boundary</span>
+          <span>promote into the engine</span>
+        </div>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -2206,6 +2451,7 @@ export function App() {
             {activeLesson.id === 'clifford' ? <CliffordStoryPanel /> : null}
             {activeLesson.id === 'logic-physical' ? <LogicalPhysicalStoryPanel /> : null}
             {activeLesson.id === 'phase-estimation' ? <PhaseEstimationStoryPanel /> : null}
+            {activeLesson.id === 'netlists' ? <NetlistStoryPanel /> : null}
             {activeLesson.id === 'ecdlp' ? <EcdlpStoryPanel /> : null}
             {activeLesson.id === 'coordinates' ? <CoordinatesStoryPanel /> : null}
             {activeLesson.id === 'lookup-qroam' ? <LookupQroamStoryPanel data={projectData} /> : null}
@@ -2213,8 +2459,11 @@ export function App() {
             {activeLesson.id === 'cleanup' ? <CleanupStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'modular-lowering' ? <ModularLoweringStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'owner-capacity' ? <OwnerCapacityStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'resource-engine' ? <ResourceEngineStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'mini-engine' ? <MiniEngineStoryPanel /> : null}
+            {activeLesson.id === 'optimization' ? <OptimizationStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

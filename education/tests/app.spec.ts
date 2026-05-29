@@ -280,6 +280,8 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await openLesson(page, 'netlists');
   await expect(page.getByTestId('lab-route')).toContainText('Circuit stack map');
   await expect(page.getByTestId('lab-route')).toContainText('Mini resource engine');
+  await expect(page.getByTestId('netlist-story')).toContainText('A formula is too smooth to count');
+  await expect(page.getByTestId('netlist-story')).toContainText('Rows turn intuition into receipts');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Old failure mode');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('rows create live intervals');
@@ -677,6 +679,8 @@ test('teaches the result confidence ladder before saying accepted baseline', asy
 test('lets the learner derive peak qubits from a mini engine', async ({ page }) => {
   await openLesson(page, 'mini-engine');
 
+  await expect(page.getByTestId('mini-engine-story')).toContainText('The toy engine is the real rule at small scale');
+  await expect(page.getByTestId('mini-engine-story')).toContainText('Cleanup can lower qubits without changing the answer');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Mini resource engine');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: fail');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 10');
@@ -688,6 +692,16 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 9');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('assigned and sized');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('scratch dies early');
+});
+
+test('teaches the real resource engine source-of-truth boundary', async ({ page }) => {
+  await openLesson(page, 'resource-engine');
+
+  await expect(page.getByTestId('resource-engine-story')).toContainText('The engine exists because precise-looking counts lied');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('One stream should feed every claim surface');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('Current status is intentionally not');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('End-to-end circuit stack map');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
 });
 
 test('shows how one opcode lowers to primitive rows and liveness intervals', async ({ page }) => {
@@ -724,6 +738,10 @@ test('teaches schedule optimization by shortening live intervals', async ({ page
 
 test('teaches optimization tradeoffs from the hybrid bridge search', async ({ page }) => {
   await openLesson(page, 'optimization');
+
+  await expect(page.getByTestId('optimization-story')).toContainText('The smallest number is not automatically the best result');
+  await expect(page.getByTestId('optimization-story')).toContainText('Why the current frontier is blocked');
+  await expect(page.getByTestId('optimization-story')).toContainText('The next useful patch must close a specific gate');
   await selectRouteLab(page, /Optimization mission/);
 
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Optimization mission');

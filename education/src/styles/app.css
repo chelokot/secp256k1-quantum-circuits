@@ -1012,6 +1012,7 @@ code {
 .clifford-story h4,
 .logical-physical-story h4,
 .phase-estimation-story h4,
+.netlist-story h4,
 .ecdlp-story h4,
 .coordinate-story h4,
 .lookup-story h4,
@@ -1019,6 +1020,9 @@ code {
 .cleanup-story-panel h4,
 .modular-lowering-story h4,
 .owner-capacity-story h4,
+.resource-engine-story h4,
+.mini-engine-story h4,
+.optimization-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -2130,7 +2134,11 @@ code {
 .programming-story,
 .cleanup-story-panel,
 .modular-lowering-story,
-.owner-capacity-story {
+.owner-capacity-story,
+.netlist-story,
+.resource-engine-story,
+.mini-engine-story,
+.optimization-story {
   display: grid;
   gap: 0.9rem;
   margin: 1rem 0;
@@ -2139,7 +2147,11 @@ code {
 .program-contract-split,
 .scratch-story-strip,
 .modular-pipeline-strip,
-.owner-ledger-strip {
+.owner-ledger-strip,
+.engine-flow-strip,
+.source-of-truth-strip,
+.mini-engine-flow-strip,
+.optimization-gate-strip {
   display: grid;
   grid-template-columns: minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr);
   gap: 0.45rem;
@@ -2152,14 +2164,36 @@ code {
 }
 
 .modular-pipeline-strip,
-.owner-ledger-strip {
+.owner-ledger-strip,
+.engine-flow-strip,
+.source-of-truth-strip,
+.mini-engine-flow-strip,
+.optimization-gate-strip {
   grid-template-columns: minmax(7rem, 1fr) 1.2rem minmax(8rem, 1fr) 1.2rem minmax(8rem, 1fr) 1.2rem minmax(7rem, 1fr);
+}
+
+.engine-flow-strip,
+.source-of-truth-strip,
+.mini-engine-flow-strip,
+.optimization-gate-strip {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.engine-flow-strip i,
+.source-of-truth-strip i,
+.mini-engine-flow-strip i,
+.optimization-gate-strip i {
+  display: none;
 }
 
 .program-contract-split div,
 .scratch-story-strip span,
 .modular-pipeline-strip span,
-.owner-ledger-strip span {
+.owner-ledger-strip span,
+.engine-flow-strip span,
+.source-of-truth-strip span,
+.mini-engine-flow-strip span,
+.optimization-gate-strip span {
   display: grid;
   place-items: center;
   min-height: 3.2rem;
@@ -2177,7 +2211,11 @@ code {
 }
 
 .modular-pipeline-strip span:first-child,
-.owner-ledger-strip span:first-child {
+.owner-ledger-strip span:first-child,
+.engine-flow-strip span:first-child,
+.source-of-truth-strip span:first-child,
+.mini-engine-flow-strip span:first-child,
+.optimization-gate-strip span:first-child {
   border-color: rgba(245, 207, 107, 0.3);
   background: rgba(245, 207, 107, 0.08);
 }
@@ -2201,11 +2239,16 @@ code {
 .program-contract-split i,
 .scratch-story-strip i,
 .modular-pipeline-strip i,
-.owner-ledger-strip i {
+.owner-ledger-strip i,
+.engine-flow-strip i,
+.source-of-truth-strip i,
+.mini-engine-flow-strip i,
+.optimization-gate-strip i {
   height: 0.12rem;
   background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
+.netlist-rule,
 .row-schema-rule,
 .parser-rule,
 .bennett-rule,
@@ -2213,7 +2256,12 @@ code {
 .modular-grid-rule,
 .carry-compression-rule,
 .capacity-equation-rule,
-.guard-ladder-rule {
+.guard-ladder-rule,
+.proof-contract-rule,
+.engine-status-rule,
+.mini-engine-rule,
+.candidate-frontier-rule,
+.breakthrough-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
@@ -2366,12 +2414,85 @@ code {
   color: #dce7f2;
 }
 
+.row-receipt-card,
+.proof-contract-list,
+.engine-blocker-list,
+.mini-lifecycle-compare,
+.optimization-candidate-strip {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.row-receipt-card,
+.proof-contract-list span,
+.engine-blocker-list div,
+.mini-lifecycle-compare div,
+.optimization-candidate-strip div {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.row-receipt-card span,
+.row-receipt-card strong,
+.row-receipt-card em,
+.engine-blocker-list span,
+.engine-blocker-list strong,
+.mini-lifecycle-compare span,
+.mini-lifecycle-compare strong,
+.optimization-candidate-strip span,
+.optimization-candidate-strip strong,
+.optimization-candidate-strip em {
+  display: block;
+}
+
+.row-receipt-card span,
+.engine-blocker-list span,
+.mini-lifecycle-compare span,
+.optimization-candidate-strip span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.row-receipt-card strong,
+.engine-blocker-list strong,
+.mini-lifecycle-compare strong,
+.optimization-candidate-strip strong {
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.row-receipt-card em,
+.optimization-candidate-strip em {
+  color: #b4c4d6;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.proof-contract-list span {
+  color: #dce7f2;
+}
+
+.engine-blocker-list strong {
+  margin-top: 0.25rem;
+  color: #ffb4b4;
+  overflow-wrap: anywhere;
+}
+
 .story-rule {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.42fr);
   gap: 0.9rem;
   align-items: center;
   border-color: rgba(245, 207, 107, 0.22);
+}
+
+.story-rule > *,
+.story-card-grid > article,
+.story-motion-grid > article {
+  min-width: 0;
 }
 
 .unitary-rule-box {
@@ -4881,9 +5002,12 @@ code {
 .mission-controls label:first-child {
   display: grid;
   gap: 0.45rem;
+  min-width: 0;
 }
 
 .mission-controls select {
+  width: 100%;
+  min-width: 0;
   border: 0.0625rem solid rgba(255, 255, 255, 0.14);
   border-radius: 0.5rem;
   padding: 0.55rem;
@@ -6192,6 +6316,10 @@ legend {
   .scratch-story-strip,
   .modular-pipeline-strip,
   .owner-ledger-strip,
+  .engine-flow-strip,
+  .source-of-truth-strip,
+  .mini-engine-flow-strip,
+  .optimization-gate-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6350,6 +6478,10 @@ legend {
   .scratch-story-strip,
   .modular-pipeline-strip,
   .owner-ledger-strip,
+  .engine-flow-strip,
+  .source-of-truth-strip,
+  .mini-engine-flow-strip,
+  .optimization-gate-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6456,7 +6588,11 @@ legend {
   .program-contract-split i,
   .scratch-story-strip i,
   .modular-pipeline-strip i,
-  .owner-ledger-strip i {
+  .owner-ledger-strip i,
+  .engine-flow-strip i,
+  .source-of-truth-strip i,
+  .mini-engine-flow-strip i,
+  .optimization-gate-strip i {
     display: none;
   }
 
