@@ -3827,6 +3827,10 @@ code {
   background: rgba(99, 230, 190, 0.055);
 }
 
+.controlled-x-explainer > * {
+  min-width: 0;
+}
+
 .controlled-x-explainer p {
   margin: 0;
 }
@@ -3868,6 +3872,12 @@ code {
   border-radius: 999rem;
   color: #ffffff;
   background: rgba(99, 230, 190, 0.11);
+}
+
+@media (max-width: 58rem) {
+  .controlled-x-explainer {
+    grid-template-columns: 1fr;
+  }
 }
 
 .probability-track {
