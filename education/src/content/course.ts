@@ -362,16 +362,17 @@ export const lessons: CourseLesson[] = [
     title: 'Program tiny circuits before trusting giant ones',
     icon: CircuitBoard,
     intuition:
-      'The right learning loop is to write tiny reversible circuits, inspect their wires, and watch how cleanup changes the resource story.',
+      'The right learning loop is to write tiny reversible circuits, inspect their rows, make bad rows fail loudly, and only then trust larger resource claims.',
     whyItMatters:
       'Once you can see why a three-wire toy leaves garbage, you can spot the same class of bug in a million-row arithmetic lowering.',
     mentalModel:
-      'Every quantum program is a contract between state transformation and cleanup. The debugger is liveness.',
-    checkpoint: 'A useful contributor can translate an attractive algebraic trick into a reversible wire-level contract.',
+      'A quantum program is not just a script of intentions. It is a row stream over named wires. Each row has an operation, operands, cost, and lifecycle effect; only that row stream can be executed, tested, lowered, and counted.',
+    checkpoint: 'A useful contributor can translate an attractive algebraic trick into primitive rows with operands, owners, costs, and cleanup obligations.',
     deepDive: [
-      'The toy DSL is intentionally small: H, X, CX, CCX, and M. The point is to feel that even simple rows have concrete wire operands and countable costs.',
+      'The toy DSL is intentionally small: H, X, S, CX, CCX, and M. The point is to feel that even simple rows have concrete wire operands and countable costs.',
       'Invalid opcodes are useful. They show that a compiler must reject unknown operations instead of silently pretending a circuit was produced.',
-      'The same habit scales up: an arithmetic optimization is not real until it becomes primitive rows with owners, costs, and cleanup.',
+      'A row table is the first audit surface: which wires exist, which rows touch them, which rows spend non-Clifford budget, and which rows leave cleanup obligations.',
+      'The same habit scales up: an arithmetic optimization is not real until it becomes primitive rows with owners, costs, liveness intervals, and cleanup.',
     ],
     coreIdeas: [
       'Write rows before trusting formulas.',
@@ -387,15 +388,16 @@ export const lessons: CourseLesson[] = [
     title: 'Cleanup is the difference between scratch and garbage',
     icon: RotateCcw,
     intuition:
-      'Quantum temporary values are allowed only if the circuit later erases them reversibly or counts them as live output state.',
+      'Quantum temporary values are allowed only if the circuit later erases them reversibly or counts them as live output state. A forgotten scratch wire is not a harmless local variable.',
     whyItMatters:
       'The modular accumulator work in this repo is largely about proving that partial-product scratch can be consumed and uncomputed without hidden garbage.',
     mentalModel:
-      'A temporary value is safe only if it is used as intended and then returned to zero by reversing the computation that created it.',
-    checkpoint: 'A cleanup proof must identify the source controls, target, inverse operation, and liveness interval.',
+      'A safe temporary has a complete lifecycle: compute it from named source controls, consume the useful effect into a counted destination, then replay the inverse with the same sources so the temporary target returns to zero.',
+    checkpoint: 'A cleanup proof must identify the source controls, target, owner, inverse operation, and liveness interval.',
     deepDive: [
       'Compute creates a temporary wire from source controls. Use consumes that temporary into the intended destination.',
       'Uncompute must replay the matching source controls so the temporary target returns to zero. Merely dropping the variable name is not cleanup.',
+      'Leftover garbage can be a semantic bug, not just a memory leak, because it can remain correlated with the output and prevent later interference from working as intended.',
       'The modular accumulator blocker is this pattern at scale: many temporary AND targets need consume rows and source-uncompute rows.',
     ],
     coreIdeas: [

@@ -500,7 +500,10 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
 });
 
 test('lets the learner write and debug a tiny quantum netlist', async ({ page }) => {
-  await openLesson(page, 'gates');
+  await openLesson(page, 'programming');
+  await expect(page.getByTestId('programming-story')).toContainText('A circuit program is a contract over wires');
+  await expect(page.getByTestId('programming-story')).toContainText('Rows are the smallest auditable unit');
+  await expect(page.getByTestId('programming-story')).toContainText('A rejected row is a feature');
   await selectRouteLab(page, /Quantum DSL/);
 
   const editor = page.getByLabel('Quantum DSL editor');
@@ -515,7 +518,10 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
 });
 
 test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
-  await openLesson(page, 'gates');
+  await openLesson(page, 'cleanup');
+  await expect(page.getByTestId('cleanup-story')).toContainText('Scratch becomes garbage when its story stops');
+  await expect(page.getByTestId('cleanup-story')).toContainText('The safe pattern is compute, consume, reverse');
+  await expect(page.getByTestId('cleanup-story')).toContainText('How this maps to the repo blocker');
   await selectRouteLab(page, /Cleanup puzzle/);
 
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: fail');
@@ -751,6 +757,7 @@ test('shows real modular accumulator lowering obligations', async ({ page }) => 
 
 test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) => {
   await openLesson(page, 'cleanup');
+  await selectRouteLab(page, /Scratch lifecycle/);
 
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Scratch lifecycle lab');
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('720,896');

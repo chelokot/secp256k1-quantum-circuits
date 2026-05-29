@@ -1015,6 +1015,8 @@ code {
 .ecdlp-story h4,
 .coordinate-story h4,
 .lookup-story h4,
+.programming-story h4,
+.cleanup-story-panel h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -2118,6 +2120,143 @@ code {
 
 .qroam-parameter-card strong,
 .qroam-model-split strong {
+  color: #ffffff;
+}
+
+.programming-story,
+.cleanup-story-panel {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.program-contract-split,
+.scratch-story-strip {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.scratch-story-strip {
+  grid-template-columns: minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr);
+}
+
+.program-contract-split div,
+.scratch-story-strip span {
+  display: grid;
+  place-items: center;
+  min-height: 3.2rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.program-contract-split div:first-child {
+  border-color: rgba(245, 207, 107, 0.3);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.program-contract-split span,
+.program-contract-split strong {
+  display: block;
+}
+
+.program-contract-split span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.program-contract-split strong {
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+}
+
+.program-contract-split i,
+.scratch-story-strip i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.row-schema-rule,
+.parser-rule,
+.bennett-rule,
+.artifact-cleanup-rule {
+  border-color: rgba(99, 230, 190, 0.2);
+}
+
+.row-schema-strip,
+.bennett-cycle {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.row-schema-strip span,
+.bennett-cycle span {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.42rem 0.55rem;
+  color: #dce7f2;
+  background: rgba(143, 182, 255, 0.08);
+  text-align: center;
+}
+
+.parser-fail-card {
+  display: grid;
+  gap: 0.45rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.parser-fail-card span,
+.parser-fail-card strong {
+  display: block;
+}
+
+.parser-fail-card span {
+  color: #f5cf6b;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.parser-fail-card strong {
+  color: #ffffff;
+}
+
+.bennett-cycle span:nth-child(2) {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.cleanup-artifact-numbers {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.cleanup-artifact-numbers div {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.cleanup-artifact-numbers span,
+.cleanup-artifact-numbers strong {
+  display: block;
+}
+
+.cleanup-artifact-numbers span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.cleanup-artifact-numbers strong {
   color: #ffffff;
 }
 
@@ -5943,6 +6082,8 @@ legend {
   .coordinate-equation-strip,
   .qroam-flow-strip,
   .qroam-formula-strip,
+  .program-contract-split,
+  .scratch-story-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6097,6 +6238,8 @@ legend {
   .coordinate-equation-strip,
   .qroam-flow-strip,
   .qroam-formula-strip,
+  .program-contract-split,
+  .scratch-story-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6199,7 +6342,9 @@ legend {
 
   .coordinate-name-strip i,
   .coordinate-equation-strip i,
-  .qroam-flow-strip i {
+  .qroam-flow-strip i,
+  .program-contract-split i,
+  .scratch-story-strip i {
     display: none;
   }
 

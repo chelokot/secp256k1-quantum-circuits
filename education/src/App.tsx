@@ -127,6 +127,15 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
     { name: 'QROAM selection', goal: 'Separate address controls, selected target lane, owner, and cleanup.' },
     { name: 'QROAMClean tradeoff', goal: 'Increase K and watch gate savings require more counted workspace.' },
   ],
+  programming: [
+    { name: 'Primitive netlist toy', goal: 'Build rows and see operands, effects, and non-Clifford cost.' },
+    { name: 'Quantum DSL', goal: 'Type valid rows, reject invalid opcodes, and inspect the parsed table.' },
+    { name: 'Opcode lowering', goal: 'Expand one abstract opcode into primitive counted rows.' },
+  ],
+  cleanup: [
+    { name: 'Cleanup puzzle', goal: 'Prove compute, consume, and uncompute as one lifecycle.' },
+    { name: 'Scratch lifecycle', goal: 'Compare artifact-backed partial-product and guard cleanup obligations.' },
+  ],
   'modular-lowering': [
     { name: 'Partial-product grid', goal: 'See why a multiply becomes many temporary bit products.' },
     { name: 'Modular reduction', goal: 'Follow high-column folds back into field range.' },
@@ -1280,6 +1289,200 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
   );
 }
 
+function ProgrammingStoryPanel() {
+  return (
+    <section className="programming-story" data-testid="programming-story" aria-label="Tiny circuit programming story">
+      <article className="story-question">
+        <h4>A circuit program is a contract over wires</h4>
+        <p>
+          A classical program can hide many details behind a line like{' '}
+          <code>acc ^= x &amp; y</code>. A quantum circuit cannot treat that as a
+          black box. The compiler must say which wires hold <MathTex tex="x" /> and{' '}
+          <MathTex tex="y" />, where the temporary product lands, how the accumulator
+          changes, and how the temporary is cleaned.
+        </p>
+        <div className="program-contract-split" aria-hidden="true">
+          <div><span>classical expression</span><strong>acc ^= x & y</strong></div>
+          <i />
+          <div><span>primitive rows</span><strong>compute, consume, uncompute</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule row-schema-rule">
+        <div>
+          <h4>Rows are the smallest auditable unit</h4>
+          <p>
+            The toy DSL is deliberately small: <code>H</code>, <code>X</code>,{' '}
+            <code>S</code>, <code>CX</code>, <code>CCX</code>, and <code>M</code>.
+            The important skill is not memorizing these names. It is learning to read
+            every row as <em>operation + operands + cost + lifecycle effect</em>.
+          </p>
+          <p>
+            Once a row has concrete operands, a test can execute it, the liveness engine
+            can derive births and deaths, and a resource certificate can count it.
+          </p>
+        </div>
+        <div className="row-schema-strip" aria-hidden="true">
+          <span>op</span>
+          <span>operands</span>
+          <span>owner</span>
+          <span>cost</span>
+          <span>cleanup</span>
+        </div>
+      </article>
+
+      <article className="story-rule parser-rule">
+        <div>
+          <h4>A rejected row is a feature</h4>
+          <p>
+            Unknown operations must fail loudly. If a compiler silently accepts a row
+            it cannot lower, the final resource number may still look exact while no
+            executable circuit exists behind it.
+          </p>
+          <p>
+            That is why the lab asks you to type a bad opcode first. The useful habit
+            is to distrust summaries until the parser, row table, costs, and cleanup
+            checks all describe the same object.
+          </p>
+        </div>
+        <div className="parser-fail-card" aria-hidden="true">
+          <span>BAD q0</span>
+          <strong>reject before counting</strong>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Primitive row</h4>
+          <p>One scheduled operation touching named wires at one point in time.</p>
+          <span className="story-token">CCX q0 q1 q2</span>
+        </article>
+        <article>
+          <h4>Wire set</h4>
+          <p>The set of names touched by the program becomes the first liveness surface.</p>
+          <span className="story-token">q0, q1, q2</span>
+        </article>
+        <article>
+          <h4>Cost surface</h4>
+          <p>Clifford rows can be cheap while Toffoli-like rows spend non-Clifford budget.</p>
+          <span className="story-token">CCX = 1 toy NC</span>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>What to do in the labs</h4>
+        <p>
+          Build a tiny row table first, then edit the DSL until it rejects and recovers.
+          When the parser says valid, compare rows, wires, and non-Clifford total. Then
+          continue to cleanup: a valid row stream is still incomplete if it leaves scratch.
+        </p>
+      </article>
+    </section>
+  );
+}
+
+function CleanupStoryPanel({ data }: { data: typeof projectData }) {
+  const lifecycle = data.modularMultiplierLifecycle;
+  const sourceUncompute = data.modularAccumulator.sourceUncompute;
+  const provenCleanup = sourceUncompute.cleanupStatusCounts.source_uncompute_cleanup_ccx_proven ?? 0;
+  const missingGuardCleanup = sourceUncompute.cleanupStatusCounts.missing_source_controls_for_cleanup ?? 0;
+
+  return (
+    <section className="cleanup-story-panel" data-testid="cleanup-story" aria-label="Uncomputation and scratch lifecycle story">
+      <article className="story-question">
+        <h4>Scratch becomes garbage when its story stops</h4>
+        <p>
+          A temporary value is allowed while it has a purpose. The problem starts when
+          the circuit computes it, uses the name in a summary, and then never proves
+          where the quantum state went. In a quantum subroutine, leftover scratch can
+          remain correlated with the output and block the interference the larger
+          algorithm needs.
+        </p>
+        <div className="scratch-story-strip" aria-hidden="true">
+          <span>compute scratch</span>
+          <i />
+          <span>use effect</span>
+          <i />
+          <span>uncompute scratch</span>
+        </div>
+      </article>
+
+      <article className="story-rule bennett-rule">
+        <div>
+          <h4>The safe pattern is compute, consume, reverse</h4>
+          <p>
+            Bennett-style reversible computation keeps enough information to run the
+            computation backward. For a circuit leaf, that usually means compute a
+            temporary, consume its useful effect into a counted destination, then replay
+            the same source controls to return the temporary target to <MathTex tex="|0\rangle" />.
+          </p>
+          <p>
+            Cleanup is therefore a semantic proof, not a formatting preference. If the
+            source controls are not still available, the inverse row is not justified.
+          </p>
+        </div>
+        <div className="bennett-cycle" aria-hidden="true">
+          <span>forward</span>
+          <span>copy or consume output</span>
+          <span>reverse</span>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Missing cleanup</h4>
+          <p>The scratch wire stays live. It must still be counted and may carry unwanted correlation.</p>
+          <div className="audit-fail">garbage live</div>
+        </article>
+        <article>
+          <h4>Wrong cleanup</h4>
+          <p>An inverse using different controls can change the function instead of erasing scratch.</p>
+          <div className="audit-fail">source mismatch</div>
+        </article>
+        <article>
+          <h4>Proven cleanup</h4>
+          <p>Same sources, same target, inverse action, and a live interval ending at cleanup.</p>
+          <div className="audit-pass">scratch returns to zero</div>
+        </article>
+      </div>
+
+      <article className="story-rule artifact-cleanup-rule">
+        <div>
+          <h4>How this maps to the repo blocker</h4>
+          <p>
+            The modular multiplier lifecycle currently reports{' '}
+            {formatInt(lifecycle.currentStream.scratchObservationCount)} scratch
+            observations in the current stream and status{' '}
+            <code>{lifecycle.currentStream.physicalLifecycleStatus}</code>. The candidate
+            lifecycle model requires {formatInt(lifecycle.streamedCandidate.requiredConsumeEvents)}
+            {' '}consume events and {formatInt(lifecycle.streamedCandidate.requiredCleanupEvents)}
+            {' '}cleanup events.
+          </p>
+          <p>
+            The source-uncompute artifact proves {formatInt(provenCleanup)} cleanup rows,
+            but {formatInt(missingGuardCleanup)} guard cleanup rows still lack source controls.
+          </p>
+        </div>
+        <div className="cleanup-artifact-numbers" aria-hidden="true">
+          <div><span>proven</span><strong>{formatInt(provenCleanup)}</strong></div>
+          <div><span>guard gap</span><strong>{formatInt(missingGuardCleanup)}</strong></div>
+          <div><span>serialized temp peak</span><strong>{formatInt(lifecycle.streamedCandidate.peakTemporaryAndWiresIfSerialized)}</strong></div>
+        </div>
+      </article>
+
+      <article className="story-question">
+        <h4>What to do in the labs</h4>
+        <p>
+          First make the small cleanup puzzle pass by adding the matching uncompute
+          row. Then inspect the scratch lifecycle lab and switch from partial-product
+          rows to guard rows. The lesson is the same at both scales: cleanup needs
+          source controls, not just an optimistic label.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1778,8 +1981,10 @@ export function App() {
             {activeLesson.id === 'ecdlp' ? <EcdlpStoryPanel /> : null}
             {activeLesson.id === 'coordinates' ? <CoordinatesStoryPanel /> : null}
             {activeLesson.id === 'lookup-qroam' ? <LookupQroamStoryPanel data={projectData} /> : null}
+            {activeLesson.id === 'programming' ? <ProgrammingStoryPanel /> : null}
+            {activeLesson.id === 'cleanup' ? <CleanupStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {
