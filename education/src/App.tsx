@@ -1169,6 +1169,34 @@ function PhaseEstimationStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule phase-kickback-rule">
+        <div>
+          <h4>Phase kickback moves the angle onto the control</h4>
+          <p>
+            Put one control qubit in a split and apply controlled-<MathTex tex="U" /> to
+            an eigenstate target. The <MathTex tex="|0\rangle" /> branch skips the
+            operation. The <MathTex tex="|1\rangle" /> branch applies{' '}
+            <MathTex tex="U" />, and because the target is an eigenstate, the target
+            returns while that branch gains phase <MathTex tex="e^{2\pi i\theta}" />.
+          </p>
+          <p>
+            The target did not reveal the answer. The useful information is now a
+            relative angle between the two control branches, where later controlled
+            powers can build a readable binary rhythm.
+          </p>
+        </div>
+        <div className="phase-kickback-card" aria-hidden="true">
+          <div>
+            <span>control 0 branch</span>
+            <strong>target unchanged</strong>
+          </div>
+          <div>
+            <span>control 1 branch</span>
+            <strong>same target + phase</strong>
+          </div>
+        </div>
+      </article>
+
       <article className="story-rule phase-powers-rule">
         <div>
           <h4>Controlled powers write a binary rhythm</h4>
@@ -1219,6 +1247,32 @@ function PhaseEstimationStoryPanel() {
             <span className="wrong-a" />
             <span className="wrong-b" />
             <span className="wrong-c" />
+          </div>
+        </div>
+      </article>
+
+      <article className="story-rule phase-approx-rule">
+        <div>
+          <h4>Approximate phases produce peaks, not certainty</h4>
+          <p>
+            The cleanest story assumes <MathTex tex="\theta=y/2^m" /> exactly. Real
+            algorithms use a finite number of control bits to approximate a phase. Then
+            the inverse QFT produces a distribution concentrated near the closest{' '}
+            <MathTex tex="m" />-bit fractions instead of one guaranteed label.
+          </p>
+          <p>
+            More precision bits sharpen that distribution but also require more
+            controlled powers, so precision is part of the resource contract.
+          </p>
+        </div>
+        <div className="phase-approx-strip" aria-hidden="true">
+          <div>
+            <span>exact binary phase</span>
+            <strong>one sharp label</strong>
+          </div>
+          <div>
+            <span>between labels</span>
+            <strong>nearby peaks</strong>
           </div>
         </div>
       </article>
@@ -1368,6 +1422,34 @@ function EcdlpStoryPanel() {
           <span />
           <span />
           <span />
+        </div>
+      </article>
+
+      <article className="story-rule sample-to-key-rule">
+        <div>
+          <h4>A Fourier sample becomes an equation for d</h4>
+          <p>
+            The colliding inputs differ by the hidden direction{' '}
+            <MathTex tex="(d,-1)" />. Fourier readout tends to return a label{' '}
+            <MathTex tex="(u,v)" /> whose rhythm is perpendicular to that direction.
+            Perpendicular here means the modular dot product vanishes:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="u d-v\equiv 0\pmod n" />
+          </p>
+          <p>
+            If <MathTex tex="u" /> has an inverse modulo <MathTex tex="n" />, the
+            sample gives <MathTex tex="d\equiv v u^{-1}\pmod n" />. Real attacks repeat
+            the sampling because a measured label is a probabilistic clue, not a direct
+            readout of the secret register.
+          </p>
+        </div>
+        <div className="sample-equation-card" aria-hidden="true">
+          <span>hidden direction (d, -1)</span>
+          <i />
+          <span>sample (u, v)</span>
+          <i />
+          <span>d = v/u mod n</span>
         </div>
       </article>
 

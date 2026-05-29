@@ -1828,8 +1828,10 @@ code {
 }
 
 .eigenphase-rule,
+.phase-kickback-rule,
 .phase-powers-rule,
-.fourier-readout-rule {
+.fourier-readout-rule,
+.phase-approx-rule {
   border-color: rgba(245, 207, 107, 0.22);
 }
 
@@ -1857,6 +1859,49 @@ code {
 .eigenphase-card i {
   height: 0.12rem;
   background: linear-gradient(90deg, #f5cf6b, #63e6be);
+}
+
+.phase-kickback-card,
+.phase-approx-strip {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.phase-kickback-card div,
+.phase-approx-strip div {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(245, 207, 107, 0.07);
+}
+
+.phase-kickback-card span,
+.phase-approx-strip span {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: #9fb1c3;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.phase-kickback-card strong,
+.phase-approx-strip strong {
+  color: #dce7f2;
+}
+
+.phase-kickback-card div:last-child {
+  background: rgba(99, 230, 190, 0.08);
+  border-color: rgba(99, 230, 190, 0.28);
+}
+
+.phase-approx-strip {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.phase-approx-strip div:first-child {
+  border-color: rgba(99, 230, 190, 0.28);
+  background: rgba(99, 230, 190, 0.08);
 }
 
 .controlled-power-sketch {
@@ -2014,7 +2059,8 @@ code {
 
 .ecdlp-rule,
 .secp-domain-rule,
-.oracle-shape-rule {
+.oracle-shape-rule,
+.sample-to-key-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
@@ -2071,6 +2117,36 @@ code {
 .oracle-lattice-sketch span.paired {
   border-color: rgba(245, 207, 107, 0.42);
   background: rgba(245, 207, 107, 0.12);
+}
+
+.sample-equation-card {
+  display: grid;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.sample-equation-card span {
+  display: grid;
+  place-items: center;
+  min-height: 3.2rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.24);
+  border-radius: 0.5rem;
+  padding: 0.55rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.sample-equation-card span:last-child {
+  border-color: rgba(245, 207, 107, 0.34);
+  background: rgba(245, 207, 107, 0.09);
+}
+
+.sample-equation-card i {
+  justify-self: center;
+  width: 0.12rem;
+  height: 0.7rem;
+  background: linear-gradient(180deg, #63e6be, #f5cf6b);
 }
 
 .period-vector-pill {
@@ -6609,7 +6685,9 @@ legend {
   .resource-layer-stack,
   .qec-service-loop,
   .phase-readout-strip,
+  .phase-approx-strip,
   .key-derivation-strip,
+  .sample-equation-card,
   .coordinate-name-strip,
   .coordinate-equation-strip,
   .qroam-flow-strip,
@@ -6778,7 +6856,9 @@ legend {
   .resource-layer-stack,
   .qec-service-loop,
   .phase-readout-strip,
+  .phase-approx-strip,
   .key-derivation-strip,
+  .sample-equation-card,
   .coordinate-name-strip,
   .coordinate-equation-strip,
   .qroam-flow-strip,
@@ -6894,7 +6974,8 @@ legend {
     display: none;
   }
 
-  .key-derivation-strip i {
+  .key-derivation-strip i,
+  .sample-equation-card i {
     display: none;
   }
 

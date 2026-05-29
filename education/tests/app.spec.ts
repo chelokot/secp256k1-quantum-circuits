@@ -304,8 +304,10 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
 
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The problem is not “measure the answer directly”');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The exact statement is an eigenphase');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('Phase kickback moves the angle onto the control');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Controlled powers write a binary rhythm');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The inverse QFT is a rhythm matcher');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('Approximate phases produce peaks, not certainty');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Cost lives before readout');
   await expect(page.getByTestId('lab-route')).toContainText('Phase estimation lens');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('Hidden phase');
@@ -340,6 +342,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('ecdlp-story')).toContainText('“Logarithm” means undoing repeated group addition');
   await expect(page.getByTestId('ecdlp-story')).toContainText('secp256k1 has two modular worlds');
   await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum oracle asks two-register questions');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('A Fourier sample becomes an equation for d');
   await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
   await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
