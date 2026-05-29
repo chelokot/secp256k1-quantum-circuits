@@ -35,10 +35,7 @@ export type CourseLesson = {
   whyItMatters: string;
   mentalModel: string;
   checkpoint: string;
-  deepDive?: string[];
   coreIdeas?: string[];
-  practicePrompt?: string;
-  glossaryTerms?: string[];
 };
 
 export const lessons: CourseLesson[] = [
@@ -54,21 +51,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Compare it to an ordinary computer first. Classical memory stores one discrete bit string at a time. Quantum memory stores amplitudes over many bit strings, and gates transform those amplitudes by strict reversible linear rules before measurement gives a discrete answer.',
     checkpoint: 'The repo must connect the mathematical attack, the quantum state-and-gate program, tests, and resource numbers into one auditable chain.',
-    deepDive: [
-      'Same skeleton: both models have memory, operations, intermediate state, and readout. A normal CPU step updates a bit string. A quantum gate updates an amplitude vector.',
-      'Different state: classical state is one point such as 0101. Quantum state is a vector of complex amplitudes over labels such as |0000>, |0001>, and so on.',
-      'Different operations: classical code may erase or overwrite freely. A closed quantum gate must be reversible and probability-preserving, so temporary values need cleanup instead of being forgotten.',
-      'Math chain: a quantum circuit is a chain of mathematical transformations. The transformations are continuous at the amplitude level, but measurement still returns ordinary discrete bits.',
-      'Project target: given a public key Q, the attack tries to recover the hidden private number d such that Q = dG. This repo asks what the quantum circuit for that recovery actually costs.',
-      'Resource claim: peak logical qubits means the largest number of protected quantum wires alive at once. Non-Clifford count means the expensive quantum work summed over the whole run.',
-    ],
     coreIdeas: [
       'Classical program: bit string plus discrete updates.',
       'Quantum circuit: amplitude vector plus reversible linear updates.',
       'Repo claim: resource numbers for one executable quantum attack circuit.',
     ],
-    practicePrompt: 'Start with the classical-vs-quantum bridge. The only thing to hold in your head for now: this project counts the concrete quantum program, not an abstract threat slogan.',
-    glossaryTerms: ['secp256k1', 'Discrete logarithm', 'Logical qubit', 'Non-Clifford'],
   },
   {
     id: 'qubit',
@@ -82,20 +69,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Start with only one qubit. It has one amplitude for outcome 0 and one amplitude for outcome 1. Picture each amplitude as an arrow: its length affects direct measurement, and its direction can matter later.',
     checkpoint: 'A probability coin has only chances. A qubit has amplitude lengths plus a relative angle that can matter before measurement.',
-    deepDive: [
-      'Notation: $|\\psi\\rangle = a|0\\rangle + b|1\\rangle$. The symbols $a$ and $b$ are complex numbers. For this course, a complex number just means an arrow in a flat plane: length plus angle.',
-      'Probability rule: $P(0)=|a|^2$ and $P(1)=|b|^2$. The vertical bars mean arrow length. If both arrows have length $1/\\sqrt{2}$, direct measurement is 50/50.',
-      'Relative angle: two states can have the same direct 50/50 probabilities but different arrow directions. Direct measurement cannot see that difference by itself.',
-      'Measurement: a measurement samples one outcome and changes what remains. It is not a passive screen capture of both arrows.',
-      'Bridge to gates: a gate is applied before measurement. The next page studies how valid gates can turn relative angle into a changed probability.',
-    ],
     coreIdeas: [
       'Amplitude = arrow with length and angle.',
       'Measurement probability = squared arrow length.',
       'Relative angle is real circuit information even when direct measurement cannot see it.',
     ],
-    practicePrompt: 'Use the phase-to-probability bridge only as a measurement experiment: keep the arrow lengths fixed and move the angle. Direct measurement stays 50/50.',
-    glossaryTerms: ['Qubit', 'Amplitude'],
   },
   {
     id: 'one-qubit',
@@ -109,21 +87,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Start from one question: if a qubit is two amplitude arrows, which physical moves are legal before measurement? A legal closed gate is a two-by-two linear rule that preserves total probability, so it can split, swap, rotate, and recombine amplitudes without erasing where the state came from.',
     checkpoint: 'A one-qubit gate can make probabilities change, but a closed gate cannot be a many-to-one convergence rule because it must have an inverse.',
-    deepDive: [
-      'Valid gate: a quantum gate is a controlled physical operation applied before measurement. Mathematically it is unitary: linear, reversible, and total-probability preserving.',
-      'Hadamard: H recombines the two amplitudes into a sum channel and a difference channel. That is why equal arrows can become always-0 or always-1 depending on relative angle.',
-      'Cycles: some gates return after a few repeats. X twice returns to identity, H twice returns to identity, and four S phase turns return to identity.',
-      'Long rotations: a rotation by an angle that is not a neat fraction of a full turn will keep visiting new positions instead of closing quickly.',
-      'No attractor: a closed gate cannot steadily erase all starting states into one final point. If it did, the inverse would not know which starting state to recover.',
-      'Measurement exception: measurement can collapse many possible states into one sampled result. That is why measurement is treated differently from reversible gates.',
-    ],
     coreIdeas: [
       'A one-qubit gate is a two-by-two rule over the amplitude vector.',
       'Unitary means linear, reversible, and probability preserving.',
       'Measurement can collapse; a closed gate cannot be an attractor.',
     ],
-    practicePrompt: 'Use the one-qubit labs as missions: make a balanced state, return to the start, create a hidden phase, then expose that phase by mixing again.',
-    glossaryTerms: ['Quantum gate', 'Unitary', 'Hadamard gate', 'Destructive interference'],
   },
   {
     id: 'two-qubit',
@@ -137,21 +105,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Adding a second qubit changes the object from two amplitudes to a four-entry joint table: 00, 01, 10, and 11. Some tables are just two independent one-qubit states multiplied together. Entangled tables are different: the joint pattern is the smallest honest description.',
     checkpoint: 'A two-qubit state is entangled when the four-amplitude pattern cannot be factored into separate one-qubit states.',
-    deepDive: [
-      'State size: one qubit has two amplitudes. Two qubits have four amplitudes: $|00\\rangle$, $|01\\rangle$, $|10\\rangle$, and $|11\\rangle$. Three qubits would have eight.',
-      'Product state: if the four-amplitude table can be built from one state for q0 and one state for q1, the qubits are still independent in this sense.',
-      'Controlled gate: controlled-X, also called CNOT or CX, flips the target branch only where the control branch is 1. It is still a reversible gate.',
-      'Bell pair: H on q0 followed by CX q0 q1 creates a state with only $|00\\rangle$ and $|11\\rangle$ branches. The two measurements agree even though neither qubit alone has a definite value.',
-      'Entanglement: the Bell pair is not two private one-qubit states hiding behind the scenes. The compact description is the joint four-amplitude pattern.',
-      'Observation: measurement samples one full two-bit label. Repeating the same circuit many times reveals the probability pattern.',
-    ],
     coreIdeas: [
       'Two qubits are represented by four joint amplitudes.',
       'Controlled-X is a reversible branch permutation, not a measurement.',
       'Entanglement means the four-entry table cannot factor into two one-qubit states.',
     ],
-    practicePrompt: 'Run the two-qubit missions. First make a product split, then make a Bell pair, then use interference to cancel one branch.',
-    glossaryTerms: ['State vector', 'Controlled-X', 'CNOT', 'Bell pair', 'Entanglement'],
   },
   {
     id: 'gates',
@@ -165,18 +123,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Read a circuit from left to right like a dataflow story. Wires carry quantum state through time. Gates touch specific wires. Controls make a target move only on selected branches. A useful temporary value follows a lifecycle: compute it, use it, then uncompute it back to zero.',
     checkpoint: 'A “scratch” bit is not free. It is a quantum wire with lifetime, owner, and cleanup obligations.',
-    deepDive: [
-      'Classical code can overwrite a temporary variable and forget how it was made. A quantum circuit cannot generally do that: the old information is part of the state.',
-      'The usual pattern is compute, use, uncompute. If a temporary value was made from inputs, the circuit later runs the inverse steps to return that temporary wire to zero.',
-      'The toy netlist shows rows over q0, q1, and q2. The real repo uses the same idea at much larger scale: primitive rows over concrete wires.',
-    ],
     coreIdeas: [
       'Wire = named quantum storage across time.',
       'Gate row = one transformation applied to specific wires.',
       'Cleanup = inverse work that removes temporary garbage.',
     ],
-    practicePrompt: 'Add Hadamard, controlled-X, and Toffoli rows in the primitive netlist toy. Watch rows and non-Clifford count change, then compare with the cleanup puzzle.',
-    glossaryTerms: ['Netlist', 'Primitive row', 'Uncompute'],
   },
   {
     id: 'clifford',
@@ -190,18 +141,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Think of Clifford gates as motion inside a stabilizer map: still quantum, still useful, but structurally cheap to track and usually cheap to implement fault tolerantly. A non-Clifford step leaves that map and spends magic-state fuel. Arithmetic needs those escapes, so the repo reports them separately from qubits.',
     checkpoint: 'A low-qubit circuit can be bad if it explodes non-Clifford count, and a low-gate circuit can be bad if it needs too many live qubits.',
-    deepDive: [
-      'Clifford-only circuits are special: their states can be tracked efficiently by a classical stabilizer description. That makes them relatively cheap in many fault-tolerant models.',
-      'Non-Clifford operations break out of that efficiently tracked family. Fault-tolerant machines usually pay for them using prepared magic-state resources.',
-      'This repo mostly counts Toffoli-like non-Clifford work, because reversible arithmetic and table selection are full of controlled bit products.',
-    ],
     coreIdeas: [
       'Clifford gates preserve a compact stabilizer description.',
       'Non-Clifford gates supply the magic needed for universal arithmetic.',
       'Peak qubits and non-Clifford count are separate headline axes.',
     ],
-    practicePrompt: 'Use the stabilizer vs magic wheel. Add cheap Clifford moves first, then add a T gate and notice when the state class changes.',
-    glossaryTerms: ['Clifford', 'Stabilizer state', 'Non-Clifford', 'Magic state'],
   },
   {
     id: 'logic-physical',
@@ -215,18 +159,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Read the repo headline as an algorithm-layer statement: how many protected logical wires are live in the circuit, and how much logical non-Clifford work is needed. A hardware machine adds another layer: error-correcting code, code distance, physical error rates, layout, timing, decoding, and magic factories.',
     checkpoint: 'Logical counts let us compare algorithms; hardware execution needs an additional error-correction and architecture model.',
-    deepDive: [
-      'Quantum hardware is noisy. Fault-tolerant algorithms therefore encode one logical wire across many physical carriers so small errors can be detected and corrected.',
-      'The repo headline counts logical wires and logical operations. That is the right layer for comparing circuit designs before choosing a hardware architecture.',
-      'To estimate hardware, you still need an error-correction code, target failure rate, factory model, connectivity, timing, and layout assumptions.',
-    ],
     coreIdeas: [
       'Physical qubit = device-level carrier.',
       'Logical qubit = protected encoded circuit wire.',
       'Hardware estimates require a QEC and architecture model on top of repo resources.',
     ],
-    practicePrompt: 'Use the logical-to-physical bridge and change the code distance. Notice that the same logical circuit can imply very different hardware envelopes.',
-    glossaryTerms: ['Physical qubit', 'Logical qubit', 'Code distance', 'Logical failure'],
   },
   {
     id: 'phase-estimation',
@@ -240,18 +177,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Do not picture the answer as a stored bit waiting to be read. The controlled powers of a unitary create a rhythm of phases across a control register. The inverse-QFT readout tests candidate rhythms and turns the matching phase pattern into a likely binary label.',
     checkpoint: 'The curve arithmetic is the engine; phase estimation is the measuring instrument wrapped around it.',
-    deepDive: [
-      'A hidden period means outputs repeat in a structured way. Shor-style algorithms turn that repetition into a regular angle pattern across the control register.',
-      'The inverse QFT is the readout step. It converts a clean angle rhythm into a sharp measurement peak, similar to how a spectrum analyzer reveals a frequency.',
-      'The expensive part for secp256k1 is not the final readout. It is creating the angle rhythm by repeatedly running controlled elliptic-curve group operations.',
-    ],
     coreIdeas: [
       'Controlled powers create a binary phase rhythm.',
       'The inverse QFT turns the matching rhythm into a measurement peak.',
       'For secp256k1, controlled curve arithmetic creates the expensive rhythm.',
     ],
-    practicePrompt: 'Move the hidden phase numerator slider. The bars show which bit label becomes most likely after the phase-estimation readout.',
-    glossaryTerms: ['Phase estimation', 'Hidden period', 'Fourier transform', 'Fourier label'],
   },
   {
     id: 'netlists',
@@ -265,18 +195,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A netlist is a table of primitive rows. Liveness says when each wire value is born, when it dies, and which owner must have capacity for it.',
     checkpoint: 'The best future engine is one source of truth that executes, counts, tests, and feeds proof inputs.',
-    deepDive: [
-      'A formula such as “point add” is too high-level to count directly. The engine must lower it into rows like compute partial product, add column, clean scratch, and produce output.',
-      'Peak logical qubits come from overlapping live intervals. If a value is still needed, it counts even if a human stopped writing it in the summary.',
-      'The long-term target is one executable stream that drives tests, liveness, owner capacity, resource totals, and proof inputs.',
-    ],
     coreIdeas: [
       'Primitive rows are the countable object.',
       'Live intervals determine peak qubits.',
       'One engine should feed execution, tests, counts, and ZKP input.',
     ],
-    practicePrompt: 'Open the stack map and then the mini resource engine. The important habit is to ask where each wire is born, where it dies, and who owns it.',
-    glossaryTerms: ['Netlist', 'Primitive row', 'Liveness', 'Owner'],
   },
   {
     id: 'ecdlp',
@@ -290,18 +213,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A private key is a scalar d, and the public key is the point Q = dG. The quantum circuit does not try private keys one by one. It builds reversible two-register group operations of the form aG + bQ = (a + b*d)G, creating a hidden-period structure that phase estimation can sample.',
     checkpoint: 'The project is a circuit-engineering problem around a repeated secp256k1 point-add leaf, not a generic black-box quantum threat claim.',
-    deepDive: [
-      'ECDLP means: given G and Q = dG, recover the hidden scalar d. The quantum attack builds reversible group operations whose repeated structure exposes d.',
-      'The toy oracle uses aG + bQ = (a + b*d)G. Different (a,b) pairs can collide in a way that encodes the secret scalar.',
-      'The real circuit does not use tiny toy points. It repeats lookup-fed secp256k1 point-add leaves many times, which is why point-add resources dominate this repo.',
-    ],
     coreIdeas: [
       'Public input: generator G and public point Q = dG.',
       'Oracle shape: aG + bQ hides d as a period direction.',
       'Resource bottleneck: repeated controlled secp256k1 point-add leaves.',
     ],
-    practicePrompt: 'Start with the Whole attack map, then use the Discrete-log oracle toy. Change the secret scalar and watch the hidden-period relation change before opening phase kickback.',
-    glossaryTerms: ['Discrete logarithm', 'Oracle', 'Hidden period', 'Phase kickback'],
   },
   {
     id: 'coordinates',
@@ -315,20 +231,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Affine is one direct name for a point: x and y. Projective is a family of names for the same point: extra scale data is carried so the circuit can use multiply/add formulas instead of stopping for division inside every point-add. The price is live field slots, and each secp256k1 field slot is 256 logical wires.',
     checkpoint: 'A field slot is one secp256k1 coordinate-sized quantum register: 256 logical wires with an owner, capacity, birth row, and death row.',
-    deepDive: [
-      'Affine coordinates store a point directly as x and y. A direct point-add slope contains a division, which means a modular inverse over the field.',
-      'Projective-style coordinates store an equivalent representative with extra scale information. The hot loop pays extra coordinate slots and more multiply/add work to avoid repeated inversion.',
-      'The number 256 comes from secp256k1 field arithmetic. Each coordinate is a number modulo a roughly 256-bit prime, so one live coordinate register means 256 live logical wires.',
-      'Infinity cases are part of the same point-add contract. Doubling, inverse pairs, accumulator infinity, and lookup infinity must execute the same counted boundary.',
-      'Overwrite is a proof obligation. Reusing a coordinate lane is valid only when the engine proves an owner-preserving reversible transformation, not when a human renames a variable.',
-    ],
     coreIdeas: [
       'Affine saves live coordinates but pays inversion in point-add formulas.',
       'Projective spends scale slots to use multiply/add formulas on the hot path.',
       'Every live secp256k1 field slot is 256 counted logical wires.',
     ],
-    practicePrompt: 'Move the projective scale first and confirm that several triples name the same affine point. Then open the overwrite and boundary labs and ask which field slots are live at the same time.',
-    glossaryTerms: ['Affine point', 'Projective point', 'Field slot', 'Point-add boundary'],
   },
   {
     id: 'lookup-qroam',
@@ -342,19 +249,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A QROAM lookup is a reversible table-selection circuit. The address controls decide which row contributes, the selected bits land in a target register, helper junk supports the selection network, and cleanup removes the temporary path. Gates and qubits must come from the same model.',
     checkpoint: 'A lookup output is only free if the executable liveness artifact proves it aliases already-counted capacity.',
-    deepDive: [
-      'The attack uses precomputed point chunks. A quantum address cannot simply index a classical array for free; the table selection has controls, target bits, workspace, and cleanup.',
-      'QROAMClean-style accounting trades non-Clifford work against workspace. If K is increased, the gate formula changes and the junk-register capacity changes too.',
-      'A low-qubit claim fails if lookup target lanes or QROAM junk registers are omitted from live capacity. This was one of the central bug classes in the repo.',
-      'The useful question is not “is there a lookup?” but “which bits are selected, where does the selected data live, and when is the selection workspace uncomputed?”',
-    ],
     coreIdeas: [
       'Lookup address, target, junk, and cleanup all count.',
       'QROAM trades gate count against workspace.',
       'Free output lanes require liveness proof, not assertion.',
     ],
-    practicePrompt: 'Select table bits in the QROAM toy, then use the QROAMClean tradeoff dial. Compare how workspace and non-Clifford pressure move in opposite directions.',
-    glossaryTerms: ['QROAM', 'Lookup infinity', 'Owner', 'Capacity'],
   },
   {
     id: 'programming',
@@ -368,19 +267,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A quantum program is not just a script of intentions. It is a row stream over named wires. Each row has an operation, operands, cost, and lifecycle effect; only that row stream can be executed, tested, lowered, and counted.',
     checkpoint: 'A useful contributor can translate an attractive algebraic trick into primitive rows with operands, owners, costs, and cleanup obligations.',
-    deepDive: [
-      'The toy DSL is intentionally small: H, X, S, CX, CCX, and M. The point is to feel that even simple rows have concrete wire operands and countable costs.',
-      'Invalid opcodes are useful. They show that a compiler must reject unknown operations instead of silently pretending a circuit was produced.',
-      'A row table is the first audit surface: which wires exist, which rows touch them, which rows spend non-Clifford budget, and which rows leave cleanup obligations.',
-      'The same habit scales up: an arithmetic optimization is not real until it becomes primitive rows with owners, costs, liveness intervals, and cleanup.',
-    ],
     coreIdeas: [
       'Write rows before trusting formulas.',
       'Unknown operations must fail loudly.',
       'Tiny netlists train the same audit reflex used on large lowerings.',
     ],
-    practicePrompt: 'Edit the DSL into an invalid program, then fix it with H, CX, and CCX rows. Check that the parser, non-Clifford count, and row list agree.',
-    glossaryTerms: ['Netlist', 'Opcode lowering', 'Primitive row', 'Non-Clifford'],
   },
   {
     id: 'cleanup',
@@ -394,19 +285,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A safe temporary has a complete lifecycle: compute it from named source controls, consume the useful effect into a counted destination, then replay the inverse with the same sources so the temporary target returns to zero.',
     checkpoint: 'A cleanup proof must identify the source controls, target, owner, inverse operation, and liveness interval.',
-    deepDive: [
-      'Compute creates a temporary wire from source controls. Use consumes that temporary into the intended destination.',
-      'Uncompute must replay the matching source controls so the temporary target returns to zero. Merely dropping the variable name is not cleanup.',
-      'Leftover garbage can be a semantic bug, not just a memory leak, because it can remain correlated with the output and prevent later interference from working as intended.',
-      'The modular accumulator blocker is this pattern at scale: many temporary AND targets need consume rows and source-uncompute rows.',
-    ],
     coreIdeas: [
       'Temporary value = live quantum state.',
       'Cleanup = inverse path with the same sources.',
       'No cleanup means garbage still counts or breaks semantics.',
     ],
-    practicePrompt: 'In the cleanup puzzle, select the matching uncompute row. Then open the scratch lifecycle lab and compare the consume-row and source-control requirements.',
-    glossaryTerms: ['Uncompute', 'Temporary AND', 'Source-uncompute', 'Abandoned garbage'],
   },
   {
     id: 'modular-lowering',
@@ -420,18 +303,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Multiplication is not one operation. It is a factory line: partial products, columns, carries, reductions, and cleanup receipts.',
     checkpoint: 'A lowering is convincing only when every temporary bit has a route, owner, and inverse or measured cleanup.',
-    deepDive: [
-      'A field multiply starts as many bit-level partial products. Each product is a temporary quantum value unless it is immediately consumed and cleaned.',
-      'Modular reduction folds high columns back into the field range. Those fold rows are part of the primitive stream, not post-hoc arithmetic narration.',
-      'The repo blocker is promotion: candidate accumulator rows must become the counted executable stream, with source-uncompute and Clifford expansion accounted for.',
-    ],
     coreIdeas: [
       'Multiply = partial products plus carries plus reduction.',
       'Every temporary product needs a lifecycle.',
       'Promotion requires one primitive stream, not a side artifact.',
     ],
-    practicePrompt: 'Use the partial-product grid first. Then inspect accumulator lowering and switch to promoted-only facts to see what is still not accepted.',
-    glossaryTerms: ['Partial product', 'Fold', 'Accumulator', 'Carry-save'],
   },
   {
     id: 'owner-capacity',
@@ -445,18 +321,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'An owner is a counted capacity bucket. A live wire group assigned to that owner is valid only when peak assigned width fits inside the owner budget.',
     checkpoint: 'Every wire group needs exactly one owner, and every owner capacity must cover peak assigned live width.',
-    deepDive: [
-      'Naming an owner is not proof. The engine must sum live assigned widths and compare them with the owner capacity at the busiest row.',
-      'A borrowed wire is suspicious because it may be live at the same time as the resource it claims to replace.',
-      'The owner-capacity game intentionally starts failing so the learner has to assign the missing guard workspace explicitly.',
-    ],
     coreIdeas: [
       'Exactly one owner per live wire group.',
       'Owner capacity must cover peak assigned width.',
       'Borrowed lanes are invalid until liveness proves aliasing.',
     ],
-    practicePrompt: 'Inject the hidden scratch lane in the invariant lab, then fix owner assignment in the capacity game until the numeric load fits.',
-    glossaryTerms: ['Owner', 'Capacity', 'Live interval', 'Peak live qubits'],
   },
   {
     id: 'resource-engine',
@@ -470,18 +339,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A good engine is a typechecker for quantum accounting: every wire must have exactly one owner and every owner must have enough capacity.',
     checkpoint: 'If a number is not generated from executable liveness, it is a hypothesis until proven otherwise.',
-    deepDive: [
-      'The engine takes primitive rows as input, derives live intervals, assigns owners, checks capacity, and computes peak logical qubits.',
-      'The key architectural goal is one source of truth: the same stream should drive execution tests, liveness, resource totals, docs, and proof inputs.',
-      'A resource result becomes stronger when fewer numbers are manually selected and more are generated from the executable circuit path.',
-    ],
     coreIdeas: [
       'Executable primitive stream is the source of truth.',
       'Liveness derives qubits mechanically.',
       'Generated artifacts should feed docs and proofs.',
     ],
-    practicePrompt: 'Open the circuit stack map and click Primitive netlist engine. Then use the mini engine to make the audit pass by fixing owner capacity and cleanup.',
-    glossaryTerms: ['Circuit stack', 'Liveness', 'Owner', 'Artifact atlas'],
   },
   {
     id: 'mini-engine',
@@ -495,18 +357,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Treat the toy engine as the smallest version of the repo resource counter: rows create values, cleanup kills values, owners provide capacity, and the peak row determines qubits.',
     checkpoint: 'To improve a circuit, you need to move births earlier/later, shorten deaths with cleanup, or give owners enough counted capacity.',
-    deepDive: [
-      'The mini engine starts with a failing assignment so the learner sees why owner names are insufficient.',
-      'Adding a source-uncompute row shortens a live interval. The output is unchanged, but the peak live width can drop.',
-      'Opcode lowering shows the next layer down: one abstract operation expands into primitive rows with operands, cleanup, and non-Clifford cost.',
-    ],
     coreIdeas: [
       'Birth/death rows define live intervals.',
       'Owner assignment and capacity are checked numerically.',
       'Lowering connects abstract operations to primitive rows.',
     ],
-    practicePrompt: 'Make the mini engine pass by assigning the scratch owner and adding source uncompute. Then remove cleanup in opcode lowering and watch the audit fail.',
-    glossaryTerms: ['Live interval', 'Owner', 'Capacity', 'Opcode lowering'],
   },
   {
     id: 'optimization',
@@ -520,18 +375,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A candidate is only useful if it improves a resource number and still has a path to executable semantics, owner capacity, primitive lowering, and proof input.',
     checkpoint: 'A useful optimization proposal must say which constraint it relaxes, which cost it pays, and how it will be promoted into the engine.',
-    deepDive: [
-      'The target is multi-axis: reduce logical qubits, keep non-Clifford under budget, preserve point-add semantics, and avoid hidden lookup or scratch capacity.',
-      'Some rows are promising hypotheses rather than accepted results. The app should make that status visible instead of letting the smallest number win by default.',
-      'A real optimization should explain what changed, which invariant still holds, what new cost appears, and which artifact proves the promotion.',
-    ],
     coreIdeas: [
       'Lower qubits alone is not enough.',
       'Gate budget, semantics, capacity, and promotion all matter.',
       'Rejected and hypothesis rows are useful only when clearly labeled.',
     ],
-    practicePrompt: 'Switch optimization candidates with both targets required. Then temporarily relax executable promotion to see why an attractive row can pass a toy gate but remain unpublishable.',
-    glossaryTerms: ['Tradeoff', 'Pareto frontier', 'Promoted candidate', 'Claim classification'],
   },
   {
     id: 'point-add-boundary',
@@ -545,18 +393,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'The point-add leaf is an API with branch tests, not a single formula. Random cases cover the ordinary branch; edge cases cover distinct branches with different algebraic behavior.',
     checkpoint: 'A reviewer should reject a lower-qubit point-add result until every boundary family passes against the counted executable interface.',
-    deepDive: [
-      'Ordinary random additions test the hot path. They do not prove doubling, inverse pairs, accumulator infinity, or lookup infinity behavior.',
-      'The counted resource family must execute the same interface that the semantic artifact tests. Otherwise a proof can certify the wrong boundary.',
-      'The debugger starts from passing evidence and lets you deliberately narrow coverage so the missing edge cases become visible.',
-    ],
     coreIdeas: [
       'Point-add is an executable API boundary.',
       'Edge cases are part of semantics, not rare extras.',
       'Counted interface and tested interface must match.',
     ],
-    practicePrompt: 'Click inverse pair and lookup infinity in the boundary debugger. Then enable random-only testing and watch the covered-case count collapse.',
-    glossaryTerms: ['Point-add boundary', 'Lookup infinity', 'Permutation contract', 'Coordinate normalization'],
   },
   {
     id: 'contribution',
@@ -570,18 +411,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Treat every patch as a mission packet: what object changes, what evidence is new, which blocker it closes, and which claim level is now justified.',
     checkpoint: 'Before proposing an optimization, state the mission, the required evidence, and the exact claim status after the patch.',
-    deepDive: [
-      'Useful repo work starts with a narrow claim. “Improve the circuit” is too vague; “promote this source-uncompute row into the primitive stream” is testable.',
-      'Each claim level needs different evidence. A semantic candidate, a strict primitive result, and an accepted baseline are not interchangeable.',
-      'The contribution page is the handoff from learning to action: choose a mission, complete its evidence checklist, and state the remaining blocker.',
-    ],
     coreIdeas: [
       'Small claim, explicit evidence, clear status.',
       'Claim classification prevents accidental overstatement.',
       'Mission packets connect learning to repo patches.',
     ],
-    practicePrompt: 'Use the mission board first. Then classify a claim in the audit drill and require the evidence items until the audit passes.',
-    glossaryTerms: ['Mission packet', 'Claim classification', 'Confidence ladder', 'Promoted candidate'],
   },
   {
     id: 'zkp-boundary',
@@ -595,18 +429,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'A ZKP is a notarized receipt. It is powerful only after you inspect exactly what was purchased, which input hash it binds, and whether that item is the thing you wanted.',
     checkpoint: 'A reviewer should ask: what input, what corpus, what public values, what resource digest, and what remaining macro boundary?',
-    deepDive: [
-      'A verifier can say “this proof is valid” while the proved statement is stale, smoke-sized, or weaker than the current resource claim.',
-      'The public values are the verifier-visible contract. They must bind the selected family, resource digest, case corpus, and proof statement being published.',
-      'Compressed and Groth16 proofs are release evidence only after the checked input, verifier key, proof bundle, and physical baseline status agree.',
-    ],
     coreIdeas: [
       'Proof validity is not the same as claim validity.',
       'Public values define what the verifier actually sees.',
       'Fresh artifacts and current resource contract must agree.',
     ],
-    practicePrompt: 'Use the ZKP boundary lab to close fixtures, macro boundary, and proof verification. Then compare the confidence ladder before changing claim wording.',
-    glossaryTerms: ['ZKP', 'Groth16', 'Public values', 'Confidence ladder'],
   },
   {
     id: 'repo-baselines',
@@ -620,18 +447,11 @@ export const lessons: CourseLesson[] = [
     mentalModel:
       'Treat every resource result as a contract with a status: accepted, candidate, consequence, rejected, or hypothesis.',
     checkpoint: 'The next useful work is not more hype; it is converting remaining macro boundaries into executable primitive evidence.',
-    deepDive: [
-      'Google rows are external public comparison lines. They are useful context, but they are not artifacts generated by this repo.',
-      'Repo rows must be read with status. A macro/ZKP wrapper reference, a strict candidate, and an accepted physical baseline would justify different wording.',
-      'The current honest state is stronger than marketing but weaker than final victory: there are candidates, blockers, and a path to improve the evidence.',
-    ],
     coreIdeas: [
       'External baselines are comparison rows.',
       'Repo results require status labels.',
       'Accepted baseline remains blocked until all gates close.',
     ],
-    practicePrompt: 'Filter the baseline explorer by status, then use the promotion lab. Close blockers deliberately and check when the wording becomes allowed.',
-    glossaryTerms: ['Baseline', 'Promoted candidate', 'Artifact atlas', 'Learning path'],
   },
 ];
 
