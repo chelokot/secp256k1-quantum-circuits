@@ -784,6 +784,7 @@ test('teaches the real resource engine source-of-truth boundary', async ({ page 
 
   await expect(page.getByTestId('resource-engine-story')).toContainText('The engine exists because precise-looking counts lied');
   await expect(page.getByTestId('resource-engine-story')).toContainText('One stream should feed every claim surface');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('The engine is a generator plus auditors');
   await expect(page.getByTestId('resource-engine-story')).toContainText('Current status is intentionally not');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('End-to-end circuit stack map');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
@@ -826,6 +827,7 @@ test('teaches optimization tradeoffs from the hybrid bridge search', async ({ pa
 
   await expect(page.getByTestId('optimization-story')).toContainText('The smallest number is not automatically the best result');
   await expect(page.getByTestId('optimization-story')).toContainText('Why the current frontier is blocked');
+  await expect(page.getByTestId('optimization-story')).toContainText('The search loop is mechanical');
   await expect(page.getByTestId('optimization-story')).toContainText('The next useful patch must close a specific gate');
   await selectRouteLab(page, /Optimization mission/);
 

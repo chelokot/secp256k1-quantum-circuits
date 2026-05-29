@@ -1986,6 +1986,25 @@ function ResourceEngineStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule engine-loop-rule">
+        <div>
+          <h4>The engine is a generator plus auditors</h4>
+          <p>
+            The desired shape is not “write a number, then add checks around it.” The
+            engine should generate the primitive rows, replay the rows on boundary
+            tests, derive every live interval, derive non-Clifford cost from row kinds,
+            and emit the artifacts that docs and proof inputs read. A human can still
+            design a better schedule, but the number comes from the generated object.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>generate</span>
+          <span>replay</span>
+          <span>derive</span>
+          <span>publish</span>
+        </div>
+      </article>
+
       <article className="story-rule engine-status-rule">
         <div>
           <h4>Current status is intentionally not “accepted baseline”</h4>
@@ -1996,12 +2015,16 @@ function ResourceEngineStoryPanel({ data }: { data: typeof projectData }) {
             be populated only after every gate row passes and totals are recomputed
             from that same primitive stream.
           </p>
+          <p>
+            That status is useful. It tells a contributor where to work next instead of
+            hiding the remaining macro boundary behind a precise-looking resource row.
+          </p>
         </div>
         <div className="engine-blocker-list">
           {blockerRows.map((row) => (
             <div key={row.name}>
-              <span>{row.name}</span>
-              <strong>{row.status}</strong>
+              <span>{readableStatus(row.name)}</span>
+              <strong>{readableStatus(row.status)}</strong>
             </div>
           ))}
         </div>
@@ -2138,6 +2161,25 @@ function OptimizationStoryPanel({ data }: { data: typeof projectData }) {
           <div><span>current strict</span><strong>{formatInt(current.logical_qubits)}q</strong><em>{formatInt(current.non_clifford)}</em></div>
           <div><span>six-slot squeeze</span><strong>{formatInt(sixFitsQubits.logical_qubits)}q</strong><em>{formatInt(sixFitsQubits.non_clifford)}</em></div>
           <div><span>five-slot hope</span><strong>{formatInt(fiveSlot.logical_qubits)}q</strong><em>{fiveSlot.status}</em></div>
+        </div>
+      </article>
+
+      <article className="story-rule optimization-loop-rule">
+        <div>
+          <h4>The search loop is mechanical when the engine owns the count</h4>
+          <p>
+            A useful optimization freezes the functional boundary, changes one schedule
+            or lowering rule, regenerates the primitive stream, reruns semantic replay,
+            recomputes liveness and non-Clifford cost, then compares the new candidate
+            against the gate. That loop makes “try an idea” safe because a failed idea
+            becomes a named artifact, not a new headline.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>freeze boundary</span>
+          <span>change lowering</span>
+          <span>rerun engine</span>
+          <span>classify result</span>
         </div>
       </article>
 
