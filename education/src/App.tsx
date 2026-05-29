@@ -794,6 +794,30 @@ function CliffordStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule stabilizer-ledger-rule">
+        <div>
+          <h4>Compact does not mean classical</h4>
+          <p>
+            A stabilizer description is like a ledger of Pauli facts that remain true
+            about the state. Clifford gates update that ledger in a structured way:
+            X-type facts become other Pauli facts, Z-type facts become other Pauli
+            facts, and correlations can still be recorded without expanding the full
+            amplitude table.
+          </p>
+          <p>
+            That is the source of the “cheap” label. Clifford circuits can still make
+            superposition and entanglement; they are cheap because the bookkeeping stays
+            compact and fault-tolerant implementations usually do not need magic-state
+            injection for each row.
+          </p>
+        </div>
+        <div className="stabilizer-ledger" aria-hidden="true">
+          <div><span>before H</span><strong>Z fact</strong></div>
+          <div><span>after H</span><strong>X fact</strong></div>
+          <div><span>after CX</span><strong>parity fact</strong></div>
+        </div>
+      </article>
+
       <article className="story-rule magic-rule">
         <div>
           <h4>A magic step leaves the cheap map</h4>
@@ -814,6 +838,31 @@ function CliffordStoryPanel() {
           <b>T</b>
           <i className="magic" />
           <span>magic region</span>
+        </div>
+      </article>
+
+      <article className="story-rule magic-factory-rule">
+        <div>
+          <h4>Magic states behave like consumable fuel</h4>
+          <p>
+            In many fault-tolerant designs, a hard non-Clifford gate is implemented by
+            preparing a special ancilla state, checking or distilling it to high enough
+            quality, and consuming it through mostly Clifford circuitry. The algorithm
+            row says “do a T-like step”; the hardware plan has to supply enough clean
+            magic states at the right rate.
+          </p>
+          <p>
+            That is why the repo tracks non-Clifford separately from total rows. It is
+            not a moral ranking of gates; it is a proxy for a different factory-like
+            resource bottleneck.
+          </p>
+        </div>
+        <div className="magic-factory-flow" aria-hidden="true">
+          <span>noisy magic</span>
+          <i />
+          <span>distill/check</span>
+          <i />
+          <span>consume in gate</span>
         </div>
       </article>
 

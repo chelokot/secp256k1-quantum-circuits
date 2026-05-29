@@ -1409,7 +1409,9 @@ code {
 }
 
 .stabilizer-rule,
+.stabilizer-ledger-rule,
 .magic-rule,
+.magic-factory-rule,
 .clifford-universal-rule {
   border-color: rgba(245, 207, 107, 0.22);
 }
@@ -1477,6 +1479,67 @@ code {
   border-radius: 50%;
   color: #071018;
   background: #f5cf6b;
+}
+
+.stabilizer-ledger,
+.magic-factory-flow {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.stabilizer-ledger div {
+  display: grid;
+  gap: 0.22rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.stabilizer-ledger div:nth-child(2) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.stabilizer-ledger span,
+.stabilizer-ledger strong {
+  display: block;
+}
+
+.stabilizer-ledger span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.stabilizer-ledger strong {
+  color: #ffffff;
+}
+
+.magic-factory-flow {
+  grid-template-columns: minmax(0, 1fr) 1rem minmax(0, 1fr) 1rem minmax(0, 1fr);
+  align-items: center;
+}
+
+.magic-factory-flow span {
+  display: grid;
+  place-items: center;
+  min-height: 3.2rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.24);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  color: #dce7f2;
+  background: rgba(245, 207, 107, 0.08);
+  text-align: center;
+}
+
+.magic-factory-flow span:last-child {
+  border-color: rgba(99, 230, 190, 0.24);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.magic-factory-flow i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #f5cf6b, #63e6be);
 }
 
 .clifford-stack {
@@ -6542,6 +6605,7 @@ legend {
   .bell-steps,
   .cost-axis-strip,
   .magic-step-map,
+  .magic-factory-flow,
   .resource-layer-stack,
   .qec-service-loop,
   .phase-readout-strip,
@@ -6710,6 +6774,7 @@ legend {
   .bell-steps,
   .cost-axis-strip,
   .magic-step-map,
+  .magic-factory-flow,
   .resource-layer-stack,
   .qec-service-loop,
   .phase-readout-strip,
@@ -6819,6 +6884,7 @@ legend {
     display: none;
   }
 
+  .magic-factory-flow i,
   .resource-layer-stack i,
   .qec-service-loop i {
     display: none;
