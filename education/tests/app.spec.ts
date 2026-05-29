@@ -29,6 +29,9 @@ test('keeps every lesson free of legacy scaffolding and page overflow', async ({
     'Words for this page',
     'Glossary for this page',
     'Vocabulary spine',
+    'Current repo contract',
+    'Current repository resource status',
+    'notarized receipt',
   ];
 
   for (const viewport of viewports) {
@@ -631,6 +634,9 @@ test('keeps accepted-baseline promotion behind all blockers', async ({ page }) =
 
   await expect(page.getByTestId('repo-baseline-story')).toContainText('The repo status is a status table');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('Current numbers and their claim level');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('“None yet” is a claim about evidence');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('blocked by 5 gate rows');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('How the README should eventually get its numbers');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('none yet');
   await selectRouteLab(page, /Promotion audit/);
 
@@ -757,7 +763,9 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
   await openLesson(page, 'mini-engine');
 
   await expect(page.getByTestId('mini-engine-story')).toContainText('The toy engine is the real rule at small scale');
+  await expect(page.getByTestId('mini-engine-story')).toContainText('One row creates a lifetime');
   await expect(page.getByTestId('mini-engine-story')).toContainText('Cleanup can lower qubits without changing the answer');
+  await expect(page.getByTestId('mini-engine-story')).toContainText('Three checks make the count executable');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Mini resource engine');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: fail');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 10');
@@ -886,7 +894,9 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await openLesson(page, 'zkp-boundary');
 
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('A valid proof is only a receipt for its exact statement');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('The binding chain is the thing a reviewer follows');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The current checked proof status is deliberately conservative');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Why the lab asks for both compressed and Groth16 gates');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('9,024');
   await selectRouteLab(page, /ZKP boundary/);
 

@@ -427,7 +427,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The repo now separates proof freshness, public values, release corpus size, and physical-baseline readiness so a green verifier cannot hide a stale or weaker contract.',
     mentalModel:
-      'A ZKP is a notarized receipt. It is powerful only after you inspect exactly what was purchased, which input hash it binds, and whether that item is the thing you wanted.',
+      'Read a ZKP as a relation check over bytes: the verifier accepts one proof for one public statement. Confidence comes from inspecting which input digest, public values, corpus, and resource certificate that statement binds.',
     checkpoint: 'A reviewer should ask: what input, what corpus, what public values, what resource digest, and what remaining macro boundary?',
     coreIdeas: [
       'Proof validity is not the same as claim validity.',

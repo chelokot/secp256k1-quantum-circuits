@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
-import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, Code2, GitBranch, ListChecks, RotateCcw } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, GitBranch, ListChecks, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
 import { BaselineChart } from './components/BaselineChart';
@@ -56,6 +56,7 @@ import { ComputationModelBridge } from './components/ComputationModelBridge';
 import { MathTex } from './components/MathText';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
+const readableStatus = (value: string) => value.replaceAll('_', ' ');
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
 
 function lessonFromHash() {
@@ -2015,19 +2016,40 @@ function MiniEngineStoryPanel() {
       <article className="story-question">
         <h4>The toy engine is the real rule at small scale</h4>
         <p>
-          The lab uses tiny widths so the whole resource derivation fits on one page.
-          The rule is the same as the repo rule: rows create wire groups, cleanup
-          shortens lifetimes, owners provide capacity, and the maximum overlapping
-          live width is the qubit pressure.
+          The lab does not ask you to trust a resource number. It gives you a tiny
+          circuit program, materializes the rows, derives wire lifetimes, checks owner
+          budgets, and then reports the peak. The widths are small so the whole
+          derivation fits on one page; the rule is the same rule the repo needs at
+          secp256k1 scale.
         </p>
         <div className="mini-engine-flow-strip" aria-hidden="true">
-          <span>birth row</span>
+          <span>program rows</span>
           <i />
-          <span>live interval</span>
+          <span>wire intervals</span>
           <i />
-          <span>owner load</span>
+          <span>owner ledger</span>
           <i />
           <span>peak row</span>
+        </div>
+      </article>
+
+      <article className="story-rule mini-row-rule">
+        <div>
+          <h4>One row creates a lifetime, not just a line of text</h4>
+          <p>
+            When a row creates a scratch value, the engine records three facts before
+            counting anything: the row where the value is born, the last row that still
+            needs it, and the owner whose capacity must pay for its width. Peak qubits
+            are then a consequence of overlapping intervals, not a manually selected
+            register list.
+          </p>
+        </div>
+        <div className="mini-row-card" aria-hidden="true">
+          <span>row 3</span>
+          <strong>partial = x AND y</strong>
+          <em>birth: 3</em>
+          <em>last use: 6</em>
+          <em>owner: scratch_workspace</em>
         </div>
       </article>
 
@@ -2047,6 +2069,25 @@ function MiniEngineStoryPanel() {
         <div className="mini-lifecycle-compare" aria-hidden="true">
           <div><span>without cleanup</span><strong>scratch lives to the end</strong></div>
           <div><span>with cleanup</span><strong>scratch dies after use</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule mini-audit-rule">
+        <div>
+          <h4>Three checks make the count executable</h4>
+          <p>
+            The mini engine deliberately separates questions that earlier repo attempts
+            blurred together. Does the program compute the same output? Are all live
+            wires assigned to exactly one owner? Is each owner wide enough at its worst
+            row? Only after those checks agree does the displayed peak deserve to be
+            called a resource count.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>semantic replay</span>
+          <span>single owner per wire</span>
+          <span>capacity covers peak load</span>
+          <span>docs read the artifact</span>
         </div>
       </article>
     </section>
@@ -2193,10 +2234,11 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
       <article className="story-question">
         <h4>A valid proof is only a receipt for its exact statement</h4>
         <p>
-          Groth16 or compressed verification can be green while the statement is stale,
-          smoke-sized, or weaker than the physical circuit claim. The reviewer has to
-          inspect the public values, input digest, resource certificate, corpus profile,
-          and remaining macro boundary before repeating the headline.
+          A ZKP verifier does not read the README and decide whether the whole project
+          is true. It checks one encoded statement against one proof bundle. If that
+          statement points at an old resource digest, an eight-case smoke corpus, or a
+          macro-level boundary, the proof can be valid while the public sentence is still
+          too strong.
         </p>
         <div className="source-of-truth-strip" aria-hidden="true">
           <span>input JSON</span>
@@ -2206,6 +2248,25 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
           <span>proof bundle</span>
           <i />
           <span>claim wording</span>
+        </div>
+      </article>
+
+      <article className="story-rule zkp-binding-rule">
+        <div>
+          <h4>The binding chain is the thing a reviewer follows</h4>
+          <p>
+            The proof should bind a concrete input JSON. That input should contain the
+            resource certificate digest. The public values should repeat the digests and
+            expected totals. The checked files should be the files in the repo branch a
+            reviewer can clone. A break in that chain does not make ZKP useless; it
+            narrows what the proof actually says.
+          </p>
+        </div>
+        <div className="zkp-binding-ledger" aria-hidden="true">
+          <span>checked input</span>
+          <span>resource digest</span>
+          <span>public values</span>
+          <span>branch artifact</span>
         </div>
       </article>
 
@@ -2245,6 +2306,18 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
           <span className="story-token">scope match</span>
         </article>
       </div>
+
+      <article className="story-question">
+        <h4>Why the lab asks for both compressed and Groth16 gates</h4>
+        <p>
+          A compressed proof is the normal SP1 receipt shape used during iteration.
+          Groth16 is the smaller wrapped proof format people often want for external
+          verification. Rebuilding only one of them leaves a reviewer asking whether the
+          other artifact still binds the same input. That is why the publication gate
+          treats freshness, corpus size, macro closure, and both verification systems as
+          one release boundary.
+        </p>
+      </article>
     </section>
   );
 }
@@ -2340,16 +2413,18 @@ function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
   const strict = data.currentStrictCandidate;
   const corrected = data.guardCorrectedNoAliasCandidate;
   const gate = data.acceptedBaselineGate;
+  const blockedRows = gate.rows.filter((row) => !row.pass);
 
   return (
     <section className="repo-baseline-story" data-testid="repo-baseline-story" aria-label="Repo baseline status story">
       <article className="story-question">
         <h4>The repo status is a status table, not a victory poster</h4>
         <p>
-          The honest final page should teach readers to separate external comparison
-          rows, strict candidates, guard-corrected consequences, rejected hypotheses,
-          and a future accepted physical baseline. The current accepted baseline is
-          intentionally empty until the gate closes.
+          The last page is where overclaiming is easiest. A reader sees exact numbers
+          and wants one sentence: “this is the result.” The repo has to be stricter than
+          that. It separates numbers that are useful for engineering from numbers that
+          are accepted as a physical baseline, and it keeps the accepted slot empty until
+          the gate rows close.
         </p>
       </article>
 
@@ -2359,26 +2434,47 @@ function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
           <p>
             Strict candidate: {formatInt(strict.logical_qubits)} qubits /{' '}
             {formatInt(strict.non_clifford)} non-Clifford. Guard-corrected consequence:
-            {formatInt(corrected.logical_qubits)} qubits / {formatInt(corrected.non_clifford)}
+            {' '}{formatInt(corrected.logical_qubits)} qubits / {formatInt(corrected.non_clifford)}
             {' '}non-Clifford. Accepted-baseline gate: <code>{gate.status}</code>.
           </p>
         </div>
         <div className="optimization-candidate-strip" aria-hidden="true">
-          <div><span>strict candidate</span><strong>{formatInt(strict.logical_qubits)}q</strong><em>{strict.status}</em></div>
-          <div><span>guard corrected</span><strong>{formatInt(corrected.logical_qubits)}q</strong><em>{corrected.status}</em></div>
-          <div><span>accepted baseline</span><strong>none yet</strong><em>{gate.decision}</em></div>
+          <div><span>strict candidate</span><strong>{formatInt(strict.logical_qubits)}q</strong><em>{readableStatus(strict.status)}</em></div>
+          <div><span>guard corrected</span><strong>{formatInt(corrected.logical_qubits)}q</strong><em>{readableStatus(corrected.status)}</em></div>
+          <div><span>accepted baseline</span><strong>none yet</strong><em>{readableStatus(gate.decision)}</em></div>
+        </div>
+      </article>
+
+      <article className="story-rule baseline-gate-rule">
+        <div>
+          <h4>“None yet” is a claim about evidence, not pessimism</h4>
+          <p>
+            The accepted baseline is blocked by {blockedRows.length} gate rows. Those
+            rows are concrete: one authoritative primitive stream, guard capacity
+            promotion, modular accumulator promotion, no abandoned synthetic scratch,
+            and public-headline publication clearance. Closing one row should update the
+            artifact and the page should follow from the artifact.
+          </p>
+        </div>
+        <div className="engine-blocker-list">
+          {blockedRows.slice(0, 5).map((row) => (
+            <div key={row.name}>
+              <span>{readableStatus(row.name)}</span>
+              <strong>{readableStatus(row.status)}</strong>
+            </div>
+          ))}
         </div>
       </article>
 
       <div className="story-card-grid">
         <article>
           <strong>External baseline</strong>
-          <p>Useful for comparison, but not generated by this repo’s artifacts.</p>
+          <p>Useful for comparison, but not generated by this repo’s artifacts and not proof of this implementation.</p>
           <span className="story-token">reference row</span>
         </article>
         <article>
           <strong>Repo candidate</strong>
-          <p>Useful for engineering direction, but wording must preserve blockers.</p>
+          <p>Useful for engineering direction, but wording must preserve the exact blockers still open.</p>
           <span className="story-token">candidate row</span>
         </article>
         <article>
@@ -2387,6 +2483,17 @@ function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
           <span className="story-token">not populated</span>
         </article>
       </div>
+
+      <article className="story-question">
+        <h4>How the README should eventually get its numbers</h4>
+        <p>
+          The target architecture is mechanical: rebuild the primitive stream, derive
+          liveness and non-Clifford cost from it, emit the baseline artifact, regenerate
+          the README section from that artifact, and only then rebuild the proofs. Manual
+          copying is exactly the class of failure this course is training readers to
+          notice.
+        </p>
+      </article>
     </section>
   );
 }
@@ -2484,12 +2591,9 @@ export function App() {
   const [revealedCheckpointByLesson, setRevealedCheckpointByLesson] = useState<Partial<Record<LessonId, boolean>>>({});
   const [showFullCourseIndex, setShowFullCourseIndex] = useState(false);
   const activeLesson = lessons.find((lesson) => lesson.id === activeLessonId) ?? lessons[0];
-  const blockerNames = projectData.activeBlockers.map((blocker) => blocker.name.replaceAll('_', ' '));
   const currentIndex = lessons.findIndex((lesson) => lesson.id === activeLesson.id);
   const previousLesson = currentIndex > 0 ? lessons[currentIndex - 1] : null;
   const nextLesson = currentIndex < lessons.length - 1 ? lessons[currentIndex + 1] : null;
-  const showResourceStatus = ['optimization', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
-  const showRepoContract = ['resource-engine', 'optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'].includes(activeLesson.id);
   const showReviewPanels = activeLesson.id === 'repo-baselines';
   const checkpointQuestion = checkpointQuestions[activeLesson.id] ?? 'What exact claim does this page let you make, and what evidence supports it?';
   const checkpointRevealed = revealedCheckpointByLesson[activeLesson.id] ?? false;
@@ -2803,7 +2907,7 @@ export function App() {
       </aside>
 
       <section className="lesson-workspace">
-        <header className={showResourceStatus ? 'hero-panel no-status compact-hero' : 'hero-panel no-status'}>
+        <header className="hero-panel no-status">
           <div>
             <p className="eyebrow">{activeLesson.module}</p>
             <h2>{activeLesson.title}</h2>
@@ -2835,28 +2939,7 @@ export function App() {
           </button>
         </nav>
 
-        {showResourceStatus ? (
-          <section className="resource-status-strip" aria-label="Current repository resource status">
-            <div>
-              <span>Accepted baseline</span>
-              <strong>none yet</strong>
-            </div>
-            <div>
-              <span>Strict candidate</span>
-              <strong>{formatInt(projectData.currentStrictCandidate.logical_qubits)}q</strong>
-            </div>
-            <div>
-              <span>Guard-corrected</span>
-              <strong>{formatInt(projectData.guardCorrectedNoAliasCandidate.logical_qubits)}q</strong>
-            </div>
-            <div>
-              <span>Non-Clifford</span>
-              <strong>{formatInt(projectData.currentStrictCandidate.non_clifford)}</strong>
-            </div>
-          </section>
-        ) : null}
-
-        <section className={showRepoContract ? 'content-grid' : 'content-grid learning-grid'}>
+        <section className="content-grid learning-grid">
           <article className="concept-panel">
             <div className="panel-heading">
               <BookOpen size={20} />
@@ -2899,34 +2982,10 @@ export function App() {
             <p>{activeLesson.whyItMatters}</p>
           </article>
 
-          {showRepoContract ? (
-            <article className="concept-panel">
-              <div className="panel-heading">
-                <Code2 size={20} />
-                <h3>Current repo contract</h3>
-              </div>
-              <p>
-                The educational app reads checked artifacts through <code>scripts/sync-project-data.mjs</code>.
-                The UI treats resource numbers as contract states, not as marketing copy.
-              </p>
-              <ul className="blocker-list">
-                {blockerNames.map((name) => (
-                  <li key={name}>{name}</li>
-                ))}
-              </ul>
-            </article>
-          ) : (
-            <section className="lesson-labs inline" id="active-lesson-labs" aria-label={`${activeLesson.title} labs`}>
-              {guidedActiveLabs}
-            </section>
-          )}
-        </section>
-
-        {showRepoContract ? (
-          <section className="lesson-labs" id="active-lesson-labs" aria-label={`${activeLesson.title} labs`}>
+          <section className="lesson-labs inline" id="active-lesson-labs" aria-label={`${activeLesson.title} labs`}>
             {guidedActiveLabs}
           </section>
-        ) : null}
+        </section>
 
         <section className="lesson-finish-panel" aria-label="Lesson checkpoint">
           <section className={checkpointRevealed ? 'checkpoint revealed' : 'checkpoint'} data-testid="lesson-recall-check">

@@ -2457,7 +2457,9 @@ code {
 }
 
 .row-receipt-card,
+.mini-row-card,
 .proof-contract-list,
+.zkp-binding-ledger,
 .engine-blocker-list,
 .mini-lifecycle-compare,
 .optimization-candidate-strip {
@@ -2466,7 +2468,9 @@ code {
 }
 
 .row-receipt-card,
+.mini-row-card,
 .proof-contract-list span,
+.zkp-binding-ledger span,
 .engine-blocker-list div,
 .mini-lifecycle-compare div,
 .optimization-candidate-strip div {
@@ -2479,6 +2483,9 @@ code {
 .row-receipt-card span,
 .row-receipt-card strong,
 .row-receipt-card em,
+.mini-row-card span,
+.mini-row-card strong,
+.mini-row-card em,
 .engine-blocker-list span,
 .engine-blocker-list strong,
 .mini-lifecycle-compare span,
@@ -2490,6 +2497,7 @@ code {
 }
 
 .row-receipt-card span,
+.mini-row-card span,
 .engine-blocker-list span,
 .mini-lifecycle-compare span,
 .optimization-candidate-strip span {
@@ -2499,6 +2507,7 @@ code {
 }
 
 .row-receipt-card strong,
+.mini-row-card strong,
 .engine-blocker-list strong,
 .mini-lifecycle-compare strong,
 .optimization-candidate-strip strong {
@@ -2507,13 +2516,15 @@ code {
 }
 
 .row-receipt-card em,
+.mini-row-card em,
 .optimization-candidate-strip em {
   color: #b4c4d6;
   font-style: normal;
   overflow-wrap: anywhere;
 }
 
-.proof-contract-list span {
+.proof-contract-list span,
+.zkp-binding-ledger span {
   color: #dce7f2;
 }
 
