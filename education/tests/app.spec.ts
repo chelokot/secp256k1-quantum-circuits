@@ -510,8 +510,10 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
   await openLesson(page, 'logic-physical');
 
   await expect(page.getByTestId('logical-physical-story')).toContainText('The repo counts the algorithm layer');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('“Qubit” names three different layers here');
   await expect(page.getByTestId('logical-physical-story')).toContainText('A logical qubit is protected information');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Read code parameters as a hardware contract');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('Error correction is a running service loop');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Code distance');
   await expect(page.getByTestId('logical-physical-story')).toContainText('What the labs are allowed to claim');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');

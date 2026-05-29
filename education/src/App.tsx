@@ -910,6 +910,29 @@ function LogicalPhysicalStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule qubit-name-rule">
+        <div>
+          <h4>“Qubit” names three different layers here</h4>
+          <p>
+            The repo uses logical qubit to mean an algorithm-level circuit wire after
+            lowering and scheduling. Error correction uses logical qubit to mean one
+            encoded quantum value protected across physical carriers. Hardware and
+            Qiskit-style tooling may then expose a backend hardware qubit, which can be
+            a bare physical qubit today or, in a fault-tolerant stack, an encoded qubit
+            controlled behind the backend interface.
+          </p>
+          <p>
+            Mixing those layers turns a useful algorithm number into a misleading
+            hardware claim. The course keeps them separate on purpose.
+          </p>
+        </div>
+        <div className="qubit-layer-cards" aria-hidden="true">
+          <div><span>repo logical wire</span><strong>algorithm resource</strong></div>
+          <div><span>QEC logical qubit</span><strong>encoded information</strong></div>
+          <div><span>hardware qubit</span><strong>backend carrier</strong></div>
+        </div>
+      </article>
+
       <article className="story-rule encoding-rule">
         <div>
           <h4>A logical qubit is protected information</h4>
@@ -952,6 +975,32 @@ function LogicalPhysicalStoryPanel() {
           <span><MathTex tex="n" /> physical data qubits</span>
           <span><MathTex tex="k" /> protected logical qubits</span>
           <span><MathTex tex="d" /> distance / silent-error barrier</span>
+        </div>
+      </article>
+
+      <article className="story-rule qec-service-rule">
+        <div>
+          <h4>Error correction is a running service loop</h4>
+          <p>
+            A protected computation does not just allocate a larger register once.
+            Physical data qubits carry the encoded state, check qubits extract syndrome
+            information, measurements feed a classical decoder, and the decoder updates
+            the correction frame while the quantum computation continues.
+          </p>
+          <p>
+            That service loop is why a physical estimate needs measurement rounds,
+            decoder latency, connectivity, and scheduling assumptions in addition to
+            the algorithmic live-qubit count.
+          </p>
+        </div>
+        <div className="qec-service-loop" aria-hidden="true">
+          <span>data qubits</span>
+          <i />
+          <span>syndrome checks</span>
+          <i />
+          <span>decoder</span>
+          <i />
+          <span>updated frame</span>
         </div>
       </article>
 

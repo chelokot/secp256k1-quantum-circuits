@@ -1548,6 +1548,8 @@ code {
 }
 
 .encoding-rule,
+.qubit-name-rule,
+.qec-service-rule,
 .code-parameter-rule,
 .physical-estimate-rule {
   border-color: rgba(99, 230, 190, 0.2);
@@ -1591,6 +1593,67 @@ code {
 .logical-encoding-sketch span:nth-child(2n) {
   border-color: rgba(245, 207, 107, 0.28);
   background: rgba(245, 207, 107, 0.09);
+}
+
+.qubit-layer-cards,
+.qec-service-loop {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.qubit-layer-cards div {
+  display: grid;
+  gap: 0.22rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.qubit-layer-cards div:nth-child(2) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.qubit-layer-cards span,
+.qubit-layer-cards strong {
+  display: block;
+}
+
+.qubit-layer-cards span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+}
+
+.qubit-layer-cards strong {
+  color: #ffffff;
+}
+
+.qec-service-loop {
+  grid-template-columns: minmax(0, 1fr) 1rem minmax(0, 1fr) 1rem minmax(0, 1fr) 1rem minmax(0, 1fr);
+  align-items: center;
+}
+
+.qec-service-loop span {
+  display: grid;
+  place-items: center;
+  min-height: 3.1rem;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  color: #dce7f2;
+  background: rgba(143, 182, 255, 0.08);
+  text-align: center;
+}
+
+.qec-service-loop span:nth-of-type(1) {
+  border-color: rgba(99, 230, 190, 0.24);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.qec-service-loop i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
 .distance-ladder {
@@ -6480,6 +6543,7 @@ legend {
   .cost-axis-strip,
   .magic-step-map,
   .resource-layer-stack,
+  .qec-service-loop,
   .phase-readout-strip,
   .key-derivation-strip,
   .coordinate-name-strip,
@@ -6647,6 +6711,7 @@ legend {
   .cost-axis-strip,
   .magic-step-map,
   .resource-layer-stack,
+  .qec-service-loop,
   .phase-readout-strip,
   .key-derivation-strip,
   .coordinate-name-strip,
@@ -6754,7 +6819,8 @@ legend {
     display: none;
   }
 
-  .resource-layer-stack i {
+  .resource-layer-stack i,
+  .qec-service-loop i {
     display: none;
   }
 
