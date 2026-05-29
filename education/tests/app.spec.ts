@@ -81,10 +81,14 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await page.getByRole('button', { name: 'Reveal checkpoint answer' }).click();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('mathematical attack, the quantum state-and-gate program, tests');
   await expect(page.getByTestId('page-vocab')).toHaveCount(0);
+  await expect(page.getByTestId('lab-route')).toContainText('Classical vs quantum program');
+  await expect(page.getByTestId('lab-route')).toContainText('What has to be proved');
+  await expect(page.getByTestId('lab-route')).toContainText('Learning path map');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('Ordinary computer');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('Quantum circuit');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('bit string');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('amplitude vector');
+  await selectRouteLab(page, /What has to be proved/);
   await expect(page.getByTestId('project-proof-map')).toContainText('What has to be proved');
   await expect(page.getByTestId('project-proof-map')).toContainText('public key');
   await expect(page.getByTestId('project-proof-map')).toContainText('Executable circuit');
@@ -97,6 +101,7 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByLabel('Course navigation')).toContainText('This repo now');
   await page.getByRole('button', { name: 'Current section' }).click();
   await expect(page.getByLabel('Course navigation')).not.toContainText('This repo now');
+  await selectRouteLab(page, /Learning path map/);
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('course-coverage-audit-lab')).toHaveCount(0);
 });
@@ -134,6 +139,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
 
 test('turns the lab collection into a zero-to-contributor learning path', async ({ page }) => {
   await page.goto('/');
+  await selectRouteLab(page, /Learning path map/);
 
   await expect(page.getByTestId('learning-path-map')).toContainText('Zero-to-contributor learning path');
   await expect(page.getByTestId('learning-path-map')).toContainText('1. Quantum substrate');
@@ -488,6 +494,7 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
 
 test('teaches logical encoding with a repetition-code toy decoder', async ({ page }) => {
   await openLesson(page, 'logic-physical');
+  await selectRouteLab(page, /Error-correction toy/);
 
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Error-correction toy');
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('majority vote');
@@ -506,6 +513,7 @@ test('teaches logical encoding with a repetition-code toy decoder', async ({ pag
 
 test('teaches non-Clifford magic budget pressure separately from qubits', async ({ page }) => {
   await openLesson(page, 'clifford');
+  await selectRouteLab(page, /Magic budget/);
 
   await expect(page.getByTestId('magic-budget-lab')).toContainText('Non-Clifford magic budget');
   await expect(page.getByTestId('magic-budget-lab')).toContainText('36,973,222');
@@ -623,6 +631,7 @@ test('trains claim classification before publishing resource numbers', async ({ 
 
   await expect(page.getByTestId('contribution-story')).toContainText('A useful patch is a small claim plus evidence');
   await expect(page.getByTestId('contribution-story')).toContainText('The open blockers define useful work');
+  await selectRouteLab(page, /Claim audit drill/);
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit drill');
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: wrong');
   await page.getByLabel('Claim classification').selectOption('rejected');
@@ -655,6 +664,7 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
 
 test('maps original education requirements to concrete course coverage', async ({ page }) => {
   await openLesson(page, 'contribution');
+  await selectRouteLab(page, /Course coverage audit/);
 
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Lessons');
@@ -683,6 +693,7 @@ test('shows final glossary only as a late-course reference', async ({ page }) =>
 
 test('maps checked artifacts to audit questions and claim limits', async ({ page }) => {
   await openLesson(page, 'point-add-boundary');
+  await selectRouteLab(page, /Artifact atlas/);
 
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact atlas');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('current_baseline_status.json');

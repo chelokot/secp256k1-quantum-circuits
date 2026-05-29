@@ -84,6 +84,11 @@ function loadCompletedLessons() {
 }
 
 const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
+  zero: [
+    { name: 'Classical vs quantum program', goal: 'Compare ordinary bit-string updates with amplitude-vector updates.' },
+    { name: 'What has to be proved', goal: 'Connect the public key target to executable circuits and resource claims.' },
+    { name: 'Learning path map', goal: 'See the route from zero background to useful repo contribution.' },
+  ],
   qubit: [
     { name: 'Phase-to-probability bridge', goal: 'Change only relative angle and see when it becomes measurable.' },
   ],
@@ -102,6 +107,14 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
     { name: 'Primitive netlist toy', goal: 'See rows, touched wires, and non-Clifford cost.' },
     { name: 'Quantum DSL', goal: 'Write valid rows and make invalid opcodes fail loudly.' },
     { name: 'Cleanup puzzle', goal: 'Prove compute, use, and uncompute as one lifecycle.' },
+  ],
+  clifford: [
+    { name: 'Stabilizer vs magic wheel', goal: 'Separate Clifford motion from the first non-Clifford magic step.' },
+    { name: 'Magic budget', goal: 'Scale non-Clifford count into a factory-pressure thought experiment.' },
+  ],
+  'logic-physical': [
+    { name: 'Logical-to-physical bridge', goal: 'Translate logical rows through explicit QEC assumptions.' },
+    { name: 'Error-correction toy', goal: 'Decode a tiny repetition code and see why distance changes protection.' },
   ],
   netlists: [
     { name: 'Circuit stack map', goal: 'See where a resource claim can drift away from the tested circuit.' },
@@ -159,6 +172,15 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   optimization: [
     { name: 'Optimization mission', goal: 'Compare candidates against qubit, gate, semantic, and promotion gates.' },
     { name: 'Baseline tradeoff', goal: 'Keep external comparison rows separate from repo claims.' },
+  ],
+  'point-add-boundary': [
+    { name: 'Boundary debugger', goal: 'Exercise random, doubling, inverse, accumulator-infinity, and lookup-infinity cases.' },
+    { name: 'Artifact atlas', goal: 'Map equivalence artifacts to what they prove and what they do not prove.' },
+  ],
+  contribution: [
+    { name: 'Contributor mission board', goal: 'Turn the course into a concrete patch with evidence requirements.' },
+    { name: 'Claim audit drill', goal: 'Classify repo claims by the evidence they actually bind.' },
+    { name: 'Course coverage audit', goal: 'Check how the course maps the original learning requirements.' },
   ],
   'zkp-boundary': [
     { name: 'ZKP boundary', goal: 'Close freshness, macro-boundary, and proof verification gates.' },
