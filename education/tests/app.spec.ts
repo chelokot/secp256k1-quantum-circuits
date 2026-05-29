@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import type { Page } from '@playwright/test';
+import { lessons } from '../src/content/course';
 
 const openLesson = async (page: Page, lessonId: string) => {
   await page.goto(`/#${lessonId}`);
@@ -15,6 +16,42 @@ const showAllLabs = async (page: Page) => {
 const selectRouteLab = async (page: Page, labName: RegExp) => {
   await page.getByTestId('lab-route').getByRole('button', { name: labName }).click();
 };
+
+test('keeps every lesson free of legacy scaffolding and page overflow', async ({ page }) => {
+  const viewports = [
+    { name: 'desktop', width: 1600, height: 1000 },
+    { name: 'mobile', width: 390, height: 844 },
+  ];
+  const forbiddenText = [
+    'Start here',
+    'Build it up',
+    'short steps',
+    'Words for this page',
+    'Glossary for this page',
+    'Vocabulary spine',
+  ];
+
+  for (const viewport of viewports) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+
+    for (const lesson of lessons) {
+      await openLesson(page, lesson.id);
+      await expect(page.getByTestId('lesson-detail-steps')).toHaveCount(0);
+
+      for (const text of forbiddenText) {
+        await expect(page.getByText(text, { exact: false })).toHaveCount(0);
+      }
+
+      const overflow = await page.evaluate(() => ({
+        body: document.body.scrollWidth - document.body.clientWidth,
+        document: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      }));
+
+      expect.soft(overflow.body, `${viewport.name} ${lesson.id} body overflow`).toBeLessThanOrEqual(0);
+      expect.soft(overflow.document, `${viewport.name} ${lesson.id} document overflow`).toBeLessThanOrEqual(0);
+    }
+  }
+});
 
 test('loads the personal quantum circuit course and generated repo status', async ({ page }) => {
   await page.goto('/');
