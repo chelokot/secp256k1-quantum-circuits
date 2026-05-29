@@ -1014,6 +1014,7 @@ code {
 .phase-estimation-story h4,
 .ecdlp-story h4,
 .coordinate-story h4,
+.lookup-story h4,
 .gates-story h4 {
   margin: 0 0 0.45rem;
   color: #f5cf6b;
@@ -2051,6 +2052,73 @@ code {
   color: #f5cf6b;
   background: rgba(245, 207, 107, 0.07);
   font-size: 0.82rem;
+}
+
+.lookup-story {
+  display: grid;
+  gap: 0.9rem;
+  margin: 1rem 0;
+}
+
+.qroam-flow-strip {
+  display: grid;
+  grid-template-columns: minmax(8rem, 1fr) 1.3rem minmax(8rem, 1fr) 1.3rem minmax(8rem, 1fr) 1.3rem minmax(7rem, 0.8fr);
+  gap: 0.45rem;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.qroam-flow-strip span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.qroam-flow-strip i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.qroam-cost-rule,
+.qroam-consistency-rule {
+  border-color: rgba(99, 230, 190, 0.2);
+}
+
+.qroam-parameter-card,
+.qroam-model-split {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.qroam-parameter-card div,
+.qroam-model-split div {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.qroam-parameter-card span,
+.qroam-parameter-card strong,
+.qroam-model-split strong,
+.qroam-model-split span {
+  display: block;
+}
+
+.qroam-parameter-card span,
+.qroam-model-split span {
+  color: #93a4b7;
+  font-size: 0.82rem;
+}
+
+.qroam-parameter-card strong,
+.qroam-model-split strong {
+  color: #ffffff;
 }
 
 .story-rule {
@@ -3146,6 +3214,37 @@ code {
 .no-free-lane-callout {
   border-color: rgba(245, 207, 107, 0.4);
   background: rgba(245, 207, 107, 0.08);
+}
+
+.qroam-formula-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.qroam-formula-strip div {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.qroam-formula-strip span,
+.qroam-formula-strip strong {
+  display: block;
+}
+
+.qroam-formula-strip span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.qroam-formula-strip strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  font-size: 0.92rem;
 }
 
 .owner-table {
@@ -5842,6 +5941,8 @@ legend {
   .key-derivation-strip,
   .coordinate-name-strip,
   .coordinate-equation-strip,
+  .qroam-flow-strip,
+  .qroam-formula-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -5994,6 +6095,8 @@ legend {
   .key-derivation-strip,
   .coordinate-name-strip,
   .coordinate-equation-strip,
+  .qroam-flow-strip,
+  .qroam-formula-strip,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6095,7 +6198,8 @@ legend {
   }
 
   .coordinate-name-strip i,
-  .coordinate-equation-strip i {
+  .coordinate-equation-strip i,
+  .qroam-flow-strip i {
     display: none;
   }
 

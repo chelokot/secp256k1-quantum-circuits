@@ -26,6 +26,7 @@ const modularMultiplierLifecycle = readJson('compiler_verification_project/artif
 const hybridBridgeSearch = readJson('compiler_verification_project/artifacts/hybrid_bridge_search.json');
 const lookupFedLeafEquivalence = readJson('compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json');
 const streamedLookupTailLeafEquivalence = readJson('compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json');
+const compilerParameters = readJson('compiler_verification_project/artifacts/compiler_parameters.json');
 
 const frontierReference = familyFrontier.best_qubit_family;
 
@@ -51,6 +52,7 @@ const payload = {
     hybridBridgeSearch: 'compiler_verification_project/artifacts/hybrid_bridge_search.json',
     lookupFedLeafEquivalence: 'compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json',
     streamedLookupTailLeafEquivalence: 'compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json',
+    compilerParameters: 'compiler_verification_project/artifacts/compiler_parameters.json',
   },
   acceptedPhysicalBaseline: baselineStatus.accepted_physical_baseline,
   currentStrictCandidate: baselineStatus.current_strict_candidate,
@@ -58,6 +60,24 @@ const payload = {
   acceptedBaselineGate: baselineStatus.accepted_baseline_gate,
   strictFormula: strictHeadline.logical_qubit_formula,
   strictNonCliffordFormula: strictHeadline.non_clifford_formula,
+  compilerParameters: {
+    field: {
+      fieldBits: compilerParameters.field.field_bits,
+    },
+    windowing: {
+      foldedMagnitudeBits: compilerParameters.windowing.folded_magnitude_bits,
+      foldedMagnitudeDomain: compilerParameters.windowing.folded_magnitude_domain,
+    },
+    lookupPolicy: {
+      selectedPublicLookupFamily: compilerParameters.lookup_policy.selected_public_lookup_family,
+      standardQroamcleanBlockSize: compilerParameters.lookup_policy.standard_qroamclean_block_size,
+    },
+    reusableChunkPolicy: {
+      chunkBits: compilerParameters.reusable_chunk_policy.chunk_bits,
+      chunkCount: compilerParameters.reusable_chunk_policy.chunk_count,
+      scratchSlot: compilerParameters.reusable_chunk_policy.scratch_slot,
+    },
+  },
   activeBlockers: baselineStatus.remaining_physical_baseline_blockers,
   engineCompletion: {
     cliffordCompleteGoalAchieved: engineCompletion.clifford_complete_goal_achieved,

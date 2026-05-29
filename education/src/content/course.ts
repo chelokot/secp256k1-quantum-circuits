@@ -336,14 +336,15 @@ export const lessons: CourseLesson[] = [
     title: 'QROAM is table lookup under quantum accounting',
     icon: Binary,
     intuition:
-      'The circuit repeatedly selects precomputed curve-point data. A standard QROAM model pays for table selection with explicit controls, target bits, and cleanup.',
+      'The circuit repeatedly selects precomputed curve-point data. In quantum form, a lookup is not a free memory read; it is a reversible selection circuit with controls, target bits, workspace, and cleanup.',
     whyItMatters:
       'Several earlier low-qubit stories failed because a lookup output lane or QROAM junk register was treated as if it were not live.',
     mentalModel:
-      'A QROAM lookup is a reversible table-selection circuit. The address controls, selected target bits, workspace, and cleanup rows are all part of the resource model.',
+      'A QROAM lookup is a reversible table-selection circuit. The address controls decide which row contributes, the selected bits land in a target register, helper junk supports the selection network, and cleanup removes the temporary path. Gates and qubits must come from the same model.',
     checkpoint: 'A lookup output is only free if the executable liveness artifact proves it aliases already-counted capacity.',
     deepDive: [
-      'The attack uses precomputed point chunks. A quantum address cannot simply index a classical array for free; the table selection has controls, targets, workspace, and cleanup.',
+      'The attack uses precomputed point chunks. A quantum address cannot simply index a classical array for free; the table selection has controls, target bits, workspace, and cleanup.',
+      'QROAMClean-style accounting trades non-Clifford work against workspace. If K is increased, the gate formula changes and the junk-register capacity changes too.',
       'A low-qubit claim fails if lookup target lanes or QROAM junk registers are omitted from live capacity. This was one of the central bug classes in the repo.',
       'The useful question is not “is there a lookup?” but “which bits are selected, where does the selected data live, and when is the selection workspace uncomputed?”',
     ],

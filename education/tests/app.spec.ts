@@ -390,7 +390,9 @@ test('shows modular reduction and QROAMClean tradeoff pressure', async ({ page }
   await openLesson(page, 'lookup-qroam');
   await selectRouteLab(page, /QROAMClean tradeoff/);
   await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('QROAMClean tradeoff dial');
-  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('extra junk-register capacity');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Target bits plus extra junk-register capacity');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('target');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('junk');
   await page.getByTestId('qroam-tradeoff-lab').getByRole('slider').fill('16');
   await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Workspace');
 });
@@ -477,6 +479,10 @@ test('teaches non-Clifford magic budget pressure separately from qubits', async 
 test('teaches QROAM selection and owner invariant failures', async ({ page }) => {
   await openLesson(page, 'lookup-qroam');
 
+  await expect(page.getByTestId('lookup-story')).toContainText('A table lookup is still a circuit');
+  await expect(page.getByTestId('lookup-story')).toContainText('What QROAMClean buys and what it spends');
+  await expect(page.getByTestId('lookup-story')).toContainText('The consistency trap');
+  await expect(page.getByTestId('lookup-story')).toContainText('not free output');
   await expect(page.getByTestId('lab-route')).toContainText('QROAM selection');
   await expect(page.getByTestId('lab-route')).toContainText('QROAMClean tradeoff');
   await expect(page.getByTestId('qroam-lab')).toContainText('QROAM table selection');

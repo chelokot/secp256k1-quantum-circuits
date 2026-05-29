@@ -1180,6 +1180,106 @@ function CoordinatesStoryPanel() {
   );
 }
 
+function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
+  const entries = data.compilerParameters.windowing.foldedMagnitudeDomain;
+  const chunkBits = data.compilerParameters.reusableChunkPolicy.chunkBits;
+  const standardK = data.compilerParameters.lookupPolicy.standardQroamcleanBlockSize;
+  const fullCoordinateJunkAtK16 = (16 - 1) * data.compilerParameters.field.fieldBits;
+
+  return (
+    <section className="lookup-story" data-testid="lookup-story" aria-label="QROAM lookup accounting story">
+      <article className="story-question">
+        <h4>A table lookup is still a circuit</h4>
+        <p>
+          Classical code can write <MathTex tex="table[address]" /> and let the
+          machine hide the memory system. A quantum address may be in superposition,
+          so the lookup must coherently route the selected data into a target register
+          without measuring which row was chosen.
+        </p>
+        <div className="qroam-flow-strip" aria-hidden="true">
+          <span>address register</span>
+          <i />
+          <span>selection network</span>
+          <i />
+          <span>target chunk</span>
+          <i />
+          <span>cleanup</span>
+        </div>
+      </article>
+
+      <article className="story-rule qroam-cost-rule">
+        <div>
+          <h4>What QROAMClean buys and what it spends</h4>
+          <p>
+            A standard clean-ancilla QROAM lookup over <MathTex tex="N" /> entries
+            and <MathTex tex="b" /> target bits trades Toffoli work against workspace:
+            compute cost <MathTex tex="N/K+(K-1)b" />, cleanup cost{' '}
+            <MathTex tex="N/K+(K-1)" />, and <MathTex tex="(K-1)b" /> junk bits.
+          </p>
+          <p>
+            The current checked chunk policy gives <MathTex tex={`N=${entries}`} /> and{' '}
+            <MathTex tex={`b=${chunkBits}`} /> for this lab. The default public block
+            size is <MathTex tex={`K=${standardK}`} />.
+          </p>
+        </div>
+        <div className="qroam-parameter-card" aria-hidden="true">
+          <div><span>entries</span><strong>{formatInt(entries)}</strong></div>
+          <div><span>chunk bits</span><strong>{chunkBits}</strong></div>
+          <div><span>default K</span><strong>{standardK}</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule qroam-consistency-rule">
+        <div>
+          <h4>The consistency trap</h4>
+          <p>
+            You cannot use a full-width QROAM gate formula and then keep only a
+            tiny one-bit latch in the qubit count. If the lookup selects a full
+            field-sized coordinate with <MathTex tex="K=16" />, the junk registers
+            alone cost <MathTex tex={`15\\cdot256=${fullCoordinateJunkAtK16}`} /> bits.
+          </p>
+          <p>
+            If you instead stream one bit at a time, the workspace can be small, but
+            the lookup cost must be paid per bit stream. Those are different models,
+            and the repo must keep them separate.
+          </p>
+        </div>
+        <div className="qroam-model-split" aria-hidden="true">
+          <div><strong>full target</strong><span>amortize bits, count junk</span></div>
+          <div><strong>bit stream</strong><span>small target, repeat lookup</span></div>
+        </div>
+      </article>
+
+      <div className="story-motion-grid">
+        <article>
+          <h4>Address controls</h4>
+          <p>The row selector is live quantum state. It chooses rows without being measured.</p>
+          <span className="story-token">selection bits</span>
+        </article>
+        <article>
+          <h4>Target lane</h4>
+          <p>The selected value must land in a counted register or in a proven alias of an existing owner.</p>
+          <span className="story-token">not free output</span>
+        </article>
+        <article>
+          <h4>Uncompute</h4>
+          <p>Selection junk must be kept long enough to reverse or measured-uncompute the lookup path.</p>
+          <span className="story-token">cleanup bound</span>
+        </article>
+      </div>
+
+      <article className="story-question">
+        <h4>What to do in the labs</h4>
+        <p>
+          First flip address bits and identify which register is address, target,
+          workspace, and cleanup. Then move <MathTex tex="K" /> in the tradeoff dial
+          and watch the same formula change gates and workspace together.
+        </p>
+      </article>
+    </section>
+  );
+}
+
 function GatesStoryPanel() {
   return (
     <section className="gates-story" data-testid="gates-story" aria-label="Gates wires and cleanup story">
@@ -1414,7 +1514,7 @@ export function App() {
       case 'lookup-qroam':
         return [
           labItem(0, 'QROAM selection', <QroamLab projectData={projectData} />),
-          labItem(1, 'QROAMClean tradeoff', <QroamTradeoffLab />),
+          labItem(1, 'QROAMClean tradeoff', <QroamTradeoffLab projectData={projectData} />),
         ];
       case 'programming':
         return [
@@ -1677,8 +1777,9 @@ export function App() {
             {activeLesson.id === 'phase-estimation' ? <PhaseEstimationStoryPanel /> : null}
             {activeLesson.id === 'ecdlp' ? <EcdlpStoryPanel /> : null}
             {activeLesson.id === 'coordinates' ? <CoordinatesStoryPanel /> : null}
+            {activeLesson.id === 'lookup-qroam' ? <LookupQroamStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {

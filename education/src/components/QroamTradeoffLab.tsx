@@ -1,16 +1,32 @@
 import { useMemo, useState } from 'react';
 import { Binary } from 'lucide-react';
 
-export function QroamTradeoffLab() {
-  const [k, setK] = useState(1);
-  const entries = 32_768;
-  const bitsize = 155;
+type ProjectData = {
+  compilerParameters: {
+    windowing: {
+      foldedMagnitudeDomain: number;
+    };
+    lookupPolicy: {
+      standardQroamcleanBlockSize: number;
+    };
+    reusableChunkPolicy: {
+      chunkBits: number;
+    };
+  };
+};
+
+export function QroamTradeoffLab({ projectData }: { projectData: ProjectData }) {
+  const [k, setK] = useState(projectData.compilerParameters.lookupPolicy.standardQroamcleanBlockSize);
+  const entries = projectData.compilerParameters.windowing.foldedMagnitudeDomain;
+  const bitsize = projectData.compilerParameters.reusableChunkPolicy.chunkBits;
   const cost = useMemo(() => {
     const compute = Math.ceil(entries / k) + (k - 1) * bitsize;
     const cleanup = Math.ceil(entries / k) + (k - 1);
-    const workspace = bitsize + (k - 1) * bitsize;
-    return { compute, cleanup, total: compute + cleanup, workspace };
-  }, [k]);
+    const target = bitsize;
+    const junk = (k - 1) * bitsize;
+    const workspace = target + junk;
+    return { compute, cleanup, target, junk, total: compute + cleanup, workspace };
+  }, [bitsize, entries, k]);
 
   return (
     <article className="lab-panel" data-testid="qroam-tradeoff-lab">
@@ -36,7 +52,7 @@ export function QroamTradeoffLab() {
         <article>
           <span>Workspace</span>
           <strong>{cost.workspace}</strong>
-          <p>Higher K needs extra junk-register capacity.</p>
+          <p>Target bits plus extra junk-register capacity.</p>
         </article>
       </div>
       <dl className="metric-row">
@@ -45,6 +61,12 @@ export function QroamTradeoffLab() {
         <div><dt>NC toy cost</dt><dd>{cost.total}</dd></div>
         <div><dt>Workspace</dt><dd>{cost.workspace}</dd></div>
       </dl>
+      <div className="qroam-formula-strip">
+        <div><span>target</span><strong>{cost.target}</strong></div>
+        <div><span>junk</span><strong>{cost.junk}</strong></div>
+        <div><span>compute</span><strong>N/K + (K - 1)b</strong></div>
+        <div><span>cleanup</span><strong>N/K + (K - 1)</strong></div>
+      </div>
       <p>
         Increasing K can reduce selection work but increases junk-register
         capacity. This is exactly the consistency trap the repo now teaches you

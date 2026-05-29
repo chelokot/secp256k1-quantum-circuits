@@ -19,7 +19,8 @@
     "modularMultiplierLifecycle": "compiler_verification_project/artifacts/modular_multiplier_lifecycle.json",
     "hybridBridgeSearch": "compiler_verification_project/artifacts/hybrid_bridge_search.json",
     "lookupFedLeafEquivalence": "compiler_verification_project/artifacts/lookup_fed_leaf_equivalence.json",
-    "streamedLookupTailLeafEquivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json"
+    "streamedLookupTailLeafEquivalence": "compiler_verification_project/artifacts/streamed_lookup_tail_leaf_equivalence.json",
+    "compilerParameters": "compiler_verification_project/artifacts/compiler_parameters.json"
   },
   "acceptedPhysicalBaseline": null,
   "currentStrictCandidate": {
@@ -103,6 +104,24 @@
     "per_chunk_stream_non_clifford": 65536,
     "qroam_chunk_non_clifford": 12189696,
     "reconstructed_total": 36973222
+  },
+  "compilerParameters": {
+    "field": {
+      "fieldBits": 256
+    },
+    "windowing": {
+      "foldedMagnitudeBits": 15,
+      "foldedMagnitudeDomain": 32768
+    },
+    "lookupPolicy": {
+      "selectedPublicLookupFamily": "folded_standard_qroam_streamed_coordinate_v1",
+      "standardQroamcleanBlockSize": 1
+    },
+    "reusableChunkPolicy": {
+      "chunkBits": 155,
+      "chunkCount": 2,
+      "scratchSlot": "qchunk"
+    }
   },
   "activeBlockers": [
     {
