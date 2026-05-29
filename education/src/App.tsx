@@ -1834,6 +1834,28 @@ function ProgrammingStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule row-branch-rule">
+        <div>
+          <h4>A row acts on the whole quantum state</h4>
+          <p>
+            When the editor shows <code>CX q0 q1</code>, do not picture one classical
+            branch being edited. The row is a reversible rule applied coherently to
+            every amplitude branch at once. If <MathTex tex="q0" /> is in a split, the
+            branch where <MathTex tex="q0=0" /> leaves <MathTex tex="q1" /> alone, and
+            the branch where <MathTex tex="q0=1" /> flips <MathTex tex="q1" />.
+          </p>
+          <p>
+            That is why operands matter. A wrong operand is not a local typo; it changes
+            the transformation over the full state vector the later interference depends on.
+          </p>
+        </div>
+        <div className="row-branch-card" aria-hidden="true">
+          <div><span>q0 = 0 branch</span><strong>q1 unchanged</strong></div>
+          <div><span>q0 = 1 branch</span><strong>q1 flips</strong></div>
+          <div><span>same row</span><strong>one coherent transform</strong></div>
+        </div>
+      </article>
+
       <article className="story-rule reversible-half-adder-rule">
         <div>
           <h4>The quantum version keeps the inputs</h4>
@@ -1971,6 +1993,30 @@ function CleanupStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule cleanup-dependency-rule">
+        <div>
+          <h4>Cleanup can keep sources live longer</h4>
+          <p>
+            To erase a temporary value, the inverse needs the same source controls that
+            created it. If those sources were overwritten or freed too early, the cleanup
+            row is only a label, not an executable inverse.
+          </p>
+          <p>
+            This is a qubit-counting issue, not only a correctness issue. A schedule
+            that delays cleanup may have to keep the sources, target, and destination
+            live together, so peak liveness can rise even when the algebraic formula is
+            unchanged.
+          </p>
+        </div>
+        <div className="cleanup-dependency-card" aria-hidden="true">
+          <span>sources stay available</span>
+          <i />
+          <span>scratch can be erased</span>
+          <i />
+          <span>live peak is recomputed</span>
+        </div>
+      </article>
+
       <div className="story-motion-grid">
         <article>
           <h4>Missing cleanup</h4>
@@ -2078,6 +2124,28 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
           <div><span>one grid products</span><strong>{formatInt(grid.initialPartialProductBits)}</strong></div>
           <div><span>all consume rows</span><strong>{formatInt(allGrids.partial_product_rows)}</strong></div>
           <div><span>source cleanup rows</span><strong>{formatInt(sourceUncompute.rowCount)}</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule modular-fold-rule">
+        <div>
+          <h4>Modulo reduction is not an after-the-fact note</h4>
+          <p>
+            In ordinary code, it is tempting to say “multiply, then reduce mod{' '}
+            <MathTex tex="p" />.” In a reversible circuit, the high columns of the
+            product are quantum data while they exist. They must be folded into the
+            field range by explicit rows, with carries and cleanup tracked.
+          </p>
+          <p>
+            The output cannot simply forget high bits, because forgetting is many-to-one.
+            The lowering needs a reversible route that preserves enough information to
+            uncompute temporary evidence after the field result has been accumulated.
+          </p>
+        </div>
+        <div className="modular-fold-card" aria-hidden="true">
+          <div><span>high columns</span><strong>still quantum data</strong></div>
+          <div><span>fold rows</span><strong>explicit reversible work</strong></div>
+          <div><span>cleanup</span><strong>remove temporary evidence</strong></div>
         </div>
       </article>
 

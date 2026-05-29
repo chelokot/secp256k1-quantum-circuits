@@ -270,6 +270,7 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'A useful contributor can translate an attractive algebraic trick into primitive rows with operands, owners, costs, and cleanup obligations.',
     coreIdeas: [
       'Write rows before trusting formulas.',
+      'A row acts coherently over every amplitude branch, not one sampled path.',
       'Unknown operations must fail loudly.',
       'Tiny netlists train the same audit reflex used on large lowerings.',
     ],
@@ -289,6 +290,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Temporary value = live quantum state.',
       'Cleanup = inverse path with the same sources.',
+      'Cleanup timing can keep source wires live and change the peak.',
       'No cleanup means garbage still counts or breaks semantics.',
     ],
   },
@@ -306,6 +308,7 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'A lowering is convincing only when every temporary bit has a route, owner, and inverse or measured cleanup.',
     coreIdeas: [
       'Multiply = partial products plus carries plus reduction.',
+      'Modulo reduction is explicit reversible work, not classical postprocessing.',
       'Every temporary product needs a lifecycle.',
       'Promotion requires one primitive stream, not a side artifact.',
     ],

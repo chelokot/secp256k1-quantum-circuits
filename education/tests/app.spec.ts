@@ -595,6 +595,7 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
 test('lets the learner write and debug a tiny quantum netlist', async ({ page }) => {
   await openLesson(page, 'programming');
   await expect(page.getByTestId('programming-story')).toContainText('A circuit program is a contract over wires');
+  await expect(page.getByTestId('programming-story')).toContainText('A row acts on the whole quantum state');
   await expect(page.getByTestId('programming-story')).toContainText('The quantum version keeps the inputs');
   await expect(page.getByTestId('programming-story')).toContainText('Rows are the smallest auditable unit');
   await expect(page.getByTestId('programming-story')).toContainText('A rejected row is a feature');
@@ -615,6 +616,7 @@ test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
   await openLesson(page, 'cleanup');
   await expect(page.getByTestId('cleanup-story')).toContainText('Scratch becomes garbage when its story stops');
   await expect(page.getByTestId('cleanup-story')).toContainText('The safe pattern is compute, consume, reverse');
+  await expect(page.getByTestId('cleanup-story')).toContainText('Cleanup can keep sources live longer');
   await expect(page.getByTestId('cleanup-story')).toContainText('How this maps to the repo blocker');
   await selectRouteLab(page, /Cleanup puzzle/);
 
@@ -630,6 +632,7 @@ test('shows partial-product lowering pressure', async ({ page }) => {
   await expect(page.getByTestId('modular-lowering-story')).toContainText('A tiny formula becomes a large reversible machine');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('one grid products');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('65,536');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('Modulo reduction is not an after-the-fact note');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('Cleanup still gates promotion');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Partial-product grid');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').first().fill('15');

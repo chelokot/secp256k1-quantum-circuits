@@ -2586,12 +2586,15 @@ code {
 .row-contract-rule,
 .lowering-boundary-rule,
 .schedule-liveness-rule,
+.row-branch-rule,
 .reversible-half-adder-rule,
 .row-schema-rule,
 .parser-rule,
 .bennett-rule,
+.cleanup-dependency-rule,
 .artifact-cleanup-rule,
 .modular-grid-rule,
+.modular-fold-rule,
 .carry-compression-rule,
 .capacity-equation-rule,
 .guard-ladder-rule,
@@ -2610,6 +2613,8 @@ code {
 .row-schema-strip,
 .bennett-cycle,
 .half-adder-compare,
+.row-branch-card,
+.modular-fold-card,
 .circuit-reading-strip,
 .controlled-branch-card,
 .schedule-peak-strip {
@@ -2620,6 +2625,8 @@ code {
 .row-schema-strip span,
 .bennett-cycle span,
 .half-adder-compare div,
+.row-branch-card div,
+.modular-fold-card div,
 .circuit-reading-strip span,
 .controlled-branch-card span,
 .controlled-branch-card strong,
@@ -2633,18 +2640,32 @@ code {
 }
 
 .half-adder-compare span,
-.half-adder-compare strong {
+.half-adder-compare strong,
+.row-branch-card span,
+.row-branch-card strong,
+.modular-fold-card span,
+.modular-fold-card strong {
   display: block;
 }
 
-.half-adder-compare span {
+.half-adder-compare span,
+.row-branch-card span,
+.modular-fold-card span {
   color: #93a4b7;
   font-size: 0.78rem;
 }
 
-.half-adder-compare strong {
+.half-adder-compare strong,
+.row-branch-card strong,
+.modular-fold-card strong {
   color: #ffffff;
   font-size: 0.86rem;
+}
+
+.row-branch-card div:nth-child(2),
+.modular-fold-card div:nth-child(2) {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
 }
 
 .circuit-reading-strip {
@@ -2720,6 +2741,36 @@ code {
 .bennett-cycle span:nth-child(2) {
   border-color: rgba(245, 207, 107, 0.28);
   background: rgba(245, 207, 107, 0.08);
+}
+
+.cleanup-dependency-card {
+  display: grid;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.cleanup-dependency-card span {
+  display: grid;
+  place-items: center;
+  min-height: 3rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+}
+
+.cleanup-dependency-card span:first-child {
+  border-color: rgba(245, 207, 107, 0.3);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.cleanup-dependency-card i {
+  justify-self: center;
+  width: 0.12rem;
+  height: 0.7rem;
+  background: linear-gradient(180deg, #63e6be, #f5cf6b);
 }
 
 .cleanup-artifact-numbers {
@@ -6760,6 +6811,7 @@ legend {
   .schedule-peak-strip,
   .eigenphase-card,
   .scratch-story-strip,
+  .cleanup-dependency-card,
   .modular-pipeline-strip,
   .owner-ledger-strip,
   .engine-flow-strip,
@@ -6931,6 +6983,7 @@ legend {
   .schedule-peak-strip,
   .eigenphase-card,
   .scratch-story-strip,
+  .cleanup-dependency-card,
   .modular-pipeline-strip,
   .owner-ledger-strip,
   .engine-flow-strip,
@@ -7045,6 +7098,7 @@ legend {
   .qroam-flow-strip i,
   .program-contract-split i,
   .scratch-story-strip i,
+  .cleanup-dependency-card i,
   .modular-pipeline-strip i,
   .owner-ledger-strip i,
   .engine-flow-strip i,
