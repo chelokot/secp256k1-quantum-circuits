@@ -333,6 +333,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
 
   await expect(page.getByTestId('ecdlp-story')).toContainText('What is public, and what is hidden');
   await expect(page.getByTestId('ecdlp-story')).toContainText('“Logarithm” means undoing repeated group addition');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('secp256k1 has two modular worlds');
   await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum oracle asks two-register questions');
   await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
   await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
@@ -361,6 +362,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
 
   await openLesson(page, 'coordinates');
   await expect(page.getByRole('heading', { name: 'Coordinates, infinity, and field slots' })).toBeVisible();
+  await expect(page.getByTestId('coordinate-story')).toContainText('Coordinates are field elements, not plain integers');
   await expect(page.getByTestId('coordinate-story')).toContainText('The same curve point can have several names');
   await expect(page.getByTestId('coordinate-story')).toContainText('Why avoid division in the hot loop');
   await expect(page.getByTestId('coordinate-story')).toContainText('Infinity is not a footnote');
@@ -556,6 +558,7 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
 
   await expect(page.getByTestId('lookup-story')).toContainText('A table lookup is still a circuit');
   await expect(page.getByTestId('lookup-story')).toContainText('What QROAMClean buys and what it spends');
+  await expect(page.getByTestId('lookup-story')).toContainText('The selected coordinate bits are real data');
   await expect(page.getByTestId('lookup-story')).toContainText('The consistency trap');
   await expect(page.getByTestId('lookup-story')).toContainText('not free output');
   await expect(page.getByTestId('lab-route')).toContainText('QROAM selection');

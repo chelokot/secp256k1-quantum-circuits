@@ -1887,6 +1887,7 @@ code {
 }
 
 .ecdlp-rule,
+.secp-domain-rule,
 .oracle-shape-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
@@ -2158,6 +2159,7 @@ code {
 }
 
 .qroam-cost-rule,
+.qroam-data-rule,
 .qroam-consistency-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
@@ -2585,6 +2587,9 @@ code {
 .proof-contract-list span,
 .zkp-binding-ledger span {
   color: #dce7f2;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
 }
 
 .engine-blocker-list strong {

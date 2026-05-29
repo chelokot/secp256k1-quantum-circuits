@@ -1223,6 +1223,28 @@ function EcdlpStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule secp-domain-rule">
+        <div>
+          <h4>secp256k1 has two modular worlds</h4>
+          <p>
+            The curve equation lives over a prime field <MathTex tex="\mathbb{F}_p" />:
+            point coordinates are residues modulo <MathTex tex="p" />. The private key
+            scalar lives modulo the base-point order <MathTex tex="n" />. Both are about
+            256 bits, but they are not the same register type in the circuit.
+          </p>
+          <p>
+            Mixing those worlds is a common beginner mistake. The oracle combines scalar
+            labels modulo <MathTex tex="n" />, then executes point additions whose
+            coordinate arithmetic is modulo <MathTex tex="p" />.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>scalar d, a, b: modulo n</span>
+          <span>coordinates x, y: modulo p</span>
+          <span>point-add leaf bridges them</span>
+        </div>
+      </article>
+
       <article className="story-rule oracle-shape-rule">
         <div>
           <h4>The quantum oracle asks two-register questions</h4>
@@ -1305,6 +1327,21 @@ function EcdlpStoryPanel() {
 function CoordinatesStoryPanel() {
   return (
     <section className="coordinate-story" data-testid="coordinate-story" aria-label="Coordinate and field-slot story">
+      <article className="story-question">
+        <h4>Coordinates are field elements, not plain integers</h4>
+        <p>
+          secp256k1 points use coordinates in a prime field. Adding, subtracting,
+          multiplying, and dividing all happen modulo <MathTex tex="p" />. Division is
+          multiplication by a modular inverse, which is why the point-add formula cares
+          so much about avoiding inversions in the hot loop.
+        </p>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>x, y live in F_p</span>
+          <span>division uses an inverse mod p</span>
+          <span>field slot = 256 logical wires</span>
+        </div>
+      </article>
+
       <article className="story-question">
         <h4>The same curve point can have several names</h4>
         <p>
@@ -1467,6 +1504,29 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
           <div><span>entries</span><strong>{formatInt(entries)}</strong></div>
           <div><span>chunk bits</span><strong>{chunkBits}</strong></div>
           <div><span>default K</span><strong>{standardK}</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule qroam-data-rule">
+        <div>
+          <h4>The selected coordinate bits are real data</h4>
+          <p>
+            A folded lookup address has structure, but the table contents are
+            precomputed curve-coordinate constants. A valid lowering must actually
+            select those data bits into a counted target or into a proven alias. It is
+            not enough to decode address predicates and call the output free.
+          </p>
+          <p>
+            This is the exact class of bug the course wants learners to catch: the same
+            lookup model must pay for address controls, data selection, target capacity,
+            junk workspace, and cleanup.
+          </p>
+        </div>
+        <div className="proof-contract-list" aria-hidden="true">
+          <span>address predicates</span>
+          <span>coordinate constants</span>
+          <span>counted target bits</span>
+          <span>cleanup path</span>
         </div>
       </article>
 
