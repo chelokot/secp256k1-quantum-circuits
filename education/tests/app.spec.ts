@@ -76,12 +76,13 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 2 of 23');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('Start with only one qubit');
   await expect(page.getByTestId('qubit-state-vector-visual')).toContainText('This is one qubit');
-  await expect(page.locator('xpath=//*[@data-tex="|\\psi\\rangle=a|0\\rangle+b|1\\rangle"]')).toBeVisible();
+  await expect(page.getByTestId('qubit-story').locator('xpath=.//*[@data-tex="|\\psi\\rangle=a|0\\rangle+b|1\\rangle"]').first()).toBeVisible();
   await expect(page.locator('.lesson-step-list li > span')).toHaveCount(0);
   await expect(page.getByRole('heading', { name: 'Notation' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Probability rule' })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Relative angle' })).toBeVisible();
-  await expect(page.getByTestId('lesson-detail-steps').getByRole('heading', { name: 'Measurement' })).toBeVisible();
+  await expect(page.getByTestId('qubit-story').getByRole('heading', { name: 'Measurement' })).toBeVisible();
+  await expect(page.getByTestId('qubit-story')).toContainText('A single qubit is one coherent state with two amplitudes');
   await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
   await expect(page.locator('xpath=//*[@data-tex="P(0)=|a|^2"]')).toBeVisible();
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();

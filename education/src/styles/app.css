@@ -358,6 +358,17 @@ code {
   background: rgba(99, 230, 190, 0.055);
 }
 
+.step-visual > * {
+  min-width: 0;
+}
+
+.step-visual .math-tex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+
 .step-visual.formula-step {
   grid-template-columns: minmax(0, auto) minmax(12rem, 1fr);
 }
@@ -995,6 +1006,7 @@ code {
   font-size: 0.88rem;
 }
 
+.qubit-story,
 .one-qubit-story {
   display: grid;
   gap: 0.9rem;
@@ -1007,6 +1019,7 @@ code {
   margin: 1rem 0;
 }
 
+.qubit-story h4,
 .one-qubit-story h4,
 .two-qubit-story h4,
 .clifford-story h4,

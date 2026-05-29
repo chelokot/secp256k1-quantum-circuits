@@ -235,8 +235,10 @@ function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
             <i style={{ width: '24%' }} />
           </div>
         </div>
-        <MathTex tex="P(0)=|a'|^2,\quad P(1)=|b'|^2" />
-        <p>Angle can become visible only after the gate changes arrow lengths.</p>
+        <div>
+          <MathTex tex="P(0)=|a'|^2,\quad P(1)=|b'|^2" />
+          <p>Angle can become visible only after the gate changes arrow lengths.</p>
+        </div>
       </div>
     );
   }
@@ -263,6 +265,70 @@ function OrientationModelVisual() {
         <p>The calculation is continuous internally, but the observed answer is discrete.</p>
       </article>
     </div>
+  );
+}
+
+function QubitStoryPanel() {
+  return (
+    <section className="qubit-story" data-testid="qubit-story" aria-label="Qubit amplitude and measurement story">
+      <article className="story-question">
+        <h4>Notation</h4>
+        <p>
+          A single qubit is one coherent state with two amplitudes:
+          {' '}<MathTex tex="|\psi\rangle=a|0\rangle+b|1\rangle" />. The symbols
+          {' '}<MathTex tex="a" /> and <MathTex tex="b" /> are complex numbers. For
+          this course, a complex number just means an arrow in a flat plane: it has
+          a length and a direction.
+        </p>
+        <QubitStepVisual stepIndex={0} />
+      </article>
+
+      <article className="story-rule qubit-probability-rule">
+        <div>
+          <h4>Probability rule</h4>
+          <p>
+            Direct measurement does not read the arrows as arrows. It samples outcome
+            0 or outcome 1 using squared arrow lengths:
+            {' '}<MathTex tex="P(0)=|a|^2" /> and <MathTex tex="P(1)=|b|^2" />.
+            If both arrow lengths are <MathTex tex="1/\sqrt2" />, direct measurement
+            gives a 50/50 split.
+          </p>
+        </div>
+        <div className="mini-prob-bars" aria-hidden="true">
+          <span>0 outcome</span>
+          <i style={{ width: '50%' }} />
+          <span>1 outcome</span>
+          <i className="alt" style={{ width: '50%' }} />
+        </div>
+      </article>
+
+      <article className="story-rule qubit-angle-rule">
+        <div>
+          <h4>Relative angle</h4>
+          <p>
+            Two states can have the same direct 50/50 measurement but different arrow
+            directions. That direction is not private magic; it is circuit information
+            that a later gate can use when it mixes the two amplitudes.
+          </p>
+          <p>
+            This is the first reason a qubit is not just a probability coin: the coin
+            remembers only chances, while the qubit also carries relative phase before
+            measurement.
+          </p>
+        </div>
+        <QubitStepVisual stepIndex={4} />
+      </article>
+
+      <article className="story-question">
+        <h4>Measurement</h4>
+        <p>
+          Measurement samples one outcome and changes what remains. It is not a
+          passive screenshot of both amplitudes. The next lesson therefore studies
+          gates first: valid gates can turn relative angle into a changed probability
+          before the measurement happens.
+        </p>
+      </article>
+    </section>
   );
 }
 
@@ -2675,6 +2741,7 @@ export function App() {
               <p>{activeLesson.mentalModel}</p>
             </section>
             {activeLesson.id === 'zero' ? <OrientationModelVisual /> : null}
+            {activeLesson.id === 'qubit' ? <QubitStoryPanel /> : null}
             {activeLesson.id === 'one-qubit' ? <OneQubitStoryPanel /> : null}
             {activeLesson.id === 'two-qubit' ? <TwoQubitStoryPanel /> : null}
             {activeLesson.id === 'clifford' ? <CliffordStoryPanel /> : null}
@@ -2696,7 +2763,7 @@ export function App() {
             {activeLesson.id === 'contribution' ? <ContributionStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'repo-baselines' ? <RepoBaselineStoryPanel data={projectData} /> : null}
             {activeLesson.id === 'gates' ? <GatesStoryPanel /> : null}
-            {activeLesson.deepDive && !['one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines', 'gates'].includes(activeLesson.id) ? (
+            {activeLesson.deepDive && !['qubit', 'one-qubit', 'two-qubit', 'clifford', 'logic-physical', 'phase-estimation', 'netlists', 'ecdlp', 'coordinates', 'lookup-qroam', 'programming', 'cleanup', 'modular-lowering', 'owner-capacity', 'resource-engine', 'mini-engine', 'optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines', 'gates'].includes(activeLesson.id) ? (
               <section className="lesson-detail-steps" data-testid="lesson-detail-steps">
                 <ol className="lesson-step-list">
                   {activeLesson.deepDive.map((paragraph, index) => {
