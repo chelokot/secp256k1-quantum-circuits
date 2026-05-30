@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ServerCog } from 'lucide-react';
+import { MathTex } from './MathText';
 
 type BaselineRow = {
   id: string;
@@ -107,6 +108,33 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
           <p>non-Clifford per logical qubit</p>
         </article>
       </div>
+
+      <section className="physical-translation-receipt" aria-label="Logical to physical translation receipt">
+        <article>
+          <span>Fixed by repo row</span>
+          <strong>{formatInt(selected.logicalQubits)} logical wires</strong>
+          <p>
+            Changing code distance or layout factor does not change the algorithmic
+            live-qubit count. It only changes the hardware envelope layered on top.
+          </p>
+        </article>
+        <article>
+          <span>Toy multiplier</span>
+          <strong>{formatInt(estimate.physicalPerLogical)} physical per logical</strong>
+          <p>
+            This lab uses <MathTex tex="\text{layout factor}\cdot d^2" /> as a visible
+            toy stand-in for a real fault-tolerance layout model.
+          </p>
+        </article>
+        <article>
+          <span>Not converted here</span>
+          <strong>{formatCompact(selected.nonClifford)} non-Clifford operations</strong>
+          <p>
+            Magic factories, timing, decoding latency, and routing can dominate a real
+            machine estimate, so this panel refuses to call the toy envelope a forecast.
+          </p>
+        </article>
+      </section>
 
       <div className="physical-stack">
         <div><strong>Algorithm</strong><span>phase estimation and controlled point-adds</span></div>

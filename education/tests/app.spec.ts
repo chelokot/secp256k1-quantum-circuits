@@ -589,9 +589,14 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('450');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('885.6k');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Fixed by repo row');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Toy multiplier');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Not converted here');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('37.0M non-Clifford operations');
   await page.getByLabel('Logical resource row').selectOption('repo_guard_corrected');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('2,222');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('999.9k');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('2,222 logical wires');
   await page.getByTestId('logical-physical-bridge-lab').getByLabel('Code distance').fill('17');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('578');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Included in the toy envelope');
