@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Waves } from 'lucide-react';
+import { MathTex } from './MathText';
 
 const order = 13;
 
@@ -67,10 +68,38 @@ export function PhaseKickbackLab() {
       </div>
       <p>
         A Shor-style circuit does not read every oracle output. It can put the
-        output register into a Fourier label and let <code>f(a,b) = a + b*d</code>
-        kick back a phase onto the input lattice. The hidden period becomes a
+        output register into a Fourier label and let{' '}
+        <MathTex tex="f_d(a,b)=a+bd" /> kick back a phase onto the input lattice.
+        The hidden period becomes a
         direction where the color does not change.
       </p>
+      <div className="kickback-bridge-strip" aria-label="Sample-to-key bridge">
+        <article>
+          <span>1. Oracle label</span>
+          <strong><MathTex tex={`a+bd=${derived.output}\\pmod {13}`} /></strong>
+          <p>The point output only depends on this scalar label.</p>
+        </article>
+        <article>
+          <span>2. Hidden direction</span>
+          <strong><MathTex tex={`(d,-1)=(${secret},-1)`} /></strong>
+          <p>Moving by this vector keeps the oracle label fixed.</p>
+        </article>
+        <article>
+          <span>3. Fourier sample</span>
+          <strong>
+            <MathTex tex={`(u,v)=(${derived.gradientA},${derived.gradientB})`} />
+          </strong>
+          <p>The sample is a gradient perpendicular to the hidden direction.</p>
+        </article>
+        <article>
+          <span>4. Solve</span>
+          <strong><MathTex tex="d=v\cdot u^{-1}\pmod {13}" /></strong>
+          <p>
+            Here that gives {derived.gradientB} * inverse({derived.gradientA}) ={' '}
+            {derived.recoveredSecret}.
+          </p>
+        </article>
+      </div>
 
       <div className="kickback-controls">
         <label>

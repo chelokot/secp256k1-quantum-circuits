@@ -1411,6 +1411,9 @@ function EcdlpStoryPanel() {
             whenever they move along a hidden period direction tied to{' '}
             <MathTex tex="d" />.
           </p>
+          <p className="capacity-equation">
+            <MathTex tex="f_d(a,b)=aG+bQ=(a+bd)G" />
+          </p>
         </div>
         <div className="oracle-lattice-sketch" aria-hidden="true">
           <span className="selected">a,b</span>
@@ -1429,10 +1432,18 @@ function EcdlpStoryPanel() {
         <div>
           <h4>A Fourier sample becomes an equation for d</h4>
           <p>
-            The colliding inputs differ by the hidden direction{' '}
-            <MathTex tex="(d,-1)" />. Fourier readout tends to return a label{' '}
-            <MathTex tex="(u,v)" /> whose rhythm is perpendicular to that direction.
-            Perpendicular here means the modular dot product vanishes:
+            The oracle turns every pair <MathTex tex="(a,b)" /> into a point label
+            controlled by one scalar value <MathTex tex="a+bd" />. The point output
+            can be uncomputed, but the equal-output structure remains as phase. The
+            hidden direction is the move that does not change that label:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="(a,b)\mapsto(a+d,b-1),\quad (a+d)+(b-1)d=a+bd" />
+          </p>
+          <p>
+            Fourier readout does not return the direction itself. It tends to return a
+            sample gradient <MathTex tex="(u,v)" /> whose wave is flat along that
+            direction. Flat means the modular dot product vanishes:
           </p>
           <p className="capacity-equation">
             <MathTex tex="u d-v\equiv 0\pmod n" />
@@ -1444,12 +1455,26 @@ function EcdlpStoryPanel() {
             readout of the secret register.
           </p>
         </div>
-        <div className="sample-equation-card" aria-hidden="true">
-          <span>hidden direction (d, -1)</span>
+        <div className="sample-key-bridge-card" aria-hidden="true">
+          <span>
+            <strong>Oracle label</strong>
+            <em><MathTex tex="a+bd" /></em>
+          </span>
           <i />
-          <span>sample (u, v)</span>
+          <span>
+            <strong>Same-label move</strong>
+            <em><MathTex tex="(d,-1)" /></em>
+          </span>
           <i />
-          <span>d = v/u mod n</span>
+          <span>
+            <strong>Fourier sample</strong>
+            <em><MathTex tex="(u,v)" /></em>
+          </span>
+          <i />
+          <span>
+            <strong>Solve</strong>
+            <em><MathTex tex="d=v\cdot u^{-1}\pmod n" /></em>
+          </span>
         </div>
       </article>
 

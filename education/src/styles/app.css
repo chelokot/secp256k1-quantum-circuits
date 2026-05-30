@@ -2119,13 +2119,15 @@ code {
   background: rgba(245, 207, 107, 0.12);
 }
 
-.sample-equation-card {
+.sample-equation-card,
+.sample-key-bridge-card {
   display: grid;
   gap: 0.45rem;
   align-items: center;
 }
 
-.sample-equation-card span {
+.sample-equation-card span,
+.sample-key-bridge-card span {
   display: grid;
   place-items: center;
   min-height: 3.2rem;
@@ -2137,12 +2139,32 @@ code {
   text-align: center;
 }
 
-.sample-equation-card span:last-child {
+.sample-key-bridge-card span {
+  gap: 0.22rem;
+}
+
+.sample-key-bridge-card strong {
+  color: #63e6be;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.sample-key-bridge-card em {
+  color: #dce7f2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  font-style: normal;
+  overflow-wrap: anywhere;
+}
+
+.sample-equation-card span:last-child,
+.sample-key-bridge-card span:last-child {
   border-color: rgba(245, 207, 107, 0.34);
   background: rgba(245, 207, 107, 0.09);
 }
 
-.sample-equation-card i {
+.sample-equation-card i,
+.sample-key-bridge-card i {
   justify-self: center;
   width: 0.12rem;
   height: 0.7rem;
@@ -5950,6 +5972,43 @@ code {
   margin: 1rem 0;
 }
 
+.kickback-bridge-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.kickback-bridge-strip article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.kickback-bridge-strip span {
+  display: block;
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.kickback-bridge-strip strong {
+  display: block;
+  margin-top: 0.35rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.kickback-bridge-strip p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
+}
+
 .kickback-controls label {
   display: grid;
   gap: 0.45rem;
@@ -7015,6 +7074,7 @@ legend {
   .phase-approx-strip,
   .key-derivation-strip,
   .sample-equation-card,
+  .sample-key-bridge-card,
   .coordinate-name-strip,
   .coordinate-equation-strip,
   .qroam-flow-strip,
@@ -7087,6 +7147,7 @@ legend {
   .oracle-controls,
   .oracle-grid-layout,
   .oracle-readout,
+  .kickback-bridge-strip,
   .kickback-controls,
   .kickback-grid-layout,
   .kickback-readout,
@@ -7193,6 +7254,7 @@ legend {
   .phase-approx-strip,
   .key-derivation-strip,
   .sample-equation-card,
+  .sample-key-bridge-card,
   .coordinate-name-strip,
   .coordinate-equation-strip,
   .qroam-flow-strip,
@@ -7268,6 +7330,7 @@ legend {
   .oracle-controls,
   .oracle-grid-layout,
   .oracle-readout,
+  .kickback-bridge-strip,
   .kickback-controls,
   .kickback-grid-layout,
   .kickback-readout,
@@ -7316,7 +7379,8 @@ legend {
   }
 
   .key-derivation-strip i,
-  .sample-equation-card i {
+  .sample-equation-card i,
+  .sample-key-bridge-card i {
     display: none;
   }
 

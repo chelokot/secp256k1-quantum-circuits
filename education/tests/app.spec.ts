@@ -357,6 +357,11 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('ecdlp-story')).toContainText('secp256k1 has two modular worlds');
   await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum oracle asks two-register questions');
   await expect(page.getByTestId('ecdlp-story')).toContainText('A Fourier sample becomes an equation for d');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('Oracle label');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('Same-label move');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('Fourier sample');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('Solve');
+  await expect(page.getByTestId('ecdlp-story').locator('xpath=.//*[@data-tex="d=v\\cdot u^{-1}\\pmod n"]')).toBeVisible();
   await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
   await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
@@ -426,6 +431,11 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('hidden period (+5, -1)');
 
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('Phase-kickback hidden-period lab');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('1. Oracle label');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('2. Hidden direction');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('3. Fourier sample');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('4. Solve');
+  await expect(page.getByTestId('phase-kickback-lab')).toContainText('The sample is a gradient perpendicular');
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('phase exponent = 3');
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('Fourier gradient');
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('(3, 2)');
