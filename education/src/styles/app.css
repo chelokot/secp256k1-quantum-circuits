@@ -1706,6 +1706,7 @@ code {
 .stabilizer-ledger-rule,
 .magic-rule,
 .magic-factory-rule,
+.magic-history-rule,
 .clifford-universal-rule,
 .clifford-category-rule,
 .arithmetic-magic-rule,
@@ -1719,7 +1720,14 @@ code {
   gap: 0.5rem;
 }
 
+.magic-history-card {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
 .gate-category-grid span,
+.magic-history-card article,
 .two-axis-example span,
 .layer-question-grid span {
   display: grid;
@@ -1730,18 +1738,35 @@ code {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.magic-history-card article:first-child {
+  border-color: rgba(99, 230, 190, 0.22);
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.magic-history-card article:nth-child(2) {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
+}
+
 .gate-category-grid b,
+.magic-history-card strong,
 .two-axis-example b,
 .layer-question-grid b {
   color: #ffffff;
 }
 
 .gate-category-grid i,
+.magic-history-card span,
+.magic-history-card em,
 .two-axis-example i,
 .layer-question-grid i {
   color: #b4c4d6;
   font-size: 0.82rem;
   font-style: normal;
+}
+
+.magic-history-card em {
+  color: #f5cf6b;
 }
 
 .arithmetic-magic-ledger,
@@ -4332,6 +4357,52 @@ code {
 .magic-status-grid p {
   margin: 0.35rem 0 0;
   font-size: 0.82rem;
+}
+
+.magic-history-lab-panel {
+  display: grid;
+  grid-template-columns: minmax(18rem, 1fr) minmax(11rem, 0.38fr);
+  gap: 0.65rem;
+  align-items: center;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.magic-history-lab-panel h4,
+.magic-history-lab-panel p {
+  margin: 0;
+}
+
+.magic-history-lab-panel p {
+  margin-top: 0.35rem;
+  color: #c9d6e2;
+  line-height: 1.45;
+}
+
+.magic-history-lab-panel strong,
+.magic-history-lab-panel span {
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+}
+
+.magic-history-lab-panel strong {
+  color: #b8f3e6;
+  background: rgba(99, 230, 190, 0.12);
+  text-align: center;
+}
+
+.magic-history-lab-panel.spent strong {
+  color: #fff1b8;
+  background: rgba(245, 207, 107, 0.14);
+}
+
+.magic-history-lab-panel span {
+  grid-column: 1 / -1;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
 }
 
 .magic-gate-legend {
@@ -9071,6 +9142,7 @@ legend {
   .story-motion-grid,
   .story-rule,
   .gate-category-grid,
+  .magic-history-card,
   .phase-terms-grid,
   .period-finding-contrast,
   .arithmetic-magic-ledger,
@@ -9109,6 +9181,7 @@ legend {
   .fourier-grid,
   .state-vector-grid,
   .magic-status-grid,
+  .magic-history-lab-panel,
   .stack-map-grid,
   .stack-status-row,
   .physical-controls,
@@ -9331,6 +9404,7 @@ legend {
   .story-motion-grid,
   .story-rule,
   .gate-category-grid,
+  .magic-history-card,
   .phase-terms-grid,
   .period-finding-contrast,
   .arithmetic-magic-ledger,
@@ -9368,6 +9442,7 @@ legend {
   .fourier-grid,
   .state-vector-grid,
   .magic-status-grid,
+  .magic-history-lab-panel,
   .stack-map-grid,
   .stack-status-row,
   .physical-controls,

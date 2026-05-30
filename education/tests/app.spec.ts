@@ -350,6 +350,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('clifford-story')).toContainText('Compact does not mean classical');
   await expect(page.getByTestId('clifford-story')).toContainText('Why arithmetic pays magic');
   await expect(page.getByTestId('clifford-story')).toContainText('A magic step leaves the cheap map');
+  await expect(page.getByTestId('clifford-story')).toContainText('A stabilizer endpoint does not refund magic');
+  await expect(page.getByTestId('clifford-story')).toContainText('Cost is a history ledger');
   await expect(page.getByTestId('clifford-story')).toContainText('Magic states behave like consumable fuel');
   await expect(page.getByTestId('clifford-story')).toContainText('Why the repo does not report “all gates” as one number');
   await expect(page.getByTestId('clifford-story')).toContainText('Two designs can win different axes');
@@ -360,6 +362,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('magic');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Sequence ledger');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Endpoint class is not the cost history');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Clifford quarter-turn');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('non-Clifford eighth-turn');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('needs magic accounting');
@@ -367,6 +370,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('1');
   await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer-friendly');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer endpoint after magic');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('already spent 2 non-Clifford steps');
 
   await openLesson(page, 'gates');
   await expect(page.getByTestId('gates-story')).toContainText('From formula to circuit row');

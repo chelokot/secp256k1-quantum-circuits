@@ -1012,6 +1012,34 @@ function CliffordStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule magic-history-rule">
+        <div>
+          <h4>A stabilizer endpoint does not refund magic</h4>
+          <p>
+            Cost is a history ledger, not only a final-state label. Two T steps land on
+            the same axis as an S gate, so the final state can again look stabilizer-like.
+            But a circuit that used T twice still consumed two non-Clifford operations
+            on the way there.
+          </p>
+          <p>
+            This is why the repo counts non-Clifford rows in the executed stream. It
+            cannot look only at whether the final state is easy to describe.
+          </p>
+        </div>
+        <div className="magic-history-card" aria-hidden="true">
+          <article>
+            <strong>S</strong>
+            <span>final axis: stabilizer</span>
+            <em>non-Clifford spent: 0</em>
+          </article>
+          <article>
+            <strong>T then T</strong>
+            <span>final axis: stabilizer</span>
+            <em>non-Clifford spent: 2</em>
+          </article>
+        </div>
+      </article>
+
       <article className="story-rule magic-factory-rule">
         <div>
           <h4>Magic states behave like consumable fuel</h4>

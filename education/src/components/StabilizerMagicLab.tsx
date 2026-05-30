@@ -44,7 +44,17 @@ export function StabilizerMagicLab() {
     const nearestAxis = axisNames[Math.round(turn / 2) % axisNames.length];
     const nonCliffordCount = gates.filter((gate) => gateKind[gate] === 'non-Clifford').length;
     const magicAngle = isStabilizer ? 0 : 45;
-    return { angle, isStabilizer, magicAngle, nearestAxis, nonCliffordCount, turn };
+    const costHistoryLabel = nonCliffordCount === 0
+      ? 'Clifford-only path'
+      : isStabilizer
+        ? 'stabilizer endpoint after magic'
+        : 'magic endpoint';
+    const costHistoryDetail = nonCliffordCount === 0
+      ? 'The selected sequence stayed inside the Clifford stabilizer map.'
+      : isStabilizer
+        ? `The final point is back on a stabilizer axis, but the stream already spent ${nonCliffordCount} non-Clifford step${nonCliffordCount === 1 ? '' : 's'}.`
+        : 'The final point is between stabilizer axes, and the stream also has non-Clifford cost history.';
+    return { angle, isStabilizer, magicAngle, nearestAxis, nonCliffordCount, turn, costHistoryLabel, costHistoryDetail };
   }, [gates]);
 
   const vectorEnd = {
@@ -95,6 +105,9 @@ export function StabilizerMagicLab() {
             {gate}
           </button>
         ))}
+        <button type="button" onClick={() => setGates(['T', 'T'])}>
+          T then T
+        </button>
         <button type="button" aria-label="Reset stabilizer magic wheel" onClick={() => setGates([])}>
           <RotateCcw size={16} />
         </button>
@@ -134,6 +147,19 @@ export function StabilizerMagicLab() {
           <p>{gates.join(' ') || 'identity'} sequence</p>
         </article>
       </div>
+
+      <section className={`magic-history-lab-panel ${state.nonCliffordCount > 0 ? 'spent' : 'clean'}`} aria-label="Endpoint versus non-Clifford history">
+        <div>
+          <h4>Endpoint class is not the cost history</h4>
+          <p>
+            A sequence can end on a stabilizer axis after spending T gates. The wheel
+            shows the final point; the ledger records the expensive steps taken to get
+            there.
+          </p>
+        </div>
+        <strong>{state.costHistoryLabel}</strong>
+        <span>{state.costHistoryDetail}</span>
+      </section>
 
       <p className="mono-line">turn={state.turn}/8 simulator={state.isStabilizer ? 'stabilizer-friendly' : 'needs magic accounting'}</p>
     </article>

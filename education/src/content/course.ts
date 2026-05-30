@@ -147,6 +147,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Clifford gates preserve a compact stabilizer description.',
       'Non-Clifford gates supply the magic needed for universal arithmetic.',
+      'A stabilizer final state does not erase non-Clifford work already spent.',
       'Peak qubits and non-Clifford count are separate headline axes.',
     ],
   },
