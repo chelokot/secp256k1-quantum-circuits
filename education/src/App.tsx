@@ -2388,6 +2388,9 @@ function ProgrammingStoryPanel() {
           <p>
             Once a row has concrete operands, a test can execute it, the liveness engine
             can derive births and deaths, and a resource certificate can count it.
+            The lab below turns each accepted row into a receipt, so the learner sees the
+            same object move through parser, execution meaning, owner assignment, and
+            liveness scan.
           </p>
         </div>
         <div className="row-schema-strip" aria-hidden="true">

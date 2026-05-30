@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Code2 } from 'lucide-react';
+import { MathTex } from './MathText';
 
 type ParsedRow = {
   line: number;
@@ -12,6 +13,14 @@ type StreamAudit = {
   lifecycleDetail: string;
   lifecycleStatus: string;
   parserStatus: string;
+};
+
+type WireInterval = {
+  firstLine: number;
+  lastLine: number;
+  owner: string;
+  touchedLines: number[];
+  wire: string;
 };
 
 const initialProgram = `H q0
@@ -69,6 +78,60 @@ function rowEffect(row: ParsedRow) {
   return `one-wire unitary on ${row.wires[0]}`;
 }
 
+function ownerForWire(wire: string) {
+  if (wire === 'q0' || wire === 'q1') {
+    return 'source/control owner';
+  }
+  if (wire === 'q2') {
+    return 'scratch/output owner';
+  }
+  return 'user-declared wire owner';
+}
+
+function operandRoles(row: ParsedRow) {
+  if (row.op === 'CCX') {
+    return [
+      `${row.wires[0]}: first control`,
+      `${row.wires[1]}: second control`,
+      `${row.wires[2]}: toggled target`,
+    ];
+  }
+  if (row.op === 'CX') {
+    return [`${row.wires[0]}: control`, `${row.wires[1]}: toggled target`];
+  }
+  if (row.op === 'M') {
+    return [`${row.wires[0]}: measured boundary wire`];
+  }
+  return [`${row.wires[0]}: updated one-qubit wire`];
+}
+
+function rowLifecycle(row: ParsedRow) {
+  if (row.op === 'CCX') {
+    return `${row.wires[2]} may now carry a scratch product. It is clean only after the same CCX appears again or an explicit contract declares the target as output.`;
+  }
+  if (row.op === 'CX') {
+    return `${row.wires[0]} stays live as a control while ${row.wires[1]} is updated in place.`;
+  }
+  if (row.op === 'M') {
+    return `${row.wires[0]} exits the coherent circuit at this tiny measurement boundary.`;
+  }
+  return `${row.wires[0]} stays the same owned wire, but its amplitude vector has changed.`;
+}
+
+function deriveIntervals(rows: ParsedRow[]): WireInterval[] {
+  const wires = Array.from(new Set(rows.flatMap((row) => row.wires))).sort();
+  return wires.map((wire) => {
+    const touchedLines = rows.filter((row) => row.wires.includes(wire)).map((row) => row.line);
+    return {
+      firstLine: Math.min(...touchedLines),
+      lastLine: Math.max(...touchedLines),
+      owner: ownerForWire(wire),
+      touchedLines,
+      wire,
+    };
+  });
+}
+
 function auditStream(rows: ParsedRow[], valid: boolean): StreamAudit {
   if (!valid) {
     return {
@@ -106,11 +169,26 @@ function auditStream(rows: ParsedRow[], valid: boolean): StreamAudit {
 
 export function QuantumDslLab() {
   const [program, setProgram] = useState(initialProgram);
+  const [selectedLine, setSelectedLine] = useState(3);
   const parsed = useMemo(() => parseProgram(program), [program]);
   const uniqueWires = Array.from(new Set(parsed.rows.flatMap((row) => row.wires))).sort();
   const nonClifford = parsed.rows.reduce((total, row) => total + row.nonClifford, 0);
   const valid = parsed.errors.length === 0;
   const streamAudit = auditStream(parsed.rows, valid);
+  const intervals = useMemo(() => deriveIntervals(parsed.rows), [parsed.rows]);
+  const liveScan = parsed.rows.map((row) => ({
+    line: row.line,
+    op: row.op,
+    wires: intervals.filter((interval) => row.line >= interval.firstLine && row.line <= interval.lastLine),
+  }));
+  const peakRow = liveScan.reduce(
+    (peak, row) => (row.wires.length > peak.wires.length ? row : peak),
+    { line: 0, op: 'none', wires: [] as WireInterval[] },
+  );
+  const selectedRow = parsed.rows.find((row) => row.line === selectedLine) ?? parsed.rows[0] ?? null;
+  const selectedLiveWires = selectedRow
+    ? liveScan.find((row) => row.line === selectedRow.line)?.wires ?? []
+    : [];
 
   return (
     <article className="lab-panel" data-testid="quantum-dsl-lab">
@@ -180,6 +258,91 @@ export function QuantumDslLab() {
           <p>{streamAudit.lifecycleDetail}</p>
         </article>
       </div>
+      {selectedRow ? (
+        <section className="row-replay-panel" aria-label="Executable row receipt">
+          <div className="row-replay-heading">
+            <div>
+              <h4>Executable row receipt</h4>
+              <p>
+                Pick one parsed row. The receipt is the object a later engine can execute,
+                test, assign to owners, and count.
+              </p>
+            </div>
+            <div className="row-replay-buttons" aria-label="Select parsed row">
+              {parsed.rows.map((row) => (
+                <button
+                  className={row.line === selectedRow.line ? 'active' : ''}
+                  key={`${row.line}-${row.op}-selector`}
+                  onClick={() => setSelectedLine(row.line)}
+                  type="button"
+                >
+                  line {row.line}
+                </button>
+              ))}
+            </div>
+          </div>
+          <article className="row-receipt-card dsl-row-receipt">
+            <span>Selected primitive row</span>
+            <strong>line {selectedRow.line}: {selectedRow.op} {selectedRow.wires.join(' ')}</strong>
+            <em>{rowEffect(selectedRow)}</em>
+            <dl>
+              <div>
+                <dt>Operand roles</dt>
+                <dd>{operandRoles(selectedRow).join('; ')}</dd>
+              </div>
+              <div>
+                <dt>Cost</dt>
+                <dd>{selectedRow.nonClifford} toy non-Clifford row(s)</dd>
+              </div>
+              <div>
+                <dt>Lifecycle effect</dt>
+                <dd>{rowLifecycle(selectedRow)}</dd>
+              </div>
+              <div>
+                <dt>Live at this row</dt>
+                <dd>{selectedLiveWires.map((wire) => wire.wire).join(', ') || 'none'}</dd>
+              </div>
+            </dl>
+          </article>
+        </section>
+      ) : null}
+      <section className="dsl-liveness-panel" aria-label="Derived liveness ledger">
+        <div className="dsl-liveness-heading">
+          <h4>Derived liveness ledger</h4>
+          <p>
+            This ledger is generated from the parsed rows. It is the toy version of the
+            rule <MathTex tex="\text{peak qubits}=\max_t |\text{live wires at row }t|" />.
+          </p>
+        </div>
+        <div className="dsl-live-summary">
+          <article>
+            <span>Peak live wires</span>
+            <strong>{peakRow.wires.length}</strong>
+            <em>{peakRow.line === 0 ? 'no rows' : `line ${peakRow.line}: ${peakRow.op}`}</em>
+          </article>
+          <article>
+            <span>Owners present</span>
+            <strong>{new Set(intervals.map((interval) => interval.owner)).size}</strong>
+            <em>{Array.from(new Set(intervals.map((interval) => interval.owner))).join(', ') || 'none'}</em>
+          </article>
+        </div>
+        <div className="dsl-interval-table" role="table" aria-label="Derived wire live intervals">
+          <div role="row">
+            <strong role="columnheader">Wire</strong>
+            <strong role="columnheader">Owner</strong>
+            <strong role="columnheader">Live interval</strong>
+            <strong role="columnheader">Touched lines</strong>
+          </div>
+          {intervals.map((interval) => (
+            <div role="row" key={`${interval.wire}-interval`}>
+              <span role="cell">{interval.wire}</span>
+              <span role="cell">{interval.owner}</span>
+              <span role="cell">lines {interval.firstLine}-{interval.lastLine}</span>
+              <span role="cell">{interval.touchedLines.join(', ')}</span>
+            </div>
+          ))}
+        </div>
+      </section>
       {parsed.errors.length > 0 ? (
         <div className="parse-errors">
           {parsed.errors.map((error) => <p key={error}>{error}</p>)}

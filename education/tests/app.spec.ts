@@ -826,6 +826,7 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
   await expect(page.getByTestId('programming-story')).toContainText('A row acts on the whole quantum state');
   await expect(page.getByTestId('programming-story')).toContainText('The quantum version keeps the inputs');
   await expect(page.getByTestId('programming-story')).toContainText('Rows are the smallest auditable unit');
+  await expect(page.getByTestId('programming-story')).toContainText('turns each accepted row into a receipt');
   await expect(page.getByTestId('programming-story')).toContainText('Valid rows are not the same as a clean stream');
   await expect(page.getByTestId('programming-story')).toContainText('parse rows');
   await expect(page.getByTestId('programming-story')).toContainText('derive lifetimes');
@@ -839,8 +840,17 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Non-Clifford');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('valid');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Stream audit');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Executable row receipt');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('line 3: CCX q0 q1 q2');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('q0: first control');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Derived liveness ledger');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Peak live wires');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('scratch/output owner');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('cleanup not proven');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('two-control reversible AND toggles q2');
+  await page.getByRole('button', { name: 'line 2' }).click();
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('control q0 flips target q1');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('q1: toggled target');
   await editor.fill('H q0\nBAD q0');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('unknown operation BAD');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('error');

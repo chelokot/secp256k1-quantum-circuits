@@ -275,6 +275,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Write rows before trusting formulas.',
       'A row acts coherently over every amplitude branch, not one sampled path.',
+      'A row receipt names operands, owners, cost, and lifecycle effect.',
       'Unknown operations must fail loudly.',
       'Tiny netlists train the same audit reflex used on large lowerings.',
     ],
