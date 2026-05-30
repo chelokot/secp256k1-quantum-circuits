@@ -38,7 +38,7 @@ const stages: LearningStage[] = [
     id: 'review',
     title: '4. Audit and contribution',
     description: 'Classify claims, respect blockers, and turn understanding into useful repo patches.',
-    lessonIds: ['optimization', 'point-add-boundary', 'contribution', 'zkp-boundary', 'repo-baselines'],
+    lessonIds: ['optimization', 'point-add-boundary', 'zkp-boundary', 'contribution', 'repo-baselines'],
   },
 ];
 
@@ -56,6 +56,7 @@ const contributorGate: LessonId[] = [
   'owner-capacity',
   'mini-engine',
   'point-add-boundary',
+  'zkp-boundary',
   'contribution',
 ];
 

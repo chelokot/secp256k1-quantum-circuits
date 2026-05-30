@@ -22,8 +22,8 @@ export type LessonId =
   | 'mini-engine'
   | 'optimization'
   | 'point-add-boundary'
-  | 'contribution'
   | 'zkp-boundary'
+  | 'contribution'
   | 'repo-baselines';
 
 export type CourseLesson = {
@@ -410,24 +410,6 @@ export const lessons: CourseLesson[] = [
     ],
   },
   {
-    id: 'contribution',
-    module: 'Practice',
-    title: 'Turn understanding into a useful patch',
-    icon: ClipboardList,
-    intuition:
-      'A useful contribution is a small claim with the right evidence: source artifact, semantic boundary, owner capacity, liveness recomputation, and publication hygiene.',
-    whyItMatters:
-      'This repo has repeatedly shown that impressive-looking numbers are easy to invent and hard to prove. Contributor skill is knowing which proof habit closes which class of bug.',
-    mentalModel:
-      'Treat every patch as a mission packet: what object changes, what evidence is new, which blocker it closes, and which claim level is now justified.',
-    checkpoint: 'Before proposing an optimization, state the mission, the required evidence, and the exact claim status after the patch.',
-    coreIdeas: [
-      'Small claim, explicit evidence, clear status.',
-      'Claim classification prevents accidental overstatement.',
-      'Mission packets connect learning to repo patches.',
-    ],
-  },
-  {
     id: 'zkp-boundary',
     module: 'Repo engine',
     title: 'Zero-knowledge proofs bind one exact statement',
@@ -444,6 +426,24 @@ export const lessons: CourseLesson[] = [
       'Public values define what the verifier actually sees.',
       'Fresh artifacts and current resource contract must agree.',
       'Proof wording must not outrun the bound input and artifact freshness.',
+    ],
+  },
+  {
+    id: 'contribution',
+    module: 'Audit practice',
+    title: 'Turn understanding into a useful patch',
+    icon: ClipboardList,
+    intuition:
+      'A useful contribution is a small claim with the right evidence: source artifact, semantic boundary, owner capacity, liveness recomputation, and publication hygiene.',
+    whyItMatters:
+      'This repo has repeatedly shown that impressive-looking numbers are easy to invent and hard to prove. Contributor skill is knowing which proof habit closes which class of bug.',
+    mentalModel:
+      'Treat every patch as a mission packet: what object changes, what evidence is new, which blocker it closes, and which claim level is now justified.',
+    checkpoint: 'Before proposing an optimization, state the mission, the required evidence, and the exact claim status after the patch.',
+    coreIdeas: [
+      'Small claim, explicit evidence, clear status.',
+      'Claim classification prevents accidental overstatement.',
+      'Mission packets connect learning to repo patches.',
     ],
   },
   {

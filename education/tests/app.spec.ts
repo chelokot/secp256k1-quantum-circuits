@@ -17,6 +17,13 @@ const selectRouteLab = async (page: Page, labName: RegExp) => {
   await page.getByTestId('lab-route').getByRole('button', { name: labName }).click();
 };
 
+test('orders proof hygiene before contribution and keeps repo status last', async () => {
+  const orderedLessonIds = lessons.map((lesson) => lesson.id);
+
+  expect(orderedLessonIds.indexOf('zkp-boundary')).toBeLessThan(orderedLessonIds.indexOf('contribution'));
+  expect(orderedLessonIds.at(-1)).toBe('repo-baselines');
+});
+
 test('keeps every lesson free of legacy scaffolding and page overflow', async ({ page }) => {
   const viewports = [
     { name: 'desktop', width: 1600, height: 1000 },
