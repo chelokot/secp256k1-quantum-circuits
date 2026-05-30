@@ -87,6 +87,23 @@ test('keeps substantive lesson text in the first desktop viewport', async ({ pag
   }
 });
 
+test('keeps every lesson concept story narratively deep', async ({ page }) => {
+  for (const lesson of lessons) {
+    await openLesson(page, lesson.id);
+    const story = page.locator('.concept-panel section[data-testid$="-story"]').first();
+
+    await expect(story, `${lesson.id} concept story`).toBeVisible();
+
+    const namedSections = await story.locator('h4').count();
+    const explanationParagraphs = await story.locator('p').count();
+    const visualAnchors = await story.locator('[aria-hidden="true"], [role="table"], .story-card-grid, .story-motion-grid').count();
+
+    expect(namedSections, `${lesson.id} named reasoning sections`).toBeGreaterThanOrEqual(4);
+    expect(explanationParagraphs, `${lesson.id} explanation paragraphs`).toBeGreaterThanOrEqual(5);
+    expect(visualAnchors, `${lesson.id} visual or structured anchors`).toBeGreaterThanOrEqual(1);
+  }
+});
+
 test('keeps multi-lab lessons behind a focused route', async ({ page }) => {
   for (const lesson of lessons) {
     await openLesson(page, lesson.id);
