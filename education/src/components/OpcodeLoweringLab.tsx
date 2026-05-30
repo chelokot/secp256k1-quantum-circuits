@@ -123,7 +123,7 @@ export function OpcodeLoweringLab() {
       </div>
       <p>
         A repo claim gets stronger when an abstract opcode expands into primitive rows with
-        operands, owners, cleanup, and counted non-Clifford cost. This toy microscope shows
+        operands, owners, cleanup, and counted non-Clifford cost. The microscope shows
         the chain from one source operation to rows a resource engine can scan.
       </p>
 

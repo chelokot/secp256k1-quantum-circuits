@@ -59,10 +59,10 @@ export function StabilizerMagicLab() {
         <h3>Stabilizer vs magic wheel</h3>
       </div>
       <p>
-        This toy equator is the smallest mental model for the cost split. Clifford gates
-        move between stabilizer axes that stay easy to track. A <code>T</code> step lands
-        halfway between axes, creating the kind of non-stabilizer resource that fault-tolerant
-        circuits must pay for.
+        A small equator diagram is enough to expose the cost split. Clifford gates move
+        between stabilizer axes that stay easy to track. A <code>T</code> step lands
+        halfway between axes, creating the kind of non-stabilizer resource that
+        fault-tolerant circuits must pay for.
       </p>
 
       <section className="magic-gate-legend" aria-label="Gate letter legend">

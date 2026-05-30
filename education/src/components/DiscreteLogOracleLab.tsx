@@ -42,16 +42,16 @@ export function DiscreteLogOracleLab() {
         <h3>Discrete-log oracle toy</h3>
       </div>
       <p>
-        In the real target, the public key is <code>Q = dG</code>. This toy group has
-        order 13, so the oracle computes <code>aG + bQ = (a + b*d)G</code>. The
-        secret is not a point by itself; it is the hidden slope that makes many
-        different <code>(a,b)</code> pairs collide to the same group element.
+        In the real target, the public key is <code>Q = dG</code>. The small group here
+        has order 13, so the oracle computes <code>aG + bQ = (a + b*d)G</code>. The
+        secret is not a point by itself; it is the hidden slope that makes many different{' '}
+        <code>(a,b)</code> pairs collide to the same group element.
       </p>
       <div className="concept-bridge-grid" aria-label="Discrete log oracle reading order">
         <article>
           <span>1</span>
           <strong>Choose registers</strong>
-          <p>The toy selects one pair (a,b), while the real circuit holds many pairs coherently.</p>
+          <p>The visible example selects one pair (a,b), while the real circuit holds many pairs coherently.</p>
         </article>
         <article>
           <span>2</span>

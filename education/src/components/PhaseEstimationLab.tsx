@@ -34,9 +34,9 @@ export function PhaseEstimationLab() {
         <h3>Phase estimation lens</h3>
       </div>
       <p>
-        This lab compresses the phase-estimation idea into one toy: controlled
-        powers create a phase pattern, and the inverse QFT turns the pattern into
-        the bit label below.
+        A four-control example keeps the mechanism visible: controlled powers create
+        a phase pattern, and the inverse QFT turns the pattern into the bit label
+        below.
       </p>
       <div className="concept-bridge-grid" aria-label="Phase estimation reading order">
         <article>
@@ -79,7 +79,7 @@ export function PhaseEstimationLab() {
         <strong>{phaseNumerator}/16 maps to {measuredBits}</strong>
         <p>
           In the real attack, secp256k1 group operations create the phase pattern.
-          This page isolates the readout shell before adding curve arithmetic.
+          The readout shell is isolated here before curve arithmetic is added.
         </p>
       </div>
       <section className="matched-filter-ledger" aria-label="Inverse QFT matched-filter ledger">

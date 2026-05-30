@@ -39,9 +39,9 @@ export function MagicBudgetLab({ projectData }: { projectData: ProjectData }) {
         <h3>Non-Clifford magic budget</h3>
       </div>
       <p>
-        Clifford gates are the easy stabilizer backbone in this course model. Non-Clifford
-        gates are the scarce magic-state fuel. This toy budget shows why the repo tracks gate
-        count separately from live logical qubits.
+        Clifford gates are the easy stabilizer backbone in this simplified model.
+        Non-Clifford gates are the scarce magic-state fuel. The budget dial shows why
+        the repo tracks gate count separately from live logical qubits.
       </p>
 
       <div className="magic-controls">

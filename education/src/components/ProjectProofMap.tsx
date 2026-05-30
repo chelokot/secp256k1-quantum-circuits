@@ -48,9 +48,8 @@ export function ProjectProofMap() {
         ))}
       </div>
       <p>
-        The whole course is a guided audit of this chain. If a later page cannot
-        connect back to these four objects, it is not evidence for the headline
-        resource number.
+        The audit chain starts here. Any later claim must connect back to these four
+        objects; otherwise it is not evidence for the headline resource number.
       </p>
       <div className="proof-boundary-warning">
         <article>

@@ -191,7 +191,7 @@ export function PhaseKickbackLab() {
           <article>
             <span>Recover d from a sample</span>
             <strong>d = {derived.gradientB} * inverse({derived.gradientA}) = {derived.recoveredSecret}</strong>
-            <p>This toy sample is clean; the real phase-estimation shell uses many bits and continued-fraction style recovery.</p>
+            <p>The sample is clean; the real phase-estimation shell uses many bits and continued-fraction style recovery.</p>
           </article>
         </div>
       </div>

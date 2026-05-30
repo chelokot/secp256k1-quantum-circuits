@@ -34,9 +34,9 @@ export function CoordinateModelLab() {
         <h3>Affine and projective coordinates</h3>
       </div>
       <p>
-        This toy uses the field modulo 17 so the arithmetic fits on screen. It shows
-        the circuit tradeoff: projective-style names carry a scale coordinate, and
-        several names normalize back to the same affine point.
+        Modulo 17 keeps the arithmetic visible on screen. The circuit tradeoff is the
+        same shape as the large field: projective-style names carry a scale coordinate,
+        and several names normalize back to the same affine point.
       </p>
 
       <div className="coordinate-lab-grid">

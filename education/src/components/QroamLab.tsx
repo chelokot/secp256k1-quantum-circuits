@@ -126,15 +126,15 @@ export function QroamLab({ projectData }: { projectData: ProjectData }) {
         </div>
         <div className="lookup-receipt-ledger">
           <article>
-            <span>Toy target capacity</span>
+            <span>Byte-example target capacity</span>
             <strong>8 wires</strong>
-            <p>The selected byte is tiny so the lab can show every output bit.</p>
+            <p>The selected byte is small enough for every output bit to stay visible.</p>
           </article>
           <article>
             <span>Repo chunk capacity</span>
             <strong>{chunkBits} wires</strong>
             <p>
-              One streamed coordinate chunk is bigger than the toy byte and must have
+              One streamed coordinate chunk is bigger than the byte example and must have
               a live target owner while it is consumed.
             </p>
           </article>
@@ -171,7 +171,7 @@ export function QroamLab({ projectData }: { projectData: ProjectData }) {
           occupy already-counted arithmetic slots.
         </p>
       </div>
-      <p>The toy table selects one byte. The repo selects secp256k1 table chunks; target lanes and cleanup are part of the accounting contract.</p>
+      <p>The byte table selects one small value. The repo selects secp256k1 table chunks; target lanes and cleanup are part of the accounting contract.</p>
     </article>
   );
 }

@@ -43,8 +43,9 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
       </div>
       <p>
         Repo headlines count logical qubits. Hardware planning needs an error-correction and
-        layout model on top. This toy dial is deliberately not a hardware claim; it teaches the
-        extra layer that turns a logical circuit into a physical-qubit envelope.
+        layout model on top. The dial deliberately refuses to be a hardware forecast:
+        it exposes the extra layer that turns a logical circuit into a physical-qubit
+        envelope.
       </p>
 
       <div className="physical-controls">
@@ -95,10 +96,10 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
         <article>
           <span>Physical per logical</span>
           <strong>{formatInt(estimate.physicalPerLogical)}</strong>
-          <p>{layoutFactor} * {distance}² toy tiles</p>
+          <p>{layoutFactor} * {distance}² illustrative tiles</p>
         </article>
         <article>
-          <span>Toy physical envelope</span>
+          <span>Illustrative physical envelope</span>
           <strong>{formatCompact(estimate.physicalTotal)}</strong>
           <p>{formatInt(selected.logicalQubits)} logical * {formatInt(estimate.physicalPerLogical)}</p>
         </article>
@@ -119,11 +120,11 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
           </p>
         </article>
         <article>
-          <span>Toy multiplier</span>
+          <span>Illustrative multiplier</span>
           <strong>{formatInt(estimate.physicalPerLogical)} physical per logical</strong>
           <p>
-            This lab uses <MathTex tex="\text{layout factor}\cdot d^2" /> as a visible
-            toy stand-in for a real fault-tolerance layout model.
+            The visible placeholder is <MathTex tex="\text{layout factor}\cdot d^2" />.
+            A real fault-tolerance layout model would replace this factor.
           </p>
         </article>
         <article>
@@ -131,7 +132,7 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
           <strong>{formatCompact(selected.nonClifford)} non-Clifford operations</strong>
           <p>
             Magic factories, timing, decoding latency, and routing can dominate a real
-            machine estimate, so this panel refuses to call the toy envelope a forecast.
+            machine estimate, so this panel refuses to call the illustrative envelope a forecast.
           </p>
         </article>
       </section>
@@ -140,12 +141,12 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
         <div><strong>Algorithm</strong><span>phase estimation and controlled point-adds</span></div>
         <div><strong>Logical circuit</strong><span>{formatInt(selected.logicalQubits)} live logical wires at peak</span></div>
         <div><strong>Error correction</strong><span>distance {distance}, layout factor {layoutFactor}x</span></div>
-        <div><strong>Hardware envelope</strong><span>{formatCompact(estimate.physicalTotal)} toy physical qubits</span></div>
+        <div><strong>Hardware envelope</strong><span>{formatCompact(estimate.physicalTotal)} illustrative physical qubits</span></div>
       </div>
 
       <section className="physical-assumption-ledger" aria-label="Physical estimate assumption ledger">
         <article>
-          <strong>Included in the toy envelope</strong>
+          <strong>Included in the illustrative envelope</strong>
           <p>logical peak qubits, code distance, and one coarse layout multiplier</p>
         </article>
         <article>
@@ -154,7 +155,7 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
         </article>
         <article>
           <strong>Allowed claim</strong>
-          <p>logical result plus assumptions gives a toy envelope, not a hardware forecast</p>
+          <p>logical result plus explicit assumptions gives an illustrative envelope, not a hardware forecast</p>
         </article>
       </section>
     </section>
