@@ -999,8 +999,16 @@ test('teaches optimization tradeoffs from the hybrid bridge search', async ({ pa
 
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Optimization mission');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: blocked');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Evidence receipt for selected row');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Qubit target');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('1,968 / <1,600');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Non-Clifford target');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Executable contract');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('strict executable row, not target hit');
   await page.getByLabel('Optimization candidate').selectOption('projective_five_slot_no_inverse_core');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('not executable/promoted');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('1,456 / <1,600');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('hypothesis until lowered');
   await page.getByLabel('Require executable promoted candidate').uncheck();
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: pass');
   await page.getByLabel('Optimization candidate').selectOption('projective_six_slot_with_lookup_workspace_reduced_to_fit');

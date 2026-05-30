@@ -43,6 +43,22 @@ const executableStatuses = new Set([
   'proven_current_strict_baseline',
 ]);
 
+const allowedWording = (candidate: CandidateRow, executable: boolean) => {
+  if (executable && candidate.fits_logical_qubit_limit && candidate.fits_non_clifford_limit) {
+    return 'promoted candidate';
+  }
+  if (executable) {
+    return 'strict executable row, not target hit';
+  }
+  if (candidate.fits_logical_qubit_limit && candidate.fits_non_clifford_limit) {
+    return 'hypothesis until lowered';
+  }
+  if (!candidate.fits_non_clifford_limit) {
+    return 'blocked tradeoff, not headline';
+  }
+  return 'numeric projection only';
+};
+
 export function OptimizationMissionLab({ projectData }: { projectData: ProjectData }) {
   const candidates = projectData.optimizationMission.candidateRows;
   const [selectedName, setSelectedName] = useState(candidates[0]?.name ?? '');
@@ -65,7 +81,13 @@ export function OptimizationMissionLab({ projectData }: { projectData: ProjectDa
       requireBothTargets && !selected.fits_logical_qubit_limit ? 'qubits miss target' : null,
       requireBothTargets && !selected.fits_non_clifford_limit ? 'non-Clifford misses target' : null,
     ].filter((reason): reason is string => reason !== null);
-    return { executable, targetPass, pass, reasons };
+    return {
+      executable,
+      targetPass,
+      pass,
+      reasons,
+      wording: allowedWording(selected, executable),
+    };
   }, [requireBothTargets, requireExecutable, selected]);
 
   return (
@@ -157,6 +179,35 @@ export function OptimizationMissionLab({ projectData }: { projectData: ProjectDa
           </div>
         </article>
       </div>
+
+      <section className="mission-evidence-receipt" aria-label="Optimization evidence receipt">
+        <h4>Evidence receipt for selected row</h4>
+        <article className={selected.fits_logical_qubit_limit ? 'pass' : 'fail'}>
+          <span>Qubit target</span>
+          <strong>{formatInt(selected.logical_qubits)} / &lt;{formatInt(projectData.optimizationMission.target.logical_qubits_exclusive)}</strong>
+          <p>{selected.fits_logical_qubit_limit ? 'fits the qubit gate' : 'still above the qubit gate'}</p>
+        </article>
+        <article className={selected.fits_non_clifford_limit ? 'pass' : 'fail'}>
+          <span>Non-Clifford target</span>
+          <strong>{formatCompact(selected.non_clifford)} / &lt;{formatCompact(projectData.optimizationMission.target.non_clifford_exclusive)}</strong>
+          <p>{selected.fits_non_clifford_limit ? 'fits the gate budget' : 'spends too much magic work'}</p>
+        </article>
+        <article className={audit.executable ? 'pass' : 'fail'}>
+          <span>Executable contract</span>
+          <strong>{audit.executable ? 'promoted path exists' : 'not promoted'}</strong>
+          <p>{readable(selected.status)}</p>
+        </article>
+        <article className="fail">
+          <span>Blocking reason</span>
+          <strong>{readable(selected.blocker)}</strong>
+          <p>The blocker decides what evidence a patch must add before wording can improve.</p>
+        </article>
+        <article className={audit.pass ? 'pass' : 'fail'}>
+          <span>Allowed wording</span>
+          <strong>{audit.wording}</strong>
+          <p>Do not promote the row beyond the weakest failed evidence column.</p>
+        </article>
+      </section>
 
       <div className="mission-grid">
         <article>
