@@ -809,6 +809,7 @@ test('shows partial-product lowering pressure', async ({ page }) => {
   await openLesson(page, 'modular-lowering');
 
   await expect(page.getByTestId('modular-lowering-story')).toContainText('A tiny formula becomes a large reversible machine');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('256-bit inputs');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('one grid products');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('65,536');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('One active product cell is already a lifecycle');

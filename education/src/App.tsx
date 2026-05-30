@@ -2409,12 +2409,12 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
         <h4>A tiny formula becomes a large reversible machine</h4>
         <p>
           The algebra says <MathTex tex="z=x\cdot y \bmod p" />. A circuit cannot
-          simply write that sentence into a register. It has to create bit products,
-          add them into columns, fold the high columns back into the field range, and
-          erase the temporary evidence without changing the answer.
+          just write that sentence into a register. It has to create bit products, add
+          them into columns, fold the high columns back into the field range, and erase
+          the temporary evidence without changing the answer.
         </p>
         <div className="modular-pipeline-strip" aria-hidden="true">
-          <span><MathTex tex={`${fieldBits}`} />-bit inputs</span>
+          <span>{fieldBits}-bit inputs</span>
           <i />
           <span>bit product grid</span>
           <i />
