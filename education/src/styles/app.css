@@ -4610,6 +4610,49 @@ code {
   background: rgba(255, 112, 112, 0.11);
 }
 
+.owner-load-receipt {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.owner-load-receipt h4 {
+  margin: 0;
+}
+
+.owner-load-receipt article {
+  display: grid;
+  grid-template-columns: minmax(10rem, 1fr) minmax(0, 1.3fr);
+  gap: 0.6rem;
+  align-items: center;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.owner-load-receipt article.bad-owner {
+  border-color: #ff7070;
+  background: rgba(255, 112, 112, 0.11);
+}
+
+.owner-load-receipt span {
+  color: #93a4b7;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.owner-load-receipt strong {
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
 .audit-pass,
 .audit-fail {
   border-radius: 0.5rem;
@@ -7886,6 +7929,10 @@ legend {
   .confidence-grid,
   .scaffold-controls,
   .scaffold-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .owner-load-receipt article {
     grid-template-columns: 1fr;
   }
 

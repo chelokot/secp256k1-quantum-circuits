@@ -738,6 +738,18 @@ test('shows partial-product lowering pressure', async ({ page }) => {
 
 test('requires owner assignment and numeric capacity to pass', async ({ page }) => {
   await openLesson(page, 'owner-capacity');
+  await selectRouteLab(page, /Invariant lab/);
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: pass');
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('Owner load receipt');
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('lookup_workspace');
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('155 = 155/173');
+  await page.getByLabel('Alias clean guard ladder into lookup workspace').check();
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('Audit: fail');
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('155 + 255 = 410/173');
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('capacity overflow');
+  await page.getByLabel('Alias clean guard ladder into lookup workspace').uncheck();
+  await page.getByLabel('Inject hidden scratch lane').check();
+  await expect(page.getByTestId('engine-invariant-lab')).toContainText('1 unowned group');
 
   await expect(page.getByTestId('owner-capacity-story')).toContainText('An owner is a budget, not a nickname');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The mechanical rule');

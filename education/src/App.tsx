@@ -3671,7 +3671,7 @@ export function App() {
       case 'owner-capacity':
         return [
           labItem(0, 'Slot liveness', <SlotLiveness projectData={projectData} />),
-          labItem(1, 'Invariant lab', <EngineInvariantLab />),
+          labItem(1, 'Invariant lab', <EngineInvariantLab projectData={projectData} />),
           labItem(2, 'Capacity game', <OwnerCapacityGame />),
         ];
       case 'resource-engine':
