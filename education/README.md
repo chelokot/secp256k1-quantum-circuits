@@ -91,10 +91,16 @@ npm install
 npm run dev
 npm run build
 npm run test:e2e
+npm run audit:screenshots
 ```
 
 `npm run sync:data` reads the parent repository artifacts and rewrites
 `src/generated/project-data.json`. Do not edit that generated file by hand.
+
+`npm run audit:screenshots` captures the first viewport for every lesson into
+`education/visual-audit/` with a `manifest.json`. Use it before broad content
+changes so the full course can be reviewed as rendered pages, not just source
+text.
 
 ## Current course boundary
 

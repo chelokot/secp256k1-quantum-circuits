@@ -8,6 +8,7 @@
     "dev": "npm run sync:data && vite --host 127.0.0.1",
     "build": "npm run sync:data && tsc -b && vite build",
     "preview": "vite preview --host 127.0.0.1",
+    "audit:screenshots": "npm run sync:data && node scripts/capture-lesson-screenshots.mjs",
     "test:e2e": "npm run sync:data && playwright test",
     "test": "npm run build && npm run test:e2e"
   },
