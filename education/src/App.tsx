@@ -287,6 +287,17 @@ function OrientationStoryPanel() {
         </p>
       </article>
 
+      <article className="story-question orientation-target">
+        <h4>The concrete target</h4>
+        <p>
+          The input is a public secp256k1 point <MathTex tex="Q" />. The hidden value
+          is the private scalar <MathTex tex="d" /> in <MathTex tex="Q=dG" />, where
+          {' '}<MathTex tex="G" /> is the standard generator. The course is about one
+          audit question: what exact quantum circuit resources are needed for the
+          Shor-style circuit that recovers <MathTex tex="d" />?
+        </p>
+      </article>
+
       <OrientationModelVisual />
 
       <article className="story-rule orientation-state-rule">
@@ -308,17 +319,6 @@ function OrientationStoryPanel() {
           <span><b>classical</b><i>0101</i></span>
           <span><b>quantum</b><i>a|0000&gt; + b|0101&gt; + ...</i></span>
         </div>
-      </article>
-
-      <article className="story-question orientation-target">
-        <h4>The concrete target</h4>
-        <p>
-          Given a public key <MathTex tex="Q" />, the hidden private number is
-          {' '}<MathTex tex="d" />. For secp256k1 they are connected by
-          {' '}<MathTex tex="Q=dG" />. The project is not trying to prove that quantum
-          computers are scary in general; it is trying to prove the cost of one
-          executable quantum circuit for recovering <MathTex tex="d" />.
-        </p>
       </article>
 
       <article className="story-rule proof-chain-rule">

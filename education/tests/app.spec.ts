@@ -93,7 +93,9 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('orientation-model-strip')).toContainText('Readout');
   await expect(page.getByTestId('lesson-detail-steps')).toHaveCount(0);
   await expect(page.getByTestId('orientation-story')).toContainText('A normal CPU step updates a bit string');
-  await expect(page.getByTestId('orientation-story')).toContainText('The project is not trying to prove that quantum computers are scary in general');
+  await expect(page.getByTestId('orientation-story')).toContainText('The concrete target');
+  await expect(page.getByTestId('orientation-story')).toContainText('The input is a public secp256k1 point');
+  await expect(page.getByTestId('orientation-story')).toContainText('Shor-style circuit that recovers');
   await expect(page.getByText('A normal CPU step updates a bit string')).toBeVisible();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');

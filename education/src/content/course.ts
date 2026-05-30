@@ -49,7 +49,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The repo result is a resource claim about that program: how many protected quantum memory wires are live at once, and how many expensive quantum operations the circuit uses.',
     mentalModel:
-      'Compare it to an ordinary computer first. Classical memory stores one discrete bit string at a time. Quantum memory stores amplitudes over many bit strings, and gates transform those amplitudes by strict reversible linear rules before measurement gives a discrete answer.',
+      'Compare it to an ordinary computer first. Classical memory stores one discrete bit string at a time. Quantum memory stores amplitudes over many bit strings, and gates transform those amplitudes by strict reversible linear rules before measurement gives a discrete answer. Given a public key Q = dG, this repo audits the circuit resources needed to recover the hidden scalar d.',
     checkpoint: 'The repo must connect the mathematical attack, the quantum state-and-gate program, tests, and resource numbers into one auditable chain.',
     coreIdeas: [
       'Classical program: bit string plus discrete updates.',
