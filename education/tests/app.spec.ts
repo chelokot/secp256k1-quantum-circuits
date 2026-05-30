@@ -58,6 +58,11 @@ test('keeps every lesson free of legacy scaffolding and page overflow', async ({
 
       expect.soft(overflow.body, `${viewport.name} ${lesson.id} body overflow`).toBeLessThanOrEqual(0);
       expect.soft(overflow.document, `${viewport.name} ${lesson.id} document overflow`).toBeLessThanOrEqual(0);
+
+      if (viewport.name === 'mobile') {
+        const pagerBox = await page.getByTestId('lesson-pager').boundingBox();
+        expect.soft(pagerBox?.height ?? 0, `${lesson.id} mobile pager height`).toBeLessThanOrEqual(56);
+      }
     }
   }
 });

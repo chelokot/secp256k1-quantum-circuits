@@ -8171,18 +8171,26 @@ legend {
   }
 
   .lesson-pager {
-    grid-template-columns: 1fr;
+    grid-template-columns: auto minmax(4.5rem, 1fr) auto;
+    gap: 0.4rem;
   }
 
   .lesson-pager div,
   .lesson-pager button,
   .lesson-pager button:first-child,
   .lesson-pager button:last-child {
-    justify-self: stretch;
+    justify-self: center;
   }
 
   .lesson-pager button {
     justify-content: center;
+    min-height: 2.35rem;
+    padding: 0.55rem 0.7rem;
+    white-space: nowrap;
+  }
+
+  .lesson-pager strong {
+    font-size: 0.82rem;
   }
 
   .hero-panel,
