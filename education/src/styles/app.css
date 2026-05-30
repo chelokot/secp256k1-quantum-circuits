@@ -4211,6 +4211,47 @@ code {
   margin: 1rem 0;
 }
 
+.state-execution-trace {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.state-execution-trace h4 {
+  margin: 0;
+}
+
+.state-execution-trace article {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 0.3fr) minmax(12rem, 0.8fr) minmax(14rem, 1fr);
+  gap: 0.7rem;
+  align-items: center;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.15);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.state-execution-trace strong,
+.state-execution-trace span {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.state-execution-trace strong {
+  color: #f5cf6b;
+}
+
+.state-execution-trace p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.state-execution-trace span {
+  color: #dffbf5;
+  font-size: 0.8rem;
+}
+
 .state-vector-grid div {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
@@ -6869,6 +6910,7 @@ legend {
   .two-qubit-primer,
   .two-qubit-schemes,
   .two-qubit-mission-grid,
+  .state-execution-trace article,
   .content-grid.learning-grid,
   .path-stage-grid,
   .readiness-strip,
@@ -7041,6 +7083,7 @@ legend {
   .two-qubit-primer,
   .two-qubit-schemes,
   .two-qubit-mission-grid,
+  .state-execution-trace article,
   .path-stage-grid,
   .readiness-strip,
   .tradeoff-controls,

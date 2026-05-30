@@ -10,6 +10,12 @@ type ParsedGate =
   | { op: 'H' | 'X' | 'Z'; target: 'q0' | 'q1'; line: number }
   | { op: 'CX'; control: 'q0' | 'q1'; target: 'q0' | 'q1'; line: number };
 
+type TraceRow = {
+  instruction: string;
+  meaning: string;
+  branches: string;
+};
+
 const basis = ['|00>', '|01>', '|10>', '|11>'];
 const zero: Complex = { re: 0, im: 0 };
 const one: Complex = { re: 1, im: 0 };
@@ -93,7 +99,7 @@ function applyCx(state: Complex[], control: 'q0' | 'q1', target: 'q0' | 'q1') {
   return result;
 }
 
-function runProgram(gates: ParsedGate[]) {
+function applyParsedGate(state: Complex[], gate: ParsedGate) {
   const h = scale(one, 1 / Math.sqrt(2));
   const matrices = {
     H: [[h, h], [h, scale(h, -1)]] as [[Complex, Complex], [Complex, Complex]],
@@ -101,10 +107,12 @@ function runProgram(gates: ParsedGate[]) {
     Z: [[one, zero], [zero, scale(one, -1)]] as [[Complex, Complex], [Complex, Complex]],
   };
 
-  return gates.reduce((state, gate) => {
-    if (gate.op === 'CX') return applyCx(state, gate.control, gate.target);
-    return applySingleQubitGate(state, gate.target, matrices[gate.op]);
-  }, initialState);
+  if (gate.op === 'CX') return applyCx(state, gate.control, gate.target);
+  return applySingleQubitGate(state, gate.target, matrices[gate.op]);
+}
+
+function runProgram(gates: ParsedGate[]) {
+  return gates.reduce(applyParsedGate, initialState);
 }
 
 const formatComplex = (value: Complex) => {
@@ -117,10 +125,57 @@ const formatComplex = (value: Complex) => {
 
 const near = (value: number, target: number) => Math.abs(value - target) < 0.03;
 
+function formatInstruction(gate: ParsedGate) {
+  if (gate.op === 'CX') return `CX ${gate.control} ${gate.target}`;
+  return `${gate.op} ${gate.target}`;
+}
+
+function describeGate(gate: ParsedGate) {
+  if (gate.op === 'CX') return `Controlled-X flips ${gate.target} only on branches where ${gate.control} is 1.`;
+  if (gate.op === 'H') return `Hadamard mixes the 0 and 1 branches of ${gate.target}.`;
+  if (gate.op === 'X') return `Bit flip swaps the 0 and 1 labels of ${gate.target}.`;
+  return `Phase flip changes the sign of branches where ${gate.target} is 1.`;
+}
+
+function summarizeBranches(state: Complex[]) {
+  return state
+    .map((amplitude, index) => ({
+      amplitude,
+      label: basis[index],
+      probability: abs2(amplitude),
+    }))
+    .filter((branch) => branch.probability > 0.005)
+    .map((branch) => `${branch.label}: ${formatComplex(branch.amplitude)} (${Math.round(branch.probability * 100)}%)`)
+    .join('  |  ');
+}
+
+function buildTrace(gates: ParsedGate[]) {
+  let currentState = initialState;
+  const rows: TraceRow[] = [
+    {
+      instruction: 'start',
+      meaning: 'Prepare both wires as 0 before any gate runs.',
+      branches: summarizeBranches(currentState),
+    },
+  ];
+
+  for (const gate of gates) {
+    currentState = applyParsedGate(currentState, gate);
+    rows.push({
+      instruction: formatInstruction(gate),
+      meaning: describeGate(gate),
+      branches: summarizeBranches(currentState),
+    });
+  }
+
+  return rows;
+}
+
 export function StateVectorLab() {
   const [program, setProgram] = useState(examples.bell);
   const parsed = useMemo(() => parseProgram(program), [program]);
   const state = useMemo(() => (parsed.errors.length === 0 ? runProgram(parsed.gates) : initialState), [parsed]);
+  const trace = useMemo(() => (parsed.errors.length === 0 ? buildTrace(parsed.gates) : []), [parsed]);
   const probabilities = state.map(abs2);
   const separabilityDeterminant = sub(mul(state[0], state[3]), mul(state[1], state[2]));
   const entangled = Math.sqrt(abs2(separabilityDeterminant)) > 0.01;
@@ -188,7 +243,7 @@ export function StateVectorLab() {
         <article>
           <strong>Interference</strong>
           <p>Mixing twice can cancel one branch and reinforce another.</p>
-          <span>H q0; X q0; H q0</span>
+          <span>H q0; Z q0; H q0</span>
         </article>
         <article>
           <strong>Entangle + flip</strong>
@@ -238,6 +293,16 @@ export function StateVectorLab() {
         </div>
       ) : (
         <>
+          <section className="state-execution-trace" aria-label="State vector execution trace">
+            <h4>Execution trace</h4>
+            {trace.map((row, index) => (
+              <article key={`${index}-${row.instruction}`}>
+                <strong>{row.instruction}</strong>
+                <p>{row.meaning}</p>
+                <span>{row.branches}</span>
+              </article>
+            ))}
+          </section>
           <dl className="metric-row">
             <div><dt>Gates</dt><dd>{parsed.gates.length}</dd></div>
             <div><dt>Qubits</dt><dd>2</dd></div>

@@ -17,11 +17,11 @@ const presets = {
 };
 const gatePalette = ['H', 'X', 'S', 'T', 'R'] as const;
 const gateDescriptions: Record<Gate, string> = {
-  H: 'mix',
-  X: 'swap',
-  S: '90deg phase',
-  T: '45deg phase',
-  R: 'aperiodic phase',
+  H: 'Hadamard mix',
+  X: 'bit flip swap',
+  S: '90deg phase turn',
+  T: '45deg phase turn',
+  R: 'long phase walk',
 };
 
 const add = (left: Complex, right: Complex): Complex => ({ re: left.re + right.re, im: left.im + right.im });
