@@ -1065,6 +1065,11 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('8 cases');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('9024 cases');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: blocked');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Verifier checks');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Still outside the verifier');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('compiler_verification_project/artifacts/proof_publication_status.json');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Release gate commands tracked by the artifact');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('public_headline_groth16_verify');
   await page.getByLabel('Refresh proof fixtures against current input').check();
   await page.getByLabel('Close physical macro boundary').check();
   await page.getByLabel('Verify compressed and Groth16 proofs').check();

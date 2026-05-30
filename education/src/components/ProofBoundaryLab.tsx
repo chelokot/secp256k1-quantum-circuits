@@ -19,6 +19,11 @@ type ProofBlocker = {
 };
 
 type ProjectData = {
+  generatedFrom: {
+    proofPublicationStatus: string;
+    proofCorpusProfiles: string;
+    publicHeadlineResult: string;
+  };
   proofPublication: {
     publicationReady: boolean;
     allCurrent: boolean;
@@ -77,10 +82,10 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
           <p className={projectData.proofPublication.publicationReady ? 'audit-pass' : 'audit-fail'}>
             Checked artifact status: {projectData.proofPublication.publicationReady ? 'publication ready' : 'not publication ready'}
           </p>
-      <p>
-        Current public proof corpus is {projectData.proofCorpusProfiles.publicReleaseGrade ? 'release-grade' : 'smoke-only'}.
-        The Google-comparable target is {projectData.proofCorpusProfiles.releaseGrade ? 'release-grade' : 'not release-grade'}.
-      </p>
+          <p>
+            Current public proof corpus is {projectData.proofCorpusProfiles.publicReleaseGrade ? 'release-grade' : 'smoke-only'}.
+            The Google-comparable target is {projectData.proofCorpusProfiles.releaseGrade ? 'release-grade' : 'not release-grade'}.
+          </p>
         </article>
 
         <article>
@@ -96,6 +101,48 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
               </div>
             ))}
           </div>
+        </article>
+      </div>
+
+      <div className="proof-receipt-grid">
+        <article>
+          <span>Verifier checks</span>
+          <strong>proof bytes match public values</strong>
+          <p>
+            A valid compressed or Groth16 verifier result says the proof bundle
+            satisfies the encoded statement and public values for that system.
+          </p>
+        </article>
+        <article>
+          <span>Freshness check adds</span>
+          <strong>current input and resource digest</strong>
+          <p>
+            The publication artifact must show that those public values still bind
+            the checked input JSON and current resource certificate.
+          </p>
+        </article>
+        <article>
+          <span>Still outside the verifier</span>
+          <strong>claim scope and corpus strength</strong>
+          <p>
+            The verifier does not know whether a README sentence says too much, whether
+            the corpus is release-grade, or whether a macro boundary remains open.
+          </p>
+        </article>
+      </div>
+
+      <div className="proof-artifact-receipt">
+        <article>
+          <span>Publication status artifact</span>
+          <strong>{projectData.generatedFrom.proofPublicationStatus}</strong>
+        </article>
+        <article>
+          <span>Corpus profile artifact</span>
+          <strong>{projectData.generatedFrom.proofCorpusProfiles}</strong>
+        </article>
+        <article>
+          <span>Headline gate artifact</span>
+          <strong>{projectData.generatedFrom.publicHeadlineResult}</strong>
         </article>
       </div>
 
@@ -152,6 +199,16 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
         <p>
           Open proof issues: {simulatedStatus.open.length === 0 ? 'none' : simulatedStatus.open.join(', ')}
         </p>
+      </div>
+
+      <div className="proof-command-ledger">
+        <h4>Release gate commands tracked by the artifact</h4>
+        {projectData.proofPublication.gateCommands.map((command) => (
+          <article key={command.name}>
+            <span>{readable(command.phase)}</span>
+            <strong>{command.name}</strong>
+          </article>
+        ))}
       </div>
 
       <div className="proof-blockers">

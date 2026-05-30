@@ -5746,11 +5746,48 @@ code {
 
 .proof-grid article,
 .proof-simulator,
-.proof-blockers article {
+.proof-blockers article,
+.proof-receipt-grid article,
+.proof-artifact-receipt article,
+.proof-command-ledger {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   padding: 1rem;
   background: rgba(255, 255, 255, 0.04);
+}
+
+.proof-receipt-grid,
+.proof-artifact-receipt {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.proof-receipt-grid span,
+.proof-artifact-receipt span,
+.proof-command-ledger span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.proof-receipt-grid strong,
+.proof-artifact-receipt strong,
+.proof-command-ledger strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.proof-receipt-grid p {
+  margin: 0.4rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .proof-system-list {
@@ -5790,6 +5827,25 @@ code {
   grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
   gap: 0.75rem;
   margin-top: 1rem;
+}
+
+.proof-command-ledger {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.proof-command-ledger h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.proof-command-ledger article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.16);
+  border-radius: 0.45rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.055);
 }
 
 .boundary-grid {
@@ -7928,7 +7984,9 @@ legend {
   .artifact-atlas-grid,
   .confidence-grid,
   .scaffold-controls,
-  .scaffold-detail-grid {
+  .scaffold-detail-grid,
+  .proof-receipt-grid,
+  .proof-artifact-receipt {
     grid-template-columns: 1fr;
   }
 
