@@ -311,9 +311,10 @@ export const lessons: CourseLesson[] = [
       'The current physical-baseline blocker lives here: modular accumulator consume/fold/source-uncompute rows must become one promoted primitive stream.',
     mentalModel:
       'Multiplication is not one operation. It is a factory line: partial products, columns, carries, reductions, and cleanup receipts.',
-    checkpoint: 'A lowering is convincing only when every temporary bit has a route, owner, and inverse or measured cleanup.',
+    checkpoint: 'A lowering is convincing only when every temporary bit has a route, owner, and inverse cleanup or explicit output boundary.',
     coreIdeas: [
       'Multiply = partial products plus carries plus reduction.',
+      'A classical inactive cell can still be a possible quantum branch.',
       'Modulo reduction is explicit reversible work, not classical postprocessing.',
       'Every temporary product needs a lifecycle.',
       'Promotion requires one primitive stream, not a side artifact.',

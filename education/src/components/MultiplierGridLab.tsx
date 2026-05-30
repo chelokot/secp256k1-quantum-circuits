@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { Binary } from 'lucide-react';
 
 const toBits = (value: number, width: number) => Array.from({ length: width }, (_, index) => (value >> index) & 1);
+const formatCell = (column: number, row: number) => `x${column}y${row}`;
 
 export function MultiplierGridLab() {
   const [left, setLeft] = useState(11);
@@ -24,9 +25,18 @@ export function MultiplierGridLab() {
   const columns = Array.from({ length: width * 2 - 1 }, (_, column) => ({
     column,
     count: cells.filter((cell) => cell.active && cell.outputColumn === column).length,
+    possible: cells.filter((cell) => cell.outputColumn === column).length,
   }));
+  const peakColumn = columns.reduce((peak, column) => (column.possible > peak.possible ? column : peak), columns[0]);
   const selectedCell = cells.find((cell) => `${cell.row}-${cell.column}` === selectedKey) ?? cells[0];
   const selectedTemp = `t_${selectedCell.column}_${selectedCell.row}`;
+  const selectedColumn = columns.find((column) => column.column === selectedCell.outputColumn) ?? columns[0];
+  const selectedColumnCells = cells.filter((cell) => cell.outputColumn === selectedCell.outputColumn);
+  const selectedLifecycle = [
+    `CCX x${selectedCell.column} y${selectedCell.row} ${selectedTemp}`,
+    `ADD ${selectedTemp} into c${selectedCell.outputColumn}`,
+    `CCX x${selectedCell.column} y${selectedCell.row} ${selectedTemp}`,
+  ];
 
   return (
     <article className="lab-panel" data-testid="multiplier-grid-lab">
@@ -84,14 +94,45 @@ export function MultiplierGridLab() {
           <div key={column.column}>
             <span>c{column.column}</span>
             <strong>{column.count}</strong>
+            <em>{column.possible} possible</em>
           </div>
         ))}
       </div>
+      <section className="column-pressure-receipt" aria-label="Column pressure receipt">
+        <h4>Column pressure receipt</h4>
+        <article>
+          <span>Selected column</span>
+          <strong>c{selectedCell.outputColumn}: {selectedColumn.count}/{selectedColumn.possible} active now</strong>
+          <p>
+            Current sliders show one classical branch. A quantum multiply must keep the
+            possible row obligations for every branch of the input registers.
+          </p>
+        </article>
+        <article>
+          <span>Possible contributors</span>
+          <strong>{selectedColumnCells.map((cell) => formatCell(cell.column, cell.row)).join(', ')}</strong>
+          <p>All contributors with the same weight land in the same accumulator column.</p>
+        </article>
+        <article>
+          <span>Peak column pressure</span>
+          <strong>c{peakColumn.column}: {peakColumn.possible} possible products</strong>
+          <p>A tall column must be compressed or folded by explicit reversible rows.</p>
+        </article>
+      </section>
+      <section className="selected-lifecycle-receipt" aria-label="Selected product lifecycle rows">
+        <h4>Selected product lifecycle rows</h4>
+        {selectedLifecycle.map((row, index) => (
+          <article key={`${index}-${row}`}>
+            <span>{index === 0 ? 'birth' : index === 1 ? 'consume' : 'death'}</span>
+            <strong>{row}</strong>
+          </article>
+        ))}
+      </section>
       <dl className="metric-row">
         <div><dt>Product</dt><dd>{left * right}</dd></div>
         <div><dt>Active ANDs</dt><dd>{activeCount}</dd></div>
+        <div><dt>Possible rows</dt><dd>{cells.length}</dd></div>
         <div><dt>Columns</dt><dd>{columns.length}</dd></div>
-        <div><dt>Width</dt><dd>{width} bits</dd></div>
       </dl>
       <p>
         At 256 bits this grid becomes the modular accumulator: many temporary

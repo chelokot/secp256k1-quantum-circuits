@@ -906,6 +906,11 @@ test('shows partial-product lowering pressure', async ({ page }) => {
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('CCX x0 y0 t_0_0');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Death');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('same controls');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Column pressure receipt');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Peak column pressure');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('c3: 4 possible products');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Selected product lifecycle rows');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Possible rows');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').first().fill('15');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').last().fill('15');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Active ANDs');
@@ -913,6 +918,7 @@ test('shows partial-product lowering pressure', async ({ page }) => {
   await page.getByTestId('multiplier-grid-lab').getByRole('button', { name: 'Select product cell x3 y3' }).click();
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('x3 AND y3');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('t_3_3 -> column c6');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('c6: 1/1 active now');
 });
 
 test('requires owner assignment and numeric capacity to pass', async ({ page }) => {

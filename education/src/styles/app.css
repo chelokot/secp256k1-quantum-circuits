@@ -6744,10 +6744,82 @@ code {
   overflow-wrap: anywhere;
 }
 
+.column-loads em {
+  display: block;
+  margin-top: 0.18rem;
+  color: #b7c3d0;
+  font-size: 0.75rem;
+  font-style: normal;
+}
+
 .owner-peak-witness p {
   margin: 0.45rem 0 0;
   color: #b7c3d0;
   font-size: 0.86rem;
+}
+
+.column-pressure-receipt,
+.selected-lifecycle-receipt {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.column-pressure-receipt,
+.selected-lifecycle-receipt {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.column-pressure-receipt h4,
+.selected-lifecycle-receipt h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.column-pressure-receipt article,
+.selected-lifecycle-receipt article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.column-pressure-receipt article:nth-child(3),
+.selected-lifecycle-receipt article:nth-child(2) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.065);
+}
+
+.column-pressure-receipt span,
+.column-pressure-receipt strong,
+.selected-lifecycle-receipt span,
+.selected-lifecycle-receipt strong {
+  display: block;
+}
+
+.column-pressure-receipt span,
+.selected-lifecycle-receipt span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.column-pressure-receipt strong,
+.selected-lifecycle-receipt strong {
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+.column-pressure-receipt p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .assignment-list label {
@@ -10001,6 +10073,8 @@ legend {
   .cleanup-ledger,
   .cleanup-proof-packet,
   .product-obligation-ledger,
+  .column-pressure-receipt,
+  .selected-lifecycle-receipt,
   .owner-peak-witness,
   .cleanup-wire,
   .accumulator-summary,
@@ -10277,6 +10351,8 @@ legend {
   .cleanup-ledger,
   .cleanup-proof-packet,
   .product-obligation-ledger,
+  .column-pressure-receipt,
+  .selected-lifecycle-receipt,
   .owner-peak-witness,
   .cleanup-wire,
   .accumulator-summary,
