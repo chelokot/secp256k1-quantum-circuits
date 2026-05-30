@@ -75,6 +75,9 @@ test('keeps multi-lab lessons behind a focused route', async ({ page }) => {
     if (routeButtons > 1) {
       await expect(page.getByTestId('lab-route').locator('li.active')).toHaveCount(1);
       await expect(page.getByRole('button', { name: 'Show all labs' })).toBeVisible();
+      await expect(page.getByTestId('lab-route').locator('.active-lab-goal')).toBeVisible();
+      const activeGoalText = await page.getByTestId('lab-route').locator('.active-lab-goal').innerText();
+      expect(activeGoalText.trim().length, `${lesson.id} active lab goal length`).toBeGreaterThan(20);
       expect(visibleLabSteps, `${lesson.id} focused visible lab count`).toBe(1);
     } else {
       expect(visibleLabSteps, `${lesson.id} unguided visible lab count`).toBeLessThanOrEqual(1);
