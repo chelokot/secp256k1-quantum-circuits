@@ -2724,7 +2724,7 @@ function OptimizationStoryPanel({ data }: { data: typeof projectData }) {
         <div className="optimization-candidate-strip" aria-hidden="true">
           <div><span>current strict</span><strong>{formatInt(current.logical_qubits)}q</strong><em>{formatInt(current.non_clifford)}</em></div>
           <div><span>six-slot squeeze</span><strong>{formatInt(sixFitsQubits.logical_qubits)}q</strong><em>{formatInt(sixFitsQubits.non_clifford)}</em></div>
-          <div><span>five-slot hope</span><strong>{formatInt(fiveSlot.logical_qubits)}q</strong><em>{fiveSlot.status}</em></div>
+          <div><span>five-slot hope</span><strong>{formatInt(fiveSlot.logical_qubits)}q</strong><em>{readableStatus(fiveSlot.status)}</em></div>
         </div>
       </article>
 
@@ -2744,6 +2744,31 @@ function OptimizationStoryPanel({ data }: { data: typeof projectData }) {
           <span>change lowering</span>
           <span>rerun engine</span>
           <span>classify result</span>
+        </div>
+      </article>
+
+      <article className="story-rule evidence-matrix-rule">
+        <div>
+          <h4>Claim status is an evidence matrix</h4>
+          <p>
+            A candidate can be excellent on one axis and still blocked on another.
+            Think of every row as a matrix: semantic boundary, primitive lowering,
+            owner capacity, non-Clifford budget, proof binding, and documentation
+            wording. The weakest missing column determines the public status.
+          </p>
+          <p>
+            That is why a five-slot idea can stay a hypothesis even if its arithmetic
+            intuition is good, and why a strict row can be useful while still not being
+            the accepted physical baseline.
+          </p>
+        </div>
+        <div className="evidence-matrix-card" aria-hidden="true">
+          <span>semantics</span>
+          <span>lowering</span>
+          <span>capacity</span>
+          <span>gates</span>
+          <span>proof</span>
+          <span>wording</span>
         </div>
       </article>
 
@@ -2807,6 +2832,28 @@ function PointAddBoundaryStoryPanel({ data }: { data: typeof projectData }) {
           {Object.entries(boundary.categories).map(([name, category]) => (
             <span key={name}>{name.replaceAll('_', ' ')}: {category.pass}/{category.total}</span>
           ))}
+        </div>
+      </article>
+
+      <article className="story-rule branch-selector-rule">
+        <div>
+          <h4>Edge cases require branch selectors, not wishes</h4>
+          <p>
+            A point-add formula usually has predicates such as “same point,” “inverse
+            point,” or “lookup is infinity.” In a quantum circuit those predicates are
+            live controls. They need wires, owners, cleanup, and semantic tests just
+            like coordinate values do.
+          </p>
+          <p>
+            Therefore an edge-case artifact must prove two things at once: the selected
+            branch returns the right point, and the selector/control machinery is part
+            of the same counted executable interface.
+          </p>
+        </div>
+        <div className="branch-selector-card" aria-hidden="true">
+          <div><span>predicate</span><strong>which branch?</strong></div>
+          <div><span>controlled formula</span><strong>right point</strong></div>
+          <div><span>cleanup</span><strong>selectors erased or counted</strong></div>
         </div>
       </article>
 
@@ -2912,6 +2959,28 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
           <span className="story-token">scope match</span>
         </article>
       </div>
+
+      <article className="story-rule proof-wording-rule">
+        <div>
+          <h4>Proof validity still needs a wording audit</h4>
+          <p>
+            The same valid proof can support several different public sentences. “This
+            proof verifies,” “this proof binds the current candidate,” and “this proves
+            the accepted physical baseline” are not equivalent. The wording must be no
+            stronger than the input, corpus, resource digest, and macro-boundary status.
+          </p>
+          <p>
+            This is why the course asks the learner to classify claims before repeating
+            numbers. A verifier result is evidence, but the claim decides what that
+            evidence is being used to say.
+          </p>
+        </div>
+        <div className="proof-wording-card" aria-hidden="true">
+          <span>verifies proof bytes</span>
+          <span>binds current candidate</span>
+          <span>supports accepted baseline</span>
+        </div>
+      </article>
 
       <article className="story-question">
         <h4>Why the lab asks for both compressed and Groth16 gates</h4>

@@ -2605,9 +2605,12 @@ code {
 .mini-witness-rule,
 .mini-engine-rule,
 .candidate-frontier-rule,
+.evidence-matrix-rule,
 .breakthrough-rule,
 .point-boundary-rule,
+.branch-selector-rule,
 .zkp-receipt-rule,
+.proof-wording-rule,
 .mission-packet-rule,
 .baseline-status-rule {
   border-color: rgba(99, 230, 190, 0.2);
@@ -2621,6 +2624,9 @@ code {
 .peak-row-card,
 .artifact-interface-card,
 .mini-witness-card,
+.evidence-matrix-card,
+.branch-selector-card,
+.proof-wording-card,
 .circuit-reading-strip,
 .controlled-branch-card,
 .schedule-peak-strip {
@@ -2636,6 +2642,9 @@ code {
 .peak-row-card div,
 .artifact-interface-card span,
 .mini-witness-card div,
+.evidence-matrix-card span,
+.branch-selector-card div,
+.proof-wording-card span,
 .circuit-reading-strip span,
 .controlled-branch-card span,
 .controlled-branch-card strong,
@@ -2657,7 +2666,9 @@ code {
 .peak-row-card span,
 .peak-row-card strong,
 .mini-witness-card span,
-.mini-witness-card strong {
+.mini-witness-card strong,
+.branch-selector-card span,
+.branch-selector-card strong {
   display: block;
 }
 
@@ -2665,7 +2676,8 @@ code {
 .row-branch-card span,
 .modular-fold-card span,
 .peak-row-card span,
-.mini-witness-card span {
+.mini-witness-card span,
+.branch-selector-card span {
   color: #93a4b7;
   font-size: 0.78rem;
 }
@@ -2674,7 +2686,8 @@ code {
 .row-branch-card strong,
 .modular-fold-card strong,
 .peak-row-card strong,
-.mini-witness-card strong {
+.mini-witness-card strong,
+.branch-selector-card strong {
   color: #ffffff;
   font-size: 0.86rem;
 }
@@ -2682,7 +2695,10 @@ code {
 .row-branch-card div:nth-child(2),
 .modular-fold-card div:nth-child(2),
 .peak-row-card div:nth-child(2),
-.mini-witness-card div:nth-child(2) {
+.mini-witness-card div:nth-child(2),
+.evidence-matrix-card span:nth-child(3),
+.branch-selector-card div:nth-child(2),
+.proof-wording-card span:nth-child(2) {
   border-color: rgba(245, 207, 107, 0.28);
   background: rgba(245, 207, 107, 0.08);
 }

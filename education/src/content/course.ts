@@ -386,6 +386,7 @@ export const lessons: CourseLesson[] = [
       'Lower qubits alone is not enough.',
       'Gate budget, semantics, capacity, and promotion all matter.',
       'Rejected and hypothesis rows are useful only when clearly labeled.',
+      'Claim status is determined by the weakest missing evidence gate.',
     ],
   },
   {
@@ -404,6 +405,7 @@ export const lessons: CourseLesson[] = [
       'Point-add is an executable API boundary.',
       'Edge cases are part of semantics, not rare extras.',
       'Counted interface and tested interface must match.',
+      'Branch selector predicates are live controls that need counting and cleanup.',
     ],
   },
   {
@@ -440,6 +442,7 @@ export const lessons: CourseLesson[] = [
       'Proof validity is not the same as claim validity.',
       'Public values define what the verifier actually sees.',
       'Fresh artifacts and current resource contract must agree.',
+      'Proof wording must not outrun the bound input and artifact freshness.',
     ],
   },
   {

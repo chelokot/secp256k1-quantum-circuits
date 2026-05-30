@@ -858,6 +858,7 @@ test('teaches optimization tradeoffs from the hybrid bridge search', async ({ pa
   await expect(page.getByTestId('optimization-story')).toContainText('The smallest number is not automatically the best result');
   await expect(page.getByTestId('optimization-story')).toContainText('Why the current frontier is blocked');
   await expect(page.getByTestId('optimization-story')).toContainText('The search loop is mechanical');
+  await expect(page.getByTestId('optimization-story')).toContainText('Claim status is an evidence matrix');
   await expect(page.getByTestId('optimization-story')).toContainText('The next useful patch must close a specific gate');
   await selectRouteLab(page, /Optimization mission/);
 
@@ -877,6 +878,7 @@ test('teaches point-add semantic boundary cases from equivalence artifacts', asy
 
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('A point-add leaf is an API');
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('The counted interface and tested interface must be the same');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('Edge cases require branch selectors, not wishes');
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('80/80');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Point-add boundary debugger');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('80/80');
@@ -928,6 +930,7 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('A valid proof is only a receipt for its exact statement');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The binding chain is the thing a reviewer follows');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The current checked proof status is deliberately conservative');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Proof validity still needs a wording audit');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Why the lab asks for both compressed and Groth16 gates');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('9,024');
   await selectRouteLab(page, /ZKP boundary/);
