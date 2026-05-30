@@ -20,6 +20,11 @@ const selectRouteLab = async (page: Page, labName: RegExp) => {
 test('orders proof hygiene before contribution and keeps repo status last', async () => {
   const orderedLessonIds = lessons.map((lesson) => lesson.id);
 
+  expect(orderedLessonIds.indexOf('phase-estimation')).toBeLessThan(orderedLessonIds.indexOf('ecdlp'));
+  expect(orderedLessonIds.indexOf('ecdlp')).toBeLessThan(orderedLessonIds.indexOf('coordinates'));
+  expect(orderedLessonIds.indexOf('coordinates')).toBeLessThan(orderedLessonIds.indexOf('lookup-qroam'));
+  expect(orderedLessonIds.indexOf('lookup-qroam')).toBeLessThan(orderedLessonIds.indexOf('netlists'));
+  expect(orderedLessonIds.indexOf('netlists')).toBeLessThan(orderedLessonIds.indexOf('programming'));
   expect(orderedLessonIds.indexOf('zkp-boundary')).toBeLessThan(orderedLessonIds.indexOf('contribution'));
   expect(orderedLessonIds.at(-1)).toBe('repo-baselines');
 });
@@ -234,6 +239,9 @@ test('turns the lab collection into a zero-to-contributor learning path', async 
   await expect(page.getByTestId('learning-path-map')).toContainText('2. Attack algorithm');
   await expect(page.getByTestId('learning-path-map')).toContainText('3. Circuit engine');
   await expect(page.getByTestId('learning-path-map')).toContainText('4. Audit and contribution');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Phase estimation turns rhythm into bits');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Why secp256k1 is the target');
+  await expect(page.getByTestId('learning-path-map')).toContainText('Primitive netlists and liveness');
   await expect(page.getByTestId('learning-path-map')).toContainText('Contributor readiness');
   await expect(page.getByTestId('learning-path-map')).toContainText('not ready');
   await expect(page.getByTestId('learning-path-map')).toContainText('Qubit basics: amplitudes and measurement');

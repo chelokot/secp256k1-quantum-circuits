@@ -20,13 +20,13 @@ const stages: LearningStage[] = [
     id: 'substrate',
     title: '1. Quantum substrate',
     description: 'Build the mental model for amplitudes, gates, reversibility, and fault-tolerant cost.',
-    lessonIds: ['zero', 'qubit', 'one-qubit', 'two-qubit', 'gates', 'clifford', 'logic-physical', 'phase-estimation'],
+    lessonIds: ['zero', 'qubit', 'one-qubit', 'two-qubit', 'gates', 'clifford', 'logic-physical'],
   },
   {
     id: 'attack',
     title: '2. Attack algorithm',
     description: 'Connect phase estimation to ECDLP, windowed point-add calls, and lookup-fed curve arithmetic.',
-    lessonIds: ['ecdlp', 'coordinates', 'lookup-qroam'],
+    lessonIds: ['phase-estimation', 'ecdlp', 'coordinates', 'lookup-qroam'],
   },
   {
     id: 'engine',

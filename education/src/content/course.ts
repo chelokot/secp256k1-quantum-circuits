@@ -188,24 +188,6 @@ export const lessons: CourseLesson[] = [
     ],
   },
   {
-    id: 'netlists',
-    module: 'Compiler reality',
-    title: 'Primitive netlists and liveness',
-    icon: Binary,
-    intuition:
-      'A flat primitive netlist is the boring object that makes claims real: gate rows, wire operands, owners, intervals, and peak live count.',
-    whyItMatters:
-      'Every bug we found was a mismatch between an attractive boundary and the wires a real primitive circuit would have to keep alive.',
-    mentalModel:
-      'A netlist is a table of primitive rows. Liveness says when each wire value is born, when it dies, and which owner must have capacity for it.',
-    checkpoint: 'The best future engine is one source of truth that executes, counts, tests, and feeds proof inputs.',
-    coreIdeas: [
-      'Primitive rows are the countable object.',
-      'Live intervals determine peak qubits.',
-      'One engine should feed execution, tests, counts, and zero-knowledge proof (ZKP) input.',
-    ],
-  },
-  {
     id: 'ecdlp',
     module: 'Attack algorithm',
     title: 'Why secp256k1 is the target',
@@ -258,6 +240,24 @@ export const lessons: CourseLesson[] = [
       'Address decoding is not enough; arbitrary table constants still need a data-selection circuit.',
       'Quantum read-only memory trades gate count against workspace.',
       'Free output lanes require liveness proof, not assertion.',
+    ],
+  },
+  {
+    id: 'netlists',
+    module: 'Compiler reality',
+    title: 'Primitive netlists and liveness',
+    icon: Binary,
+    intuition:
+      'A flat primitive netlist is the boring object that makes claims real: gate rows, wire operands, owners, intervals, and peak live count.',
+    whyItMatters:
+      'Every bug we found was a mismatch between an attractive boundary and the wires a real primitive circuit would have to keep alive.',
+    mentalModel:
+      'A netlist is a table of primitive rows. Liveness says when each wire value is born, when it dies, and which owner must have capacity for it.',
+    checkpoint: 'The best future engine is one source of truth that executes, counts, tests, and feeds proof inputs.',
+    coreIdeas: [
+      'Primitive rows are the countable object.',
+      'Live intervals determine peak qubits.',
+      'One engine should feed execution, tests, counts, and zero-knowledge proof (ZKP) input.',
     ],
   },
   {
