@@ -1304,6 +1304,30 @@ function PhaseEstimationStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule phase-terms-rule">
+        <div>
+          <h4>Name the moving pieces before the formula</h4>
+          <p>
+            Phase is the arrow angle information from the qubit lessons. A control
+            register is a bundle of qubits whose branches choose which operation power
+            is applied. A unitary is just a legal reversible gate or subroutine. QFT
+            means quantum Fourier transform; the inverse QFT is the gate network that
+            turns a regular angle rhythm into a readable label.
+          </p>
+          <p>
+            With those names, phase estimation says: write a regular angle pattern onto
+            control branches, then apply the inverse quantum Fourier transform to make
+            the matching label likely when measured.
+          </p>
+        </div>
+        <div className="phase-terms-grid" aria-hidden="true">
+          <span><b>phase</b><i>arrow angle</i></span>
+          <span><b>control register</b><i>branches choose powers</i></span>
+          <span><b>unitary U</b><i>legal reversible operation</i></span>
+          <span><b>inverse QFT</b><i>rhythm-to-label readout</i></span>
+        </div>
+      </article>
+
       <article className="story-rule eigenphase-rule">
         <div>
           <h4>The exact statement is an eigenphase</h4>
@@ -1512,6 +1536,26 @@ function EcdlpStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule search-vs-period-rule">
+        <div>
+          <h4>The quantum attack is not a private-key loop</h4>
+          <p>
+            A classical brute-force story would test candidate private keys one after
+            another. Shor-style discrete logarithm does something different: it prepares
+            labels, applies one reversible group operation coherently to every branch,
+            and uses Fourier readout to sample a hidden period direction.
+          </p>
+          <p>
+            That is why the repo studies a circuit for repeated controlled point
+            addition, not a circuit that compares guessed keys against the public key.
+          </p>
+        </div>
+        <div className="period-finding-contrast" aria-hidden="true">
+          <span><b>classical loop</b><i>try d, check dG</i></span>
+          <span><b>quantum period finding</b><i>query many labels coherently, sample structure</i></span>
+        </div>
+      </article>
+
       <article className="story-rule ecdlp-rule">
         <div>
           <h4>“Logarithm” means undoing repeated group addition</h4>
@@ -1620,22 +1664,22 @@ function EcdlpStoryPanel() {
         <div className="sample-key-bridge-card" aria-hidden="true">
           <span>
             <strong>Oracle label</strong>
-            <em><MathTex tex="a+bd" /></em>
+            <em>a + b*d</em>
           </span>
           <i />
           <span>
             <strong>Same-label move</strong>
-            <em><MathTex tex="(d,-1)" /></em>
+            <em>(d, -1)</em>
           </span>
           <i />
           <span>
             <strong>Fourier sample</strong>
-            <em><MathTex tex="(u,v)" /></em>
+            <em>(u, v)</em>
           </span>
           <i />
           <span>
             <strong>Solve</strong>
-            <em><MathTex tex="d=v\cdot u^{-1}\pmod n" /></em>
+            <em>d = v * inverse(u) mod n</em>
           </span>
         </div>
       </article>

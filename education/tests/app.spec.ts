@@ -386,6 +386,8 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await openLesson(page, 'phase-estimation');
 
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The problem is not “measure the answer directly”');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('Name the moving pieces before the formula');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('QFT means quantum Fourier transform');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The exact statement is an eigenphase');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Phase kickback moves the angle onto the control');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Controlled powers write a binary rhythm');
@@ -434,6 +436,8 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await openLesson(page, 'ecdlp');
 
   await expect(page.getByTestId('ecdlp-story')).toContainText('What is public, and what is hidden');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum attack is not a private-key loop');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('query many labels coherently');
   await expect(page.getByTestId('ecdlp-story')).toContainText('“Logarithm” means undoing repeated group addition');
   await expect(page.getByTestId('ecdlp-story')).toContainText('secp256k1 has two modular worlds');
   await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum oracle asks two-register questions');
@@ -442,7 +446,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('ecdlp-story')).toContainText('Same-label move');
   await expect(page.getByTestId('ecdlp-story')).toContainText('Fourier sample');
   await expect(page.getByTestId('ecdlp-story')).toContainText('Solve');
-  await expect(page.getByTestId('ecdlp-story').locator('xpath=.//*[@data-tex="d=v\\cdot u^{-1}\\pmod n"]')).toBeVisible();
+  await expect(page.getByTestId('ecdlp-story').locator('xpath=.//*[@data-tex="d\\equiv v u^{-1}\\pmod n"]')).toBeVisible();
   await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
   await expect(page.getByTestId('ecdlp-story')).toContainText('The attack chain to keep in order');
   await expect(page.getByTestId('ecdlp-story')).toContainText('fixed dependency order');

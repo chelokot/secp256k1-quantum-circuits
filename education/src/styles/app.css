@@ -2157,11 +2157,44 @@ code {
 }
 
 .eigenphase-rule,
+.phase-terms-rule,
 .phase-kickback-rule,
 .phase-powers-rule,
 .fourier-readout-rule,
 .phase-approx-rule {
   border-color: rgba(245, 207, 107, 0.22);
+}
+
+.phase-terms-grid,
+.period-finding-contrast {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.phase-terms-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.phase-terms-grid span,
+.period-finding-contrast span {
+  display: grid;
+  gap: 0.22rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.62rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.phase-terms-grid b,
+.period-finding-contrast b {
+  color: #ffffff;
+}
+
+.phase-terms-grid i,
+.period-finding-contrast i {
+  color: #b4c4d6;
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .code-parameter-card,
@@ -2387,10 +2420,25 @@ code {
 }
 
 .ecdlp-rule,
+.search-vs-period-rule,
 .secp-domain-rule,
 .oracle-shape-rule,
 .sample-to-key-rule {
   border-color: rgba(99, 230, 190, 0.2);
+}
+
+.sample-to-key-rule {
+  align-items: start;
+}
+
+.period-finding-contrast span:first-child {
+  border-color: rgba(143, 182, 255, 0.18);
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.period-finding-contrast span:last-child {
+  border-color: rgba(99, 230, 190, 0.24);
+  background: rgba(99, 230, 190, 0.07);
 }
 
 .repeated-add-sketch {
@@ -8690,6 +8738,8 @@ legend {
   .story-motion-grid,
   .story-rule,
   .gate-category-grid,
+  .phase-terms-grid,
+  .period-finding-contrast,
   .arithmetic-magic-ledger,
   .logical-resource-receipt,
   .layer-question-grid,
@@ -8938,6 +8988,8 @@ legend {
   .story-motion-grid,
   .story-rule,
   .gate-category-grid,
+  .phase-terms-grid,
+  .period-finding-contrast,
   .arithmetic-magic-ledger,
   .logical-resource-receipt,
   .layer-question-grid,
