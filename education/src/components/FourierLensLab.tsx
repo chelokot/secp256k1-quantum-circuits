@@ -41,6 +41,8 @@ export function FourierLensLab() {
   const selectedSum = useMemo(() => vectorSumFor(frequency, candidateOutput), [candidateOutput, frequency]);
   const selectedLength = abs(selectedSum);
   const peak = bars.reduce((best, row) => (row.weight > best.weight ? row : best), bars[0]);
+  const candidateGap = Math.min(Math.abs(frequency - candidateOutput), sampleCount - Math.abs(frequency - candidateOutput));
+  const candidateStatus = candidateGap === 0 ? 'candidate matches hidden rhythm' : `candidate misses by ${candidateGap}/16`;
   const arrowScale = d3.scaleLinear([0, sampleCount], [0, 92]);
   const phaseArrows = Array.from({ length: sampleCount }, (_, index) => {
     const angle = (2 * Math.PI * (frequency - candidateOutput) * index) / sampleCount;
@@ -87,6 +89,28 @@ export function FourierLensLab() {
           />
         </label>
       </div>
+      <section className="candidate-score-strip" aria-label="Fourier candidate score">
+        <article>
+          <span>Hidden rhythm</span>
+          <strong>{formatBinary(frequency)}</strong>
+          <p>The circuit does not print this value directly; it writes it as rotating phase.</p>
+        </article>
+        <article>
+          <span>Selected candidate</span>
+          <strong>{formatBinary(candidateOutput)}</strong>
+          <p>{candidateStatus}</p>
+        </article>
+        <article>
+          <span>Alignment score</span>
+          <strong>{selectedLength.toFixed(0)}/16</strong>
+          <p>Full alignment survives as a measurement peak; spread arrows cancel.</p>
+        </article>
+        <article>
+          <span>Winning output</span>
+          <strong>{formatBinary(peak.candidate)}</strong>
+          <p>The full distribution is the same scoring loop for every candidate.</p>
+        </article>
+      </section>
 
       <div className="fourier-grid">
         <article>

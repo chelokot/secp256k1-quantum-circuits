@@ -342,19 +342,31 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await expect(page.getByTestId('lab-route')).toContainText('Phase estimation lens');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('Hidden phase');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('Current readout');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('State written by controls');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('try every 4-bit label');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('alignment wins');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('winner 0011');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('largest measurement peak');
   await page.getByTestId('phase-estimation-lab').getByRole('slider').fill('5');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('5/16 maps to 0101');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('winner 0101');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('0101');
 
   await selectRouteLab(page, /Fourier lens/);
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('Fourier lens lab');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('Hidden rhythm');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('Selected candidate');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('candidate matches hidden rhythm');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('Alignment score');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('Winning output');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('peak: 0011 with 100%');
   await page.getByLabel('Fourier hidden frequency').fill('5');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('peak: 0101 with 100%');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('candidate misses by 2/16');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 0/16');
   await page.getByLabel('Fourier candidate output').fill('5');
+  await expect(page.getByTestId('fourier-lens-lab')).toContainText('candidate matches hidden rhythm');
   await expect(page.getByTestId('fourier-lens-lab')).toContainText('vector sum length 16/16');
 
   await openLesson(page, 'ecdlp');

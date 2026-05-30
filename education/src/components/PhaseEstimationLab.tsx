@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Sigma } from 'lucide-react';
+import { MathTex } from './MathText';
 
 const formatBinary = (value: number, bits: number) => value.toString(2).padStart(bits, '0');
 
@@ -81,6 +82,28 @@ export function PhaseEstimationLab() {
           This page isolates the readout shell before adding curve arithmetic.
         </p>
       </div>
+      <section className="matched-filter-ledger" aria-label="Inverse QFT matched-filter ledger">
+        <article>
+          <span>State written by controls</span>
+          <strong>phase rhythm {phaseNumerator}/16</strong>
+          <p>Controlled powers create a different rotation on each control bit.</p>
+        </article>
+        <article>
+          <span>Readout test</span>
+          <strong>try every 4-bit label</strong>
+          <p>The inverse QFT behaves like a bank of rhythm matchers.</p>
+        </article>
+        <article>
+          <span>Scoring rule</span>
+          <strong>alignment wins</strong>
+          <p><MathTex tex="\theta-y/16=0" /> makes arrows line up instead of cancel.</p>
+        </article>
+        <article>
+          <span>Published sample</span>
+          <strong>winner {measuredBits}</strong>
+          <p>The tallest bar is the label that best matches the hidden phase.</p>
+        </article>
+      </section>
       <div className="qft-bars" aria-label="Inverse QFT measurement distribution">
         {bars.map((bar) => (
           <div className="qft-column" key={bar.value}>

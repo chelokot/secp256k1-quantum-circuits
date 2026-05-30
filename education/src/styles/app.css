@@ -4237,6 +4237,56 @@ code {
   gap: 0.75rem;
 }
 
+.matched-filter-ledger,
+.candidate-score-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.matched-filter-ledger article,
+.candidate-score-strip article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.matched-filter-ledger span,
+.candidate-score-strip span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.matched-filter-ledger strong,
+.candidate-score-strip strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.matched-filter-ledger p,
+.candidate-score-strip p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.matched-filter-ledger .math-tex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: bottom;
+}
+
 .fourier-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -7604,6 +7654,8 @@ legend {
   .tradeoff-controls,
   .tradeoff-grid,
   .fourier-controls,
+  .matched-filter-ledger,
+  .candidate-score-strip,
   .fourier-grid,
   .state-vector-grid,
   .magic-status-grid,
@@ -7795,6 +7847,8 @@ legend {
   .tradeoff-controls,
   .tradeoff-grid,
   .fourier-controls,
+  .matched-filter-ledger,
+  .candidate-score-strip,
   .fourier-grid,
   .state-vector-grid,
   .magic-status-grid,
