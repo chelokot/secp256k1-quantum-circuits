@@ -2,13 +2,15 @@ import { useMemo, useState } from 'react';
 import { CircuitBoard, Plus, RotateCcw } from 'lucide-react';
 
 type GateKind = 'H' | 'X' | 'CX' | 'CCX' | 'M';
+type WireName = 'q0' | 'q1' | 'q2';
 
-const gateCost: Record<GateKind, { nonClifford: number; qubitsTouched: number; label: string; operands: string; effect: string }> = {
-  H: { nonClifford: 0, qubitsTouched: 1, label: 'Hadamard', operands: 'q0', effect: 'creates a 0/1 amplitude split' },
-  X: { nonClifford: 0, qubitsTouched: 1, label: 'Bit flip', operands: 'q2', effect: 'flips one target wire' },
-  CX: { nonClifford: 0, qubitsTouched: 2, label: 'Controlled X', operands: 'q0 -> q1', effect: 'target changes only under control' },
-  CCX: { nonClifford: 1, qubitsTouched: 3, label: 'Toffoli-like', operands: 'q0,q1 -> q2', effect: 'expensive controlled product' },
-  M: { nonClifford: 0, qubitsTouched: 1, label: 'Measure', operands: 'q2', effect: 'reads one output wire' },
+const wireNames: WireName[] = ['q0', 'q1', 'q2'];
+const gateCost: Record<GateKind, { nonClifford: number; qubitsTouched: number; label: string; operands: string; wires: WireName[]; effect: string }> = {
+  H: { nonClifford: 0, qubitsTouched: 1, label: 'Hadamard', operands: 'q0', wires: ['q0'], effect: 'creates a 0/1 amplitude split' },
+  X: { nonClifford: 0, qubitsTouched: 1, label: 'Bit flip', operands: 'q2', wires: ['q2'], effect: 'flips one target wire' },
+  CX: { nonClifford: 0, qubitsTouched: 2, label: 'Controlled X', operands: 'q0 -> q1', wires: ['q0', 'q1'], effect: 'target changes only under control' },
+  CCX: { nonClifford: 1, qubitsTouched: 3, label: 'Toffoli-like', operands: 'q0,q1 -> q2', wires: ['q0', 'q1', 'q2'], effect: 'expensive controlled product' },
+  M: { nonClifford: 0, qubitsTouched: 1, label: 'Measure', operands: 'q2', wires: ['q2'], effect: 'reads one output wire' },
 };
 
 export function CircuitBuilder() {
@@ -22,6 +24,17 @@ export function CircuitBuilder() {
       { nonClifford: 0, maxTouched: 0 },
     );
   }, [gates]);
+  const wireLedger = useMemo(() => wireNames.map((wire) => {
+    const rows = gates
+      .map((gate, index) => ({ gate, row: index + 1 }))
+      .filter((item) => gateCost[item.gate].wires.includes(wire));
+
+    return {
+      wire,
+      role: wire === 'q2' ? 'target/output lane' : 'source/control lane',
+      rows: rows.map((item) => item.row),
+    };
+  }), [gates]);
 
   return (
     <article className="lab-panel" data-testid="circuit-builder">
@@ -94,6 +107,16 @@ export function CircuitBuilder() {
           </div>
         ))}
       </div>
+      <section className="wire-ledger" aria-label="Wire ledger derived from selected rows">
+        <h4>Wire ledger</h4>
+        {wireLedger.map((wire) => (
+          <article key={wire.wire}>
+            <strong>{wire.wire}</strong>
+            <span>{wire.role}</span>
+            <p>{wire.rows.length === 0 ? 'not touched yet' : `touched by rows ${wire.rows.join(', ')}`}</p>
+          </article>
+        ))}
+      </section>
       <dl className="metric-row">
         <div><dt>Rows</dt><dd>{gates.length}</dd></div>
         <div><dt>Non-Clifford</dt><dd>{totals.nonClifford}</dd></div>

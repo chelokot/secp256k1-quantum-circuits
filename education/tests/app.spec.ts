@@ -292,6 +292,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('gates-story')).toContainText('Measurement is different');
   await expect(page.getByTestId('gates-story')).toContainText('A control is a branch condition');
   await expect(page.getByTestId('gates-story')).toContainText('A row is a small contract');
+  await expect(page.getByTestId('gates-story')).toContainText('A scratch wire has a lifecycle, not a scope');
+  await expect(page.getByTestId('gates-story')).toContainText('birth');
+  await expect(page.getByTestId('gates-story')).toContainText('death');
   await expect(page.getByTestId('gates-story')).toContainText('Wire');
   await expect(page.getByTestId('gates-story')).toContainText('Controlled gate');
   await expect(page.getByTestId('gates-story')).toContainText('Why cleanup is not optional');
@@ -300,6 +303,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('circuit-builder')).toContainText('the row table is the countable object');
   await expect(page.getByTestId('circuit-builder')).toContainText('q0,q1 -> q2');
   await expect(page.getByTestId('circuit-builder')).toContainText('expensive controlled product');
+  await expect(page.getByTestId('circuit-builder')).toContainText('Wire ledger');
+  await expect(page.getByTestId('circuit-builder')).toContainText('q2');
+  await expect(page.getByTestId('circuit-builder')).toContainText('target/output lane');
   await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX' }).click();
   await expect(page.getByTestId('circuit-builder')).toContainText('Non-Clifford');
   await expect(page.getByTestId('circuit-builder')).toContainText('2');

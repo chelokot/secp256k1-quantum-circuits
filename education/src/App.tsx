@@ -3247,6 +3247,25 @@ function GatesStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule scratch-lifecycle-rule">
+        <div>
+          <h4>A scratch wire has a lifecycle, not a scope</h4>
+          <p>
+            In ordinary code a temporary variable can disappear when the block ends.
+            In a quantum row stream the value is still physical until the circuit
+            explicitly returns it to <MathTex tex="|0\rangle" /> or declares it as an
+            output. The liveness engine therefore needs a birth row, every use, a valid
+            cleanup row, and the row where the value stops being live.
+          </p>
+        </div>
+        <div className="scratch-lifecycle-card" aria-hidden="true">
+          <span><b>birth</b><i>compute scratch</i></span>
+          <span><b>use</b><i>control useful update</i></span>
+          <span><b>cleanup</b><i>run inverse with same sources</i></span>
+          <span><b>death</b><i>scratch is |0&gt;</i></span>
+        </div>
+      </article>
+
       <div className="wire-timeline-panel" aria-label="Wire timeline sketch">
         <div className="wire-labels">
           <span>q0 control</span>

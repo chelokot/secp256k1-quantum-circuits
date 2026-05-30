@@ -2584,6 +2584,7 @@ code {
 .circuit-reading-rule,
 .control-branch-rule,
 .row-contract-rule,
+.scratch-lifecycle-rule,
 .lowering-boundary-rule,
 .schedule-liveness-rule,
 .row-branch-rule,
@@ -3145,6 +3146,33 @@ code {
 
 .wire-timelines b.clean {
   background: #8fb6ff;
+}
+
+.scratch-lifecycle-card {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.scratch-lifecycle-card span {
+  display: grid;
+  gap: 0.25rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.scratch-lifecycle-card b {
+  color: #63e6be;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+}
+
+.scratch-lifecycle-card i {
+  color: #dce7f2;
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .cleanup-rule {
@@ -3816,6 +3844,48 @@ code {
 
 .netlist-row strong {
   color: #ffffff;
+}
+
+.wire-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.wire-ledger h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.wire-ledger article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.05);
+}
+
+.wire-ledger strong,
+.wire-ledger span {
+  display: block;
+}
+
+.wire-ledger strong {
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.wire-ledger span {
+  margin-top: 0.25rem;
+  color: #63e6be;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.wire-ledger p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
 }
 
 .metric-row {
@@ -6898,6 +6968,7 @@ legend {
   .source-of-truth-strip,
   .mini-engine-flow-strip,
   .optimization-gate-strip,
+  .scratch-lifecycle-card,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -6907,6 +6978,7 @@ legend {
   .gate-palette-panel,
   .pattern-lab-grid,
   .one-qubit-mission-grid,
+  .scratch-lifecycle-card,
   .two-qubit-primer,
   .two-qubit-schemes,
   .two-qubit-mission-grid,
@@ -6925,6 +6997,7 @@ legend {
   .physical-controls,
   .physical-grid,
   .physical-stack,
+  .wire-ledger,
   .error-code-grid,
   .error-code-summary,
   .promotion-steps,
@@ -7071,6 +7144,7 @@ legend {
   .source-of-truth-strip,
   .mini-engine-flow-strip,
   .optimization-gate-strip,
+  .scratch-lifecycle-card,
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
@@ -7080,6 +7154,7 @@ legend {
   .gate-palette-panel,
   .pattern-lab-grid,
   .one-qubit-mission-grid,
+  .scratch-lifecycle-card,
   .two-qubit-primer,
   .two-qubit-schemes,
   .two-qubit-mission-grid,
@@ -7097,6 +7172,7 @@ legend {
   .physical-controls,
   .physical-grid,
   .physical-stack,
+  .wire-ledger,
   .error-code-grid,
   .error-code-summary,
   .promotion-steps,

@@ -127,6 +127,7 @@ export const lessons: CourseLesson[] = [
       'Wire = named quantum storage across time.',
       'Gate row = one transformation applied to specific wires.',
       'Cleanup = inverse work that removes temporary garbage.',
+      'Scratch lifetime ends only at proven cleanup or declared output.',
     ],
   },
   {
