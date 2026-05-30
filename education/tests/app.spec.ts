@@ -889,6 +889,10 @@ test('maps checked artifacts to audit questions and claim limits', async ({ page
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Artifact atlas');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('current_baseline_status.json');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Gate blocked with 5 required rows');
+  await page.getByTestId('artifact-atlas-lab').getByRole('button', { name: /Zero-lift guard capacity/ }).click();
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('zero_lift_guard_resource_audit.json');
+  await expect(page.getByTestId('artifact-atlas-lab')).toContainText('Gate row guard corrected no alias capacity promoted into liveness: blocked');
+  await expect(page.getByTestId('artifact-atlas-lab')).not.toContainText('Guard promotion row is absent');
   await page.getByTestId('artifact-atlas-lab').getByRole('button', { name: /Point-add equivalence/ }).click();
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('streamed_lookup_tail_leaf_equivalence.json');
   await expect(page.getByTestId('artifact-atlas-lab')).toContainText('80/80 checked cases pass');

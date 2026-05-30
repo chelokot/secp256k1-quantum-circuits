@@ -83,7 +83,7 @@ const atlasEntries: AtlasEntry[] = [
     proves: 'The one-bit guard owner does not cover the 255-bit standard clean-ladder predicate workspace.',
     doesNotProve: 'That no alias/no-ancilla construction exists; it only records that none is promoted.',
     liveSignal: (projectData) => {
-      const row = projectData.acceptedBaselineGate.rows.find((item) => item.name === 'guard_corrected_2222_promoted_into_liveness');
+      const row = projectData.acceptedBaselineGate.rows.find((item) => item.name === 'guard_corrected_no_alias_capacity_promoted_into_liveness');
       return row ? `Gate row ${readable(row.name)}: ${row.pass ? 'pass' : 'blocked'}.` : 'Guard promotion row is absent.';
     },
   },
