@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
+import { blockerLabel, blockerSummary } from '../content/blockerCopy';
 
 type Blocker = {
   name: string;
@@ -19,8 +20,6 @@ type ProjectData = {
 };
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
-
-const blockerLabel = (name: string) => name.replaceAll('_', ' ');
 
 export function BaselinePromotionLab({ projectData }: { projectData: ProjectData }) {
   const [closedBlockers, setClosedBlockers] = useState<Set<string>>(() => new Set());
@@ -105,7 +104,10 @@ export function BaselinePromotionLab({ projectData }: { projectData: ProjectData
                   }}
                   type="checkbox"
                 />
-                <span>{blockerLabel(blocker.name)}</span>
+                <span>
+                  <strong>{blockerLabel(blocker.name)}</strong>
+                  <em>{blockerSummary(blocker.name)}</em>
+                </span>
               </label>
             ))}
           </div>

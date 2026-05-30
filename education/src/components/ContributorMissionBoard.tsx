@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ClipboardList } from 'lucide-react';
+import { blockerLabel, blockerSummary } from '../content/blockerCopy';
 
 type ProjectData = {
   activeBlockers: Array<{ name: string; status: string }>;
@@ -45,8 +46,6 @@ const missions: Mission[] = [
   },
 ];
 
-const readable = (value: string) => value.replaceAll('_', ' ');
-
 export function ContributorMissionBoard({ projectData }: { projectData: ProjectData }) {
   const [selectedMissionId, setSelectedMissionId] = useState('primitive-lowering');
   const [checkedItems, setCheckedItems] = useState<Set<string>>(() => new Set());
@@ -68,8 +67,8 @@ export function ContributorMissionBoard({ projectData }: { projectData: ProjectD
         <h3>Contributor mission board</h3>
       </div>
       <p>
-        The course target is useful contribution. Pick a mission, then check the evidence habits
-        needed before a patch or review comment should be trusted.
+        A useful patch behaves like a reviewable claim: it names the object, says what
+        evidence changed, and keeps the public wording at the level that evidence proves.
       </p>
 
       <div className="mission-board-grid">
@@ -124,10 +123,15 @@ export function ContributorMissionBoard({ projectData }: { projectData: ProjectD
       </div>
 
       <div className="mission-blocker-strip">
-        <strong>Current repo blockers to respect</strong>
-        {projectData.activeBlockers.map((blocker) => (
-          <span key={blocker.name}>{readable(blocker.name)}</span>
-        ))}
+        <strong>Open blockers to respect</strong>
+        <ul>
+          {projectData.activeBlockers.map((blocker) => (
+            <li key={blocker.name}>
+              <span>{blockerLabel(blocker.name)}</span>
+              <em>{blockerSummary(blocker.name)}</em>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

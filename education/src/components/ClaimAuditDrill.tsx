@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { ClipboardCheck } from 'lucide-react';
+import { blockerLabel } from '../content/blockerCopy';
 
 type ProjectData = {
   activeBlockers: Array<{ name: string }>;
@@ -24,13 +25,12 @@ type Claim = {
   explanation: string;
 };
 
-const readable = (value: string) => value.replaceAll('_', ' ');
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
 function buildClaims(projectData: ProjectData): Claim[] {
   const strict = projectData.currentStrictCandidate;
   const guard = projectData.guardCorrectedNoAliasCandidate;
-  const blockerText = projectData.activeBlockers.map((blocker) => readable(blocker.name)).join(', ');
+  const blockerText = projectData.activeBlockers.map((blocker) => blockerLabel(blocker.name)).join(', ');
 
   return [
     {

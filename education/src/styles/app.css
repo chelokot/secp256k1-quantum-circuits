@@ -3152,6 +3152,7 @@ code {
 .mini-row-card em,
 .engine-blocker-list span,
 .engine-blocker-list strong,
+.engine-blocker-list em,
 .mini-lifecycle-compare span,
 .mini-lifecycle-compare strong,
 .optimization-candidate-strip span,
@@ -3197,7 +3198,15 @@ code {
 
 .engine-blocker-list strong {
   margin-top: 0.25rem;
-  color: #ffb4b4;
+  color: #dce7f2;
+  overflow-wrap: anywhere;
+}
+
+.engine-blocker-list em {
+  margin-top: 0.35rem;
+  color: #ffcf85;
+  font-size: 0.82rem;
+  font-style: normal;
   overflow-wrap: anywhere;
 }
 
@@ -3207,6 +3216,21 @@ code {
   gap: 0.9rem;
   align-items: center;
   border-color: rgba(245, 207, 107, 0.22);
+}
+
+.mission-packet-rule,
+.baseline-gate-rule {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.baseline-status-rule {
+  align-items: start;
+}
+
+.mission-packet-rule .engine-blocker-list,
+.baseline-gate-rule .engine-blocker-list {
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
 }
 
 .story-rule > *,
@@ -5612,22 +5636,41 @@ code {
   color: #dce7f2;
 }
 
-.mission-blocker-strip {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  align-items: center;
-}
-
 .mission-blocker-strip strong {
   color: #ffffff;
 }
 
-.mission-blocker-strip span {
-  border-radius: 999rem;
-  padding: 0.25rem 0.55rem;
-  background: rgba(255, 112, 112, 0.12);
-  color: #ffd0d0;
+.mission-blocker-strip ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mission-blocker-strip li {
+  border: 0.0625rem solid rgba(255, 207, 133, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 207, 133, 0.06);
+}
+
+.mission-blocker-strip li span,
+.mission-blocker-strip li em {
+  display: block;
+}
+
+.mission-blocker-strip li span {
+  color: #ffdca0;
+  font-weight: 750;
+}
+
+.mission-blocker-strip li em {
+  margin-top: 0.35rem;
+  color: #b4c4d6;
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .coverage-summary {
@@ -5724,6 +5767,27 @@ code {
   display: grid;
   gap: 0.65rem;
   margin: 0.75rem 0 1rem;
+}
+
+.blocker-switches label {
+  align-items: flex-start;
+}
+
+.blocker-switches label span,
+.blocker-switches label strong,
+.blocker-switches label em {
+  display: block;
+}
+
+.blocker-switches label strong {
+  color: #ffffff;
+}
+
+.blocker-switches label em {
+  margin-top: 0.2rem;
+  color: #93a4b7;
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .metric-pair {

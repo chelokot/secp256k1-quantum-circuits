@@ -832,14 +832,16 @@ test('keeps accepted-baseline promotion behind all blockers', async ({ page }) =
   await expect(page.getByTestId('repo-baseline-story')).toContainText('Current numbers and their claim level');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('“None yet” is a claim about evidence');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('blocked by 5 gate rows');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('Single primitive stream');
+  await expect(page.getByTestId('repo-baseline-story')).not.toContainText('single_authoritative_primitive_stream');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('How the README should eventually get its numbers');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('none yet');
   await selectRouteLab(page, /Promotion audit/);
 
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
-  await page.getByLabel('Close zero lift guard capacity not promoted').check();
-  await page.getByLabel('Close modular accumulator source uncompute not promoted').check();
-  await page.getByLabel('Close modular arithmetic clifford expansion not flattened').check();
+  await page.getByLabel('Close Zero-lift guard capacity').check();
+  await page.getByLabel('Close Modular accumulator cleanup').check();
+  await page.getByLabel('Close Full arithmetic primitive expansion').check();
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: accepted-baseline ready');
   await page.getByLabel('Use guard-corrected qubit count').uncheck();
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
@@ -850,6 +852,8 @@ test('trains claim classification before publishing resource numbers', async ({ 
 
   await expect(page.getByTestId('contribution-story')).toContainText('A useful patch is a small claim plus evidence');
   await expect(page.getByTestId('contribution-story')).toContainText('The open blockers define useful work');
+  await expect(page.getByTestId('contribution-story')).toContainText('Zero-lift guard capacity');
+  await expect(page.getByTestId('contribution-story')).not.toContainText('zero_lift_guard_capacity_not_promoted');
   await expect(page.getByTestId('contribution-story')).toContainText('Choose the smallest claim');
   await expect(page.getByTestId('contribution-story')).toContainText('The contributor loop');
   await expect(page.getByTestId('contribution-story')).toContainText('choose one blocker');
@@ -884,7 +888,9 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
   await page.getByLabel('Complete mission item assign counted owner').check();
   await page.getByLabel('Complete mission item prove cleanup or output ownership').check();
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: yes (4/4)');
-  await expect(page.getByTestId('contributor-mission-board')).toContainText('modular accumulator source uncompute not promoted');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Modular accumulator cleanup');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Partial-product consume and source-uncompute rows');
+  await expect(page.getByTestId('contributor-mission-board')).not.toContainText('modular_accumulator_source_uncompute_not_promoted');
 });
 
 test('maps original education requirements to concrete course coverage', async ({ page }) => {

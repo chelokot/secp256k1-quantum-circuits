@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { ArrowLeft, ArrowRight, BookOpen, CheckCircle2, Circle, GitBranch, ListChecks, RotateCcw } from 'lucide-react';
 import projectData from './generated/project-data.json';
 import { lessons, glossary, quiz, type LessonId } from './content/course';
+import { blockerLabel, blockerStatusLabel, blockerSummary } from './content/blockerCopy';
 import { BaselineChart } from './components/BaselineChart';
 import { BlochPlayground } from './components/BlochPlayground';
 import { StateVectorLab } from './components/StateVectorLab';
@@ -3229,8 +3230,9 @@ function ContributionStoryPanel({ data }: { data: typeof projectData }) {
         <div className="engine-blocker-list">
           {blockers.map((blocker) => (
             <div key={blocker.name}>
-              <span>{blocker.name}</span>
-              <strong>{blocker.status}</strong>
+              <span>{blockerLabel(blocker.name)}</span>
+              <strong>{blockerSummary(blocker.name)}</strong>
+              <em>{blockerStatusLabel(blocker.status)}</em>
             </div>
           ))}
         </div>
@@ -3329,8 +3331,9 @@ function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
         <div className="engine-blocker-list">
           {blockedRows.slice(0, 5).map((row) => (
             <div key={row.name}>
-              <span>{readableStatus(row.name)}</span>
-              <strong>{readableStatus(row.status)}</strong>
+              <span>{blockerLabel(row.name)}</span>
+              <strong>{blockerSummary(row.name)}</strong>
+              <em>{blockerStatusLabel(row.status)}</em>
             </div>
           ))}
         </div>
