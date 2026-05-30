@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Binary, Wand2 } from 'lucide-react';
+import { MathTex } from './MathText';
 
 type Complex = {
   re: number;
@@ -178,7 +179,8 @@ export function StateVectorLab() {
   const trace = useMemo(() => (parsed.errors.length === 0 ? buildTrace(parsed.gates) : []), [parsed]);
   const probabilities = state.map(abs2);
   const separabilityDeterminant = sub(mul(state[0], state[3]), mul(state[1], state[2]));
-  const entangled = Math.sqrt(abs2(separabilityDeterminant)) > 0.01;
+  const determinantMagnitude = Math.sqrt(abs2(separabilityDeterminant));
+  const entangled = determinantMagnitude > 0.01;
   const missions = [
     {
       label: 'Product split',
@@ -213,9 +215,28 @@ export function StateVectorLab() {
         <button type="button" onClick={() => setProgram(examples.entangleThenFlip)}>Entangle + flip</button>
       </div>
       <p>
-        Program lines use compact circuit names: H means Hadamard, X means bit flip,
-        Z means phase flip, and CX means controlled-X.
+        The editor uses a tiny circuit language. Each line applies one reversible
+        operation to the current four-amplitude table, then the trace below shows the
+        new live branches.
       </p>
+      <section className="gate-vocabulary-grid" aria-label="Two-qubit program vocabulary">
+        <article>
+          <strong>H q0</strong>
+          <p>Hadamard on q0: split or recombine the q0 side of the joint table.</p>
+        </article>
+        <article>
+          <strong>X q1</strong>
+          <p>Bit flip on q1: swap labels where q1 is 0 with labels where q1 is 1.</p>
+        </article>
+        <article>
+          <strong>Z q0</strong>
+          <p>Phase flip on q0: change the sign of branches whose q0 label is 1.</p>
+        </article>
+        <article>
+          <strong>CX q0 q1</strong>
+          <p>Controlled-X: use q0 as control; it permutes labels by flipping q1 only on q0 = 1 branches.</p>
+        </article>
+      </section>
       <section className="two-qubit-primer" aria-label="Two-qubit state primer">
         <article>
           <strong>Two qubits, four labels</strong>
@@ -269,6 +290,12 @@ export function StateVectorLab() {
           where the control is 1, apply a bit flip to the target qubit. On branches
           where the control is 0, leave the target alone.
         </p>
+        <div className="cx-branch-map" role="table" aria-label="Controlled-X branch map">
+          <div role="row"><span>|00&gt;</span><strong>|00&gt;</strong></div>
+          <div role="row"><span>|01&gt;</span><strong>|01&gt;</strong></div>
+          <div role="row"><span>|10&gt;</span><strong>|11&gt;</strong></div>
+          <div role="row"><span>|11&gt;</span><strong>|10&gt;</strong></div>
+        </div>
         <p className="mono-line">CX q0 q1 = control q0, bit-flip target q1 only when q0 is 1</p>
       </section>
       <section className="two-qubit-mission-grid" aria-label="Two-qubit verified missions">
@@ -321,6 +348,19 @@ export function StateVectorLab() {
               </div>
             ))}
           </div>
+          <section className="separability-check" aria-label="Separability check">
+            <div>
+              <strong>Product-state test</strong>
+              <MathTex tex="a_{00}a_{11}-a_{01}a_{10}=0" />
+            </div>
+            <p>
+              Zero means the four-amplitude table can factor into two separate
+              one-qubit states. Nonzero means the state is entangled.
+            </p>
+            <span>
+              current determinant magnitude {determinantMagnitude.toFixed(2)}: {entangled ? 'entangled' : 'product'}
+            </span>
+          </section>
         </>
       )}
       <p>

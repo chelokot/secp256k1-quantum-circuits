@@ -650,7 +650,7 @@ function TwoQubitStoryPanel() {
         </div>
         <div className="product-factor" aria-hidden="true">
           <MathTex displayMode tex="\begin{bmatrix}a_0\\a_1\end{bmatrix}\otimes\begin{bmatrix}b_0\\b_1\end{bmatrix}=\begin{bmatrix}a_0b_0\\a_0b_1\\a_1b_0\\a_1b_1\end{bmatrix}" />
-          <span>four amplitudes, but generated from two private one-qubit states</span>
+          <span>four amplitudes, but generated from two separate one-qubit states</span>
         </div>
       </article>
 
@@ -715,8 +715,8 @@ function TwoQubitStoryPanel() {
         <article>
           <h4>Entangled pattern</h4>
           <p>
-            A Bell pair has only 00 and 11 branches. No pair of private one-qubit
-            states can reproduce exactly that table.
+            A Bell pair has only 00 and 11 branches. No pair of separate one-qubit
+            descriptions can reproduce exactly that table.
           </p>
           <div className="state-table-grid bell-grid" aria-hidden="true">
             <span>00</span>

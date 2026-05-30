@@ -240,8 +240,13 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('two-qubit-story')).toContainText('Sometimes two wires are still independent');
   await expect(page.getByTestId('two-qubit-story')).toContainText('Controlled-X is not a measurement');
   await expect(page.getByTestId('two-qubit-story')).toContainText('How the Bell pair is born');
-  await expect(page.getByTestId('two-qubit-story')).toContainText('No pair of private one-qubit states');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('No pair of separate one-qubit descriptions');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Each line applies one reversible operation');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('H q0');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Hadamard on q0');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('CX q0 q1');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('permutes labels');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Two qubits, four labels');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Product state');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled state');
@@ -254,11 +259,14 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('Cancel to |10>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Controlled-X');
   await expect(page.getByTestId('state-vector-lab')).toContainText('control q0, bit-flip target q1 only when q0 is 1');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('|10>|11>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Execution trace');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Hadamard mixes the 0 and 1 branches of q0');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Controlled-X flips q1 only on branches where q0 is 1');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled');
   await expect(page.getByTestId('state-vector-lab')).toContainText('yes');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Product-state test');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('current determinant magnitude 0.50: entangled');
   await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('50%');
   await page.getByTestId('state-vector-lab').getByRole('button', { name: 'Interference' }).click();
@@ -266,6 +274,7 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('0%');
   await expect(page.getByTestId('state-vector-lab')).toContainText('|10>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('100%');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('current determinant magnitude 0.00: product');
 
   await openLesson(page, 'clifford');
   await expect(page.getByTestId('clifford-story')).toContainText('Why there is a second cost axis');
