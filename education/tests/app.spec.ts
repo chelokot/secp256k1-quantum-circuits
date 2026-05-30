@@ -876,10 +876,16 @@ test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Death row');
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('The same source controls x,y must rebuild and erase A');
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Reading another output does not erase scratch A');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Cleanup proof packet');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('x,y still live');
   await page.getByRole('button', { name: /uncompute A with same x,y/ }).click();
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: pass');
   await expect(page.getByTestId('cleanup-puzzle-lab').locator('.cleanup-ledger article').nth(2)).toContainText('present');
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('scratch returns to |0>');
+  await page.getByRole('button', { name: /overwrite x before cleanup/ }).click();
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: fail');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('cleanup label exists, but x changed before the inverse');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('label only');
 });
 
 test('shows partial-product lowering pressure', async ({ page }) => {

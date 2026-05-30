@@ -295,6 +295,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Temporary value = live quantum state.',
       'Cleanup = inverse path with the same sources.',
+      'A cleanup row is only valid while those source controls are still available.',
       'Cleanup timing can keep source wires live and change the peak.',
       'No cleanup means garbage still counts or breaks semantics.',
     ],

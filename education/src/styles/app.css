@@ -6529,9 +6529,27 @@ code {
   font-size: 0.82rem;
 }
 
+.cleanup-step em {
+  grid-column: 2;
+  color: #b7c3d0;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.8rem;
+  font-style: normal;
+}
+
 .cleanup-step.selected {
   border-color: #63e6be;
   background: rgba(99, 230, 190, 0.12);
+}
+
+.cleanup-step.hazard {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.cleanup-step.selected.hazard {
+  border-color: #ff7070;
+  background: rgba(255, 112, 112, 0.12);
 }
 
 .cleanup-wire {
@@ -6558,6 +6576,53 @@ code {
 .cleanup-wire .wire-clean {
   border-color: #63e6be;
   color: #b8f3e6;
+}
+
+.cleanup-proof-packet {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.cleanup-proof-packet h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.cleanup-proof-packet article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.cleanup-proof-packet span,
+.cleanup-proof-packet strong {
+  display: block;
+}
+
+.cleanup-proof-packet span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.cleanup-proof-packet strong {
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
+.cleanup-proof-packet p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .partial-grid {
@@ -9934,6 +9999,7 @@ legend {
   .dsl-row-receipt dl,
   .dsl-live-summary,
   .cleanup-ledger,
+  .cleanup-proof-packet,
   .product-obligation-ledger,
   .owner-peak-witness,
   .cleanup-wire,
@@ -10209,6 +10275,7 @@ legend {
   .dsl-row-receipt dl,
   .dsl-live-summary,
   .cleanup-ledger,
+  .cleanup-proof-packet,
   .product-obligation-ledger,
   .owner-peak-witness,
   .cleanup-wire,
