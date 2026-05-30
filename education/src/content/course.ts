@@ -398,6 +398,7 @@ export const lessons: CourseLesson[] = [
       'Gate budget, semantics, capacity, and promotion all matter.',
       'Rejected and hypothesis rows are useful only when clearly labeled.',
       'Claim status is determined by the weakest missing evidence gate.',
+      'A candidate row should generate the next patch packet automatically.',
     ],
   },
   {

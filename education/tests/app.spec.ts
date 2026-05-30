@@ -1238,15 +1238,22 @@ test('teaches optimization tradeoffs from the hybrid bridge search', async ({ pa
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Non-Clifford target');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Executable contract');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('strict executable row, not target hit');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Generated patch packet');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Qubit room');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('-368');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('Non-Clifford room');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('+3.03M');
   await page.getByLabel('Optimization candidate').selectOption('projective_five_slot_no_inverse_core');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('not executable/promoted');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('1,456 / <1,600');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('hypothesis until lowered');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('promote candidate into primitive/liveness engine');
   await page.getByLabel('Require executable promoted candidate').uncheck();
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('Mission audit: pass');
   await page.getByLabel('Optimization candidate').selectOption('projective_six_slot_with_lookup_workspace_reduced_to_fit');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('non-Clifford misses target');
   await expect(page.getByTestId('optimization-mission-lab')).toContainText('67.45M');
+  await expect(page.getByTestId('optimization-mission-lab')).toContainText('-27.45M');
 });
 
 test('teaches point-add semantic boundary cases from equivalence artifacts', async ({ page }) => {

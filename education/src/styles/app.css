@@ -8246,6 +8246,70 @@ code {
   line-height: 1.45;
 }
 
+.generated-mission-packet {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(143, 182, 255, 0.04);
+}
+
+.generated-mission-packet h4 {
+  margin: 0;
+}
+
+.generated-mission-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.generated-mission-grid article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.generated-mission-grid article.pass {
+  border-color: rgba(99, 230, 190, 0.32);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.generated-mission-grid article.fail {
+  border-color: rgba(255, 112, 112, 0.3);
+  background: rgba(255, 112, 112, 0.075);
+}
+
+.generated-mission-grid span,
+.generated-mission-grid strong {
+  display: block;
+}
+
+.generated-mission-grid span {
+  color: #93a4b7;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.generated-mission-grid strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  overflow-wrap: anywhere;
+}
+
+.generated-mission-grid p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .bar-list {
   display: grid;
   gap: 0.8rem;
@@ -10360,6 +10424,7 @@ legend {
   .mission-controls,
   .mission-grid,
   .mission-evidence-receipt,
+  .generated-mission-grid,
   .coverage-summary,
   .coverage-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -10641,6 +10706,7 @@ legend {
   .mission-controls,
   .mission-grid,
   .mission-evidence-receipt,
+  .generated-mission-grid,
   .coverage-summary,
   .coverage-grid,
   .claim-drill-grid,
