@@ -1751,7 +1751,7 @@ function CoordinatesStoryPanel() {
           so much about avoiding inversions in the hot loop.
         </p>
         <div className="proof-contract-list" aria-hidden="true">
-          <span>x, y live in F_p</span>
+          <span>x, y live in F<sub>p</sub></span>
           <span>division uses an inverse mod p</span>
           <span>field slot = 256 logical wires</span>
         </div>
@@ -1800,7 +1800,7 @@ function CoordinatesStoryPanel() {
           </div>
           <div>
             <span>audit question</span>
-            <strong>who owns 3 * 256 wires?</strong>
+            <strong>who owns 3 x 256 wires?</strong>
           </div>
         </div>
       </article>
@@ -1965,7 +1965,7 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
           without measuring which row was chosen.
         </p>
         <p>
-          QROAM means quantum read-only memory. In this course, read-only means the
+          QROAM means quantum read-only memory. Here, read-only means the
           table constants are precomputed, not that the quantum circuit gets a free
           classical memory access.
         </p>
@@ -1986,6 +1986,8 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
           <p>
             QROAMClean is the clean-ancilla version of this lookup tradeoff: helper
             registers start clean, support the selection, and must be cleaned again.
+            The word junk here means temporary helper bits that still count while live,
+            not discarded garbage.
             Over <MathTex tex="N" /> entries and <MathTex tex="b" /> target bits it
             trades Toffoli work against workspace: compute cost{' '}
             <MathTex tex="N/K+(K-1)b" />, cleanup cost{' '}
