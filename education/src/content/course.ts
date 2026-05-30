@@ -122,11 +122,12 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'This is the bridge from “quantum ideas” to repo engineering. Once a value is a named quantum wire, it has a lifetime. If a temporary value is not cleaned, it is not just messy bookkeeping; it can remain correlated with the result and must still be counted.',
     mentalModel:
-      'Read a circuit from left to right like a dataflow story. Wires carry quantum state through time. Gates touch specific wires. Controls make a target move only on selected branches. A useful temporary value follows a lifecycle: compute it, use it, then uncompute it back to zero.',
+      'Read a circuit from left to right like a dataflow story. Wires carry quantum state through time. Gates touch specific wires. Because closed gates are reversible, ordinary formulas must become source-preserving target updates. A useful temporary value follows a lifecycle: compute it, use it, then uncompute it back to zero.',
     checkpoint: 'A “scratch” bit is not free. It is a quantum wire with lifetime, owner, and cleanup obligations.',
     coreIdeas: [
       'Wire = named quantum storage across time.',
       'Gate row = one transformation applied to specific wires.',
+      'Closed gate rows must preserve enough information to be reversible.',
       'Cleanup = inverse work that removes temporary garbage.',
       'Scratch lifetime ends only at proven cleanup or declared output.',
     ],

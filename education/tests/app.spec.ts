@@ -370,10 +370,13 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 
   await openLesson(page, 'gates');
   await expect(page.getByTestId('gates-story')).toContainText('From formula to circuit row');
+  await expect(page.getByTestId('gates-story')).toContainText('A closed gate cannot erase which input happened');
+  await expect(page.getByTestId('gates-story')).toContainText('The usual repair is to keep the source wires and update a target wire');
   await expect(page.getByTestId('gates-story')).toContainText('Read a circuit left to right');
   await expect(page.getByTestId('gates-story')).toContainText('Measurement is different');
   await expect(page.getByTestId('gates-story')).toContainText('A control is a branch condition');
   await expect(page.getByTestId('gates-story')).toContainText('A row is a small contract');
+  await expect(page.getByTestId('gates-story')).toContainText('Useful formulas become compute-use-uncompute blocks');
   await expect(page.getByTestId('gates-story')).toContainText('A scratch wire has a lifecycle, not a scope');
   await expect(page.getByTestId('gates-story')).toContainText('birth');
   await expect(page.getByTestId('gates-story')).toContainText('death');
@@ -389,12 +392,15 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('circuit-builder')).toContainText('Wire ledger');
   await expect(page.getByTestId('circuit-builder')).toContainText('q2');
   await expect(page.getByTestId('circuit-builder')).toContainText('target/output lane');
+  await expect(page.getByTestId('circuit-builder')).toContainText('Scratch audit');
+  await expect(page.getByTestId('circuit-builder')).toContainText('scratch remains live');
   await expect(page.getByTestId('circuit-builder')).toContainText('Live interval scan');
   await expect(page.getByTestId('circuit-builder')).toContainText('owner scratch/output lane');
   await expect(page.getByTestId('circuit-builder')).toContainText('rows 1-3');
-  await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX' }).click();
+  await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX', exact: true }).click();
   await expect(page.getByTestId('circuit-builder')).toContainText('Non-Clifford');
   await expect(page.getByTestId('circuit-builder')).toContainText('2');
+  await expect(page.getByTestId('circuit-builder')).toContainText('mirrored cleanup candidate');
 });
 
 test('shows phase estimation and toy curve arithmetic', async ({ page }) => {

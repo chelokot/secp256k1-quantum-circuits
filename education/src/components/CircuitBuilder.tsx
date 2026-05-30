@@ -50,6 +50,39 @@ export function CircuitBuilder() {
       wires: wireLedger.filter((wire) => wire.firstRow !== null && wire.lastRow !== null && row >= wire.firstRow && row <= wire.lastRow),
     }));
   }, [gates.length, wireLedger]);
+  const q2Rows = gates
+    .map((gate, index) => ({ gate, row: index + 1 }))
+    .filter((item) => gateCost[item.gate].wires.includes('q2'));
+  const lastGate = gates.at(-1);
+  const previousGate = gates.at(-2);
+  const scratchAudit = (() => {
+    if (q2Rows.length === 0) {
+      return {
+        label: 'scratch unused',
+        status: 'clean',
+        detail: 'q2 has no live value in this toy row stream.',
+      };
+    }
+    if (lastGate === 'M') {
+      return {
+        label: 'declared output boundary',
+        status: 'output',
+        detail: 'q2 is measured at the end, so the row stream has made the boundary explicit.',
+      };
+    }
+    if (lastGate === 'CCX' && previousGate === 'CCX') {
+      return {
+        label: 'mirrored cleanup candidate',
+        status: 'clean',
+        detail: 'The final CCX repeats the same self-inverse row immediately, so this tiny toy can release q2.',
+      };
+    }
+    return {
+      label: 'scratch remains live',
+      status: 'dirty',
+      detail: 'q2 was touched without a matching cleanup row or declared output boundary.',
+    };
+  })();
 
   return (
     <article className="lab-panel" data-testid="circuit-builder">
@@ -100,6 +133,10 @@ export function CircuitBuilder() {
             {gate}
           </button>
         ))}
+        <button type="button" onClick={() => setGates((items) => [...items, 'CCX'])}>
+          <Plus size={14} />
+          mirror CCX cleanup
+        </button>
         <button type="button" aria-label="Reset circuit" onClick={() => setGates([])}>
           <RotateCcw size={16} />
         </button>
@@ -131,6 +168,17 @@ export function CircuitBuilder() {
             <p>{wire.rows.length === 0 ? 'not touched yet' : `touched by rows ${wire.rows.join(', ')}; owner ${wire.owner}`}</p>
           </article>
         ))}
+      </section>
+      <section className={`scratch-audit-panel ${scratchAudit.status}`} aria-label="Scratch cleanup audit">
+        <div>
+          <h4>Scratch audit</h4>
+          <p>
+            q2 is safe only when it is unused, explicitly output, or returned by a
+            valid mirrored cleanup. A name like “scratch” does not shorten its lifetime.
+          </p>
+        </div>
+        <strong>{scratchAudit.label}</strong>
+        <span>{scratchAudit.detail}</span>
       </section>
       <section className="live-interval-scan" aria-label="Live interval scan">
         <div>

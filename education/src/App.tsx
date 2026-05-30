@@ -3687,6 +3687,39 @@ function GatesStoryPanel() {
         </p>
       </article>
 
+      <article className="story-rule reversible-row-rule">
+        <div>
+          <h4>A closed gate cannot erase which input happened</h4>
+          <p>
+            A unitary gate is reversible: after the row runs, an inverse row could run
+            backward and recover the previous quantum state. That rules out ordinary
+            many-to-one operations. A row that sends both 0 and 1 to 0 would destroy
+            the information needed by the inverse, so it is not a valid closed quantum
+            gate.
+          </p>
+          <p>
+            The usual repair is to keep the source wires and update a target wire. A
+            classical-looking function becomes a reversible update such as{' '}
+            <MathTex tex="(x,t)\mapsto(x,t\oplus f(x))" />. The source survives, the
+            target changes, and the inverse is the same update again.
+          </p>
+        </div>
+        <div className="reversible-embedding-card" aria-hidden="true">
+          <article>
+            <strong>not a closed gate</strong>
+            <span>0 -&gt; 0</span>
+            <span>1 -&gt; 0</span>
+            <em>inverse cannot know the input</em>
+          </article>
+          <article>
+            <strong>reversible update</strong>
+            <span>(x, t) -&gt; (x, t xor f(x))</span>
+            <span>sources remain available</span>
+            <em>same row can uncompute</em>
+          </article>
+        </div>
+      </article>
+
       <article className="story-rule circuit-reading-rule">
         <div>
           <h4>Read a circuit left to right</h4>
@@ -3746,6 +3779,25 @@ function GatesStoryPanel() {
           <span>target</span>
           <span>cost</span>
           <span>cleanup</span>
+        </div>
+      </article>
+
+      <article className="story-rule reversible-formula-rule">
+        <div>
+          <h4>Useful formulas become compute-use-uncompute blocks</h4>
+          <p>
+            Arithmetic wants irreversible-looking facts like “this product bit is
+            <MathTex tex="a\wedge b" />.” The circuit cannot simply replace a scratch
+            wire with that fact and forget the inputs. It computes the fact into a
+            target, uses that target to update the accumulator, then runs the same
+            computation backward while the required source wires are still available.
+          </p>
+        </div>
+        <div className="formula-lowering-strip" aria-hidden="true">
+          <span><b>formula</b><i>p = a AND b</i></span>
+          <span><b>row</b><i>CCX a,b -&gt; p</i></span>
+          <span><b>use</b><i>p controls update</i></span>
+          <span><b>inverse</b><i>CCX a,b -&gt; p</i></span>
         </div>
       </article>
 

@@ -3152,11 +3152,15 @@ code {
 .zkp-receipt-rule,
 .proof-wording-rule,
 .mission-packet-rule,
-.baseline-status-rule {
+.baseline-status-rule,
+.reversible-row-rule,
+.reversible-formula-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
 .row-schema-strip,
+.reversible-embedding-card,
+.formula-lowering-strip,
 .stream-audit-card,
 .bennett-cycle,
 .half-adder-compare,
@@ -3178,7 +3182,17 @@ code {
   gap: 0.4rem;
 }
 
+.reversible-embedding-card {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.formula-lowering-strip {
+  grid-template-columns: 1fr;
+}
+
 .row-schema-strip span,
+.reversible-embedding-card article,
+.formula-lowering-strip span,
 .stream-audit-card span,
 .bennett-cycle span,
 .half-adder-compare div,
@@ -3203,6 +3217,42 @@ code {
   color: #dce7f2;
   background: rgba(143, 182, 255, 0.08);
   text-align: center;
+}
+
+.reversible-embedding-card article {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.reversible-embedding-card article:first-child {
+  border-color: rgba(255, 112, 112, 0.28);
+  background: rgba(255, 112, 112, 0.08);
+}
+
+.reversible-embedding-card article:nth-child(2),
+.formula-lowering-strip span:nth-child(4) {
+  border-color: rgba(99, 230, 190, 0.28);
+  background: rgba(99, 230, 190, 0.08);
+}
+
+.reversible-embedding-card strong,
+.formula-lowering-strip b {
+  color: #ffffff;
+}
+
+.reversible-embedding-card span,
+.formula-lowering-strip i {
+  color: #dce7f2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.8rem;
+  font-style: normal;
+}
+
+.reversible-embedding-card em {
+  color: #f5cf6b;
+  font-size: 0.82rem;
+  font-style: normal;
 }
 
 .half-adder-compare span,
@@ -4721,6 +4771,58 @@ code {
   margin: 0.35rem 0 0;
   color: #c9d6e2;
   font-size: 0.84rem;
+}
+
+.scratch-audit-panel {
+  display: grid;
+  grid-template-columns: minmax(18rem, 1fr) minmax(11rem, 0.35fr);
+  gap: 0.65rem;
+  align-items: center;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.scratch-audit-panel h4,
+.scratch-audit-panel p {
+  margin: 0;
+}
+
+.scratch-audit-panel p {
+  margin-top: 0.35rem;
+  color: #c9d6e2;
+  line-height: 1.45;
+}
+
+.scratch-audit-panel strong,
+.scratch-audit-panel span {
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+}
+
+.scratch-audit-panel strong {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.06);
+  text-align: center;
+}
+
+.scratch-audit-panel span {
+  grid-column: 1 / -1;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.scratch-audit-panel.dirty strong {
+  color: #ffd0d0;
+  background: rgba(255, 112, 112, 0.14);
+}
+
+.scratch-audit-panel.clean strong,
+.scratch-audit-panel.output strong {
+  color: #b8f3e6;
+  background: rgba(99, 230, 190, 0.13);
 }
 
 .live-interval-scan {
@@ -8928,6 +9030,8 @@ legend {
   .comparison-table > div,
   .claim-scope-grid,
   .proof-boundary-warning,
+  .reversible-embedding-card,
+  .formula-lowering-strip,
   .qubit-motion-strip,
   .bell-steps,
   .cost-axis-strip,
@@ -8993,6 +9097,7 @@ legend {
   .two-qubit-mission-grid,
   .state-execution-trace article,
   .local-joint-summary,
+  .scratch-audit-panel,
   .content-grid.learning-grid,
   .path-stage-grid,
   .readiness-strip,
@@ -9185,6 +9290,8 @@ legend {
   .comparison-table > div,
   .claim-scope-grid,
   .proof-boundary-warning,
+  .reversible-embedding-card,
+  .formula-lowering-strip,
   .qubit-motion-strip,
   .bell-steps,
   .cost-axis-strip,
@@ -9250,6 +9357,7 @@ legend {
   .two-qubit-mission-grid,
   .state-execution-trace article,
   .local-joint-summary,
+  .scratch-audit-panel,
   .path-stage-grid,
   .readiness-strip,
   .tradeoff-controls,
