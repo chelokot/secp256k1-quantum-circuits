@@ -57,6 +57,37 @@ export function ComputationModelBridge() {
         </article>
       </div>
 
+      <section className="program-skeleton-ledger" aria-label="Shared program skeleton">
+        <h4>Same skeleton, different state object</h4>
+        <div role="table">
+          <div role="row">
+            <strong role="columnheader">Program moment</strong>
+            <strong role="columnheader">Ordinary computer</strong>
+            <strong role="columnheader">Quantum circuit</strong>
+          </div>
+          <div role="row">
+            <span role="cell">State before a step</span>
+            <span role="cell"><MathTex tex="0101" /> is the stored value.</span>
+            <span role="cell"><MathTex tex="\sum_x \alpha_x|x\rangle" /> is the stored amplitude vector.</span>
+          </div>
+          <div role="row">
+            <span role="cell">Operation</span>
+            <span role="cell">An instruction can branch, overwrite, or erase a temporary value.</span>
+            <span role="cell">A gate must be a reversible linear transformation before measurement.</span>
+          </div>
+          <div role="row">
+            <span role="cell">Scratch space</span>
+            <span role="cell">A local temporary can disappear after the instruction sequence.</span>
+            <span role="cell">A scratch wire remains part of the state until output or proven uncompute.</span>
+          </div>
+          <div role="row">
+            <span role="cell">Readout</span>
+            <span role="cell">Read the current bit string.</span>
+            <span role="cell">Sample one label with probability <MathTex tex="|\alpha_x|^2" />.</span>
+          </div>
+        </div>
+      </section>
+
       <div className="comparison-table" role="table" aria-label="Classical and quantum computation comparison">
         <div role="row">
           <strong role="columnheader">Aspect</strong>

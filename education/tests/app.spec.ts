@@ -108,11 +108,18 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('computation-model-bridge')).toContainText('Quantum circuit');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('bit string');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('amplitude vector');
+  await expect(page.getByTestId('computation-model-bridge')).toContainText('Same skeleton, different state object');
+  await expect(page.getByTestId('computation-model-bridge')).toContainText('State before a step');
+  await expect(page.getByTestId('computation-model-bridge')).toContainText('A scratch wire remains part of the state until output or proven uncompute');
+  await expect(page.getByTestId('computation-model-bridge')).toContainText('Sample one label');
   await selectRouteLab(page, /What has to be proved/);
   await expect(page.getByTestId('project-proof-map')).toContainText('What has to be proved');
   await expect(page.getByTestId('project-proof-map')).toContainText('public key');
   await expect(page.getByTestId('project-proof-map')).toContainText('Executable circuit');
   await expect(page.getByTestId('project-proof-map')).toContainText('counted peak');
+  await expect(page.getByTestId('project-proof-map')).toContainText('Weak evidence');
+  await expect(page.getByTestId('project-proof-map')).toContainText('Strong evidence');
+  await expect(page.getByTestId('project-proof-map')).toContainText('The same executable circuit path');
   await expect(page.getByRole('heading', { name: 'Vocabulary spine' })).toHaveCount(0);
   await expect(page.getByLabel('Course navigation')).toContainText('Orientation');
   await expect(page.getByLabel('Course navigation')).toContainText('Quantum substrate');

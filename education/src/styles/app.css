@@ -820,6 +820,30 @@ code {
   color: #b4c4d6;
 }
 
+.proof-boundary-warning {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.proof-boundary-warning article {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.proof-boundary-warning strong {
+  display: block;
+  color: #f5cf6b;
+}
+
+.proof-boundary-warning p {
+  margin: 0.4rem 0 0;
+  color: #d8e3ef;
+  line-height: 1.5;
+}
+
 .readiness-strip {
   display: grid;
   grid-template-columns: minmax(10rem, 0.65fr) minmax(16rem, 1.35fr) minmax(13rem, 0.9fr);
@@ -891,6 +915,53 @@ code {
 .computer-flow-grid p {
   margin: 0.45rem 0 0;
   color: #b4c4d6;
+}
+
+.program-skeleton-ledger {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.program-skeleton-ledger h4 {
+  margin: 0;
+}
+
+.program-skeleton-ledger > div {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.program-skeleton-ledger [role="row"] {
+  display: grid;
+  grid-template-columns: 0.7fr 1.15fr 1.15fr;
+  gap: 0.5rem;
+}
+
+.program-skeleton-ledger span,
+.program-skeleton-ledger strong {
+  min-width: 0;
+  border-radius: 0.45rem;
+  padding: 0.55rem 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+  overflow-wrap: anywhere;
+}
+
+.program-skeleton-ledger strong {
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.program-skeleton-ledger span:first-child {
+  color: #ffffff;
+  font-weight: 800;
+}
+
+.program-skeleton-ledger .math-tex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: bottom;
 }
 
 .comparison-table {
@@ -7475,7 +7546,9 @@ legend {
   .gate-literacy-grid,
   .orientation-model-strip,
   .computer-flow-grid,
+  .program-skeleton-ledger [role="row"],
   .comparison-table > div,
+  .proof-boundary-warning,
   .qubit-motion-strip,
   .bell-steps,
   .cost-axis-strip,
@@ -7665,7 +7738,9 @@ legend {
   .gate-literacy-grid,
   .orientation-model-strip,
   .computer-flow-grid,
+  .program-skeleton-ledger [role="row"],
   .comparison-table > div,
+  .proof-boundary-warning,
   .qubit-motion-strip,
   .bell-steps,
   .cost-axis-strip,

@@ -52,6 +52,24 @@ export function ProjectProofMap() {
         connect back to these four objects, it is not evidence for the headline
         resource number.
       </p>
+      <div className="proof-boundary-warning">
+        <article>
+          <strong>Weak evidence</strong>
+          <p>
+            A nice algorithm sketch, a passing toy test, or a proof that binds a
+            different summary can all be useful, but none of them proves the resource
+            number by itself.
+          </p>
+        </article>
+        <article>
+          <strong>Strong evidence</strong>
+          <p>
+            The same executable circuit path is semantically tested, lowered into
+            primitive rows, counted from liveness, and serialized into checked
+            artifacts.
+          </p>
+        </article>
+      </div>
     </section>
   );
 }
