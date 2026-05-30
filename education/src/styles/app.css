@@ -6338,6 +6338,51 @@ code {
   color: #dce7f2;
 }
 
+.oracle-collision-ledger {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.oracle-collision-ledger article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.oracle-collision-ledger span {
+  display: block;
+  color: #93a4b7;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.oracle-collision-ledger strong {
+  display: block;
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.oracle-collision-ledger p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.oracle-collision-ledger .math-tex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: bottom;
+}
+
 .oracle-grid-layout {
   display: grid;
   grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr);
@@ -7689,6 +7734,7 @@ legend {
   .pipeline,
   .attack-readout-strip,
   .oracle-controls,
+  .oracle-collision-ledger,
   .oracle-grid-layout,
   .oracle-readout,
   .kickback-bridge-strip,
@@ -7886,6 +7932,7 @@ legend {
   .pipeline,
   .attack-readout-strip,
   .oracle-controls,
+  .oracle-collision-ledger,
   .oracle-grid-layout,
   .oracle-readout,
   .kickback-bridge-strip,

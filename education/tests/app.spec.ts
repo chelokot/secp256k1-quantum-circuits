@@ -463,6 +463,11 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Q = 5G');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('4 + 2 * 5 = 1 mod 13');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('hidden period (+5, -1)');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Selected pair');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Hidden step');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Same-label proof');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Quantum payoff');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('sample the slope');
 
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('Phase-kickback hidden-period lab');
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('1. Oracle label');

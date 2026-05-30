@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { KeyRound } from 'lucide-react';
+import { MathTex } from './MathText';
 
 const order = 13;
 
@@ -99,6 +100,35 @@ export function DiscreteLogOracleLab() {
           />
         </label>
       </div>
+
+      <section className="oracle-collision-ledger" aria-label="Oracle collision algebra ledger">
+        <article>
+          <span>Selected pair</span>
+          <strong><MathTex tex={`(a,b)=(${aScalar},${bScalar})`} /></strong>
+          <p>
+            The oracle computes one scalar label behind the point:
+            {' '}<MathTex tex={`${aScalar}+${bScalar}\\cdot ${secret}\\equiv ${derived.outputScalar}\\pmod {13}`} />.
+          </p>
+        </article>
+        <article>
+          <span>Hidden step</span>
+          <strong><MathTex tex={`(d,-1)=(${secret},-1)`} /></strong>
+          <p>Move by this vector to keep the same oracle label.</p>
+        </article>
+        <article>
+          <span>Same-label proof</span>
+          <strong><MathTex tex={`(${derived.collision.a},${derived.collision.b})\\mapsto ${derived.collisionOutput}G`} /></strong>
+          <p>
+            <MathTex tex={`${derived.collision.a}+${derived.collision.b}\\cdot ${secret}\\equiv ${derived.collisionOutput}\\pmod {13}`} />
+            {' '}so both highlighted cells produce the same group element.
+          </p>
+        </article>
+        <article>
+          <span>Quantum payoff</span>
+          <strong>sample the slope</strong>
+          <p>The circuit exploits the whole collision family instead of trying each possible secret.</p>
+        </article>
+      </section>
 
       <div className="oracle-grid-layout">
         <svg className="oracle-grid-svg" viewBox="0 0 156 156" role="img" aria-label="Toy discrete log oracle collision grid">
