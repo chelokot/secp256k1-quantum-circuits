@@ -35,6 +35,27 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
     return { physicalPerLogical, physicalTotal, magicPressure };
   }, [distance, layoutFactor, selected]);
 
+  const claimCards = [
+    {
+      label: 'Allowed logical claim',
+      status: 'allowed',
+      value: `${formatInt(selected.logicalQubits)} logical wires`,
+      detail: 'This is the selected repo row: peak algorithm-layer wires plus its non-Clifford ledger.',
+    },
+    {
+      label: 'Blocked hardware claim',
+      status: 'blocked',
+      value: `${formatInt(selected.logicalQubits)} physical qubits`,
+      detail: 'This silently changes layers. The repo artifact alone does not count hardware carriers.',
+    },
+    {
+      label: 'Conditional envelope',
+      status: 'conditional',
+      value: `${formatCompact(estimate.physicalTotal)} illustrative physical qubits`,
+      detail: `Only under d=${distance} and layout factor ${layoutFactor}x; factories, timing, routing, and decoder costs remain outside this panel.`,
+    },
+  ] as const;
+
   return (
     <section className="wide-panel" data-testid="logical-physical-bridge-lab">
       <div className="panel-heading">
@@ -123,6 +144,23 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
           <p>non-Clifford per logical qubit</p>
         </article>
       </div>
+
+      <section className="claim-translator-panel" aria-label="Logical to physical claim translator">
+        <h4>Claim translator</h4>
+        <p>
+          The same number can be honest or wrong depending on the layer named beside it.
+          Translate the sentence before comparing the result to a hardware roadmap.
+        </p>
+        <div>
+          {claimCards.map((claim) => (
+            <article className={claim.status} key={claim.label}>
+              <span>{claim.label}</span>
+              <strong>{claim.value}</strong>
+              <p>{claim.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       <section className="physical-translation-receipt" aria-label="Logical to physical translation receipt">
         <article>

@@ -1192,6 +1192,37 @@ function LogicalPhysicalStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule physical-claim-rule">
+        <div>
+          <h4>Three similar sentences make different claims</h4>
+          <p>
+            “1,968 logical wires” is an algorithm-resource sentence. “1,968 physical
+            qubits” is a hardware inventory sentence, and it is not implied by the repo
+            result. “885.6k illustrative physical qubits” is only meaningful if the
+            code distance, layout multiplier, factory policy, timing, and decoder
+            assumptions are all named.
+          </p>
+          <p>
+            The useful habit is to translate every qubit number into a layer before
+            comparing it to a device roadmap or a hardware paper.
+          </p>
+        </div>
+        <div className="physical-claim-card" aria-hidden="true">
+          <article>
+            <strong>logical claim</strong>
+            <span>allowed by repo artifacts</span>
+          </article>
+          <article>
+            <strong>physical claim</strong>
+            <span>blocked without QEC model</span>
+          </article>
+          <article>
+            <strong>envelope claim</strong>
+            <span>allowed only with assumptions attached</span>
+          </article>
+        </div>
+      </article>
+
       <article className="story-rule qubit-name-rule">
         <div>
           <h4>“Qubit” names three different layers here</h4>

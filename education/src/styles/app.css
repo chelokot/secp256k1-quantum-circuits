@@ -2050,6 +2050,7 @@ code {
 .code-parameter-rule,
 .physical-estimate-rule,
 .layer-question-rule,
+.physical-claim-rule,
 .logical-resource-receipt-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
@@ -2058,6 +2059,43 @@ code {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.5rem;
+}
+
+.physical-claim-card {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.physical-claim-card article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.physical-claim-card article:nth-child(2) {
+  border-color: rgba(255, 112, 112, 0.28);
+  background: rgba(255, 112, 112, 0.08);
+}
+
+.physical-claim-card article:nth-child(3) {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.physical-claim-card strong,
+.physical-claim-card span {
+  display: block;
+}
+
+.physical-claim-card strong {
+  color: #ffffff;
+}
+
+.physical-claim-card span {
+  margin-top: 0.25rem;
+  color: #b4c4d6;
+  font-size: 0.84rem;
 }
 
 .encoding-rule {
@@ -8606,6 +8644,73 @@ code {
   font-size: 0.82rem;
 }
 
+.claim-translator-panel {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.55rem;
+  padding: 0.9rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.claim-translator-panel h4 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.claim-translator-panel > p {
+  max-width: 58rem;
+  margin: 0.35rem 0 0.8rem;
+  color: #c9d6e2;
+  line-height: 1.5;
+}
+
+.claim-translator-panel > div {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.claim-translator-panel article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(5, 12, 20, 0.42);
+}
+
+.claim-translator-panel article.blocked {
+  border-color: rgba(255, 112, 112, 0.34);
+  background: rgba(255, 112, 112, 0.08);
+}
+
+.claim-translator-panel article.conditional {
+  border-color: rgba(245, 207, 107, 0.34);
+  background: rgba(245, 207, 107, 0.075);
+}
+
+.claim-translator-panel span,
+.claim-translator-panel strong {
+  display: block;
+}
+
+.claim-translator-panel span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.claim-translator-panel strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.claim-translator-panel p {
+  margin: 0.4rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .physical-translation-receipt {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -9189,6 +9294,7 @@ legend {
   .physical-stack,
   .physical-assumption-ledger,
   .physical-translation-receipt,
+  .claim-translator-panel > div,
   .wire-ledger,
   .interval-table [role="row"],
   .error-code-grid,
@@ -9449,6 +9555,8 @@ legend {
   .physical-grid,
   .physical-stack,
   .physical-assumption-ledger,
+  .physical-translation-receipt,
+  .claim-translator-panel > div,
   .wire-ledger,
   .interval-table [role="row"],
   .error-code-grid,

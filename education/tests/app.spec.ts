@@ -678,6 +678,9 @@ test('bridges logical repo rows to an illustrative physical-qubit envelope', asy
 
   await expect(page.getByTestId('logical-physical-story')).toContainText('The repo counts the algorithm layer');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Ask which layer the number belongs to');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('Three similar sentences make different claims');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('1,968 physical qubits');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('blocked without QEC model');
   await expect(page.getByTestId('logical-physical-story')).toContainText('“Qubit” names three different layers here');
   await expect(page.getByTestId('logical-physical-story')).toContainText('A logical resource result is still useful');
   await expect(page.getByTestId('logical-physical-story')).toContainText('A logical qubit is protected information');
@@ -691,6 +694,11 @@ test('bridges logical repo rows to an illustrative physical-qubit envelope', asy
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('450');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('885.6k');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Claim translator');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Allowed logical claim');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Blocked hardware claim');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968 physical qubits');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Conditional envelope');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Fixed by repo row');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Illustrative multiplier');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Illustrative physical envelope');
@@ -700,8 +708,10 @@ test('bridges logical repo rows to an illustrative physical-qubit envelope', asy
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('2,222');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('999.9k');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('2,222 logical wires');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('2,222 physical qubits');
   await page.getByTestId('logical-physical-bridge-lab').getByLabel('Code distance').fill('17');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('578');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1.3M illustrative physical qubits');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Included in the illustrative envelope');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('visible placeholder');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Still excluded');
