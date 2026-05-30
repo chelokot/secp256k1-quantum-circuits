@@ -1964,6 +1964,32 @@ function ProgrammingStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule stream-lifecycle-rule">
+        <div>
+          <h4>Valid rows are not the same as a clean stream</h4>
+          <p>
+            A parser can prove that every line uses a known operation with the right
+            number of operands. That is only the first gate. The next gate asks what
+            each row did to wire lifetimes: did it create a scratch target, consume its
+            effect, and later erase the same target with the same controls?
+          </p>
+          <p>
+            The repo’s resource numbers should be downstream of that lifecycle audit.
+            Otherwise a program can be syntactically valid, executable for a toy state,
+            and still wrong as a resource claim because scratch remains live.
+          </p>
+        </div>
+        <div className="stream-audit-card" aria-hidden="true">
+          <span>parse rows</span>
+          <i />
+          <span>derive lifetimes</span>
+          <i />
+          <span>prove cleanup</span>
+          <i />
+          <span>count peak</span>
+        </div>
+      </article>
+
       <article className="story-rule parser-rule">
         <div>
           <h4>A rejected row is a feature</h4>

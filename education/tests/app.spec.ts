@@ -631,18 +631,28 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
   await expect(page.getByTestId('programming-story')).toContainText('A row acts on the whole quantum state');
   await expect(page.getByTestId('programming-story')).toContainText('The quantum version keeps the inputs');
   await expect(page.getByTestId('programming-story')).toContainText('Rows are the smallest auditable unit');
+  await expect(page.getByTestId('programming-story')).toContainText('Valid rows are not the same as a clean stream');
+  await expect(page.getByTestId('programming-story')).toContainText('parse rows');
+  await expect(page.getByTestId('programming-story')).toContainText('derive lifetimes');
   await expect(page.getByTestId('programming-story')).toContainText('A rejected row is a feature');
   await selectRouteLab(page, /Quantum DSL/);
 
   const editor = page.getByLabel('Quantum DSL editor');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Non-Clifford');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('valid');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Stream audit');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('cleanup not proven');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('reversible AND toggles q2');
   await editor.fill('H q0\nBAD q0');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('unknown op BAD');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('error');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('not evaluated');
   await editor.fill('H q0\nCX q0 q1\nCCX q0 q1 q2');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('valid');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('CCX');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('cleanup not proven');
+  await editor.fill('H q0\nCX q0 q1\nCCX q0 q1 q2\nCCX q0 q1 q2');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('cleanup paired');
 });
 
 test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
@@ -654,8 +664,13 @@ test('teaches reversible cleanup as an executable puzzle', async ({ page }) => {
   await selectRouteLab(page, /Cleanup puzzle/);
 
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: fail');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Birth row');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Death row');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('The same source controls x,y must rebuild and erase A');
+  await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Reading another output does not erase scratch A');
   await page.getByRole('button', { name: /uncompute A with same x,y/ }).click();
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('Audit: pass');
+  await expect(page.getByTestId('cleanup-puzzle-lab').locator('.cleanup-ledger article').nth(2)).toContainText('present');
   await expect(page.getByTestId('cleanup-puzzle-lab')).toContainText('scratch returns to |0>');
 });
 

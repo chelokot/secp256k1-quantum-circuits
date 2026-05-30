@@ -17,11 +17,16 @@ export function CleanupPuzzleLab() {
     const computes = selected.includes('compute_a');
     const consumes = selected.includes('consume_a');
     const uncomputes = selected.includes('uncompute_a');
+    const measures = selected.includes('measure_phase');
     const pass = computes && consumes && uncomputes;
     return {
       pass,
+      consumes,
+      computes,
+      measures,
       message: pass ? 'scratch returns to |0>; no garbage remains' : 'scratch is still live or unproven',
       liveScratch: computes && !uncomputes,
+      uncomputes,
     };
   }, [selected]);
 
@@ -49,6 +54,28 @@ export function CleanupPuzzleLab() {
         <span>y</span>
         <span className={audit.liveScratch ? 'wire-live' : 'wire-clean'}>scratch A</span>
         <span>accumulator</span>
+      </div>
+      <div className="cleanup-ledger">
+        <article>
+          <span>Birth row</span>
+          <strong>{audit.computes ? 'present' : 'missing'}</strong>
+          <p>Scratch A is created from source controls x,y.</p>
+        </article>
+        <article>
+          <span>Use row</span>
+          <strong>{audit.consumes ? 'present' : 'missing'}</strong>
+          <p>The useful effect is copied into the accumulator.</p>
+        </article>
+        <article>
+          <span>Death row</span>
+          <strong>{audit.uncomputes ? 'present' : 'missing'}</strong>
+          <p>The same source controls x,y must rebuild and erase A.</p>
+        </article>
+        <article>
+          <span>Measurement</span>
+          <strong>{audit.measures ? 'selected' : 'not cleanup'}</strong>
+          <p>Reading another output does not erase scratch A.</p>
+        </article>
       </div>
       <p className={audit.pass ? 'audit-pass' : 'audit-fail'}>Audit: {audit.pass ? 'pass' : 'fail'}; {audit.message}</p>
       <p>
