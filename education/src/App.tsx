@@ -64,7 +64,11 @@ const proofSystemLabel = (system: string) => {
   if (system === 'groth16') return 'Groth16 wrapper';
   return readableStatus(system);
 };
-const yesNo = (value: boolean) => (value ? 'yes' : 'no');
+const proofPresenceLabel = (value: boolean | null) => {
+  if (value === true) return 'present';
+  if (value === false) return 'missing';
+  return 'not a standalone file';
+};
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
 
 function lessonFromHash() {
@@ -3351,17 +3355,28 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
             smaller externally verifiable artifact.
           </p>
           <p>
-            Publication ready: <code>{String(publication.publicationReady)}</code>.
+            Systems tracked: Core relation, Compressed SP1 receipt, Groth16 wrapper.
+          </p>
+          <p>
+            Publication gate: {publication.publicationReady ? 'ready' : 'blocked'}.
             Current systems marked stale: {publication.staleSystems.map(proofSystemLabel).join(', ')}.
             The public proof profile has {corpus.publicCaseCount} cases; the
             Google-comparable release target has {formatInt(corpus.releaseCaseCount)}.
           </p>
         </div>
-        <div className="proof-contract-list" aria-hidden="true">
+        <div className="zkp-system-status-list">
           {publication.systems.map((system) => (
-            <span key={system.system}>
-              {proofSystemLabel(system.system)}: current {yesNo(system.current)}, resource digest matches input {yesNo(system.resourceDigestMatchesInput)}
-            </span>
+            <article key={system.system}>
+              <span>{proofSystemLabel(system.system)}</span>
+              <strong>{system.current ? 'current' : 'stale'}</strong>
+              <em>
+                public values: {system.publicValuesMatchCurrent ? 'match current checked values' : 'do not match current checked values'}
+              </em>
+              <em>
+                resource digest: {system.resourceDigestMatchesInput ? 'matches current input' : 'does not match current input'}
+              </em>
+              <em>proof file: {proofPresenceLabel(system.proofFileExists)}</em>
+            </article>
           ))}
         </div>
       </article>

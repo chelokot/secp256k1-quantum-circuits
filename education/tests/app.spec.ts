@@ -1186,8 +1186,11 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The current checked proof status is deliberately conservative');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('compressed SP1 receipt');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Core relation, Compressed SP1 receipt, Groth16 wrapper');
-  await expect(page.getByTestId('zkp-boundary-story')).toContainText('resource digest matches input no');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Publication gate: blocked');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('resource digest: does not match current input');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('public values: do not match current checked values');
   await expect(page.getByTestId('zkp-boundary-story')).not.toContainText('compressed: current false');
+  await expect(page.getByTestId('zkp-boundary-story')).not.toContainText('resource digest matches input no');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Proof validity still needs a wording audit');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Why both proof systems matter');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Groth16 is a separate succinct wrapper');

@@ -3425,6 +3425,7 @@ code {
 .mini-row-card,
 .proof-contract-list,
 .zkp-binding-ledger,
+.zkp-system-status-list,
 .engine-blocker-list,
 .mini-lifecycle-compare,
 .optimization-candidate-strip {
@@ -3436,6 +3437,7 @@ code {
 .mini-row-card,
 .proof-contract-list span,
 .zkp-binding-ledger span,
+.zkp-system-status-list article,
 .engine-blocker-list div,
 .mini-lifecycle-compare div,
 .optimization-candidate-strip div {
@@ -3451,6 +3453,9 @@ code {
 .mini-row-card span,
 .mini-row-card strong,
 .mini-row-card em,
+.zkp-system-status-list span,
+.zkp-system-status-list strong,
+.zkp-system-status-list em,
 .engine-blocker-list span,
 .engine-blocker-list strong,
 .engine-blocker-list em,
@@ -3464,6 +3469,7 @@ code {
 
 .row-receipt-card span,
 .mini-row-card span,
+.zkp-system-status-list span,
 .engine-blocker-list span,
 .mini-lifecycle-compare span,
 .optimization-candidate-strip span {
@@ -3474,6 +3480,7 @@ code {
 
 .row-receipt-card strong,
 .mini-row-card strong,
+.zkp-system-status-list strong,
 .engine-blocker-list strong,
 .mini-lifecycle-compare strong,
 .optimization-candidate-strip strong {
@@ -3483,10 +3490,24 @@ code {
 
 .row-receipt-card em,
 .mini-row-card em,
+.zkp-system-status-list em,
 .optimization-candidate-strip em {
   color: #b4c4d6;
   font-style: normal;
   overflow-wrap: anywhere;
+}
+
+.zkp-system-status-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.zkp-system-status-list article {
+  display: grid;
+  gap: 0.28rem;
+}
+
+.zkp-system-status-list strong {
+  color: #f5cf6b;
 }
 
 .proof-contract-list span,
@@ -3520,6 +3541,7 @@ code {
 }
 
 .mission-packet-rule,
+.zkp-receipt-rule,
 .baseline-gate-rule {
   grid-template-columns: minmax(0, 1fr);
   align-items: start;
@@ -8821,6 +8843,7 @@ legend {
   .source-of-truth-strip,
   .mini-engine-flow-strip,
   .optimization-gate-strip,
+  .zkp-system-status-list,
   .scratch-lifecycle-card,
   .story-card-grid,
   .story-motion-grid,
@@ -9074,6 +9097,7 @@ legend {
   .source-of-truth-strip,
   .mini-engine-flow-strip,
   .optimization-gate-strip,
+  .zkp-system-status-list,
   .scratch-lifecycle-card,
   .story-card-grid,
   .story-motion-grid,
