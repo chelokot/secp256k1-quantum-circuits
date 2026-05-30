@@ -6500,6 +6500,44 @@ code {
   line-height: 1.45;
 }
 
+.attack-repetition-receipt {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.attack-repetition-receipt article {
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.attack-repetition-receipt span,
+.attack-repetition-receipt strong {
+  display: block;
+}
+
+.attack-repetition-receipt span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.attack-repetition-receipt strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+}
+
+.attack-repetition-receipt p {
+  margin: 0.4rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .attack-readout-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -7980,6 +8018,7 @@ legend {
   .overwrite-rule-strip,
   .overwrite-grid,
   .pipeline,
+  .attack-repetition-receipt,
   .attack-readout-strip,
   .oracle-controls,
   .oracle-collision-ledger,
@@ -8192,6 +8231,7 @@ legend {
   .overwrite-map,
   .matrix-grid,
   .pipeline,
+  .attack-repetition-receipt,
   .attack-readout-strip,
   .oracle-controls,
   .oracle-collision-ledger,

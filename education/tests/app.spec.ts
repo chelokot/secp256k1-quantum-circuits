@@ -399,6 +399,12 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Controlled adds');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('What is secret?');
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('controlled point-add');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Scalar query space');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('512 phase/control bits');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('Windowed controls');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('16-bit windows');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('31 point-add calls');
+  await expect(page.getByTestId('attack-pipeline-lab')).toContainText('phase sample, then solve for d');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toHaveCount(0);
   await selectRouteLab(page, /Resource composer/);
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');

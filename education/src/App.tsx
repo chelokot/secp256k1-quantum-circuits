@@ -3631,7 +3631,7 @@ export function App() {
         ];
       case 'ecdlp':
         return [
-          labItem(0, 'Whole attack map', <AttackPipelineLab />),
+          labItem(0, 'Whole attack map', <AttackPipelineLab projectData={projectData} />),
           labItem(1, 'Discrete-log oracle toy', <DiscreteLogOracleLab />),
           labItem(2, 'Phase kickback', <PhaseKickbackLab />),
           labItem(3, 'Toy curve group', <ToyCurveLab />),

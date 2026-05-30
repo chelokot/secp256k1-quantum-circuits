@@ -1,4 +1,15 @@
 import { GitBranch } from 'lucide-react';
+import { MathTex } from './MathText';
+
+type ProjectData = {
+  attackScaffold: {
+    compilerRaw32: {
+      phaseRegisterBitsTotal: number;
+      windowSize: number;
+      leafCallCount: number;
+    };
+  };
+};
 
 const stages = [
   {
@@ -38,7 +49,9 @@ const stages = [
   },
 ];
 
-export function AttackPipelineLab() {
+export function AttackPipelineLab({ projectData }: { projectData: ProjectData }) {
+  const scaffold = projectData.attackScaffold.compilerRaw32;
+
   return (
     <section className="wide-panel" data-testid="attack-pipeline-lab">
       <div className="panel-heading">
@@ -60,6 +73,40 @@ export function AttackPipelineLab() {
           </div>
         ))}
       </div>
+      <section className="attack-repetition-receipt" aria-label="Repeated point-add receipt">
+        <article>
+          <span>Scalar query space</span>
+          <strong>{scaffold.phaseRegisterBitsTotal} phase/control bits</strong>
+          <p>
+            The attack asks about many <MathTex tex="(a,b)" /> labels coherently, not
+            by trying one private key after another.
+          </p>
+        </article>
+        <article>
+          <span>Windowed controls</span>
+          <strong>{scaffold.windowSize}-bit windows</strong>
+          <p>
+            Each retained window chooses a precomputed point chunk and controls one
+            repeated curve-addition request.
+          </p>
+        </article>
+        <article>
+          <span>Repeated leaf</span>
+          <strong>{scaffold.leafCallCount} point-add calls</strong>
+          <p>
+            This is the expensive middle: lookup a point, conditionally add it to the
+            accumulator, clean scratch, then move to the next controlled window.
+          </p>
+        </article>
+        <article>
+          <span>Readout meaning</span>
+          <strong>phase sample, then solve for d</strong>
+          <p>
+            The inverse QFT reads a relation caused by those repeated additions; the
+            final scalar recovery is classical postprocessing.
+          </p>
+        </article>
+      </section>
       <div className="attack-readout-strip">
         <article>
           <span>What is secret?</span>
