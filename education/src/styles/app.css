@@ -2264,7 +2264,8 @@ code {
 
 .coordinate-division-rule,
 .infinity-rule,
-.coordinate-slot-rule {
+.coordinate-slot-rule,
+.coordinate-overwrite-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
@@ -2335,6 +2336,53 @@ code {
   color: #06110f;
   background: #63e6be;
   font-size: 0.78rem;
+}
+
+.overwrite-law-card {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.overwrite-law-card div {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.overwrite-law-card div:first-child {
+  border-color: rgba(255, 133, 133, 0.28);
+  background: rgba(255, 133, 133, 0.06);
+}
+
+.overwrite-law-card div:nth-child(2) {
+  border-color: rgba(99, 230, 190, 0.28);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.overwrite-law-card strong,
+.overwrite-law-card span,
+.overwrite-law-card em {
+  display: block;
+}
+
+.overwrite-law-card strong {
+  color: #f5cf6b;
+}
+
+.overwrite-law-card span {
+  margin-top: 0.25rem;
+  color: #dce7f2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
+.overwrite-law-card em {
+  margin-top: 0.2rem;
+  color: #9fb1c3;
+  font-style: normal;
+  font-size: 0.82rem;
 }
 
 .edge-case-stack {
@@ -6854,6 +6902,51 @@ code {
   margin: 1rem 0;
 }
 
+.overwrite-rule-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0;
+}
+
+.overwrite-rule-strip article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.overwrite-rule-strip article:nth-child(2) {
+  border-color: rgba(255, 133, 133, 0.24);
+  background: rgba(255, 133, 133, 0.055);
+}
+
+.overwrite-rule-strip span,
+.overwrite-rule-strip strong {
+  display: block;
+}
+
+.overwrite-rule-strip span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.overwrite-rule-strip strong {
+  margin-top: 0.35rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.overwrite-rule-strip p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
+}
+
 .overwrite-contract-strip div {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
@@ -7141,6 +7234,7 @@ legend {
   .coordinate-lab-grid,
   .coordinate-slot-row,
   .overwrite-contract-strip,
+  .overwrite-rule-strip,
   .overwrite-grid,
   .pipeline,
   .attack-readout-strip,
@@ -7322,6 +7416,7 @@ legend {
   .coordinate-lab-grid,
   .coordinate-slot-row,
   .overwrite-contract-strip,
+  .overwrite-rule-strip,
   .overwrite-grid,
   .overwrite-map,
   .matrix-grid,

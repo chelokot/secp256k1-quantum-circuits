@@ -1595,6 +1595,49 @@ function CoordinatesStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule coordinate-overwrite-rule">
+        <div>
+          <h4>“Overwrite” means reversible in-place update</h4>
+          <p>
+            Classical code can assign a new value into a variable and forget the old
+            one. A closed quantum circuit cannot silently erase a live field element:
+            if two possible old values lead to the same new state, there is no inverse
+            operation that can reconstruct which branch existed.
+          </p>
+          <p>
+            The allowed version is an in-place reversible map over the lane plus its
+            still-live controls. For a toy scalar row, the engine may reuse a lane only
+            when the new value and controls determine the old value:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="Y_3=LC+NM,\quad L\ne0\Rightarrow C=L^{-1}(Y_3-NM)" />
+          </p>
+          <p>
+            The zero-lift guard exists because <MathTex tex="L=0" /> would otherwise
+            collapse every old <MathTex tex="C" /> to the same output. That is why an
+            overwrite claim needs a permutation contract, edge-case replay, and counted
+            owner capacity for every still-live field slot.
+          </p>
+        </div>
+        <div className="overwrite-law-card" aria-hidden="true">
+          <div>
+            <strong>Not allowed</strong>
+            <span>many old C values {'->'} one output</span>
+            <em>erases branch identity</em>
+          </div>
+          <div>
+            <strong>Allowed</strong>
+            <span>(C, controls) {'->'} (Y3, controls)</span>
+            <em>inverse recovers C</em>
+          </div>
+          <div>
+            <strong>Audit</strong>
+            <span>permutation + replay + owner capacity</span>
+            <em>same lane, no free wire</em>
+          </div>
+        </div>
+      </article>
+
       <article className="story-rule coordinate-division-rule">
         <div>
           <h4>Why avoid division in the hot loop?</h4>

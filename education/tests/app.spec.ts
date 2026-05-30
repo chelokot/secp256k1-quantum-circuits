@@ -395,6 +395,9 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('coordinate-story')).toContainText('Coordinates are field elements, not plain integers');
   await expect(page.getByTestId('coordinate-story')).toContainText('The same curve point can have several names');
   await expect(page.getByTestId('coordinate-story')).toContainText('A coordinate name is not the same as counted storage');
+  await expect(page.getByTestId('coordinate-story')).toContainText('“Overwrite” means reversible in-place update');
+  await expect(page.getByTestId('coordinate-story')).toContainText('many old C values');
+  await expect(page.getByTestId('coordinate-story')).toContainText('permutation contract, edge-case replay, and counted owner capacity');
   await expect(page.getByTestId('coordinate-story')).toContainText('Why avoid division in the hot loop');
   await expect(page.getByTestId('coordinate-story')).toContainText('Infinity is not a footnote');
   await expect(page.getByTestId('coordinate-story')).toContainText('Overwrite audit');
@@ -406,6 +409,9 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('(8, 5, 5)');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('3 field slots');
   await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Reversible overwrite lab');
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Allowed shape');
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Forbidden shape');
+  await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('The counted row must execute the same edge cases it claims');
   await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Y3 over C');
   await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Scalar map audit: permutation');
   await page.getByLabel('Enable zero-lift guard').uncheck();

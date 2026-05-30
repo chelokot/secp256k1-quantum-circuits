@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Shuffle } from 'lucide-react';
+import { MathTex } from './MathText';
 
 type ProjectData = {
   reversibleOverwrite: {
@@ -93,6 +94,23 @@ export function ReversibleOverwriteLab({ projectData }: { projectData: ProjectDa
         Quantum overwrite is not deletion. An in-place row is valid only when the old
         value can still be recovered from the new state and the other live inputs.
       </p>
+      <div className="overwrite-rule-strip">
+        <article>
+          <span>Allowed shape</span>
+          <strong><MathTex tex="(old,controls)\leftrightarrow(new,controls)" /></strong>
+          <p>One-to-one means amplitudes can be reversed exactly.</p>
+        </article>
+        <article>
+          <span>Forbidden shape</span>
+          <strong>many old values {'->'} one output</strong>
+          <p>A collision would erase which branch was present.</p>
+        </article>
+        <article>
+          <span>Repo gate</span>
+          <strong>permutation contract + replay</strong>
+          <p>The counted row must execute the same edge cases it claims.</p>
+        </article>
+      </div>
 
       <div className="overwrite-contract-strip">
         <div>
@@ -116,7 +134,9 @@ export function ReversibleOverwriteLab({ projectData }: { projectData: ProjectDa
       <div className="overwrite-grid">
         <article>
           <h4>Scalar overwrite toy</h4>
-          <p className="mono-line">C {'->'} L*C + offset over F{prime}</p>
+          <p className="mono-line">
+            <MathTex tex={`C\\mapsto L\\cdot C+offset\\pmod {${prime}}`} />
+          </p>
           <label className="slider-label">
             Coefficient L: {coefficient}
             <input
