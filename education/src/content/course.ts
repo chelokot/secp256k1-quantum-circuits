@@ -475,6 +475,7 @@ export const lessons: CourseLesson[] = [
       'External baselines are comparison rows.',
       'Repo results require status labels.',
       'Accepted baseline remains blocked until all gates close.',
+      'The accepted-baseline gate rows come from the artifact, not a manual blocker subset.',
     ],
   },
 ];

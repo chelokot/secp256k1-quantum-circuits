@@ -6959,6 +6959,76 @@ code {
   background: rgba(255, 255, 255, 0.04);
 }
 
+.baseline-gate-receipt {
+  display: grid;
+  grid-template-columns: minmax(0, 0.65fr) minmax(0, 0.85fr) minmax(0, 1.5fr);
+  gap: 0.65rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(143, 182, 255, 0.04);
+}
+
+.baseline-gate-receipt h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.baseline-gate-receipt article,
+.baseline-gate-row-detail article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.baseline-gate-row-detail article.fail {
+  border-color: rgba(255, 112, 112, 0.3);
+  background: rgba(255, 112, 112, 0.075);
+}
+
+.baseline-gate-row-detail article.pass {
+  border-color: rgba(99, 230, 190, 0.32);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.baseline-gate-receipt span,
+.baseline-gate-receipt strong,
+.baseline-gate-row-detail strong {
+  display: block;
+}
+
+.baseline-gate-receipt span {
+  color: #63e6be;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.baseline-gate-receipt strong,
+.baseline-gate-row-detail strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.baseline-gate-receipt p,
+.baseline-gate-row-detail p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.baseline-gate-row-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
 .claim-drill-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -10512,6 +10582,7 @@ legend {
   .comparison-table > div,
   .claim-scope-grid,
   .proof-boundary-warning,
+  .baseline-gate-receipt,
   .reversible-embedding-card,
   .formula-lowering-strip,
   .qubit-motion-strip,
@@ -10796,6 +10867,7 @@ legend {
   .comparison-table > div,
   .claim-scope-grid,
   .proof-boundary-warning,
+  .baseline-gate-receipt,
   .reversible-embedding-card,
   .formula-lowering-strip,
   .qubit-motion-strip,
@@ -10899,6 +10971,7 @@ legend {
   .error-code-grid,
   .error-code-summary,
   .promotion-steps,
+  .baseline-gate-receipt,
   .publication-workflow-strip,
   .proof-binding-grid,
   .mission-packet-preview,

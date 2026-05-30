@@ -2,9 +2,12 @@ import { useMemo, useState } from 'react';
 import { ShieldCheck } from 'lucide-react';
 import { blockerLabel, blockerSummary } from '../content/blockerCopy';
 
-type Blocker = {
+type GateRow = {
   name: string;
   status: string;
+  pass: boolean;
+  evidence: string;
+  required_to_close: string;
 };
 
 type ProjectData = {
@@ -16,24 +19,33 @@ type ProjectData = {
     non_clifford: number;
     logical_qubits: number;
   };
-  activeBlockers: Blocker[];
+  acceptedBaselineGate: {
+    status: string;
+    decision: string;
+    candidate_under_review: string;
+    candidate_under_review_logical_qubits: number;
+    candidate_under_review_non_clifford: number;
+    policy: string;
+    rows: GateRow[];
+  };
 };
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 
 export function BaselinePromotionLab({ projectData }: { projectData: ProjectData }) {
-  const [closedBlockers, setClosedBlockers] = useState<Set<string>>(() => new Set());
+  const [closedGateRows, setClosedGateRows] = useState<Set<string>>(() => new Set());
   const [useGuardCorrected, setUseGuardCorrected] = useState(true);
 
   const promotion = useMemo(() => {
-    const openBlockers = projectData.activeBlockers.filter((blocker) => !closedBlockers.has(blocker.name));
+    const openGateRows = projectData.acceptedBaselineGate.rows.filter((row) => !row.pass && !closedGateRows.has(row.name));
     const selected = useGuardCorrected
       ? projectData.guardCorrectedNoAliasCandidate
       : projectData.currentStrictCandidate;
     const guardIsCounted = useGuardCorrected;
-    const pass = guardIsCounted && openBlockers.length === 0;
-    return { selected, openBlockers, guardIsCounted, pass };
-  }, [closedBlockers, projectData, useGuardCorrected]);
+    const gateRowsClosed = openGateRows.length === 0;
+    const pass = guardIsCounted && gateRowsClosed;
+    return { selected, openGateRows, gateRowsClosed, guardIsCounted, pass };
+  }, [closedGateRows, projectData, useGuardCorrected]);
 
   return (
     <section className="wide-panel" data-testid="baseline-promotion-lab">
@@ -47,10 +59,10 @@ export function BaselinePromotionLab({ projectData }: { projectData: ProjectData
           <strong>{promotion.guardIsCounted ? 'included' : 'missing'}</strong>
           <p>The headline cannot ignore clean-ladder guard space.</p>
         </article>
-        <article className={promotion.openBlockers.length === 0 ? 'pass' : 'fail'}>
-          <span>2. Close blockers</span>
-          <strong>{promotion.openBlockers.length === 0 ? 'none open' : `${promotion.openBlockers.length} open`}</strong>
-          <p>Macro expansion, modular cleanup, and capacity gates must be closed deliberately.</p>
+        <article className={promotion.gateRowsClosed ? 'pass' : 'fail'}>
+          <span>2. Close artifact gate rows</span>
+          <strong>{promotion.gateRowsClosed ? 'none open' : `${promotion.openGateRows.length} open`}</strong>
+          <p>The accepted-baseline gate is the checked artifact, not a handpicked blocker subset.</p>
         </article>
         <article className={promotion.pass ? 'pass' : 'fail'}>
           <span>3. Publish wording</span>
@@ -58,6 +70,26 @@ export function BaselinePromotionLab({ projectData }: { projectData: ProjectData
           <p>The public claim level follows the weakest remaining gate.</p>
         </article>
       </div>
+
+      <section className="baseline-gate-receipt" aria-label="Accepted baseline gate receipt">
+        <h4>Accepted-baseline gate receipt</h4>
+        <article>
+          <span>Gate status</span>
+          <strong>{projectData.acceptedBaselineGate.status}</strong>
+          <p>{projectData.acceptedBaselineGate.decision.replaceAll('_', ' ')}</p>
+        </article>
+        <article>
+          <span>Candidate under review</span>
+          <strong>{formatInt(projectData.acceptedBaselineGate.candidate_under_review_logical_qubits)}q / {formatInt(projectData.acceptedBaselineGate.candidate_under_review_non_clifford)}</strong>
+          <p>{projectData.acceptedBaselineGate.candidate_under_review.replaceAll('_', ' ')}</p>
+        </article>
+        <article>
+          <span>Policy</span>
+          <strong>all {projectData.acceptedBaselineGate.rows.length} gate rows must pass</strong>
+          <p>{projectData.acceptedBaselineGate.policy}</p>
+        </article>
+      </section>
+
       <div className="promotion-grid">
         <article>
           <h4>Candidate being audited</h4>
@@ -86,43 +118,63 @@ export function BaselinePromotionLab({ projectData }: { projectData: ProjectData
         </article>
 
         <article>
-          <h4>Release blockers</h4>
+          <h4>Artifact gate rows</h4>
           <div className="blocker-switches">
-            {projectData.activeBlockers.map((blocker) => (
-              <label key={blocker.name}>
-                <input
-                  aria-label={`Close ${blockerLabel(blocker.name)}`}
-                  checked={closedBlockers.has(blocker.name)}
-                  onChange={(event) => {
-                    const checked = event.currentTarget.checked;
-                    setClosedBlockers((current) => {
-                      const next = new Set(current);
-                      if (checked) next.add(blocker.name);
-                      else next.delete(blocker.name);
-                      return next;
-                    });
-                  }}
-                  type="checkbox"
-                />
-                <span>
-                  <strong>{blockerLabel(blocker.name)}</strong>
-                  <em>{blockerSummary(blocker.name)}</em>
-                </span>
-              </label>
-            ))}
+            {projectData.acceptedBaselineGate.rows.map((row) => {
+              const closed = row.pass || closedGateRows.has(row.name);
+              return (
+                <label key={row.name}>
+                  <input
+                    aria-label={`Close ${blockerLabel(row.name)}`}
+                    checked={closed}
+                    disabled={row.pass}
+                    onChange={(event) => {
+                      const checked = event.currentTarget.checked;
+                      setClosedGateRows((current) => {
+                        const next = new Set(current);
+                        if (checked) next.add(row.name);
+                        else next.delete(row.name);
+                        return next;
+                      });
+                    }}
+                    type="checkbox"
+                  />
+                  <span>
+                    <strong>{blockerLabel(row.name)}</strong>
+                    <em>{blockerSummary(row.name)}</em>
+                    <em>Evidence: {row.evidence}</em>
+                  </span>
+                </label>
+              );
+            })}
           </div>
           <p>
-            Open blockers: {promotion.openBlockers.length === 0
+            Open gate rows: {promotion.openGateRows.length === 0
               ? 'none'
-              : promotion.openBlockers.map((blocker) => blockerLabel(blocker.name)).join(', ')}
+              : promotion.openGateRows.map((row) => blockerLabel(row.name)).join(', ')}
           </p>
         </article>
+      </div>
+      <div className="baseline-gate-row-detail">
+        {promotion.openGateRows.length === 0 ? (
+          <article className="pass">
+            <strong>All simulated gate rows closed</strong>
+            <p>The lab can now show what an accepted-baseline-ready state would look like, but the repo artifact remains the authority.</p>
+          </article>
+        ) : (
+          promotion.openGateRows.map((row) => (
+            <article className="fail" key={row.name}>
+              <strong>{blockerLabel(row.name)}</strong>
+              <p>{row.required_to_close}</p>
+            </article>
+          ))
+        )}
       </div>
       <p>
         This is the repo policy in miniature: a number can be interesting before
         it is publishable, but it becomes the accepted baseline only after the
-        guard capacity, modular source-uncompute, and full primitive expansion
-        gates are closed against the same executable artifact.
+        checked accepted-baseline gate rows are closed against the same executable
+        artifact.
       </p>
     </section>
   );

@@ -983,9 +983,14 @@ test('keeps accepted-baseline promotion behind all blockers', async ({ page }) =
   await selectRouteLab(page, /Promotion audit/);
 
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
-  await page.getByLabel('Close Zero-lift guard capacity').check();
-  await page.getByLabel('Close Modular accumulator cleanup').check();
-  await page.getByLabel('Close Full arithmetic primitive expansion').check();
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Accepted-baseline gate receipt');
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('all 5 gate rows must pass');
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('engine_completion_audit.clifford_complete_goal_achieved');
+  await page.getByLabel('Close Single primitive stream').check();
+  await page.getByLabel('Close Guard capacity in liveness').check();
+  await page.getByLabel('Close Accumulator cleanup promoted').check();
+  await page.getByLabel('Close No synthetic scratch leftovers').check();
+  await page.getByLabel('Close Publication gate cleared').check();
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: accepted-baseline ready');
   await page.getByLabel('Use guard-corrected qubit count').uncheck();
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Promotion audit: blocked');
@@ -1378,7 +1383,7 @@ test('teaches the guard gap and quiz boundary', async ({ page }) => {
   await openLesson(page, 'repo-baselines');
   await selectRouteLab(page, /Promotion audit/);
   await expect(page.getByTestId('baseline-promotion-lab')).toContainText('candidate only');
-  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Close blockers');
+  await expect(page.getByTestId('baseline-promotion-lab')).toContainText('Close artifact gate rows');
   await openLesson(page, 'repo-baselines');
   await expect(page.getByTestId('lesson-pager')).toContainText('Lesson 23 of 23');
   await expect(page.getByTestId('lesson-pager').getByRole('button', { name: 'End' })).toBeDisabled();
