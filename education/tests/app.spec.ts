@@ -403,6 +403,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('ecdlp-story').locator('xpath=.//*[@data-tex="d=v\\cdot u^{-1}\\pmod n"]')).toBeVisible();
   await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
   await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
+  await expect(page.getByTestId('lab-route')).toContainText('Orient the public key, quantum registers, controlled adds, and readout.');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
   await expect(page.getByTestId('lab-route')).toContainText('Resource composer');
   await expect(page.getByTestId('lab-focus-controls')).toContainText('Next lab');
@@ -418,6 +419,7 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('attack-pipeline-lab')).toContainText('phase sample, then solve for d');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toHaveCount(0);
   await selectRouteLab(page, /Resource composer/);
+  await expect(page.getByTestId('lab-route')).toContainText('Check why gates add over leaves while qubits are peak workspace.');
   await expect(page.getByTestId('oracle-resource-composer-lab')).toContainText('Whole-oracle resource composer');
 
   await openLesson(page, 'netlists');

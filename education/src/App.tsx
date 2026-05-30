@@ -3718,6 +3718,7 @@ export function App() {
   })();
 
   const focusedLabIndex = Math.min(focusedLabByLesson[activeLesson.id] ?? 0, Math.max(0, activeLabItems.length - 1));
+  const focusedLab = activeLabItems[focusedLabIndex];
   const hasGuidedLabFocus = labRoute.length > 0 && activeLabItems.length > 1;
   const showAllLabs = showAllLabsByLesson[activeLesson.id] ?? false;
   const visibleLabItems = hasGuidedLabFocus && !showAllLabs ? [activeLabItems[focusedLabIndex]] : activeLabItems;
@@ -3751,9 +3752,12 @@ export function App() {
       {labRoute.length > 0 ? (
         <section className="lab-route" data-testid="lab-route" aria-label="Lab route">
           <div className="lab-route-header">
-            <div className="panel-heading">
-              <ListChecks size={18} />
-              <h3>{showAllLabs ? 'All labs' : `Lab ${focusedLabIndex + 1} of ${activeLabItems.length}`}</h3>
+            <div className="lab-route-title">
+              <div className="panel-heading">
+                <ListChecks size={18} />
+                <h3>{showAllLabs ? 'All labs' : `Lab ${focusedLabIndex + 1} of ${activeLabItems.length}`}</h3>
+              </div>
+              {!showAllLabs && focusedLab ? <p className="active-lab-goal">{focusedLab.goal}</p> : null}
             </div>
             {hasGuidedLabFocus ? (
               <div className="lab-focus-controls" data-testid="lab-focus-controls">
