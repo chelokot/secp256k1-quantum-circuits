@@ -680,13 +680,22 @@ test('shows partial-product lowering pressure', async ({ page }) => {
   await expect(page.getByTestId('modular-lowering-story')).toContainText('A tiny formula becomes a large reversible machine');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('one grid products');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('65,536');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('One active product cell is already a lifecycle');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('birth: CCX controls');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('Modulo reduction is not an after-the-fact note');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('Cleanup still gates promotion');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Partial-product grid');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Selected cell');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('CCX x0 y0 t_0_0');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Death');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('same controls');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').first().fill('15');
   await page.getByTestId('multiplier-grid-lab').getByRole('slider').last().fill('15');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Active ANDs');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('16');
+  await page.getByTestId('multiplier-grid-lab').getByRole('button', { name: 'Select product cell x3 y3' }).click();
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('x3 AND y3');
+  await expect(page.getByTestId('multiplier-grid-lab')).toContainText('t_3_3 -> column c6');
 });
 
 test('requires owner assignment and numeric capacity to pass', async ({ page }) => {

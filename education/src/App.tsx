@@ -2221,6 +2221,32 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule product-obligation-rule">
+        <div>
+          <h4>One active product cell is already a lifecycle</h4>
+          <p>
+            A product bit is not just a dot in the grid. The row stream needs a target
+            where <MathTex tex="x_i\wedge y_j" /> is born, a consume row that adds its
+            effect into the correct output column, and a cleanup row that uses the same
+            <MathTex tex="x_i" /> and <MathTex tex="y_j" /> controls to erase the target.
+          </p>
+          <p>
+            Only after that lifecycle is explicit can the engine ask where the temporary
+            was live, which owner paid for it, and whether it overlapped the accumulator
+            at the peak row.
+          </p>
+        </div>
+        <div className="product-obligation-card" aria-hidden="true">
+          <span>birth: CCX controls {'->'} temp</span>
+          <i />
+          <span>use: add temp into column</span>
+          <i />
+          <span>death: inverse CCX</span>
+          <i />
+          <span>count: owner + live interval</span>
+        </div>
+      </article>
+
       <article className="story-rule modular-fold-rule">
         <div>
           <h4>Modulo reduction is not an after-the-fact note</h4>

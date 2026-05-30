@@ -2666,6 +2666,7 @@ code {
 .cleanup-dependency-rule,
 .artifact-cleanup-rule,
 .modular-grid-rule,
+.product-obligation-rule,
 .modular-fold-rule,
 .carry-compression-rule,
 .capacity-equation-rule,
@@ -2694,6 +2695,7 @@ code {
 .half-adder-compare,
 .row-branch-card,
 .modular-fold-card,
+.product-obligation-card,
 .peak-row-card,
 .artifact-interface-card,
 .mini-witness-card,
@@ -2713,6 +2715,7 @@ code {
 .half-adder-compare div,
 .row-branch-card div,
 .modular-fold-card div,
+.product-obligation-card span,
 .peak-row-card div,
 .artifact-interface-card span,
 .mini-witness-card div,
@@ -2737,6 +2740,7 @@ code {
 .row-branch-card strong,
 .modular-fold-card span,
 .modular-fold-card strong,
+.product-obligation-card span,
 .peak-row-card span,
 .peak-row-card strong,
 .mini-witness-card span,
@@ -2759,6 +2763,7 @@ code {
 .half-adder-compare strong,
 .row-branch-card strong,
 .modular-fold-card strong,
+.product-obligation-card span,
 .peak-row-card strong,
 .mini-witness-card strong,
 .branch-selector-card strong {
@@ -2860,8 +2865,18 @@ code {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-.stream-audit-card i {
+.stream-audit-card i,
+.product-obligation-card i {
   display: none;
+}
+
+.product-obligation-card {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.product-obligation-card span:first-child {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
 }
 
 .cleanup-dependency-card {
@@ -4753,12 +4768,64 @@ code {
   border-radius: 0.45rem;
   background: rgba(255, 255, 255, 0.035);
   color: #93a4b7;
+  cursor: pointer;
+  font: inherit;
 }
 
 .partial-cell.active {
   border-color: #f5cf6b;
   background: rgba(245, 207, 107, 0.16);
   color: #ffffff;
+}
+
+.partial-cell.selected {
+  box-shadow: 0 0 0 0.12rem rgba(99, 230, 190, 0.62);
+}
+
+.product-obligation-ledger {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.product-obligation-ledger article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.product-obligation-ledger article:nth-child(2),
+.product-obligation-ledger article:nth-child(4) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.065);
+}
+
+.product-obligation-ledger span,
+.product-obligation-ledger strong {
+  display: block;
+}
+
+.product-obligation-ledger span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.product-obligation-ledger strong {
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+.product-obligation-ledger p {
+  margin: 0.4rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
 }
 
 .column-loads,
@@ -7234,6 +7301,7 @@ legend {
   .qroam-formula-strip,
   .program-contract-split,
   .stream-audit-card,
+  .product-obligation-card,
   .half-adder-compare,
   .circuit-reading-strip,
   .controlled-branch-card,
@@ -7310,6 +7378,7 @@ legend {
   .two-slider-grid,
   .stream-audit-strip,
   .cleanup-ledger,
+  .product-obligation-ledger,
   .cleanup-wire,
   .accumulator-summary,
   .accumulator-grid,
@@ -7418,6 +7487,7 @@ legend {
   .qroam-formula-strip,
   .program-contract-split,
   .stream-audit-card,
+  .product-obligation-card,
   .half-adder-compare,
   .circuit-reading-strip,
   .controlled-branch-card,
@@ -7497,6 +7567,7 @@ legend {
   .two-slider-grid,
   .stream-audit-strip,
   .cleanup-ledger,
+  .product-obligation-ledger,
   .cleanup-wire,
   .accumulator-summary,
   .accumulator-grid,
