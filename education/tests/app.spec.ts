@@ -866,6 +866,8 @@ test('maps original education requirements to concrete course coverage', async (
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('12/12');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Start from zero quantum computing');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Teach the whole circuit stack');
+  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Current candidates and blockers page');
+  await expect(page.getByTestId('course-coverage-audit-lab')).not.toContainText('Current repo contract strip');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Become useful enough to help improve the repo');
   await page.getByLabel('Show only boundary-aware coverage rows').check();
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('State remaining boundaries instead of pretending the course proves the repo result');

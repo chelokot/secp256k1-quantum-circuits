@@ -69,7 +69,7 @@ const coverageRows: CoverageRow[] = [
   {
     id: 'baselines',
     requirement: 'Present repo and Google baselines honestly',
-    evidence: ['Baseline explorer', 'Baseline tradeoff landscape', 'Accepted-baseline gate', 'Current repo contract strip'],
+    evidence: ['Baseline explorer', 'Baseline tradeoff landscape', 'Accepted-baseline gate', 'Current candidates and blockers page'],
     reviewerQuestion: 'Does it separate Google public lines, repo references, strict candidates, and accepted baselines?',
     status: 'covered',
   },
