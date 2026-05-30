@@ -621,6 +621,10 @@ test('separates external baselines, reference boundaries, and unaccepted candida
   await expect(page.getByTestId('baseline-explorer')).toContainText('Google low-gate public line');
   await expect(page.getByTestId('baseline-explorer')).toContainText('Repo older exact-family reference');
   await expect(page.getByTestId('baseline-explorer')).toContainText('Repo macro/ZKP wrapper reference');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Public reference');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Repo candidate');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Guard consequence');
+  await expect(page.getByTestId('baseline-explorer')).toContainText('Accepted baseline');
   await expect(page.getByTestId('baseline-explorer')).toContainText('reference boundary not accepted');
   await expect(page.getByTestId('baseline-explorer')).toContainText('1044q');
 });

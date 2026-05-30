@@ -7941,6 +7941,7 @@ code {
 
 .formula-rows div,
 .reduction-flow div,
+.baseline-status-key article,
 .baseline-explorer-grid article {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
@@ -7988,6 +7989,29 @@ code {
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: 0.75rem;
   margin-top: 1rem;
+}
+
+.baseline-status-key {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.baseline-status-key article {
+  border-color: rgba(99, 230, 190, 0.18);
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.baseline-status-key strong {
+  color: #ffffff;
+}
+
+.baseline-status-key p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .baseline-explorer-grid header {
@@ -8803,6 +8827,7 @@ legend {
   .magic-budget-boundary,
   .accumulator-vocab-grid,
   .scratch-contract-grid,
+  .baseline-status-key,
   .wire-timeline-panel,
   .cleanup-equation,
   .one-qubit-capability-row,
@@ -9055,6 +9080,7 @@ legend {
   .magic-budget-boundary,
   .accumulator-vocab-grid,
   .scratch-contract-grid,
+  .baseline-status-key,
   .wire-timeline-panel,
   .cleanup-equation,
   .one-qubit-capability-row,

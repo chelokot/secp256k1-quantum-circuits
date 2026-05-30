@@ -3532,9 +3532,9 @@ function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
           </p>
         </div>
         <div className="optimization-candidate-strip" aria-hidden="true">
-          <div><span>strict candidate</span><strong>{formatInt(strict.logical_qubits)}q</strong><em>{readableStatus(strict.status)}</em></div>
-          <div><span>guard corrected</span><strong>{formatInt(corrected.logical_qubits)}q</strong><em>{readableStatus(corrected.status)}</em></div>
-          <div><span>accepted baseline</span><strong>none yet</strong><em>{readableStatus(gate.decision)}</em></div>
+          <div><span>strict candidate</span><strong>{formatInt(strict.logical_qubits)}q</strong><em>candidate, not accepted</em></div>
+          <div><span>guard corrected</span><strong>{formatInt(corrected.logical_qubits)}q</strong><em>consequence, not accepted</em></div>
+          <div><span>accepted baseline</span><strong>none yet</strong><em>blocked</em></div>
         </div>
       </article>
 

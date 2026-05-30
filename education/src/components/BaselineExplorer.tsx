@@ -19,6 +19,25 @@ const formatCompact = (value: number) => {
   return new Intl.NumberFormat('en-US').format(value);
 };
 
+const statusKey = [
+  {
+    label: 'Public reference',
+    text: 'Useful comparison data from outside this repo; it does not prove this implementation.',
+  },
+  {
+    label: 'Repo candidate',
+    text: 'Repo-generated engineering evidence that still carries explicit blockers.',
+  },
+  {
+    label: 'Guard consequence',
+    text: 'A derived correction from a candidate, not a separately accepted baseline.',
+  },
+  {
+    label: 'Accepted baseline',
+    text: 'The slot stays empty until primitive stream, blockers, docs, and proof boundary agree.',
+  },
+];
+
 export function BaselineExplorer({ projectData }: { projectData: ProjectData }) {
   const rows = projectData.baselineRows;
   const maxQubits = d3.max(rows, (row) => row.logicalQubits) ?? 1;
@@ -32,6 +51,14 @@ export function BaselineExplorer({ projectData }: { projectData: ProjectData }) 
         <BarChart3 size={20} />
         <h3>Baseline status explorer</h3>
       </div>
+      <section className="baseline-status-key" aria-label="Baseline status key">
+        {statusKey.map((item) => (
+          <article key={item.label}>
+            <strong>{item.label}</strong>
+            <p>{item.text}</p>
+          </article>
+        ))}
+      </section>
       <div className="baseline-explorer-grid">
         {rows.map((row) => (
           <article key={row.id}>
