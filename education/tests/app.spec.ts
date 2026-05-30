@@ -522,6 +522,8 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await openLesson(page, 'coordinates');
   await expect(page.getByRole('heading', { name: 'Coordinates, infinity, and field slots' })).toBeVisible();
   await expect(page.getByTestId('coordinate-story')).toContainText('Coordinates are field elements, not plain integers');
+  await expect(page.getByTestId('coordinate-story')).toContainText('A field slot is a 256-wire bus');
+  await expect(page.getByTestId('coordinate-story')).toContainText('768 logical wires');
   await expect(page.getByTestId('coordinate-story')).toContainText('The same curve point can have several names');
   await expect(page.getByTestId('coordinate-story')).toContainText('A coordinate name is not the same as counted storage');
   await expect(page.getByTestId('coordinate-story')).toContainText('“Overwrite” means reversible in-place update');
@@ -537,6 +539,11 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await page.getByLabel('Projective scale').fill('5');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('(8, 5, 5)');
   await expect(page.getByTestId('coordinate-model-lab')).toContainText('3 field slots');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('Slot accountant');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('768 logical wires');
+  await page.getByRole('button', { name: 'Projective + temporaries' }).click();
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('1,280 logical wires');
+  await expect(page.getByTestId('coordinate-model-lab')).toContainText('formula scratch counts while live');
   await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Reversible overwrite lab');
   await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Allowed shape');
   await expect(page.getByTestId('reversible-overwrite-lab')).toContainText('Forbidden shape');

@@ -1944,6 +1944,29 @@ function CoordinatesStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule field-slot-bus-rule">
+        <div>
+          <h4>A field slot is a 256-wire bus</h4>
+          <p>
+            In the toy labs a coordinate looks like one small number. In the secp256k1
+            circuit, one coordinate-sized value is a whole field register. That means
+            256 logical quantum wires that move together as one coherent value.
+          </p>
+          <p>
+            So “carry X, Y, and Z” is not three tiny variables. It is three field slots:
+            <MathTex tex="3\cdot256=768" /> logical wires before any temporaries,
+            lookup lanes, controls, or cleanup workspace are added.
+          </p>
+        </div>
+        <div className="field-slot-bus-card" aria-hidden="true">
+          <span>one coordinate</span>
+          <strong>256 logical wires</strong>
+          <i />
+          <span>X, Y, Z</span>
+          <strong>768 logical wires</strong>
+        </div>
+      </article>
+
       <article className="story-question">
         <h4>The same curve point can have several names</h4>
         <p>

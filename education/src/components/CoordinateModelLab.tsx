@@ -4,6 +4,28 @@ import { MathTex } from './MathText';
 
 const prime = 17;
 const affinePoint = { x: 5, y: 1 };
+const fieldBits = 256;
+
+const slotProfiles = [
+  {
+    id: 'affine',
+    label: 'Affine point',
+    slots: ['x', 'y'],
+    note: 'compact point name, but slope division asks for inversion inside point-add',
+  },
+  {
+    id: 'projective',
+    label: 'Projective carrier',
+    slots: ['X', 'Y', 'Z'],
+    note: 'one extra scale slot avoids paying inversion at every hot point-add',
+  },
+  {
+    id: 'projective_temps',
+    label: 'Projective + temporaries',
+    slots: ['X', 'Y', 'Z', 'A', 'B'],
+    note: 'formula scratch counts while live; names like A and B are not free',
+  },
+] as const;
 
 const mod = (value: number) => ((value % prime) + prime) % prime;
 
@@ -16,6 +38,9 @@ function inv(value: number) {
 
 export function CoordinateModelLab() {
   const [scale, setScale] = useState(3);
+  const [profileId, setProfileId] = useState<(typeof slotProfiles)[number]['id']>('projective');
+  const slotProfile = slotProfiles.find((profile) => profile.id === profileId) ?? slotProfiles[1];
+  const logicalWires = slotProfile.slots.length * fieldBits;
   const projective = useMemo(() => ({
     x: mod(affinePoint.x * scale),
     y: mod(affinePoint.y * scale),
@@ -100,6 +125,36 @@ export function CoordinateModelLab() {
         <div><span>Projective live coordinates</span><strong>X, Y, Z</strong><em>3 field slots</em></div>
         <div><span>Repo consequence</span><strong>slot pressure</strong><em>every extra field value is 256 logical wires</em></div>
       </div>
+      <section className="slot-accountant-panel" aria-label="Field-slot accountant">
+        <div>
+          <h4>Slot accountant</h4>
+          <p>
+            Count field-sized live values, then multiply by 256. This is the first
+            accounting move behind the repo’s qubit disputes.
+          </p>
+          <div className="slot-profile-buttons">
+            {slotProfiles.map((profile) => (
+              <button
+                className={profile.id === profileId ? 'selected' : ''}
+                key={profile.id}
+                type="button"
+                onClick={() => setProfileId(profile.id)}
+              >
+                {profile.label}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="slot-accountant-card">
+          <span>{slotProfile.label}</span>
+          <strong>{logicalWires.toLocaleString('en-US')} logical wires</strong>
+          <p>{slotProfile.slots.length} field slots * {fieldBits} wires per slot</p>
+          <div className="slot-chip-row">
+            {slotProfile.slots.map((slot) => <i key={slot}>{slot}</i>)}
+          </div>
+          <p>{slotProfile.note}</p>
+        </div>
+      </section>
       <div className="slot-audit-strip">
         <article>
           <span>Field slot</span>

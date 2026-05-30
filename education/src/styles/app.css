@@ -2875,8 +2875,42 @@ code {
 .coordinate-division-rule,
 .infinity-rule,
 .coordinate-slot-rule,
+.field-slot-bus-rule,
 .coordinate-overwrite-rule {
   border-color: rgba(99, 230, 190, 0.2);
+}
+
+.field-slot-bus-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.field-slot-bus-card span,
+.field-slot-bus-card strong {
+  display: block;
+}
+
+.field-slot-bus-card span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.field-slot-bus-card strong {
+  color: #ffffff;
+  font-size: 1.15rem;
+  overflow-wrap: anywhere;
+}
+
+.field-slot-bus-card i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
 .coordinate-slot-contract {
@@ -9170,6 +9204,97 @@ code {
   gap: 0.75rem;
 }
 
+.slot-accountant-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0.85rem;
+  align-items: stretch;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.55rem;
+  padding: 0.9rem;
+  margin-top: 1rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.slot-accountant-panel h4 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.slot-accountant-panel p {
+  margin: 0.45rem 0 0;
+  color: #c9d6e2;
+  line-height: 1.45;
+}
+
+.slot-profile-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
+}
+
+.slot-profile-buttons button {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.13);
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.7rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.055);
+  cursor: pointer;
+}
+
+.slot-profile-buttons button.selected {
+  border-color: rgba(99, 230, 190, 0.62);
+  color: #06110f;
+  background: #63e6be;
+}
+
+.slot-accountant-card {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(245, 207, 107, 0.06);
+}
+
+.slot-accountant-card span,
+.slot-accountant-card strong {
+  display: block;
+}
+
+.slot-accountant-card span {
+  color: #93a4b7;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.slot-accountant-card strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  font-size: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.slot-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.75rem;
+}
+
+.slot-chip-row i {
+  min-width: 2.4rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.28);
+  border-radius: 0.45rem;
+  padding: 0.35rem 0.45rem;
+  color: #dffbf5;
+  background: rgba(99, 230, 190, 0.08);
+  text-align: center;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-style: normal;
+  font-weight: 800;
+}
+
 .overwrite-contract-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -9516,6 +9641,7 @@ legend {
   .candidate-score-strip,
   .fourier-grid,
   .state-vector-grid,
+  .slot-accountant-panel,
   .magic-status-grid,
   .magic-history-lab-panel,
   .stack-map-grid,
@@ -9782,6 +9908,7 @@ legend {
   .candidate-score-strip,
   .fourier-grid,
   .state-vector-grid,
+  .slot-accountant-panel,
   .magic-status-grid,
   .magic-history-lab-panel,
   .stack-map-grid,
