@@ -330,17 +330,21 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 
   await openLesson(page, 'clifford');
   await expect(page.getByTestId('clifford-story')).toContainText('Why there is a second cost axis');
+  await expect(page.getByTestId('clifford-story')).toContainText('Cost category is not the same as gate size');
   await expect(page.getByTestId('clifford-story')).toContainText('The stabilizer map is a restricted but useful world');
   await expect(page.getByTestId('clifford-story')).toContainText('Compact does not mean classical');
+  await expect(page.getByTestId('clifford-story')).toContainText('Why arithmetic pays magic');
   await expect(page.getByTestId('clifford-story')).toContainText('A magic step leaves the cheap map');
   await expect(page.getByTestId('clifford-story')).toContainText('Magic states behave like consumable fuel');
   await expect(page.getByTestId('clifford-story')).toContainText('Why the repo does not report “all gates” as one number');
+  await expect(page.getByTestId('clifford-story')).toContainText('Two designs can win different axes');
   await expect(page.getByTestId('clifford-story')).toContainText('Peak qubits and non-Clifford count are separate headline axes');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Stabilizer vs magic wheel');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('State class');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer');
   await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('magic');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Sequence ledger');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Clifford quarter-turn');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('non-Clifford eighth-turn');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('needs magic accounting');
@@ -639,7 +643,9 @@ test('bridges logical repo rows to an illustrative physical-qubit envelope', asy
   await openLesson(page, 'logic-physical');
 
   await expect(page.getByTestId('logical-physical-story')).toContainText('The repo counts the algorithm layer');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('Ask which layer the number belongs to');
   await expect(page.getByTestId('logical-physical-story')).toContainText('“Qubit” names three different layers here');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('A logical resource result is still useful');
   await expect(page.getByTestId('logical-physical-story')).toContainText('A logical qubit is protected information');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Read code parameters as a hardware contract');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Error correction is a running service loop');
@@ -647,6 +653,7 @@ test('bridges logical repo rows to an illustrative physical-qubit envelope', asy
   await expect(page.getByTestId('logical-physical-story')).toContainText('The boundary of the claim');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Turning it into a hardware claim requires');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Hardware forecast');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('450');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('885.6k');
@@ -672,6 +679,8 @@ test('teaches logical encoding with a repetition-code toy decoder', async ({ pag
   await selectRouteLab(page, /Error-correction toy/);
 
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Error-correction toy');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Logical value');
+  await expect(page.getByTestId('error-correction-toy-lab')).toContainText('not a surface-code layout or decoder');
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('majority vote');
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('Manual decode: pass');
   await expect(page.getByTestId('error-correction-toy-lab')).toContainText('11,110');
@@ -691,6 +700,8 @@ test('teaches non-Clifford magic budget pressure separately from qubits', async 
   await selectRouteLab(page, /Magic budget/);
 
   await expect(page.getByTestId('magic-budget-lab')).toContainText('Non-Clifford magic budget');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('What the dial means');
+  await expect(page.getByTestId('magic-budget-lab')).toContainText('not a runtime forecast');
   await expect(page.getByTestId('magic-budget-lab')).toContainText('36,973,222');
   await expect(page.getByTestId('magic-budget-lab')).toContainText('10,000,000');
   await expect(page.getByTestId('magic-budget-lab')).toContainText('3.7 days');

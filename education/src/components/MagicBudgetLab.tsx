@@ -43,6 +43,22 @@ export function MagicBudgetLab({ projectData }: { projectData: ProjectData }) {
         Non-Clifford gates are the scarce magic-state fuel. The budget dial shows why
         the repo tracks gate count separately from live logical qubits.
       </p>
+      <section className="magic-budget-boundary" aria-label="Magic budget model boundary">
+        <article>
+          <strong>What the dial means</strong>
+          <p>
+            It divides the selected non-Clifford ledger by an imagined factory capacity
+            so the pressure is easy to feel.
+          </p>
+        </article>
+        <article>
+          <strong>What it does not mean</strong>
+          <p>
+            It is not a runtime forecast: no routing, cycle time, decoder latency,
+            factory layout, or target failure rate is modeled here.
+          </p>
+        </article>
+      </section>
 
       <div className="magic-controls">
         <label>

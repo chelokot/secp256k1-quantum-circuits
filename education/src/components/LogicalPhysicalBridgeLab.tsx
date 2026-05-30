@@ -47,6 +47,20 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
         it exposes the extra layer that turns a logical circuit into a physical-qubit
         envelope.
       </p>
+      <section className="physical-layer-warning" aria-label="Logical and physical claim boundary">
+        <article>
+          <strong>Logical result</strong>
+          <p>Chosen circuit row, peak logical wires, and non-Clifford ledger.</p>
+        </article>
+        <article>
+          <strong>Illustrative envelope</strong>
+          <p>One visible multiplier applied on top of the logical result.</p>
+        </article>
+        <article>
+          <strong>Hardware forecast</strong>
+          <p>Requires a complete fault-tolerance and architecture model, not provided here.</p>
+        </article>
+      </section>
 
       <div className="physical-controls">
         <label>

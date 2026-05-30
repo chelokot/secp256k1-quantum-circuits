@@ -1618,8 +1618,87 @@ code {
 .stabilizer-ledger-rule,
 .magic-rule,
 .magic-factory-rule,
-.clifford-universal-rule {
+.clifford-universal-rule,
+.clifford-category-rule,
+.arithmetic-magic-rule,
+.two-axis-rule {
   border-color: rgba(245, 207, 107, 0.22);
+}
+
+.gate-category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.gate-category-grid span,
+.two-axis-example span,
+.layer-question-grid span {
+  display: grid;
+  gap: 0.22rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.62rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.gate-category-grid b,
+.two-axis-example b,
+.layer-question-grid b {
+  color: #ffffff;
+}
+
+.gate-category-grid i,
+.two-axis-example i,
+.layer-question-grid i {
+  color: #b4c4d6;
+  font-size: 0.82rem;
+  font-style: normal;
+}
+
+.arithmetic-magic-ledger,
+.logical-resource-receipt {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 1rem minmax(0, 1fr) 1rem minmax(0, 1fr) 1rem minmax(0, 1fr);
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.logical-resource-receipt {
+  grid-template-columns: 1fr;
+}
+
+.arithmetic-magic-ledger span,
+.logical-resource-receipt span {
+  display: grid;
+  place-items: center;
+  min-height: 3.1rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  color: #dce7f2;
+  background: rgba(245, 207, 107, 0.07);
+  text-align: center;
+}
+
+.logical-resource-receipt span {
+  border-color: rgba(99, 230, 190, 0.22);
+  background: rgba(99, 230, 190, 0.065);
+}
+
+.arithmetic-magic-ledger i,
+.logical-resource-receipt i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #f5cf6b, #63e6be);
+}
+
+.logical-resource-receipt i {
+  display: none;
+}
+
+.two-axis-example {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .stabilizer-map {
@@ -1786,6 +1865,42 @@ code {
     linear-gradient(45deg, transparent 0 54%, rgba(99, 230, 190, 0.45) 54% 61%, transparent 61%);
 }
 
+.magic-sequence-ledger {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.9rem 0;
+}
+
+.magic-sequence-ledger h4 {
+  margin: 0;
+}
+
+.magic-sequence-ledger article {
+  display: grid;
+  grid-template-columns: minmax(5rem, 0.45fr) minmax(6rem, 0.45fr) minmax(12rem, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.magic-sequence-ledger strong {
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.magic-sequence-ledger span {
+  color: #f5cf6b;
+  font-weight: 800;
+}
+
+.magic-sequence-ledger p {
+  margin: 0;
+  color: #b4c4d6;
+}
+
 .logical-physical-story {
   display: grid;
   gap: 0.9rem;
@@ -1820,8 +1935,16 @@ code {
 .qubit-name-rule,
 .qec-service-rule,
 .code-parameter-rule,
-.physical-estimate-rule {
+.physical-estimate-rule,
+.layer-question-rule,
+.logical-resource-receipt-rule {
   border-color: rgba(99, 230, 190, 0.2);
+}
+
+.layer-question-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
 .encoding-rule {
@@ -7876,6 +7999,50 @@ code {
   margin: 1rem 0;
 }
 
+.physical-layer-warning,
+.error-correction-boundary,
+.magic-budget-boundary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.magic-budget-boundary {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.physical-layer-warning article,
+.error-correction-boundary article,
+.magic-budget-boundary article {
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.physical-layer-warning article:first-child,
+.error-correction-boundary article:first-child,
+.magic-budget-boundary article:first-child {
+  border-color: rgba(99, 230, 190, 0.2);
+  background: rgba(99, 230, 190, 0.06);
+}
+
+.physical-layer-warning strong,
+.error-correction-boundary strong,
+.magic-budget-boundary strong {
+  display: block;
+  color: #ffffff;
+}
+
+.physical-layer-warning p,
+.error-correction-boundary p,
+.magic-budget-boundary p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+  line-height: 1.45;
+}
+
 .physical-controls label {
   display: grid;
   gap: 0.45rem;
@@ -8522,6 +8689,13 @@ legend {
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
+  .gate-category-grid,
+  .arithmetic-magic-ledger,
+  .logical-resource-receipt,
+  .layer-question-grid,
+  .physical-layer-warning,
+  .error-correction-boundary,
+  .magic-budget-boundary,
   .wire-timeline-panel,
   .cleanup-equation,
   .one-qubit-capability-row,
@@ -8561,6 +8735,7 @@ legend {
   .claim-verdict-strip,
   .magic-controls,
   .magic-gate-legend,
+  .magic-sequence-ledger article,
   .magic-grid,
   .magic-stack,
   .trust-repair-strip,
@@ -8643,6 +8818,16 @@ legend {
   .gate-rule-strip,
   .bell-ladder-panel {
     grid-template-columns: 1fr;
+  }
+
+  .arithmetic-magic-ledger,
+  .logical-resource-receipt {
+    grid-template-columns: 1fr;
+  }
+
+  .arithmetic-magic-ledger i,
+  .logical-resource-receipt i {
+    display: none;
   }
 }
 
@@ -8752,6 +8937,13 @@ legend {
   .story-card-grid,
   .story-motion-grid,
   .story-rule,
+  .gate-category-grid,
+  .arithmetic-magic-ledger,
+  .logical-resource-receipt,
+  .layer-question-grid,
+  .physical-layer-warning,
+  .error-correction-boundary,
+  .magic-budget-boundary,
   .wire-timeline-panel,
   .cleanup-equation,
   .one-qubit-capability-row,
@@ -8789,6 +8981,7 @@ legend {
   .claim-verdict-strip,
   .magic-controls,
   .magic-gate-legend,
+  .magic-sequence-ledger article,
   .magic-grid,
   .magic-stack,
   .trust-repair-strip,

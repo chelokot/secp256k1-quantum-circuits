@@ -100,6 +100,23 @@ export function StabilizerMagicLab() {
         </button>
       </div>
 
+      <section className="magic-sequence-ledger" aria-label="Selected magic sequence ledger">
+        <h4>Sequence ledger</h4>
+        {gates.length === 0 ? (
+          <article>
+            <strong>identity</strong>
+            <span>no cost yet</span>
+            <p>The state is still on a stabilizer axis, so the toy counter stays at zero.</p>
+          </article>
+        ) : gates.map((gate, index) => (
+          <article key={`${gate}-${index}`}>
+            <strong>{index + 1}. {gate}</strong>
+            <span>{gateKind[gate]}</span>
+            <p>{gateLegend[gate].description}</p>
+          </article>
+        ))}
+      </section>
+
       <div className="magic-status-grid">
         <article>
           <span>State class</span>

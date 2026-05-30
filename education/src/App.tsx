@@ -820,6 +820,31 @@ function CliffordStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule clifford-category-rule">
+        <div>
+          <h4>Cost category is not the same as gate size</h4>
+          <p>
+            A gate can touch one wire or several wires. Separately, it can be Clifford
+            or non-Clifford. Clifford is a structural category: the gate keeps the
+            stabilizer bookkeeping closed. Non-Clifford is the category that escapes
+            that bookkeeping and usually needs magic-state machinery in a fault-tolerant
+            implementation.
+          </p>
+          <p>
+            That is why <code>CX</code> can touch two wires and still be Clifford, while
+            <code>T</code> touches one wire and is still non-Clifford.
+          </p>
+        </div>
+        <div className="gate-category-grid" aria-hidden="true">
+          <span><b>H</b><i>one wire, Clifford</i></span>
+          <span><b>S</b><i>one wire, Clifford</i></span>
+          <span><b>CX</b><i>two wires, Clifford</i></span>
+          <span><b>T</b><i>one wire, non-Clifford</i></span>
+          <span><b>CCZ</b><i>three wires, non-Clifford</i></span>
+          <span><b>Toffoli</b><i>three wires, non-Clifford work</i></span>
+        </div>
+      </article>
+
       <article className="story-rule stabilizer-rule">
         <div>
           <h4>The stabilizer map is a restricted but useful world</h4>
@@ -864,6 +889,33 @@ function CliffordStoryPanel() {
           <div><span>before H</span><strong>Z fact</strong></div>
           <div><span>after H</span><strong>X fact</strong></div>
           <div><span>after CX</span><strong>parity fact</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule arithmetic-magic-rule">
+        <div>
+          <h4>Why arithmetic pays magic</h4>
+          <p>
+            Reversible arithmetic needs branch products: “if this bit and that bit are
+            both 1, update the target.” That is the Toffoli shape. It is reversible, but
+            it is not inside the Clifford stabilizer map, so it lands in the expensive
+            non-Clifford ledger.
+          </p>
+          <p>
+            Large field multiplication, comparison, and table selection are built from
+            many such controlled product decisions. The repo therefore tracks
+            non-Clifford count as the arithmetic work ledger, not as an optional
+            presentation detail.
+          </p>
+        </div>
+        <div className="arithmetic-magic-ledger" aria-hidden="true">
+          <span>compare bits</span>
+          <i />
+          <span>controlled product</span>
+          <i />
+          <span>Toffoli / CCZ work</span>
+          <i />
+          <span>non-Clifford count</span>
         </div>
       </article>
 
@@ -931,6 +983,22 @@ function CliffordStoryPanel() {
           <span>Clifford: H, S, CX</span>
           <span>magic ingredient: T / CCZ / Toffoli</span>
           <span>arithmetic spends the magic ledger</span>
+        </div>
+      </article>
+
+      <article className="story-rule two-axis-rule">
+        <div>
+          <h4>Two designs can win different axes</h4>
+          <p>
+            A schedule can reuse workspace aggressively and lower peak logical qubits,
+            while spending more arithmetic work over time. Another schedule can keep
+            more wires live to reduce repeated non-Clifford work. Neither row dominates
+            until both axes are visible.
+          </p>
+        </div>
+        <div className="two-axis-example" aria-hidden="true">
+          <span><b>low qubits</b><i>fewer live wires, more repeated work</i></span>
+          <span><b>low magic</b><i>more live wires, fewer expensive rows</i></span>
         </div>
       </article>
 
@@ -1008,6 +1076,24 @@ function LogicalPhysicalStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule layer-question-rule">
+        <div>
+          <h4>Ask which layer the number belongs to</h4>
+          <p>
+            A quantum-resource sentence is ambiguous until the layer is named. Is the
+            number counting algorithm wires, encoded logical qubits, physical carriers,
+            or a full machine footprint with magic factories and routing? This repo’s
+            core result is the first layer: executable logical circuit resources.
+          </p>
+        </div>
+        <div className="layer-question-grid" aria-hidden="true">
+          <span><b>algorithm</b><i>live logical wires</i></span>
+          <span><b>encoding</b><i>physical carriers per logical</i></span>
+          <span><b>factory</b><i>magic throughput and footprint</i></span>
+          <span><b>machine</b><i>layout, timing, decoder, routing</i></span>
+        </div>
+      </article>
+
       <article className="story-rule qubit-name-rule">
         <div>
           <h4>“Qubit” names three different layers here</h4>
@@ -1028,6 +1114,32 @@ function LogicalPhysicalStoryPanel() {
           <div><span>repo logical wire</span><strong>algorithm resource</strong></div>
           <div><span>QEC logical qubit</span><strong>encoded information</strong></div>
           <div><span>hardware qubit</span><strong>backend carrier</strong></div>
+        </div>
+      </article>
+
+      <article className="story-rule logical-resource-receipt-rule">
+        <div>
+          <h4>A logical resource result is still useful</h4>
+          <p>
+            Keeping the claim at the logical-circuit layer is not weakness. It lets
+            circuit designs be compared before choosing a hardware architecture. If a
+            schedule needs fewer live logical wires or fewer non-Clifford rows, every
+            later physical estimate inherits that improvement under its own assumptions.
+          </p>
+          <p>
+            The mistake is not reporting logical resources. The mistake is silently
+            relabeling them as hardware devices without the missing fault-tolerance
+            contract.
+          </p>
+        </div>
+        <div className="logical-resource-receipt" aria-hidden="true">
+          <span>circuit rows</span>
+          <i />
+          <span>logical resources</span>
+          <i />
+          <span>explicit physical assumptions</span>
+          <i />
+          <span>hardware estimate</span>
         </div>
       </article>
 

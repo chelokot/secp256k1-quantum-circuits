@@ -84,6 +84,20 @@ export function ErrorCorrectionToyLab({ projectData }: { projectData: ProjectDat
         logical qubit is an encoded object: several noisy physical carriers vote so a small
         number of physical errors does not flip the represented logical value.
       </p>
+      <section className="error-correction-boundary" aria-label="Error correction toy boundary">
+        <article>
+          <strong>Carrier</strong>
+          <p>One noisy physical bit in this toy repetition code.</p>
+        </article>
+        <article>
+          <strong>Logical value</strong>
+          <p>The majority value represented by the carrier block.</p>
+        </article>
+        <article>
+          <strong>Boundary</strong>
+          <p>This demonstrates encoding intuition, not a surface-code layout or decoder.</p>
+        </article>
+      </section>
 
       <div className="error-code-grid">
         <label>
