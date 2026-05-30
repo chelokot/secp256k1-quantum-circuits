@@ -67,8 +67,8 @@ export function ComputationModelBridge() {
           </div>
           <div role="row">
             <span role="cell">State before a step</span>
-            <span role="cell"><MathTex tex="0101" /> is the stored value.</span>
-            <span role="cell"><MathTex tex="\sum_x \alpha_x|x\rangle" /> is the stored amplitude vector.</span>
+            <span role="cell"><code>0101</code> is the stored value.</span>
+            <span role="cell"><code>sum alpha_x |x&gt;</code> is the stored amplitude vector.</span>
           </div>
           <div role="row">
             <span role="cell">Operation</span>
@@ -83,9 +83,33 @@ export function ComputationModelBridge() {
           <div role="row">
             <span role="cell">Readout</span>
             <span role="cell">Read the current bit string.</span>
-            <span role="cell">Sample one label with probability <MathTex tex="|\alpha_x|^2" />.</span>
+            <span role="cell">Sample one label with probability <code>|alpha_x|^2</code>.</span>
           </div>
         </div>
+      </section>
+
+      <section className="program-object-flow" aria-label="From program object to resource object">
+        <article>
+          <strong>1. Program meaning</strong>
+          <p>
+            The first question is semantic: if the circuit starts from the promised
+            input, does the sequence of operations implement the intended attack?
+          </p>
+        </article>
+        <article>
+          <strong>2. Executable rows</strong>
+          <p>
+            The next question is mechanical: can that meaning be expressed as concrete
+            gate rows over named wires, without hidden measurement or erased scratch?
+          </p>
+        </article>
+        <article>
+          <strong>3. Resource scan</strong>
+          <p>
+            Only after rows exist can the repo scan live intervals and count the peak
+            quantum storage and expensive non-Clifford work.
+          </p>
+        </article>
       </section>
 
       <div className="comparison-table" role="table" aria-label="Classical and quantum computation comparison">

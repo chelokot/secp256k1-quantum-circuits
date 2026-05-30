@@ -5,6 +5,11 @@ type GateKind = 'H' | 'X' | 'CX' | 'CCX' | 'M';
 type WireName = 'q0' | 'q1' | 'q2';
 
 const wireNames: WireName[] = ['q0', 'q1', 'q2'];
+const wireOwner: Record<WireName, string> = {
+  q0: 'source register',
+  q1: 'source register',
+  q2: 'scratch/output lane',
+};
 const gateCost: Record<GateKind, { nonClifford: number; qubitsTouched: number; label: string; operands: string; wires: WireName[]; effect: string }> = {
   H: { nonClifford: 0, qubitsTouched: 1, label: 'Hadamard', operands: 'q0', wires: ['q0'], effect: 'creates a 0/1 amplitude split' },
   X: { nonClifford: 0, qubitsTouched: 1, label: 'Bit flip', operands: 'q2', wires: ['q2'], effect: 'flips one target wire' },
@@ -32,9 +37,19 @@ export function CircuitBuilder() {
     return {
       wire,
       role: wire === 'q2' ? 'target/output lane' : 'source/control lane',
+      owner: wireOwner[wire],
+      firstRow: rows[0]?.row ?? null,
+      lastRow: rows.at(-1)?.row ?? null,
       rows: rows.map((item) => item.row),
     };
   }), [gates]);
+  const liveRows = useMemo(() => {
+    const rows = Array.from({ length: gates.length }, (_, index) => index + 1);
+    return rows.map((row) => ({
+      row,
+      wires: wireLedger.filter((wire) => wire.firstRow !== null && wire.lastRow !== null && row >= wire.firstRow && row <= wire.lastRow),
+    }));
+  }, [gates.length, wireLedger]);
 
   return (
     <article className="lab-panel" data-testid="circuit-builder">
@@ -113,9 +128,42 @@ export function CircuitBuilder() {
           <article key={wire.wire}>
             <strong>{wire.wire}</strong>
             <span>{wire.role}</span>
-            <p>{wire.rows.length === 0 ? 'not touched yet' : `touched by rows ${wire.rows.join(', ')}`}</p>
+            <p>{wire.rows.length === 0 ? 'not touched yet' : `touched by rows ${wire.rows.join(', ')}; owner ${wire.owner}`}</p>
           </article>
         ))}
+      </section>
+      <section className="live-interval-scan" aria-label="Live interval scan">
+        <div>
+          <h4>Live interval scan</h4>
+          <p>
+            The resource engine does not count only the row being executed. A wire is
+            live from its first needed row through its last needed row, so peak qubits
+            come from overlapping intervals.
+          </p>
+        </div>
+        <div className="interval-table" role="table" aria-label="Toy live intervals">
+          <div role="row">
+            <strong role="columnheader">wire</strong>
+            <strong role="columnheader">owner</strong>
+            <strong role="columnheader">interval</strong>
+          </div>
+          {wireLedger.map((wire) => (
+            <div role="row" key={`${wire.wire}-interval`}>
+              <span role="cell">{wire.wire}</span>
+              <span role="cell">{wire.owner}</span>
+              <span role="cell">{wire.firstRow === null ? 'not live' : `rows ${wire.firstRow}-${wire.lastRow}`}</span>
+            </div>
+          ))}
+        </div>
+        <div className="peak-row-strip" aria-label="Rows scanned for peak live wires">
+          {liveRows.map((row) => (
+            <article key={row.row}>
+              <strong>row {row.row}</strong>
+              <span>{row.wires.length} live</span>
+              <p>{row.wires.map((wire) => wire.wire).join(', ') || 'none'}</p>
+            </article>
+          ))}
+        </div>
       </section>
       <dl className="metric-row">
         <div><dt>Rows</dt><dd>{gates.length}</dd></div>

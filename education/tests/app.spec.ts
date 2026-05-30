@@ -121,8 +121,12 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('lesson-detail-steps')).toHaveCount(0);
   await expect(page.getByTestId('orientation-story')).toContainText('A normal CPU step updates a bit string');
   await expect(page.getByTestId('orientation-story')).toContainText('The concrete target');
+  await expect(page.getByTestId('orientation-story')).toContainText('Not the claim');
+  await expect(page.getByTestId('orientation-story')).toContainText('For this exact secp256k1 attack circuit');
   await expect(page.getByTestId('orientation-story')).toContainText('The input is a public secp256k1 point');
   await expect(page.getByTestId('orientation-story')).toContainText('Shor-style circuit that recovers');
+  await expect(page.getByTestId('orientation-story')).toContainText('The program has two ledgers');
+  await expect(page.getByTestId('orientation-story')).toContainText('same row stream');
   await expect(page.getByText('A normal CPU step updates a bit string')).toBeVisible();
   await expect(page.getByTestId('lesson-recall-check')).toContainText('Answer before reveal');
   await expect(page.getByTestId('lesson-recall-check')).toContainText('What chain must the repo connect');
@@ -139,6 +143,8 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('computation-model-bridge')).toContainText('amplitude vector');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('Same skeleton, different state object');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('State before a step');
+  await expect(page.getByTestId('computation-model-bridge')).toContainText('Program meaning');
+  await expect(page.getByTestId('computation-model-bridge')).toContainText('Resource scan');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('A scratch wire remains part of the state until output or proven uncompute');
   await expect(page.getByTestId('computation-model-bridge')).toContainText('Sample one label');
   await selectRouteLab(page, /What has to be proved/);
@@ -148,6 +154,8 @@ test('loads the personal quantum circuit course and generated repo status', asyn
   await expect(page.getByTestId('project-proof-map')).toContainText('counted peak');
   await expect(page.getByTestId('project-proof-map')).toContainText('Weak evidence');
   await expect(page.getByTestId('project-proof-map')).toContainText('Strong evidence');
+  await expect(page.getByTestId('project-proof-map')).toContainText('What the repo is not trying to prove');
+  await expect(page.getByTestId('project-proof-map')).toContainText('same artifact digest');
   await expect(page.getByTestId('project-proof-map')).toContainText('The same executable circuit path');
   await expect(page.getByRole('heading', { name: 'Vocabulary spine' })).toHaveCount(0);
   await expect(page.getByLabel('Course navigation')).toContainText('Orientation');
@@ -362,6 +370,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('circuit-builder')).toContainText('Wire ledger');
   await expect(page.getByTestId('circuit-builder')).toContainText('q2');
   await expect(page.getByTestId('circuit-builder')).toContainText('target/output lane');
+  await expect(page.getByTestId('circuit-builder')).toContainText('Live interval scan');
+  await expect(page.getByTestId('circuit-builder')).toContainText('owner scratch/output lane');
+  await expect(page.getByTestId('circuit-builder')).toContainText('rows 1-3');
   await page.getByTestId('circuit-builder').getByRole('button', { name: 'CCX' }).click();
   await expect(page.getByTestId('circuit-builder')).toContainText('Non-Clifford');
   await expect(page.getByTestId('circuit-builder')).toContainText('2');

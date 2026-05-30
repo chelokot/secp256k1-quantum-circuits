@@ -51,6 +51,24 @@ export function ProjectProofMap() {
         The audit chain starts here. Any later claim must connect back to these four
         objects; otherwise it is not evidence for the headline resource number.
       </p>
+      <section className="claim-scope-grid" aria-label="Claim scope">
+        <article>
+          <strong>What the repo is not trying to prove</strong>
+          <p>
+            It is not proving that every possible implementation of secp256k1 discrete
+            log has the same cost, and it is not proving hardware runtime on a specific
+            machine.
+          </p>
+        </article>
+        <article>
+          <strong>What the repo must prove</strong>
+          <p>
+            It must prove one selected circuit family: same public-key problem, same
+            executable boundary, same primitive rows, same liveness scan, same artifact
+            digest.
+          </p>
+        </article>
+      </section>
       <div className="proof-boundary-warning">
         <article>
           <strong>Weak evidence</strong>

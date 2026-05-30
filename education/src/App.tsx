@@ -306,6 +306,24 @@ function OrientationStoryPanel() {
         </p>
       </article>
 
+      <div className="orientation-claim-split" aria-label="What the project is and is not proving">
+        <article>
+          <strong>Not the claim</strong>
+          <p>
+            “Quantum computers are generally powerful” or “Shor’s algorithm exists.”
+            Those are background facts, not this repo’s central result.
+          </p>
+        </article>
+        <article>
+          <strong>The claim</strong>
+          <p>
+            For this exact secp256k1 attack circuit, after lowering into executable
+            rows, the repo can justify a specific peak logical-qubit count and
+            non-Clifford count.
+          </p>
+        </article>
+      </div>
+
       <OrientationModelVisual />
 
       <article className="story-rule orientation-state-rule">
@@ -326,6 +344,28 @@ function OrientationStoryPanel() {
         <div className="state-label-stack" aria-hidden="true">
           <span><b>classical</b><i>0101</i></span>
           <span><b>quantum</b><i>a|0000&gt; + b|0101&gt; + ...</i></span>
+        </div>
+      </article>
+
+      <article className="story-rule orientation-program-rule">
+        <div>
+          <h4>The program has two ledgers</h4>
+          <p>
+            One ledger is functional: does the circuit implement the attack and return
+            the same answer on boundary tests? The other ledger is physical-resource:
+            which quantum wires are live at each row, who owns them, and which rows
+            spend expensive non-Clifford work?
+          </p>
+          <p>
+            A result is believable only when both ledgers refer to the same executable
+            circuit path. A semantic test of one object and a resource count of another
+            object do not combine into evidence.
+          </p>
+        </div>
+        <div className="orientation-ledger-card" aria-hidden="true">
+          <span><b>functional ledger</b><i>input {'->'} rows {'->'} output</i></span>
+          <span><b>resource ledger</b><i>row {'->'} live wires {'->'} cost</i></span>
+          <strong>same row stream</strong>
         </div>
       </article>
 

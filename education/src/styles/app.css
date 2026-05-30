@@ -840,6 +840,35 @@ code {
   gap: 0.75rem;
 }
 
+.claim-scope-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.claim-scope-grid article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.claim-scope-grid article:first-child {
+  border-color: rgba(245, 207, 107, 0.18);
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.claim-scope-grid strong {
+  display: block;
+  color: #ffffff;
+}
+
+.claim-scope-grid p {
+  margin: 0.4rem 0 0;
+  color: #d8e3ef;
+  line-height: 1.5;
+}
+
 .proof-boundary-warning article {
   border: 0.0625rem solid rgba(245, 207, 107, 0.18);
   border-radius: 0.5rem;
@@ -978,6 +1007,35 @@ code {
   vertical-align: bottom;
 }
 
+.program-skeleton-ledger code {
+  color: #fff7cf;
+}
+
+.program-object-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.program-object-flow article {
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.program-object-flow strong {
+  display: block;
+  color: #ffffff;
+}
+
+.program-object-flow p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+  line-height: 1.45;
+}
+
 .comparison-table {
   display: grid;
   gap: 0.35rem;
@@ -1041,6 +1099,34 @@ code {
   border-radius: 0.5rem;
   padding: 0.7rem;
   background: rgba(99, 230, 190, 0.06);
+}
+
+.orientation-claim-split {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 0.65rem;
+}
+
+.orientation-claim-split article {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.orientation-claim-split article:last-child {
+  border-color: rgba(99, 230, 190, 0.22);
+  background: rgba(99, 230, 190, 0.065);
+}
+
+.orientation-claim-split strong {
+  display: block;
+  color: #ffffff;
+}
+
+.orientation-claim-split p {
+  margin: 0.4rem 0 0;
+  color: #d8e3ef;
 }
 
 .orientation-model-strip strong {
@@ -1228,6 +1314,41 @@ code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-style: normal;
   overflow-wrap: anywhere;
+}
+
+.orientation-ledger-card {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.orientation-ledger-card span {
+  display: grid;
+  gap: 0.25rem;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(143, 182, 255, 0.06);
+}
+
+.orientation-ledger-card b {
+  color: #8fb6ff;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+}
+
+.orientation-ledger-card i {
+  color: #fff7cf;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-style: normal;
+}
+
+.orientation-ledger-card strong {
+  display: block;
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  color: #071018;
+  background: #63e6be;
+  text-align: center;
 }
 
 .proof-chain-mini {
@@ -4319,6 +4440,87 @@ code {
   margin: 0.35rem 0 0;
   color: #c9d6e2;
   font-size: 0.84rem;
+}
+
+.live-interval-scan {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.live-interval-scan h4 {
+  margin: 0;
+}
+
+.live-interval-scan p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+}
+
+.interval-table {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.interval-table [role="row"] {
+  display: grid;
+  grid-template-columns: 0.7fr 1fr 1fr;
+  gap: 0.45rem;
+}
+
+.interval-table span,
+.interval-table strong {
+  border-radius: 0.4rem;
+  padding: 0.45rem 0.55rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.interval-table strong {
+  color: #f5cf6b;
+}
+
+.interval-table span {
+  color: #dce7f2;
+  overflow-wrap: anywhere;
+}
+
+.peak-row-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr));
+  gap: 0.45rem;
+}
+
+.peak-row-strip article {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.peak-row-strip strong,
+.peak-row-strip span {
+  display: block;
+}
+
+.peak-row-strip strong {
+  color: #ffffff;
+}
+
+.peak-row-strip span {
+  margin-top: 0.2rem;
+  color: #63e6be;
+  font-size: 0.8rem;
+}
+
+.peak-row-strip p {
+  margin: 0.25rem 0 0;
+  color: #c9d6e2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
 }
 
 .metric-row {
@@ -8275,10 +8477,13 @@ legend {
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
+  .orientation-claim-split,
   .orientation-model-strip,
   .computer-flow-grid,
+  .program-object-flow,
   .program-skeleton-ledger [role="row"],
   .comparison-table > div,
+  .claim-scope-grid,
   .proof-boundary-warning,
   .qubit-motion-strip,
   .bell-steps,
@@ -8348,6 +8553,7 @@ legend {
   .physical-assumption-ledger,
   .physical-translation-receipt,
   .wire-ledger,
+  .interval-table [role="row"],
   .error-code-grid,
   .error-code-summary,
   .promotion-steps,
@@ -8501,10 +8707,13 @@ legend {
   .amplitude-bridge-grid,
   .concept-bridge-grid,
   .gate-literacy-grid,
+  .orientation-claim-split,
   .orientation-model-strip,
   .computer-flow-grid,
+  .program-object-flow,
   .program-skeleton-ledger [role="row"],
   .comparison-table > div,
+  .claim-scope-grid,
   .proof-boundary-warning,
   .qubit-motion-strip,
   .bell-steps,
@@ -8572,6 +8781,7 @@ legend {
   .physical-stack,
   .physical-assumption-ledger,
   .wire-ledger,
+  .interval-table [role="row"],
   .error-code-grid,
   .error-code-summary,
   .promotion-steps,
