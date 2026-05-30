@@ -1565,6 +1565,42 @@ function PhaseEstimationStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule phase-sum-rule">
+        <div>
+          <h4>The matcher is an arrow sum</h4>
+          <p>
+            Before the inverse QFT, branch <MathTex tex="j" /> of the control register
+            carries phase <MathTex tex="e^{2\pi i j\theta}" />. Testing output label{' '}
+            <MathTex tex="y" /> subtracts the candidate rhythm{' '}
+            <MathTex tex="e^{2\pi i j y/2^m}" /> and sums what remains:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="A_y=\frac{1}{2^m}\sum_{j=0}^{2^m-1}e^{2\pi i j(\theta-y/2^m)}" />
+          </p>
+          <p>
+            If <MathTex tex="y/2^m" /> matches <MathTex tex="\theta" />, every arrow
+            points the same way and the amplitude is large. If the label is wrong, the
+            arrows walk around the circle and mostly cancel.
+          </p>
+        </div>
+        <div className="phase-sum-sketch" aria-hidden="true">
+          <article>
+            <strong>matched label</strong>
+            <span />
+            <span />
+            <span />
+            <span />
+          </article>
+          <article>
+            <strong>wrong label</strong>
+            <span className="turn-0" />
+            <span className="turn-1" />
+            <span className="turn-2" />
+            <span className="turn-3" />
+          </article>
+        </div>
+      </article>
+
       <article className="story-rule phase-approx-rule">
         <div>
           <h4>Approximate phases produce peaks, not certainty</h4>

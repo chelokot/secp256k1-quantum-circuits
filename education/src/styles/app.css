@@ -2312,6 +2312,7 @@ code {
 .phase-kickback-rule,
 .phase-powers-rule,
 .fourier-readout-rule,
+.phase-sum-rule,
 .phase-approx-rule {
   border-color: rgba(245, 207, 107, 0.22);
 }
@@ -2488,6 +2489,54 @@ code {
 .fourier-match-sketch span.wrong-c {
   width: 24%;
   background: #f5cf6b;
+}
+
+.phase-sum-sketch {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.phase-sum-sketch article {
+  display: grid;
+  grid-template-columns: 7rem repeat(4, minmax(0, 1fr));
+  gap: 0.35rem;
+  align-items: center;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.phase-sum-sketch strong {
+  color: #dce7f2;
+  font-size: 0.82rem;
+}
+
+.phase-sum-sketch span {
+  display: block;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: #63e6be;
+  transform-origin: left center;
+}
+
+.phase-sum-sketch .turn-0 {
+  background: #f5cf6b;
+}
+
+.phase-sum-sketch .turn-1 {
+  background: #f5cf6b;
+  transform: rotate(24deg);
+}
+
+.phase-sum-sketch .turn-2 {
+  background: #f5cf6b;
+  transform: rotate(58deg);
+}
+
+.phase-sum-sketch .turn-3 {
+  background: #f5cf6b;
+  transform: rotate(104deg);
 }
 
 .precision-bit-row {
@@ -5095,7 +5144,8 @@ code {
 
 .phasor text {
   fill: #93a4b7;
-  font-size: 0.65rem;
+  font-size: 0.36rem;
+  font-weight: 800;
   text-anchor: middle;
 }
 
@@ -5185,6 +5235,83 @@ code {
   max-width: 100%;
   overflow-x: auto;
   vertical-align: bottom;
+}
+
+.matched-filter-ledger .katex {
+  white-space: nowrap;
+}
+
+.candidate-inspector {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.7fr);
+  gap: 0.85rem;
+  align-items: center;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.22);
+  border-radius: 0.55rem;
+  padding: 0.9rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.candidate-inspector h4 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.candidate-inspector p {
+  margin: 0.45rem 0 0;
+  color: #c9d6e2;
+  line-height: 1.45;
+}
+
+.candidate-inspector label {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 16rem;
+  margin-top: 0.85rem;
+  color: #dce7f2;
+}
+
+.candidate-inspector select {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.5rem;
+  padding: 0.55rem;
+  color: #edf2f7;
+  background: #121c27;
+}
+
+.candidate-inspector svg {
+  width: 100%;
+  min-width: 0;
+}
+
+.candidate-inspector circle,
+.candidate-inspector .axis {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.18);
+  stroke-width: 1.2;
+}
+
+.candidate-inspector .candidate-arrow {
+  stroke: rgba(99, 230, 190, 0.7);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.candidate-inspector text {
+  fill: #93a4b7;
+  font-size: 0.8rem;
+}
+
+.candidate-inspector .candidate-pass {
+  fill: #63e6be;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.candidate-inspector .candidate-fail {
+  fill: #f5cf6b;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
 .fourier-grid {
@@ -9288,6 +9415,7 @@ legend {
   .magic-status-grid,
   .magic-history-lab-panel,
   .stack-map-grid,
+  .candidate-inspector,
   .stack-status-row,
   .physical-controls,
   .physical-grid,
@@ -9550,6 +9678,7 @@ legend {
   .magic-status-grid,
   .magic-history-lab-panel,
   .stack-map-grid,
+  .candidate-inspector,
   .stack-status-row,
   .physical-controls,
   .physical-grid,

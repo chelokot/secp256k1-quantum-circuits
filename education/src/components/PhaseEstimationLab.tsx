@@ -11,6 +11,7 @@ function circularDistance(left: number, right: number) {
 
 export function PhaseEstimationLab() {
   const [phaseNumerator, setPhaseNumerator] = useState(3);
+  const [candidateValue, setCandidateValue] = useState(3);
   const precisionBits = 4;
   const denominator = 16;
   const phase = phaseNumerator / denominator;
@@ -26,6 +27,13 @@ export function PhaseEstimationLab() {
   const measured = bars.reduce((best, row) => (row.weight > best.weight ? row : best), bars[0]);
   const handAngles = [1, 2, 4, 8].map((power) => 2 * Math.PI * ((phase * power) % 1));
   const measuredBits = formatBinary(measured.value, precisionBits);
+  const candidate = bars[candidateValue];
+  const candidateBits = formatBinary(candidateValue, precisionBits);
+  const candidatePhaseGap = phase - candidate.estimate;
+  const candidateScore = Math.round((candidate.weight / peak) * 100);
+  const candidateArrows = Array.from({ length: denominator }, (_, index) => (
+    2 * Math.PI * index * candidatePhaseGap
+  ));
 
   return (
     <article className="lab-panel" data-testid="phase-estimation-lab">
@@ -67,10 +75,10 @@ export function PhaseEstimationLab() {
       </label>
       <div className="phasor-row" aria-label="Controlled powers as rotating phase hands">
         {handAngles.map((angle, index) => (
-          <svg viewBox="0 0 70 70" className="phasor" key={index} role="img" aria-label={`power ${2 ** index}`}>
+          <svg viewBox="0 0 70 78" className="phasor" key={index} role="img" aria-label={`power ${2 ** index}`}>
             <circle cx="35" cy="35" r="27" />
             <line x1="35" y1="35" x2={35 + Math.cos(angle) * 24} y2={35 + Math.sin(angle) * 24} />
-            <text x="35" y="65">2^{index}</text>
+            <text x="35" y="73">2^{index}</text>
           </svg>
         ))}
       </div>
@@ -103,6 +111,47 @@ export function PhaseEstimationLab() {
           <strong>winner {measuredBits}</strong>
           <p>The tallest bar is the label that best matches the hidden phase.</p>
         </article>
+      </section>
+      <section className="candidate-inspector" aria-label="Candidate rhythm inspector">
+        <div>
+          <h4>Test one candidate label</h4>
+          <p>
+            Pick a 4-bit label and watch the matcher subtract that rhythm from the
+            hidden phase. Aligned arrows mean reinforcement; a rotating walk means cancellation.
+          </p>
+          <label>
+            Candidate label
+            <select
+              aria-label="Candidate phase label"
+              value={candidateValue}
+              onChange={(event) => setCandidateValue(Number(event.currentTarget.value))}
+            >
+              {bars.map((bar) => (
+                <option key={bar.value} value={bar.value}>{formatBinary(bar.value, precisionBits)}</option>
+              ))}
+            </select>
+          </label>
+          <p className="mono-line">
+            test {candidateBits}: theta - y/16 = {(candidatePhaseGap).toFixed(3)}
+          </p>
+        </div>
+        <svg viewBox="0 0 180 130" role="img" aria-label="Candidate arrow sum">
+          <circle cx="64" cy="64" r="42" />
+          <line className="axis" x1="22" y1="64" x2="106" y2="64" />
+          <line className="axis" x1="64" y1="22" x2="64" y2="106" />
+          {candidateArrows.map((angle, index) => (
+            <line
+              className="candidate-arrow"
+              key={index}
+              x1="64"
+              y1="64"
+              x2={64 + Math.cos(angle) * 36}
+              y2={64 + Math.sin(angle) * 36}
+            />
+          ))}
+          <text x="124" y="52">score</text>
+          <text className={candidateScore > 80 ? 'candidate-pass' : 'candidate-fail'} x="124" y="76">{candidateScore}%</text>
+        </svg>
       </section>
       <div className="qft-bars" aria-label="Inverse QFT measurement distribution">
         {bars.map((bar) => (

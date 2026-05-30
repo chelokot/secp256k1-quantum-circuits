@@ -418,6 +418,8 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Phase kickback moves the angle onto the control');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Controlled powers write a binary rhythm');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('The inverse QFT is a rhythm matcher');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('The matcher is an arrow sum');
+  await expect(page.getByTestId('phase-estimation-story')).toContainText('points the same way');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Approximate phases produce peaks, not certainty');
   await expect(page.getByTestId('phase-estimation-story')).toContainText('Cost lives before readout');
   await expect(page.getByTestId('lab-route')).toContainText('Phase estimation lens');
@@ -426,6 +428,11 @@ test('shows phase estimation and toy curve arithmetic', async ({ page }) => {
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('State written by controls');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('try every 4-bit label');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('alignment wins');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('Test one candidate label');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('test 0011');
+  await page.getByLabel('Candidate phase label').selectOption('7');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('test 0111');
+  await expect(page.getByTestId('phase-estimation-lab')).toContainText('0%');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('winner 0011');
   await expect(page.getByTestId('phase-estimation-lab')).toContainText('largest measurement peak');
   await page.getByTestId('phase-estimation-lab').getByRole('slider').fill('5');
