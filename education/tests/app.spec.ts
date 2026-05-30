@@ -950,13 +950,23 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Peak witness row');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('fused output boundary');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('Owner assignment receipt');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('guard ladder');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('lookup_workspace -> needs guard_workspace');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('wrong semantic owner');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Owner load equations');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('lookup_workspace: 155 + 255 = 410/173');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('237q overflow');
   await page.getByLabel('Owner for guard ladder').selectOption('guard_workspace');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: pass');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('lookup_workspace: 155 = 155/173');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('guard_workspace: 255 = 255/255');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('255/255');
+  await page.getByLabel('Owner for phase bit').selectOption('lookup_workspace');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('owner match wrong, capacity ok');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('phase bit');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('lookup_workspace -> needs phase_shell');
 });
 
 test('keeps accepted-baseline promotion behind all blockers', async ({ page }) => {

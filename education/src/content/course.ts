@@ -334,6 +334,7 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'Every wire group needs exactly one owner, and every owner capacity must cover peak assigned live width.',
     coreIdeas: [
       'Exactly one owner per live wire group.',
+      'The owner must be the semantic owner, not any bucket with spare room.',
       'Owner capacity must cover peak assigned width.',
       'A qubit total should have a peak-row witness.',
       'Borrowed lanes are invalid until liveness proves aliasing.',

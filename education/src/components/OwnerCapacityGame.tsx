@@ -36,11 +36,23 @@ export function OwnerCapacityGame() {
       const formula = assigned.length === 0
         ? '0'
         : assigned.map((wire) => wire.width).join(' + ');
-      return { owner, capacity, formula, load, pass: load <= capacity };
+      return {
+        owner,
+        capacity,
+        formula,
+        load,
+        margin: capacity - load,
+        pass: load <= capacity,
+      };
     });
+    const assignmentRows = wires.map((wire) => ({
+      ...wire,
+      assignedOwner: assignments[wire.id],
+      pass: assignments[wire.id] === wire.requiredOwner,
+    }));
     const exactOwnerPass = wires.every((wire) => assignments[wire.id] === wire.requiredOwner);
     const capacityPass = rows.every((row) => row.pass);
-    return { rows, exactOwnerPass, capacityPass, pass: exactOwnerPass && capacityPass };
+    return { assignmentRows, rows, exactOwnerPass, capacityPass, pass: exactOwnerPass && capacityPass };
   }, [assignments]);
 
   return (
@@ -73,9 +85,20 @@ export function OwnerCapacityGame() {
           <div className={row.pass ? '' : 'bad-owner'} key={row.owner}>
             <span>{row.owner}</span>
             <strong>{row.load}/{row.capacity}</strong>
+            <em>{row.margin >= 0 ? `${row.margin}q room` : `${Math.abs(row.margin)}q overflow`}</em>
           </div>
         ))}
       </div>
+      <section className="owner-assignment-receipt" aria-label="Owner assignment receipt">
+        <h4>Owner assignment receipt</h4>
+        {audit.assignmentRows.map((wire) => (
+          <article className={wire.pass ? '' : 'bad-owner'} key={wire.id}>
+            <span>{wire.id}</span>
+            <strong>{wire.assignedOwner} {'->'} needs {wire.requiredOwner}</strong>
+            <p>{wire.pass ? 'semantic owner ok' : 'wrong semantic owner even before capacity math'}</p>
+          </article>
+        ))}
+      </section>
       <div className="owner-peak-witness">
         <article>
           <span>Peak witness row</span>

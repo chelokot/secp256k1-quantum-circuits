@@ -6727,6 +6727,12 @@ code {
   background: rgba(245, 207, 107, 0.065);
 }
 
+.owner-capacity-rows .bad-owner,
+.owner-assignment-receipt article.bad-owner {
+  border-color: #ff7070;
+  background: rgba(255, 112, 112, 0.11);
+}
+
 .column-loads span,
 .owner-capacity-rows span,
 .owner-peak-witness span {
@@ -6744,7 +6750,8 @@ code {
   overflow-wrap: anywhere;
 }
 
-.column-loads em {
+.column-loads em,
+.owner-capacity-rows em {
   display: block;
   margin-top: 0.18rem;
   color: #b7c3d0;
@@ -6816,6 +6823,53 @@ code {
 }
 
 .column-pressure-receipt p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.owner-assignment-receipt {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.owner-assignment-receipt h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.owner-assignment-receipt article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.owner-assignment-receipt span,
+.owner-assignment-receipt strong {
+  display: block;
+}
+
+.owner-assignment-receipt span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.owner-assignment-receipt strong {
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
+.owner-assignment-receipt p {
   margin: 0.45rem 0 0;
   color: #b7c3d0;
   font-size: 0.86rem;
@@ -10075,6 +10129,7 @@ legend {
   .product-obligation-ledger,
   .column-pressure-receipt,
   .selected-lifecycle-receipt,
+  .owner-assignment-receipt,
   .owner-peak-witness,
   .cleanup-wire,
   .accumulator-summary,
@@ -10353,6 +10408,7 @@ legend {
   .product-obligation-ledger,
   .column-pressure-receipt,
   .selected-lifecycle-receipt,
+  .owner-assignment-receipt,
   .owner-peak-witness,
   .cleanup-wire,
   .accumulator-summary,
