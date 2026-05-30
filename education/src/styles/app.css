@@ -2671,6 +2671,7 @@ code {
 .carry-compression-rule,
 .capacity-equation-rule,
 .peak-row-rule,
+.owner-witness-rule,
 .guard-ladder-rule,
 .proof-contract-rule,
 .artifact-interface-rule,
@@ -2697,6 +2698,7 @@ code {
 .modular-fold-card,
 .product-obligation-card,
 .peak-row-card,
+.owner-witness-card,
 .artifact-interface-card,
 .mini-witness-card,
 .evidence-matrix-card,
@@ -2717,6 +2719,7 @@ code {
 .modular-fold-card div,
 .product-obligation-card span,
 .peak-row-card div,
+.owner-witness-card span,
 .artifact-interface-card span,
 .mini-witness-card div,
 .evidence-matrix-card span,
@@ -2743,6 +2746,7 @@ code {
 .product-obligation-card span,
 .peak-row-card span,
 .peak-row-card strong,
+.owner-witness-card span,
 .mini-witness-card span,
 .mini-witness-card strong,
 .branch-selector-card span,
@@ -2765,6 +2769,7 @@ code {
 .modular-fold-card strong,
 .product-obligation-card span,
 .peak-row-card strong,
+.owner-witness-card span,
 .mini-witness-card strong,
 .branch-selector-card strong {
   color: #ffffff;
@@ -2875,6 +2880,19 @@ code {
 }
 
 .product-obligation-card span:first-child {
+  border-color: rgba(245, 207, 107, 0.28);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.owner-witness-card {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.owner-witness-card i {
+  display: none;
+}
+
+.owner-witness-card span:first-child {
   border-color: rgba(245, 207, 107, 0.28);
   background: rgba(245, 207, 107, 0.08);
 }
@@ -4836,17 +4854,46 @@ code {
   margin: 1rem 0;
 }
 
+.owner-peak-witness {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.75fr) minmax(14rem, 1fr) minmax(16rem, 1.25fr);
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.owner-peak-witness article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.owner-peak-witness article:nth-child(3) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.065);
+}
+
 .column-loads span,
-.owner-capacity-rows span {
+.owner-capacity-rows span,
+.owner-peak-witness span {
   display: block;
   color: #93a4b7;
   font-size: 0.78rem;
 }
 
 .column-loads strong,
-.owner-capacity-rows strong {
+.owner-capacity-rows strong,
+.owner-peak-witness strong {
   display: block;
   margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.owner-peak-witness p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
 }
 
 .assignment-list label {
@@ -7302,6 +7349,7 @@ legend {
   .program-contract-split,
   .stream-audit-card,
   .product-obligation-card,
+  .owner-witness-card,
   .half-adder-compare,
   .circuit-reading-strip,
   .controlled-branch-card,
@@ -7379,6 +7427,7 @@ legend {
   .stream-audit-strip,
   .cleanup-ledger,
   .product-obligation-ledger,
+  .owner-peak-witness,
   .cleanup-wire,
   .accumulator-summary,
   .accumulator-grid,
@@ -7488,6 +7537,7 @@ legend {
   .program-contract-split,
   .stream-audit-card,
   .product-obligation-card,
+  .owner-witness-card,
   .half-adder-compare,
   .circuit-reading-strip,
   .controlled-branch-card,
@@ -7568,6 +7618,7 @@ legend {
   .stream-audit-strip,
   .cleanup-ledger,
   .product-obligation-ledger,
+  .owner-peak-witness,
   .cleanup-wire,
   .accumulator-summary,
   .accumulator-grid,

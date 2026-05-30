@@ -33,7 +33,10 @@ export function OwnerCapacityGame() {
     const rows = Object.entries(owners).map(([owner, capacity]) => {
       const assigned = wires.filter((wire) => assignments[wire.id] === owner);
       const load = assigned.reduce((total, wire) => total + wire.width, 0);
-      return { owner, capacity, load, pass: load <= capacity };
+      const formula = assigned.length === 0
+        ? '0'
+        : assigned.map((wire) => wire.width).join(' + ');
+      return { owner, capacity, formula, load, pass: load <= capacity };
     });
     const exactOwnerPass = wires.every((wire) => assignments[wire.id] === wire.requiredOwner);
     const capacityPass = rows.every((row) => row.pass);
@@ -72,6 +75,25 @@ export function OwnerCapacityGame() {
             <strong>{row.load}/{row.capacity}</strong>
           </div>
         ))}
+      </div>
+      <div className="owner-peak-witness">
+        <article>
+          <span>Peak witness row</span>
+          <strong>fused output boundary</strong>
+          <p>All four toy wire groups are live before the row can release them.</p>
+        </article>
+        <article>
+          <span>Live wire groups</span>
+          <strong>{wires.map((wire) => `${wire.id} ${wire.width}q`).join(', ')}</strong>
+          <p>This row-local list is the source of the peak, not a manually chosen total.</p>
+        </article>
+        <article>
+          <span>Owner load equations</span>
+          {audit.rows.map((row) => (
+            <strong key={row.owner}>{row.owner}: {row.formula} = {row.load}/{row.capacity}</strong>
+          ))}
+          <p>Every owner is checked against numeric capacity at the same witness row.</p>
+        </article>
       </div>
       <p className={audit.pass ? 'audit-pass' : 'audit-fail'}>
         Audit: {audit.pass ? 'pass' : 'fail'}; owner match {audit.exactOwnerPass ? 'ok' : 'wrong'}, capacity {audit.capacityPass ? 'ok' : 'overflow'}

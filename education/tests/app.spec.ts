@@ -704,13 +704,21 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
   await expect(page.getByTestId('owner-capacity-story')).toContainText('An owner is a budget, not a nickname');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The mechanical rule');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The peak has a witness row');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('A capacity proof has two ledgers');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('owner buckets');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The guard gap is the concrete example');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('2,222');
   await selectRouteLab(page, /Capacity game/);
 
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('Peak witness row');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('fused output boundary');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('Owner load equations');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('lookup_workspace: 155 + 255 = 410/173');
   await page.getByLabel('Owner for guard ladder').selectOption('guard_workspace');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: pass');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('lookup_workspace: 155 = 155/173');
+  await expect(page.getByTestId('owner-capacity-game')).toContainText('guard_workspace: 255 = 255/255');
   await expect(page.getByTestId('owner-capacity-game')).toContainText('255/255');
 });
 

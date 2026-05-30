@@ -2408,6 +2408,29 @@ function OwnerCapacityStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule owner-witness-rule">
+        <div>
+          <h4>A capacity proof has two ledgers</h4>
+          <p>
+            The first ledger is row-local: at this exact row, these wire groups are
+            simultaneously live. The second ledger is owner-local: after assignment,
+            each owner carries the sum of the widths assigned to it at that same row.
+          </p>
+          <p>
+            A proof needs both. Saying “guard ladder belongs to lookup workspace” is
+            not enough; the lookup owner must have numeric room for lookup target plus
+            guard ladder if they are live together.
+          </p>
+        </div>
+        <div className="owner-witness-card" aria-hidden="true">
+          <span>peak row: live wire list</span>
+          <i />
+          <span>owner buckets: summed widths</span>
+          <i />
+          <span>capacity verdict: load {'<='} budget</span>
+        </div>
+      </article>
+
       <article className="story-rule guard-ladder-rule">
         <div>
           <h4>The guard gap is the concrete example</h4>
