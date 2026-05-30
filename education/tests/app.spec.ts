@@ -1345,6 +1345,15 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: blocked');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Compressed SP1 receipt');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Groth16 wrapper');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof-system binding inspector');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Groth16 wrapper is stale');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('fixture declares no input metadata');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('do not match current checked values');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('does not match current input');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Binding verdict: blocked');
+  await page.getByLabel('Proof system binding inspector').selectOption('compressed');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Compressed SP1 receipt is stale');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('match current checked values');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Verifier checks');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Still outside the verifier');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('compiler_verification_project/artifacts/proof_publication_status.json');

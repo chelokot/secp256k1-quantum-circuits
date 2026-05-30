@@ -58,6 +58,10 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
   const [fixturesCurrent, setFixturesCurrent] = useState(projectData.proofPublication.allCurrent);
   const [macroBoundaryClosed, setMacroBoundaryClosed] = useState(projectData.proofPublication.publicationReady);
   const [verifiedReleaseProofs, setVerifiedReleaseProofs] = useState(projectData.proofPublication.publicationReady);
+  const [selectedSystemName, setSelectedSystemName] = useState('groth16');
+  const selectedSystem = projectData.proofPublication.systems.find((system) => system.system === selectedSystemName)
+    ?? projectData.proofPublication.systems[0];
+  const selectedBlocker = projectData.proofPublication.blockers.find((blocker) => blocker.system === selectedSystem.system);
 
   const simulatedStatus = useMemo(() => {
     const open: string[] = [];
@@ -115,6 +119,61 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
           </div>
         </article>
       </div>
+
+      <section className="proof-binding-inspector" aria-label="Proof-system binding inspector">
+        <div>
+          <h4>Proof-system binding inspector</h4>
+          <p>
+            Pick a proof system and read the same chain a reviewer follows: input metadata,
+            public values, resource digest, proof bytes, verifier key, and remaining blocker.
+          </p>
+        </div>
+        <label>
+          <span>Proof system</span>
+          <select
+            aria-label="Proof system binding inspector"
+            value={selectedSystem.system}
+            onChange={(event) => setSelectedSystemName(event.currentTarget.value)}
+          >
+            {projectData.proofPublication.systems.map((system) => (
+              <option key={system.system} value={system.system}>{proofSystemLabel(system.system)}</option>
+            ))}
+          </select>
+        </label>
+        <div className="proof-binding-grid">
+          <article className={selectedSystem.current ? 'pass' : 'fail'}>
+            <span>System status</span>
+            <strong>{proofSystemLabel(selectedSystem.system)} is {selectedSystem.current ? 'current' : 'stale'}</strong>
+          </article>
+          <article className={selectedBlocker ? 'fail' : 'pass'}>
+            <span>Input metadata</span>
+            <strong>{selectedBlocker ? readable(selectedBlocker.inputBindingStatus) : 'binds current input metadata'}</strong>
+          </article>
+          <article className={selectedSystem.publicValuesMatchCurrent ? 'pass' : 'fail'}>
+            <span>Public values</span>
+            <strong>{selectedSystem.publicValuesMatchCurrent ? 'match current checked values' : 'do not match current checked values'}</strong>
+          </article>
+          <article className={selectedSystem.resourceDigestMatchesInput ? 'pass' : 'fail'}>
+            <span>Resource digest</span>
+            <strong>{selectedSystem.resourceDigestMatchesInput ? 'matches checked input' : 'does not match current input'}</strong>
+          </article>
+          <article className={selectedSystem.proofFileExists ? 'pass' : 'fail'}>
+            <span>Proof bundle</span>
+            <strong>{statusText(selectedSystem.proofFileExists)}</strong>
+          </article>
+          <article className={selectedSystem.verifierKeyFileExists === false ? 'fail' : 'pass'}>
+            <span>Verifier key</span>
+            <strong>{statusText(selectedSystem.verifierKeyFileExists)}</strong>
+          </article>
+        </div>
+        <div className={selectedSystem.current ? 'proof-binding-pass' : 'proof-binding-fail'}>
+          <strong>Binding verdict: {selectedSystem.current ? 'current' : 'blocked'}</strong>
+          <p>
+            {selectedBlocker?.requiredToClose
+              ?? (selectedSystem.staleReasons.length === 0 ? 'No stale reasons recorded for this system.' : selectedSystem.staleReasons.map(readable).join(', '))}
+          </p>
+        </div>
+      </section>
 
       <div className="proof-receipt-grid">
         <article>
