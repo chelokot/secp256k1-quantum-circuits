@@ -859,7 +859,7 @@ test('maps original education requirements to concrete course coverage', async (
 
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Course coverage audit');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Lessons');
-  await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('21');
+  await expect(page.getByTestId('course-coverage-audit-lab').locator('.coverage-summary div').filter({ hasText: 'Lessons' })).toContainText('23');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Quiz questions');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('34');
   await expect(page.getByTestId('course-coverage-audit-lab')).toContainText('Requirements mapped');
