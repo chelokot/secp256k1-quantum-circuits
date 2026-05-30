@@ -558,6 +558,9 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
   await openLesson(page, 'ecdlp');
   await showAllLabs(page);
 
+  await expect(page.getByTestId('ecdlp-story')).toContainText('The quantum attack is not a private-key loop');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('The useful object is a whole collision family');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('every shifted pair');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Discrete-log oracle toy');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Choose registers');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Find collisions');
@@ -569,6 +572,10 @@ test('connects the toy ECDLP oracle to phase kickback', async ({ page }) => {
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Same-label proof');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Quantum payoff');
   await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('sample the slope');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('Same-output family');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('not a list of guessed private keys');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('(9, 1)');
+  await expect(page.getByTestId('discrete-log-oracle-lab')).toContainText('k=4');
 
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('Phase-kickback hidden-period lab');
   await expect(page.getByTestId('phase-kickback-lab')).toContainText('1. Oracle label');

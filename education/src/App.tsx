@@ -1799,6 +1799,32 @@ function EcdlpStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule collision-family-rule">
+        <div>
+          <h4>The useful object is a whole collision family</h4>
+          <p>
+            If one pair <MathTex tex="(a,b)" /> gives output label{' '}
+            <MathTex tex="a+bd" />, then every shifted pair{' '}
+            <MathTex tex="(a+kd,b-k)" /> gives the same label:
+          </p>
+          <p className="capacity-equation">
+            <MathTex tex="(a+kd)+(b-k)d=a+bd" />
+          </p>
+          <p>
+            That repeated same-output line is the period structure. The quantum circuit
+            is useful because it can query the reversible oracle coherently over many
+            labels and let Fourier readout sample the line direction.
+          </p>
+        </div>
+        <div className="collision-family-sketch" aria-hidden="true">
+          <span>(a,b)</span>
+          <i />
+          <span>(a+d,b-1)</span>
+          <i />
+          <span>(a+2d,b-2)</span>
+        </div>
+      </article>
+
       <article className="story-rule sample-to-key-rule">
         <div>
           <h4>A Fourier sample becomes an equation for d</h4>

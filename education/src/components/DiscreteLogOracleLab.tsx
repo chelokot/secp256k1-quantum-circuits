@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
 import { KeyRound } from 'lucide-react';
-import { MathTex } from './MathText';
 
 const order = 13;
 
@@ -26,10 +25,17 @@ export function DiscreteLogOracleLab() {
       const paired = a === collision.a && b === collision.b;
       return { a, b, output, selected, paired };
     });
+    const collisionFamily = Array.from({ length: 5 }, (_, step) => {
+      const a = mod(aScalar + step * secret);
+      const b = mod(bScalar - step);
+      const output = mod(a + b * secret);
+      return { step, a, b, output };
+    });
     return {
       outputScalar,
       collision,
       collisionOutput,
+      collisionFamily,
       cells,
       periodVector: `(+${secret}, -1)`,
     };
@@ -104,23 +110,23 @@ export function DiscreteLogOracleLab() {
       <section className="oracle-collision-ledger" aria-label="Oracle collision algebra ledger">
         <article>
           <span>Selected pair</span>
-          <strong><MathTex tex={`(a,b)=(${aScalar},${bScalar})`} /></strong>
+          <strong>({aScalar}, {bScalar})</strong>
           <p>
             The oracle computes one scalar label behind the point:
-            {' '}<MathTex tex={`${aScalar}+${bScalar}\\cdot ${secret}\\equiv ${derived.outputScalar}\\pmod {13}`} />.
+            {' '}{aScalar} + {bScalar} * {secret} = {derived.outputScalar} mod 13.
           </p>
         </article>
         <article>
           <span>Hidden step</span>
-          <strong><MathTex tex={`(d,-1)=(${secret},-1)`} /></strong>
+          <strong>({secret}, -1)</strong>
           <p>Move by this vector to keep the same oracle label.</p>
         </article>
         <article>
           <span>Same-label proof</span>
-          <strong><MathTex tex={`(${derived.collision.a},${derived.collision.b})\\mapsto ${derived.collisionOutput}G`} /></strong>
+          <strong>({derived.collision.a}, {derived.collision.b}) -&gt; {derived.collisionOutput}G</strong>
           <p>
-            <MathTex tex={`${derived.collision.a}+${derived.collision.b}\\cdot ${secret}\\equiv ${derived.collisionOutput}\\pmod {13}`} />
-            {' '}so both highlighted cells produce the same group element.
+            {derived.collision.a} + {derived.collision.b} * {secret} = {derived.collisionOutput} mod 13, so both
+            highlighted cells produce the same group element.
           </p>
         </article>
         <article>
@@ -128,6 +134,26 @@ export function DiscreteLogOracleLab() {
           <strong>sample the slope</strong>
           <p>The circuit exploits the whole collision family instead of trying each possible secret.</p>
         </article>
+      </section>
+
+      <section className="oracle-family-panel" aria-label="Same-output collision family">
+        <div>
+          <h4>Same-output family</h4>
+          <p>
+            March by (d, -1) and the oracle output stays fixed. This
+            line is what the Fourier part samples as structure; it is not a list of
+            guessed private keys.
+          </p>
+        </div>
+        <div>
+          {derived.collisionFamily.map((item) => (
+            <article key={item.step}>
+              <span>k={item.step}</span>
+              <strong>({item.a}, {item.b})</strong>
+              <p>{item.a} + {item.b} * {secret} = {item.output} mod 13</p>
+            </article>
+          ))}
+        </div>
       </section>
 
       <div className="oracle-grid-layout">

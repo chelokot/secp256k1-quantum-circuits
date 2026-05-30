@@ -2623,6 +2623,7 @@ code {
 .search-vs-period-rule,
 .secp-domain-rule,
 .oracle-shape-rule,
+.collision-family-rule,
 .sample-to-key-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
@@ -2694,6 +2695,38 @@ code {
 .oracle-lattice-sketch span.paired {
   border-color: rgba(245, 207, 107, 0.42);
   background: rgba(245, 207, 107, 0.12);
+}
+
+.collision-family-sketch {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 0.8rem minmax(0, 1fr) 0.8rem minmax(0, 1fr);
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.collision-family-sketch span {
+  display: grid;
+  place-items: center;
+  min-height: 3.1rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.24);
+  border-radius: 0.5rem;
+  padding: 0.45rem;
+  color: #dce7f2;
+  background: rgba(99, 230, 190, 0.07);
+  text-align: center;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.collision-family-sketch span:last-child {
+  border-color: rgba(245, 207, 107, 0.32);
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.collision-family-sketch i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
 .sample-equation-card,
@@ -7895,6 +7928,76 @@ code {
   vertical-align: bottom;
 }
 
+.oracle-family-panel {
+  display: grid;
+  grid-template-columns: minmax(14rem, 0.75fr) minmax(0, 1.25fr);
+  gap: 0.85rem;
+  align-items: stretch;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.55rem;
+  padding: 0.9rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.oracle-family-panel h4 {
+  margin: 0;
+  color: #ffffff;
+}
+
+.oracle-family-panel p {
+  margin: 0.45rem 0 0;
+  color: #c9d6e2;
+  line-height: 1.45;
+}
+
+.oracle-family-panel > div:last-child {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.oracle-family-panel article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(5, 12, 20, 0.42);
+}
+
+.oracle-family-panel article:nth-child(2n) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.065);
+}
+
+.oracle-family-panel span,
+.oracle-family-panel strong {
+  display: block;
+}
+
+.oracle-family-panel span {
+  color: #93a4b7;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.oracle-family-panel strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.oracle-family-panel .math-tex {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  vertical-align: bottom;
+}
+
+.oracle-family-panel .katex {
+  white-space: nowrap;
+}
+
 .oracle-grid-layout {
   display: grid;
   grid-template-columns: minmax(18rem, 0.85fr) minmax(0, 1.15fr);
@@ -9345,6 +9448,7 @@ legend {
   .phase-readout-strip,
   .phase-approx-strip,
   .key-derivation-strip,
+  .collision-family-sketch,
   .sample-equation-card,
   .sample-key-bridge-card,
   .coordinate-name-strip,
@@ -9451,6 +9555,8 @@ legend {
   .attack-readout-strip,
   .oracle-controls,
   .oracle-collision-ledger,
+  .oracle-family-panel,
+  .oracle-family-panel > div:last-child,
   .oracle-grid-layout,
   .oracle-readout,
   .kickback-bridge-strip,
@@ -9609,6 +9715,7 @@ legend {
   .phase-readout-strip,
   .phase-approx-strip,
   .key-derivation-strip,
+  .collision-family-sketch,
   .sample-equation-card,
   .sample-key-bridge-card,
   .coordinate-name-strip,
@@ -9718,6 +9825,8 @@ legend {
   .attack-readout-strip,
   .oracle-controls,
   .oracle-collision-ledger,
+  .oracle-family-panel,
+  .oracle-family-panel > div:last-child,
   .oracle-grid-layout,
   .oracle-readout,
   .kickback-bridge-strip,
@@ -9774,6 +9883,7 @@ legend {
   }
 
   .key-derivation-strip i,
+  .collision-family-sketch i,
   .sample-equation-card i,
   .sample-key-bridge-card i {
     display: none;
