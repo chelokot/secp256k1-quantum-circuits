@@ -692,6 +692,40 @@ function TwoQubitStoryPanel() {
         </div>
       </article>
 
+      <article className="story-rule local-joint-rule">
+        <div>
+          <h4>One-wire views can hide the joint pattern</h4>
+          <p>
+            You can still ask what q0 looks like by itself, and what q1 looks like by
+            itself. That local view is useful, but it is not always the whole state.
+            Two different joint states can give the same 50/50 answer on each wire.
+          </p>
+          <p>
+            The difference is in how the labels pair up. A product split spreads weight
+            across all four labels. A Bell pair keeps only the matching labels, so the
+            individual bits are random while the pair has a sharp correlation.
+          </p>
+        </div>
+        <div className="same-marginal-panel" aria-hidden="true">
+          <article>
+            <strong>product split</strong>
+            <span>q0: 50/50</span>
+            <span>q1: 50/50</span>
+            <div className="mini-joint-grid">
+              <i>00</i><i>01</i><i>10</i><i>11</i>
+            </div>
+          </article>
+          <article>
+            <strong>Bell pair</strong>
+            <span>q0: 50/50</span>
+            <span>q1: 50/50</span>
+            <div className="mini-joint-grid bell">
+              <i>00</i><i>01</i><i>10</i><i>11</i>
+            </div>
+          </article>
+        </div>
+      </article>
+
       <article className="story-rule product-rule">
         <div>
           <h4>Sometimes two wires are still independent</h4>
@@ -722,6 +756,11 @@ function TwoQubitStoryPanel() {
           <p>
             That matters because if q0 is in a split, CX applies coherently to every
             live branch and can tie the two wires into one joint pattern.
+          </p>
+          <p>
+            The word “control” is only a diagram convention. The control wire may be
+            in superposition, so the gate acts on the whole four-amplitude table, not
+            on one observed branch.
           </p>
         </div>
         <div className="cx-permutation" aria-hidden="true">
@@ -756,6 +795,29 @@ function TwoQubitStoryPanel() {
           00 and 11. Repeated measurement gives random individual bits, but the two
           bits agree in the same run.
         </p>
+      </article>
+
+      <article className="story-rule two-wire-capability-rule">
+        <div>
+          <h4>What two wires add to the toolbox</h4>
+          <p>
+            Local gates still matter: they split, rotate, and recombine one wire while
+            the other labels ride along. The new ingredient is an entangling gate such
+            as CX, which can make the update of one label depend reversibly on the
+            other label.
+          </p>
+          <p>
+            This is the tiny version of the pattern used later by arithmetic circuits:
+            keep many branches live, apply controlled reversible updates, then clean
+            up scratch without measuring the branch that carries the answer.
+          </p>
+        </div>
+        <div className="two-wire-toolbox" aria-hidden="true">
+          <span><strong>local move</strong><i>H q0 keeps q1 labels attached</i></span>
+          <span><strong>phase mark</strong><i>Z q0 changes signs before later mixing</i></span>
+          <span><strong>joint move</strong><i>CX rewrites labels across both wires</i></span>
+          <span><strong>test</strong><i>measurement samples one full two-bit label</i></span>
+        </div>
       </article>
 
       <div className="story-motion-grid">

@@ -178,9 +178,16 @@ export function StateVectorLab() {
   const state = useMemo(() => (parsed.errors.length === 0 ? runProgram(parsed.gates) : initialState), [parsed]);
   const trace = useMemo(() => (parsed.errors.length === 0 ? buildTrace(parsed.gates) : []), [parsed]);
   const probabilities = state.map(abs2);
+  const q0ZeroProbability = probabilities[0] + probabilities[1];
+  const q0OneProbability = probabilities[2] + probabilities[3];
+  const q1ZeroProbability = probabilities[0] + probabilities[2];
+  const q1OneProbability = probabilities[1] + probabilities[3];
+  const sameLabelProbability = probabilities[0] + probabilities[3];
+  const differentLabelProbability = probabilities[1] + probabilities[2];
   const separabilityDeterminant = sub(mul(state[0], state[3]), mul(state[1], state[2]));
   const determinantMagnitude = Math.sqrt(abs2(separabilityDeterminant));
   const entangled = determinantMagnitude > 0.01;
+  const formatProbability = (probability: number) => `${Math.round(probability * 100)}%`;
   const missions = [
     {
       label: 'Product split',
@@ -374,6 +381,28 @@ export function StateVectorLab() {
               </div>
             ))}
           </div>
+          <section className="local-joint-summary" aria-label="Local and joint probability summary">
+            <article>
+              <strong>q0 alone</strong>
+              <span>0: {formatProbability(q0ZeroProbability)}</span>
+              <span>1: {formatProbability(q0OneProbability)}</span>
+            </article>
+            <article>
+              <strong>q1 alone</strong>
+              <span>0: {formatProbability(q1ZeroProbability)}</span>
+              <span>1: {formatProbability(q1OneProbability)}</span>
+            </article>
+            <article>
+              <strong>joint label pattern</strong>
+              <span>same labels: {formatProbability(sameLabelProbability)}</span>
+              <span>different labels: {formatProbability(differentLabelProbability)}</span>
+            </article>
+            <p>
+              Product split and Bell correlation can both make each wire look 50/50
+              alone. The joint label pattern is where independence or entanglement
+              becomes visible.
+            </p>
+          </section>
           <section className="separability-check" aria-label="Separability check">
             <div>
               <strong>Product-state test</strong>

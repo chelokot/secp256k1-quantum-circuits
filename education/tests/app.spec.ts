@@ -293,9 +293,13 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
 
   await openLesson(page, 'two-qubit');
   await expect(page.getByTestId('two-qubit-story')).toContainText('The new object is a joint table');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('One-wire views can hide the joint pattern');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('Two different joint states can give the same 50/50 answer on each wire');
   await expect(page.getByTestId('two-qubit-story')).toContainText('Sometimes two wires are still independent');
   await expect(page.getByTestId('two-qubit-story')).toContainText('Controlled-X is not a measurement');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('The word “control” is only a diagram convention');
   await expect(page.getByTestId('two-qubit-story')).toContainText('How the Bell pair is born');
+  await expect(page.getByTestId('two-qubit-story')).toContainText('What two wires add to the toolbox');
   await expect(page.getByTestId('two-qubit-story')).toContainText('No pair of separate one-qubit descriptions');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Run a two-qubit state vector');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Each line applies one reversible operation');
@@ -328,6 +332,10 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('current determinant magnitude 0.50: entangled');
   await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('50%');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('q0 alone');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('q1 alone');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('joint label pattern');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Product split and Bell correlation can both make each wire look 50/50 alone');
   await page.getByTestId('state-vector-lab').getByRole('button', { name: 'Interference' }).click();
   await expect(page.getByTestId('state-vector-lab')).toContainText('|00>');
   await expect(page.getByTestId('state-vector-lab')).toContainText('0%');

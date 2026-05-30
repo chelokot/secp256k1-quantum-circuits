@@ -103,10 +103,11 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The moment operations can connect wires, the circuit can create joint structure that no pair of independent one-qubit descriptions can capture.',
     mentalModel:
-      'Adding a second qubit changes the object from two amplitudes to a four-entry joint table: 00, 01, 10, and 11. Some tables are just two independent one-qubit states multiplied together. Entangled tables are different: the joint pattern is the smallest honest description.',
+      'Adding a second qubit changes the object from two amplitudes to a four-entry joint table: 00, 01, 10, and 11. Some tables are just two independent one-qubit states multiplied together. Entangled tables are different: the one-wire views can look ordinary while the joint pattern is the smallest honest description.',
     checkpoint: 'A two-qubit state is entangled when the four-amplitude pattern cannot be factored into separate one-qubit states.',
     coreIdeas: [
       'Two qubits are represented by four joint amplitudes.',
+      'The same local 50/50 view can hide different joint patterns.',
       'Controlled-X is a reversible branch permutation, not a measurement.',
       'Entanglement means the four-entry table cannot factor into two one-qubit states.',
     ],

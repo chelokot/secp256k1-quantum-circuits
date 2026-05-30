@@ -1481,7 +1481,9 @@ code {
 }
 
 .product-rule,
-.cx-rule {
+.cx-rule,
+.local-joint-rule,
+.two-wire-capability-rule {
   border-color: rgba(99, 230, 190, 0.2);
 }
 
@@ -1501,6 +1503,83 @@ code {
 .product-factor span {
   color: #b4c4d6;
   font-size: 0.84rem;
+}
+
+.same-marginal-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+}
+
+.same-marginal-panel article {
+  display: grid;
+  gap: 0.42rem;
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.same-marginal-panel strong,
+.two-wire-toolbox strong {
+  color: #63e6be;
+}
+
+.same-marginal-panel span {
+  color: #c9d6e2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.mini-joint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+}
+
+.mini-joint-grid i {
+  display: grid;
+  place-items: center;
+  min-height: 2rem;
+  border: 0.0625rem solid rgba(245, 207, 107, 0.22);
+  border-radius: 0.4rem;
+  color: #ffffff;
+  background: rgba(245, 207, 107, 0.08);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.mini-joint-grid.bell i:nth-child(2),
+.mini-joint-grid.bell i:nth-child(3) {
+  color: #637282;
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.two-wire-toolbox {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.two-wire-toolbox span {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.two-wire-toolbox i {
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  font-style: normal;
+  line-height: 1.35;
 }
 
 .cx-permutation span {
@@ -5383,6 +5462,45 @@ code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 }
 
+.local-joint-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.local-joint-summary article {
+  display: grid;
+  gap: 0.28rem;
+  min-width: 0;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.local-joint-summary strong {
+  color: #63e6be;
+}
+
+.local-joint-summary span {
+  color: #dce7f2;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+}
+
+.local-joint-summary p {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #c9d6e2;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
 .two-qubit-primer {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -8867,11 +8985,14 @@ legend {
   .pattern-lab-grid,
   .one-qubit-mission-grid,
   .scratch-lifecycle-card,
+  .same-marginal-panel,
+  .two-wire-toolbox,
   .gate-vocabulary-grid,
   .two-qubit-primer,
   .two-qubit-schemes,
   .two-qubit-mission-grid,
   .state-execution-trace article,
+  .local-joint-summary,
   .content-grid.learning-grid,
   .path-stage-grid,
   .readiness-strip,
@@ -9121,11 +9242,14 @@ legend {
   .pattern-lab-grid,
   .one-qubit-mission-grid,
   .scratch-lifecycle-card,
+  .same-marginal-panel,
+  .two-wire-toolbox,
   .gate-vocabulary-grid,
   .two-qubit-primer,
   .two-qubit-schemes,
   .two-qubit-mission-grid,
   .state-execution-trace article,
+  .local-joint-summary,
   .path-stage-grid,
   .readiness-strip,
   .tradeoff-controls,
