@@ -456,6 +456,7 @@ export const lessons: CourseLesson[] = [
       'Small claim, explicit evidence, clear status.',
       'Claim classification prevents accidental overstatement.',
       'Mission packets connect learning to repo patches.',
+      'A patch packet names the object, evidence gate, blocker, and allowed wording.',
     ],
   },
   {

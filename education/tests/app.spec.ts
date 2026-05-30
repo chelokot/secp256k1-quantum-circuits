@@ -1026,12 +1026,16 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
   await expect(page.getByTestId('contribution-story')).toContainText('choose one blocker');
   await expect(page.getByTestId('contribution-story')).toContainText('which evidence gate changed');
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: no');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Generated patch packet');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('one modular accumulator lowering obligation');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('Not reviewable yet');
   await page.getByTestId('contributor-mission-board').getByRole('button', { name: /Promote a primitive lowering row/ }).click();
   await page.getByLabel('Complete mission item identify source controls').check();
   await page.getByLabel('Complete mission item name target wire').check();
   await page.getByLabel('Complete mission item assign counted owner').check();
   await page.getByLabel('Complete mission item prove cleanup or output ownership').check();
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: yes (4/4)');
+  await expect(page.getByTestId('contributor-mission-board')).toContainText('This row can be reviewed as a promoted primitive-lowering step, not as a new headline.');
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Modular accumulator cleanup');
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Partial-product consume and source-uncompute rows');
   await expect(page.getByTestId('contributor-mission-board')).not.toContainText('modular_accumulator_source_uncompute_not_promoted');
