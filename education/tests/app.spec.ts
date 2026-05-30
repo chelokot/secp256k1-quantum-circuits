@@ -646,6 +646,7 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
 
   await expect(page.getByTestId('owner-capacity-story')).toContainText('An owner is a budget, not a nickname');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The mechanical rule');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('The peak has a witness row');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The guard gap is the concrete example');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('2,222');
   await selectRouteLab(page, /Capacity game/);
@@ -791,6 +792,7 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
 
   await expect(page.getByTestId('mini-engine-story')).toContainText('The toy engine is the real rule at small scale');
   await expect(page.getByTestId('mini-engine-story')).toContainText('One row creates a lifetime');
+  await expect(page.getByTestId('mini-engine-story')).toContainText('The peak count comes with a witness');
   await expect(page.getByTestId('mini-engine-story')).toContainText('Cleanup can lower qubits without changing the answer');
   await expect(page.getByTestId('mini-engine-story')).toContainText('Three checks make the count executable');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Mini resource engine');
@@ -812,6 +814,7 @@ test('teaches the real resource engine source-of-truth boundary', async ({ page 
   await expect(page.getByTestId('resource-engine-story')).toContainText('The engine exists because precise-looking counts lied');
   await expect(page.getByTestId('resource-engine-story')).toContainText('One stream should feed every claim surface');
   await expect(page.getByTestId('resource-engine-story')).toContainText('The engine is a generator plus auditors');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('The artifact is the public interface');
   await expect(page.getByTestId('resource-engine-story')).toContainText('Current status is intentionally not');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('End-to-end circuit stack map');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');

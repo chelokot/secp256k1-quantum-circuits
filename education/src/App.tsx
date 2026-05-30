@@ -2266,6 +2266,28 @@ function OwnerCapacityStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule peak-row-rule">
+        <div>
+          <h4>The peak has a witness row</h4>
+          <p>
+            A qubit total is not an average over the circuit and not the sum of all
+            values that ever appear. It is the largest row-by-row live load. The
+            resource certificate should be able to point to the row or interval where
+            the maximum occurs and list the owners that are simultaneously occupied.
+          </p>
+          <p>
+            That is the no-free-wire invariant in practical form: if a field-sized
+            value exists at that peak row, it must appear in exactly one owner bucket,
+            and that bucket must have enough capacity.
+          </p>
+        </div>
+        <div className="peak-row-card" aria-hidden="true">
+          <div><span>strict peak</span><strong>{formatInt(strict.reconstructed_total)}q</strong></div>
+          <div><span>clean guard delta</span><strong>+{formatInt(guard.gap.missing_logical_qubits_under_clean_ladder)}q</strong></div>
+          <div><span>corrected witness</span><strong>{formatInt(correctedTotal)}q</strong></div>
+        </div>
+      </article>
+
       <article className="story-rule guard-ladder-rule">
         <div>
           <h4>The guard gap is the concrete example</h4>
@@ -2503,6 +2525,29 @@ function ResourceEngineStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule artifact-interface-rule">
+        <div>
+          <h4>The artifact is the public interface</h4>
+          <p>
+            The README, course, and proof wrapper should not each repeat a hand-written
+            version of the resource claim. They should read the checked artifact emitted
+            by the engine. Otherwise a stale document can advertise one number while
+            the proof binds another digest or the tests cover another boundary.
+          </p>
+          <p>
+            A reviewer should be able to start from a public value, find the resource
+            certificate digest, open the checked artifact, and reproduce which primitive
+            stream, owners, liveness intervals, and gate counts produced the claim.
+          </p>
+        </div>
+        <div className="artifact-interface-card" aria-hidden="true">
+          <span>primitive stream</span>
+          <span>resource artifact</span>
+          <span>docs and proof input</span>
+          <span>public values</span>
+        </div>
+      </article>
+
       <article className="story-rule engine-status-rule">
         <div>
           <h4>Current status is intentionally not “accepted baseline”</h4>
@@ -2571,6 +2616,27 @@ function MiniEngineStoryPanel() {
           <em>birth: 3</em>
           <em>last use: 6</em>
           <em>owner: scratch_workspace</em>
+        </div>
+      </article>
+
+      <article className="story-rule mini-witness-rule">
+        <div>
+          <h4>The peak count comes with a witness</h4>
+          <p>
+            In the lab’s initial failing state, the peak is row 4: input slot, lookup
+            target, partial scratch, and phase bit overlap for a total of 10 toy wires.
+            After assigning scratch to its own owner and adding source-uncompute, the
+            scratch dies before the phase bit overlaps it, so the peak drops to 9.
+          </p>
+          <p>
+            This is the habit to carry back to the repo. Do not ask “which registers
+            did the author remember to count?” Ask “which row witnesses the peak, and
+            can I replay the interval scan that found it?”
+          </p>
+        </div>
+        <div className="mini-witness-card" aria-hidden="true">
+          <div><span>before cleanup</span><strong>row 4 = 10</strong></div>
+          <div><span>after cleanup</span><strong>row 2/3 = 9</strong></div>
         </div>
       </article>
 

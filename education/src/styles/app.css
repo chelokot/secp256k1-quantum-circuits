@@ -2597,9 +2597,12 @@ code {
 .modular-fold-rule,
 .carry-compression-rule,
 .capacity-equation-rule,
+.peak-row-rule,
 .guard-ladder-rule,
 .proof-contract-rule,
+.artifact-interface-rule,
 .engine-status-rule,
+.mini-witness-rule,
 .mini-engine-rule,
 .candidate-frontier-rule,
 .breakthrough-rule,
@@ -2615,6 +2618,9 @@ code {
 .half-adder-compare,
 .row-branch-card,
 .modular-fold-card,
+.peak-row-card,
+.artifact-interface-card,
+.mini-witness-card,
 .circuit-reading-strip,
 .controlled-branch-card,
 .schedule-peak-strip {
@@ -2627,6 +2633,9 @@ code {
 .half-adder-compare div,
 .row-branch-card div,
 .modular-fold-card div,
+.peak-row-card div,
+.artifact-interface-card span,
+.mini-witness-card div,
 .circuit-reading-strip span,
 .controlled-branch-card span,
 .controlled-branch-card strong,
@@ -2644,28 +2653,42 @@ code {
 .row-branch-card span,
 .row-branch-card strong,
 .modular-fold-card span,
-.modular-fold-card strong {
+.modular-fold-card strong,
+.peak-row-card span,
+.peak-row-card strong,
+.mini-witness-card span,
+.mini-witness-card strong {
   display: block;
 }
 
 .half-adder-compare span,
 .row-branch-card span,
-.modular-fold-card span {
+.modular-fold-card span,
+.peak-row-card span,
+.mini-witness-card span {
   color: #93a4b7;
   font-size: 0.78rem;
 }
 
 .half-adder-compare strong,
 .row-branch-card strong,
-.modular-fold-card strong {
+.modular-fold-card strong,
+.peak-row-card strong,
+.mini-witness-card strong {
   color: #ffffff;
   font-size: 0.86rem;
 }
 
 .row-branch-card div:nth-child(2),
-.modular-fold-card div:nth-child(2) {
+.modular-fold-card div:nth-child(2),
+.peak-row-card div:nth-child(2),
+.mini-witness-card div:nth-child(2) {
   border-color: rgba(245, 207, 107, 0.28);
   background: rgba(245, 207, 107, 0.08);
+}
+
+.artifact-interface-card span {
+  color: #dce7f2;
 }
 
 .circuit-reading-strip {

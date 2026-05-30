@@ -328,6 +328,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Exactly one owner per live wire group.',
       'Owner capacity must cover peak assigned width.',
+      'A qubit total should have a peak-row witness.',
       'Borrowed lanes are invalid until liveness proves aliasing.',
     ],
   },
@@ -346,7 +347,8 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Executable primitive stream is the source of truth.',
       'Liveness derives qubits mechanically.',
-      'Generated artifacts should feed docs and proofs.',
+      'The checked artifact should be the public interface for docs and proofs.',
+      'Docs and proof inputs must not fork the resource claim.',
     ],
   },
   {
@@ -363,6 +365,7 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'To improve a circuit, you need to move births earlier/later, shorten deaths with cleanup, or give owners enough counted capacity.',
     coreIdeas: [
       'Birth/death rows define live intervals.',
+      'The peak count comes with a witness row.',
       'Owner assignment and capacity are checked numerically.',
       'Lowering connects abstract operations to primitive rows.',
     ],
