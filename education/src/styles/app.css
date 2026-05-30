@@ -8825,6 +8825,87 @@ code {
   overflow-wrap: anywhere;
 }
 
+.row-witness-inspector {
+  display: grid;
+  gap: 0.75rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(143, 182, 255, 0.04);
+}
+
+.row-witness-inspector h4 {
+  margin: 0;
+}
+
+.row-witness-inspector p {
+  margin: 0.35rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.row-witness-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.row-witness-controls button {
+  border: 0.0625rem solid rgba(255, 255, 255, 0.14);
+  border-radius: 0.45rem;
+  padding: 0.42rem 0.6rem;
+  color: #dce7f2;
+  background: rgba(255, 255, 255, 0.055);
+  cursor: pointer;
+}
+
+.row-witness-controls button.selected {
+  border-color: rgba(99, 230, 190, 0.48);
+  color: #071018;
+  background: #63e6be;
+}
+
+.row-witness-grid {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.55fr) minmax(14rem, 1fr) minmax(14rem, 1fr);
+  gap: 0.65rem;
+}
+
+.row-witness-grid article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.row-witness-grid article:nth-child(3) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.065);
+}
+
+.row-witness-grid span,
+.row-witness-grid strong {
+  display: block;
+}
+
+.row-witness-grid span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.row-witness-grid strong {
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.84rem;
+  overflow-wrap: anywhere;
+}
+
 .stack-stage-list,
 .stack-detail-list {
   display: grid;
@@ -10137,6 +10218,7 @@ legend {
   .magic-history-lab-panel,
   .stack-map-grid,
   .stack-handoff-receipt,
+  .row-witness-grid,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,
@@ -10413,6 +10495,7 @@ legend {
   .magic-history-lab-panel,
   .stack-map-grid,
   .stack-handoff-receipt,
+  .row-witness-grid,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,

@@ -375,6 +375,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Birth/death rows define live intervals.',
       'The peak count comes with a witness row.',
+      'A witness row must expose live groups and owner equations.',
       'Owner assignment and capacity are checked numerically.',
       'Lowering connects abstract operations to primitive rows.',
     ],

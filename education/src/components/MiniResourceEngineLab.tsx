@@ -43,6 +43,7 @@ const ticks = [0, 1, 2, 3, 4, 5];
 export function MiniResourceEngineLab() {
   const [scratchOwner, setScratchOwner] = useState('lookup_workspace');
   const [cleanupEnabled, setCleanupEnabled] = useState(false);
+  const [selectedTick, setSelectedTick] = useState(4);
 
   const derived = useMemo(() => {
     const intervals = wires.map((wire) => ({
@@ -77,6 +78,9 @@ export function MiniResourceEngineLab() {
   }, [cleanupEnabled, scratchOwner]);
 
   const peakLiveSummary = derived.peak.live.map((wire) => `${wire.id} ${wire.width}q`).join(', ');
+  const selectedRow = derived.tickLoads.find((tick) => tick.tick === selectedTick) ?? derived.peak;
+  const selectedLiveSummary = selectedRow.live.map((wire) => `${wire.id} ${wire.width}q -> ${wire.owner}`).join(', ');
+  const selectedOwnerEquations = selectedRow.ownerLoads.map((owner) => `${owner.id}: ${owner.load}/${owner.capacity}`).join('; ');
   const worstOwnerRows = owners.map((owner) => {
     const ownerRows = derived.tickLoads.map((tick) => {
       const load = derived.intervals
@@ -160,6 +164,48 @@ export function MiniResourceEngineLab() {
           <p>Uncompute must use the source path that created the temporary value.</p>
         </article>
       </div>
+
+      <section className="row-witness-inspector" aria-label="Row witness inspector">
+        <div>
+          <h4>Row witness inspector</h4>
+          <p>
+            Select any primitive row and replay the same liveness query the peak
+            counter uses. The peak row is just the row with the largest generated load.
+          </p>
+        </div>
+        <div className="row-witness-controls">
+          {derived.tickLoads.map((tick) => (
+            <button
+              className={tick.tick === selectedRow.tick ? 'selected' : ''}
+              key={tick.tick}
+              onClick={() => setSelectedTick(tick.tick)}
+              type="button"
+            >
+              row {tick.tick}
+            </button>
+          ))}
+          <button type="button" onClick={() => setSelectedTick(derived.peak.tick)}>
+            jump to peak row
+          </button>
+        </div>
+        <div className="row-witness-grid">
+          <article>
+            <span>Selected row</span>
+            <strong>row {selectedRow.tick} witness</strong>
+            <p>{selectedRow.total} live qubits</p>
+          </article>
+          <article>
+            <span>Live groups</span>
+            <strong>{selectedLiveSummary || 'none'}</strong>
+            <p>This list is generated from row intervals.</p>
+          </article>
+          <article>
+            <span>Owner equations</span>
+            <strong>{selectedOwnerEquations}</strong>
+            <p>Each owner load is checked against capacity at this same row.</p>
+          </article>
+        </div>
+      </section>
 
       <div className="same-stream-ledger">
         <h4>Same stream ledger</h4>
