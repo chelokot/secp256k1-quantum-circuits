@@ -56,6 +56,15 @@ test('keeps every lesson free of legacy scaffolding and page overflow', async ({
   }
 });
 
+test('keeps substantive lesson text in the first desktop viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 1600, height: 1000 });
+
+  for (const lesson of lessons) {
+    await openLesson(page, lesson.id);
+    await expect(page.locator('.concept-panel [data-testid$="-story"] h4').first(), `${lesson.id} first story heading`).toBeInViewport();
+  }
+});
+
 test('keeps multi-lab lessons behind a focused route', async ({ page }) => {
   for (const lesson of lessons) {
     await openLesson(page, lesson.id);
