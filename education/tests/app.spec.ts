@@ -802,6 +802,16 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
   await page.getByRole('button', { name: 'a0=1' }).click();
   await expect(page.getByTestId('qroam-lab')).toContainText('Selected');
   await expect(page.getByTestId('qroam-lab')).toContainText('row 1');
+  await selectRouteLab(page, /QROAMClean tradeoff/);
+  await page.getByTestId('qroam-tradeoff-lab').getByRole('slider').fill('16');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Construction consistency auditor');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('Full-coordinate QROAM');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('7,951 total lookup work');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('4,096');
+  await page.getByRole('button', { name: 'One-bit stream' }).click();
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('1,056,256 total lookup work');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('peak target+junk bits');
+  await expect(page.getByTestId('qroam-tradeoff-lab')).toContainText('16');
 
   await openLesson(page, 'owner-capacity');
   await selectRouteLab(page, /Invariant lab/);
