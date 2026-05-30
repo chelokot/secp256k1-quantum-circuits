@@ -865,10 +865,17 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 10');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Owner capacity');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Cleanup');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Same stream ledger');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Primitive stream');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('peak row 4');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Claim line');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('peak 10, audit fail');
   await page.getByLabel('Owner for partial scratch').selectOption('scratch_workspace');
   await page.getByLabel('Add source uncompute row').check();
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Engine audit: pass');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('Peak live qubits: 9');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('peak row 2');
+  await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('peak 9, audit pass');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('assigned and sized');
   await expect(page.getByTestId('mini-resource-engine-lab')).toContainText('scratch dies early');
 });
@@ -878,6 +885,8 @@ test('teaches the real resource engine source-of-truth boundary', async ({ page 
 
   await expect(page.getByTestId('resource-engine-story')).toContainText('The engine exists because precise-looking counts lied');
   await expect(page.getByTestId('resource-engine-story')).toContainText('One stream should feed every claim surface');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('No second calculator');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('artifact fields');
   await expect(page.getByTestId('resource-engine-story')).toContainText('The engine is a generator plus auditors');
   await expect(page.getByTestId('resource-engine-story')).toContainText('The artifact is the public interface');
   await expect(page.getByTestId('resource-engine-story')).toContainText('Current status is intentionally not');

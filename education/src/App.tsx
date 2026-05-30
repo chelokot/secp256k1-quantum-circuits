@@ -2649,6 +2649,31 @@ function ResourceEngineStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule single-stream-rule">
+        <div>
+          <h4>No second calculator</h4>
+          <p>
+            Once the primitive rows exist, the qubit total, owner ledger, gate cost,
+            docs table, and proof input should be queries over that row stream. A
+            copied spreadsheet cell or a hand-retyped README number is a second
+            calculator, which means it can silently drift away from the executable
+            object.
+          </p>
+          <p>
+            The artifact boundary is therefore boring on purpose: one stream is
+            replayed, scanned for live wires, reduced into capacities and costs, and
+            serialized into the fields that public claims read.
+          </p>
+        </div>
+        <div className="single-stream-card" aria-hidden="true">
+          <span>row stream</span>
+          <span>semantic replay</span>
+          <span>liveness scan</span>
+          <span>capacity and cost</span>
+          <span>artifact fields</span>
+        </div>
+      </article>
+
       <article className="story-rule engine-loop-rule">
         <div>
           <h4>The engine is a generator plus auditors</h4>

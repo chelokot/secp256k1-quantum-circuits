@@ -76,6 +76,18 @@ export function MiniResourceEngineLab() {
     };
   }, [cleanupEnabled, scratchOwner]);
 
+  const peakLiveSummary = derived.peak.live.map((wire) => `${wire.id} ${wire.width}q`).join(', ');
+  const worstOwnerRows = owners.map((owner) => {
+    const ownerRows = derived.tickLoads.map((tick) => {
+      const load = derived.intervals
+        .filter((wire) => wire.owner === owner.id && wire.start <= tick.tick && tick.tick < wire.end)
+        .reduce((sum, wire) => sum + wire.width, 0);
+      return { tick: tick.tick, load };
+    });
+    const worst = ownerRows.reduce((best, row) => (row.load > best.load ? row : best), ownerRows[0]);
+    return `${owner.id} ${worst.load}/${owner.capacity} at row ${worst.tick}`;
+  });
+
   return (
     <section className="wide-panel" data-testid="mini-resource-engine-lab">
       <div className="panel-heading">
@@ -146,6 +158,30 @@ export function MiniResourceEngineLab() {
           <span>3. Cleanup</span>
           <strong>{derived.cleanupPass ? 'scratch dies early' : 'scratch remains live'}</strong>
           <p>Uncompute must use the source path that created the temporary value.</p>
+        </article>
+      </div>
+
+      <div className="same-stream-ledger">
+        <h4>Same stream ledger</h4>
+        <article>
+          <span>Primitive stream</span>
+          <strong>{primitiveRows.length} rows</strong>
+          <p>The executable rows are the only object the rest of the lab reads.</p>
+        </article>
+        <article>
+          <span>Liveness query</span>
+          <strong>peak row {derived.peak.tick}</strong>
+          <p>{peakLiveSummary}</p>
+        </article>
+        <article className={derived.ownerCapacityPass ? 'pass' : 'fail'}>
+          <span>Owner query</span>
+          <strong>{derived.ownerCapacityPass ? 'capacity ok' : 'capacity overflow'}</strong>
+          <p>{worstOwnerRows.join('; ')}</p>
+        </article>
+        <article className={derived.pass ? 'pass' : 'fail'}>
+          <span>Claim line</span>
+          <strong>peak {derived.peak.total}, audit {derived.pass ? 'pass' : 'fail'}</strong>
+          <p>This is the tiny version of docs and proof reading emitted artifact fields.</p>
         </article>
       </div>
 
