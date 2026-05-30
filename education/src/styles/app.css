@@ -409,6 +409,15 @@ code {
   background: linear-gradient(90deg, #63e6be, #f5cf6b);
 }
 
+.probability-formula-stack {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.probability-formula-stack .math-tex {
+  display: block;
+}
+
 .lesson-labs {
   display: grid;
   gap: 1rem;

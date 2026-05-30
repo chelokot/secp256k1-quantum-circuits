@@ -191,7 +191,7 @@ test('lets the learner navigate concepts and complete progress', async ({ page }
   await expect(page.getByRole('heading', { name: 'Relative angle' })).toBeVisible();
   await expect(page.getByTestId('qubit-story').getByRole('heading', { name: 'Measurement' })).toBeVisible();
   await expect(page.getByTestId('qubit-story')).toContainText('A single qubit is one coherent state with two amplitudes');
-  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('complex number just means an arrow');
+  await expect(page.getByRole('heading', { name: 'Core idea' }).locator('xpath=ancestor::article')).toContainText('A complex number can be pictured as an arrow');
   await expect(page.locator('xpath=//*[@data-tex="P(0)=|a|^2"]')).toBeVisible();
   await page.getByTestId('lesson-pager').getByRole('button', { name: 'Previous' }).click();
   await expect(page).toHaveURL(/#zero$/);

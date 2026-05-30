@@ -267,7 +267,10 @@ function QubitStepVisual({ stepIndex }: { stepIndex: number }) {
           </div>
         </div>
         <div>
-          <MathTex tex="P(0)=|a'|^2,\quad P(1)=|b'|^2" />
+          <div className="probability-formula-stack">
+            <MathTex tex="P(0)=|a'|^2" />
+            <MathTex tex="P(1)=|b'|^2" />
+          </div>
           <p>Angle can become visible only after the gate changes arrow lengths.</p>
         </div>
       </div>
@@ -294,6 +297,8 @@ function OrientationStoryPanel() {
           returns ordinary bits.
         </p>
       </article>
+
+      <OrientationModelVisual />
 
       <article className="story-question orientation-target">
         <h4>The concrete target</h4>
@@ -323,8 +328,6 @@ function OrientationStoryPanel() {
           </p>
         </article>
       </div>
-
-      <OrientationModelVisual />
 
       <article className="story-rule orientation-state-rule">
         <div>
@@ -423,8 +426,8 @@ function QubitStoryPanel() {
         <p>
           A single qubit is one coherent state with two amplitudes:
           {' '}<MathTex tex="|\psi\rangle=a|0\rangle+b|1\rangle" />. The symbols
-          {' '}<MathTex tex="a" /> and <MathTex tex="b" /> are complex numbers. For
-          this course, a complex number just means an arrow in a flat plane: it has
+          {' '}<MathTex tex="a" /> and <MathTex tex="b" /> are complex numbers. A
+          complex number can be pictured as an arrow in a flat plane: it has
           a length and a direction.
         </p>
         <QubitStepVisual stepIndex={0} />
@@ -454,8 +457,9 @@ function QubitStoryPanel() {
           <h4>Relative angle</h4>
           <p>
             Two states can have the same direct 50/50 measurement but different arrow
-            directions. That direction is not private magic; it is circuit information
-            that a later gate can use when it mixes the two amplitudes.
+            directions. Direct measurement does not show the direction by itself, but
+            the direction is still circuit information that a later gate can use when
+            it mixes the two amplitudes.
           </p>
           <p>
             This is the first reason a qubit is not just a probability coin: the coin
