@@ -364,8 +364,8 @@ export function StateVectorLab() {
         </>
       )}
       <p>
-        This toy simulator is tiny on purpose: it makes superposition, interference, and entanglement
-        visible before the course scales the same wire discipline into resource netlists.
+        Only two wires are shown so every amplitude can stay visible. The same branch,
+        control, and cleanup discipline later scales into resource netlists.
       </p>
     </article>
   );

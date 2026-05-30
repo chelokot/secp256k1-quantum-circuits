@@ -1519,12 +1519,12 @@ function EcdlpStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>How the labs fit together</h4>
+        <h4>The attack chain to keep in order</h4>
         <p>
-          The attack map shows the full pipeline. The discrete-log oracle toy shows the
-          hidden period relation. Phase kickback shows how the oracle leaves a phase
-          imprint. The toy curve lab grounds scalar multiplication as repeated point
-          addition. The resource labs then connect those ideas to repeated point-add leaves.
+          The full pipeline has a fixed dependency order: public key relation, two-register
+          oracle, hidden period, phase kickback, Fourier sample, then many repeated
+          point-add leaves. If a resource story skips directly from public key to final
+          number, it has probably hidden the part where the cost actually accumulates.
         </p>
       </article>
     </section>
@@ -2003,9 +2003,9 @@ function ProgrammingStoryPanel() {
             executable circuit exists behind it.
           </p>
           <p>
-            That is why the lab asks you to type a bad opcode first. The useful habit
-            is to distrust summaries until the parser, row table, costs, and cleanup
-            checks all describe the same object.
+            A useful parser rejects that row before it can enter any resource artifact.
+            The habit is to distrust summaries until the parser, row table, costs, and
+            cleanup checks all describe the same object.
           </p>
         </div>
         <div className="parser-fail-card" aria-hidden="true">
@@ -2329,12 +2329,12 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
       </div>
 
       <article className="story-question">
-        <h4>How to read the labs</h4>
+        <h4>The promotion question</h4>
         <p>
-          Start with the small product grid to feel why multiplication creates many
-          one-bit temporary products. Then open accumulator lowering: the lesson is
-          not that the candidate is useless, but that promotion requires replacing
-          every obligation row with exact primitive gates, owners, liveness, and cleanup.
+          A modular-multiplication candidate is not useless just because it is blocked.
+          The question is whether every obligation row can be replaced by exact primitive
+          gates, owners, liveness, and cleanup without changing the boundary function or
+          moving hidden cost outside the engine.
         </p>
       </article>
     </section>
@@ -2479,13 +2479,13 @@ function OwnerCapacityStoryPanel({ data }: { data: typeof projectData }) {
       </div>
 
       <article className="story-question">
-        <h4>How to read the labs</h4>
+        <h4>The capacity question</h4>
         <p>
-          In slot liveness, toggle the clean-ladder guard and watch the candidate
-          move from {formatInt(strict.reconstructed_total)} to {formatInt(correctedTotal)}
-          qubits. In the capacity game, moving the guard ladder out of lookup workspace
-          is the toy version of the same audit: owner assignment and numeric capacity
-          have to pass together.
+          Owner assignment and numeric capacity have to pass together. The strict row
+          reconstructs {formatInt(strict.reconstructed_total)} qubits; moving the clean
+          guard ladder out of lookup workspace gives {formatInt(correctedTotal)}. The
+          difference is not a naming preference. It is the cost of proving that live
+          values fit inside counted capacity.
         </p>
       </article>
     </section>
@@ -2780,11 +2780,10 @@ function MiniEngineStoryPanel() {
       <article className="story-question">
         <h4>The toy engine is the real rule at small scale</h4>
         <p>
-          The lab does not ask you to trust a resource number. It gives you a tiny
-          circuit program, materializes the rows, derives wire lifetimes, checks owner
-          budgets, and then reports the peak. The widths are small so the whole
-          derivation fits on one page; the rule is the same rule the repo needs at
-          secp256k1 scale.
+          A resource number becomes credible only after the circuit program is turned
+          into rows, wire lifetimes, owner budgets, and a peak witness. The widths are
+          small here so the whole derivation fits on one page; the rule is the same
+          rule the repo needs at secp256k1 scale.
         </p>
         <div className="mini-engine-flow-strip" aria-hidden="true">
           <span>program rows</span>

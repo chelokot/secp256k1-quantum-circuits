@@ -34,9 +34,13 @@ test('keeps every lesson free of legacy scaffolding and page overflow', async ({
     'notarized receipt',
     'How to use the labs',
     'What to do in the labs',
+    'How to read the labs',
+    'How the labs fit together',
     'What the labs are proving',
     'What the labs are allowed to claim',
     'The lab is a small control room',
+    'The lab does not ask',
+    'lab asks you',
     'buttons below',
   ];
 
@@ -417,6 +421,8 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('ecdlp-story')).toContainText('Solve');
   await expect(page.getByTestId('ecdlp-story').locator('xpath=.//*[@data-tex="d=v\\cdot u^{-1}\\pmod n"]')).toBeVisible();
   await expect(page.getByTestId('ecdlp-story')).toContainText('Why point-add dominates');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('The attack chain to keep in order');
+  await expect(page.getByTestId('ecdlp-story')).toContainText('fixed dependency order');
   await expect(page.getByTestId('lab-route')).toContainText('Lab 1 of 6');
   await expect(page.getByTestId('lab-route')).toContainText('Orient the public key, quantum registers, controlled adds, and readout.');
   await expect(page.getByTestId('lab-route')).toContainText('Whole attack map');
@@ -763,6 +769,8 @@ test('shows partial-product lowering pressure', async ({ page }) => {
   await expect(page.getByTestId('modular-lowering-story')).toContainText('birth: CCX controls');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('Modulo reduction is not an after-the-fact note');
   await expect(page.getByTestId('modular-lowering-story')).toContainText('Cleanup still gates promotion');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('The promotion question');
+  await expect(page.getByTestId('modular-lowering-story')).toContainText('moving hidden cost outside the engine');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Partial-product grid');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('Selected cell');
   await expect(page.getByTestId('multiplier-grid-lab')).toContainText('CCX x0 y0 t_0_0');
@@ -799,6 +807,8 @@ test('requires owner assignment and numeric capacity to pass', async ({ page }) 
   await expect(page.getByTestId('owner-capacity-story')).toContainText('owner buckets');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('The guard gap is the concrete example');
   await expect(page.getByTestId('owner-capacity-story')).toContainText('2,222');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('The capacity question');
+  await expect(page.getByTestId('owner-capacity-story')).toContainText('not a naming preference');
   await selectRouteLab(page, /Capacity game/);
 
   await expect(page.getByTestId('owner-capacity-game')).toContainText('Audit: fail');
@@ -956,6 +966,7 @@ test('lets the learner derive peak qubits from a mini engine', async ({ page }) 
   await openLesson(page, 'mini-engine');
 
   await expect(page.getByTestId('mini-engine-story')).toContainText('The toy engine is the real rule at small scale');
+  await expect(page.getByTestId('mini-engine-story')).toContainText('A resource number becomes credible only after');
   await expect(page.getByTestId('mini-engine-story')).toContainText('One row creates a lifetime');
   await expect(page.getByTestId('mini-engine-story')).toContainText('The peak count comes with a witness');
   await expect(page.getByTestId('mini-engine-story')).toContainText('Cleanup can lower qubits without changing the answer');
