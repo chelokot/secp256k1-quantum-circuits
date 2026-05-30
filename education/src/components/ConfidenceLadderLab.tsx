@@ -64,7 +64,7 @@ const ladderRows: LadderRow[] = [
   {
     key: 'proofFreshness',
     title: 'Fresh proof wrapper',
-    allowedClaim: 'Compressed/Groth16 artifacts bind the current selected input.',
+    allowedClaim: 'Compressed SP1 receipt and Groth16 wrapper artifacts bind the current selected input.',
     missingClaim: 'No publication claim if proof fixtures are stale.',
   },
   {

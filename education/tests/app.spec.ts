@@ -1138,19 +1138,28 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await openLesson(page, 'zkp-boundary');
 
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('A valid proof is only a receipt for its exact statement');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('ZKP means zero-knowledge proof');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The binding chain is the thing a reviewer follows');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The current checked proof status is deliberately conservative');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('compressed SP1 receipt');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Core relation, Compressed SP1 receipt, Groth16 wrapper');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('resource digest matches input no');
+  await expect(page.getByTestId('zkp-boundary-story')).not.toContainText('compressed: current false');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Proof validity still needs a wording audit');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Why both proof systems matter');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Groth16 is a separate succinct wrapper');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('9,024');
-  await selectRouteLab(page, /ZKP boundary/);
+  await selectRouteLab(page, /Zero-knowledge proof boundary/);
 
-  await expect(page.getByTestId('proof-boundary-lab')).toContainText('ZKP boundary lab');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Zero-knowledge proof boundary lab');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('which input, corpus, public values, and resource digest');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('what does the proof bind?');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('is the claim physical?');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('8 cases');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('9024 cases');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: blocked');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Compressed SP1 receipt');
+  await expect(page.getByTestId('proof-boundary-lab')).toContainText('Groth16 wrapper');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Verifier checks');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Still outside the verifier');
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('compiler_verification_project/artifacts/proof_publication_status.json');
@@ -1158,7 +1167,7 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('public_headline_groth16_verify');
   await page.getByLabel('Refresh proof fixtures against current input').check();
   await page.getByLabel('Close physical macro boundary').check();
-  await page.getByLabel('Verify compressed and Groth16 proofs').check();
+  await page.getByLabel('Verify compressed SP1 receipt and Groth16 wrapper proofs').check();
   await expect(page.getByTestId('proof-boundary-lab')).toContainText('Proof release gate: pass');
 });
 

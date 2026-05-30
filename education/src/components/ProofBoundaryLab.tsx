@@ -47,6 +47,13 @@ const statusText = (value: boolean | null) => {
 
 const readable = (value: string) => value.replaceAll('_', ' ');
 
+const proofSystemLabel = (system: string) => {
+  if (system === 'core') return 'Core relation';
+  if (system === 'compressed') return 'Compressed SP1 receipt';
+  if (system === 'groth16') return 'Groth16 wrapper';
+  return readable(system);
+};
+
 export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) {
   const [fixturesCurrent, setFixturesCurrent] = useState(projectData.proofPublication.allCurrent);
   const [macroBoundaryClosed, setMacroBoundaryClosed] = useState(projectData.proofPublication.publicationReady);
@@ -56,7 +63,7 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
     const open: string[] = [];
     if (!fixturesCurrent) open.push('proof fixtures do not bind current input');
     if (!macroBoundaryClosed) open.push('remaining macro boundary is not flattened');
-    if (!verifiedReleaseProofs) open.push('compressed and Groth16 verification not rerun for release');
+    if (!verifiedReleaseProofs) open.push('compressed SP1 receipt and Groth16 wrapper verification not rerun for release');
     return { open, pass: open.length === 0 };
   }, [fixturesCurrent, macroBoundaryClosed, verifiedReleaseProofs]);
 
@@ -64,8 +71,13 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
     <section className="wide-panel" data-testid="proof-boundary-lab">
       <div className="panel-heading">
         <FileCheck2 size={20} />
-        <h3>ZKP boundary lab</h3>
+        <h3>Zero-knowledge proof boundary lab</h3>
       </div>
+      <p>
+        A zero-knowledge proof verifier checks one encoded statement. Here the important
+        question is not only “did verification pass?”, but “which input, corpus, public
+        values, and resource digest did that proof bind?”
+      </p>
       <div className="proof-grid">
         <article>
           <h4>Checked proof status</h4>
@@ -93,7 +105,7 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
           <div className="proof-system-list">
             {projectData.proofPublication.systems.map((system) => (
               <div key={system.system}>
-                <strong>{system.system}</strong>
+                <strong>{proofSystemLabel(system.system)}</strong>
                 <span>current {statusText(system.current)}</span>
                 <span>public values {statusText(system.publicValuesMatchCurrent)}</span>
                 <span>resource digest {statusText(system.resourceDigestMatchesInput)}</span>
@@ -109,8 +121,8 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
           <span>Verifier checks</span>
           <strong>proof bytes match public values</strong>
           <p>
-            A valid compressed or Groth16 verifier result says the proof bundle
-            satisfies the encoded statement and public values for that system.
+            A valid compressed SP1 receipt or Groth16 wrapper verifier result says the proof bundle
+            satisfies the encoded statement and public values for that proof format.
           </p>
         </article>
         <article>
@@ -155,7 +167,7 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
         <article>
           <span>2. Freshness</span>
           <strong>are artifacts current?</strong>
-          <p>Compressed and Groth16 proof bundles must match the checked input and verifier key.</p>
+          <p>Compressed SP1 receipt and Groth16 wrapper proof bundles must match the checked input and verifier key.</p>
         </article>
         <article>
           <span>3. Scope</span>
@@ -186,12 +198,12 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
         </label>
         <label>
           <input
-            aria-label="Verify compressed and Groth16 proofs"
+            aria-label="Verify compressed SP1 receipt and Groth16 wrapper proofs"
             checked={verifiedReleaseProofs}
             onChange={(event) => setVerifiedReleaseProofs(event.currentTarget.checked)}
             type="checkbox"
           />
-          <span>compressed and Groth16 verification passed for the checked artifacts</span>
+          <span>compressed SP1 receipt and Groth16 wrapper verification passed for the checked artifacts</span>
         </label>
         <p className={simulatedStatus.pass ? 'audit-pass' : 'audit-fail'}>
           Proof release gate: {simulatedStatus.pass ? 'pass' : 'blocked'}
@@ -214,7 +226,7 @@ export function ProofBoundaryLab({ projectData }: { projectData: ProjectData }) 
       <div className="proof-blockers">
         {projectData.proofPublication.blockers.map((blocker) => (
           <article key={blocker.system}>
-            <strong>{blocker.system}</strong>
+            <strong>{proofSystemLabel(blocker.system)}</strong>
             <span>{readable(blocker.inputBindingStatus)}</span>
             <p>{blocker.staleReasons.map(readable).join(', ')}</p>
           </article>

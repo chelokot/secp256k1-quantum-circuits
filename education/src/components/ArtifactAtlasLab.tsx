@@ -104,7 +104,7 @@ const atlasEntries: AtlasEntry[] = [
     title: 'Proof publication status',
     sourceKey: 'proofPublicationStatus',
     question: 'Are checked proof fixtures current enough to publish?',
-    proves: 'Freshness status for core, compressed, Groth16, and public-headline publication gates.',
+    proves: 'Freshness status for core relation, compressed SP1 receipt, Groth16 wrapper, and public-headline publication gates.',
     doesNotProve: 'A physical baseline if the resource contract underneath is still blocked.',
     liveSignal: (projectData) => `Publication ready: ${projectData.proofPublication.publicationReady ? 'yes' : 'no'}; stale systems: ${projectData.proofPublication.staleSystems.join(', ')}.`,
   },

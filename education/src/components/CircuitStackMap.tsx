@@ -55,9 +55,9 @@ const stages = [
   },
   {
     id: 'zkp',
-    name: 'ZKP publication boundary',
+    name: 'Zero-knowledge proof publication boundary',
     consumes: 'resource digest, semantic corpus, public values, verifier key',
-    emits: 'compressed/Groth16 verification result for a specific current statement',
+    emits: 'compressed SP1 receipt and Groth16 wrapper verification for a specific current statement',
     audit: 'Are proof artifacts current, release-grade, and bound to the selected physical contract?',
   },
 ];
@@ -99,7 +99,7 @@ export function CircuitStackMap({ projectData }: { projectData: ProjectData }) {
         <article>
           <span>Publication gate</span>
           <strong>proof binds the same contract</strong>
-          <p>The ZKP statement is credible only when it executes and hashes the same resource contract.</p>
+          <p>The zero-knowledge proof statement is credible only when it executes and hashes the same resource contract.</p>
         </article>
       </div>
 

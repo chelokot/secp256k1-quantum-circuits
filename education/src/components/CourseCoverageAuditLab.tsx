@@ -76,7 +76,7 @@ const coverageRows: CoverageRow[] = [
   {
     id: 'proof',
     requirement: 'Explain ZKP/proof boundary and current repo confidence',
-    evidence: ['ZKP boundary lab', 'Artifact atlas', 'Claim audit drill', 'Confidence ladder'],
+    evidence: ['Zero-knowledge proof boundary lab', 'Artifact atlas', 'Claim audit drill', 'Confidence ladder'],
     reviewerQuestion: 'Does it prevent treating a valid proof wrapper as stronger than its bound statement?',
     status: 'covered',
   },

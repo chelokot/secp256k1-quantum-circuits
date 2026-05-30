@@ -58,6 +58,13 @@ import { MathTex } from './components/MathText';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const readableStatus = (value: string) => value.replaceAll('_', ' ');
+const proofSystemLabel = (system: string) => {
+  if (system === 'core') return 'Core relation';
+  if (system === 'compressed') return 'Compressed SP1 receipt';
+  if (system === 'groth16') return 'Groth16 wrapper';
+  return readableStatus(system);
+};
+const yesNo = (value: boolean) => (value ? 'yes' : 'no');
 const lessonIds = new Set(lessons.map((lesson) => lesson.id));
 
 function lessonFromHash() {
@@ -185,7 +192,7 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
     { name: 'Course coverage audit', goal: 'Check how the course maps the original learning requirements.' },
   ],
   'zkp-boundary': [
-    { name: 'ZKP boundary', goal: 'Close freshness, macro-boundary, and proof verification gates.' },
+    { name: 'Zero-knowledge proof boundary', goal: 'Close freshness, macro-boundary, and proof verification gates.' },
     { name: 'Confidence ladder', goal: 'Match claim wording to the strongest proved rung.' },
     { name: 'Artifact atlas', goal: 'Map checked paths to what they prove and do not prove.' },
   ],
@@ -3092,15 +3099,16 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
   const corpus = data.proofCorpusProfiles;
 
   return (
-    <section className="zkp-boundary-story" data-testid="zkp-boundary-story" aria-label="ZKP boundary and publication story">
+    <section className="zkp-boundary-story" data-testid="zkp-boundary-story" aria-label="Zero-knowledge proof boundary and publication story">
       <article className="story-question">
         <h4>A valid proof is only a receipt for its exact statement</h4>
         <p>
-          A ZKP verifier does not read the README and decide whether the whole project
-          is true. It checks one encoded statement against one proof bundle. If that
-          statement points at an old resource digest, an eight-case smoke corpus, or a
-          macro-level boundary, the proof can be valid while the public sentence is still
-          too strong.
+          ZKP means zero-knowledge proof: a verifier can check that a specific relation
+          was satisfied without seeing the full private witness. It does not read the
+          README and decide whether the whole project is true. It checks one encoded
+          statement against one proof bundle. If that statement points at an old resource
+          digest, an eight-case smoke corpus, or a macro-level boundary, the proof can be
+          valid while the public sentence is still too strong.
         </p>
         <div className="source-of-truth-strip" aria-hidden="true">
           <span>input JSON</span>
@@ -3136,8 +3144,13 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
         <div>
           <h4>The current checked proof status is deliberately conservative</h4>
           <p>
+            The repo tracks three proof statuses: the core relation, the compressed SP1
+            receipt used during iteration, and the Groth16 wrapped proof used for a
+            smaller externally verifiable artifact.
+          </p>
+          <p>
             Publication ready: <code>{String(publication.publicationReady)}</code>.
-            Current systems marked stale: {publication.staleSystems.join(', ')}.
+            Current systems marked stale: {publication.staleSystems.map(proofSystemLabel).join(', ')}.
             The public proof profile has {corpus.publicCaseCount} cases; the
             Google-comparable release target has {formatInt(corpus.releaseCaseCount)}.
           </p>
@@ -3145,7 +3158,7 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
         <div className="proof-contract-list" aria-hidden="true">
           {publication.systems.map((system) => (
             <span key={system.system}>
-              {system.system}: current {String(system.current)}, digest {String(system.resourceDigestMatchesInput)}
+              {proofSystemLabel(system.system)}: current {yesNo(system.current)}, resource digest matches input {yesNo(system.resourceDigestMatchesInput)}
             </span>
           ))}
         </div>
@@ -3194,12 +3207,13 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
       <article className="story-question">
         <h4>Why both proof systems matter</h4>
         <p>
-          A compressed proof is the normal SP1 receipt shape used during iteration.
-          Groth16 is the smaller wrapped proof format people often want for external
-          verification. Rebuilding only one of them leaves a reviewer asking whether the
-          other artifact still binds the same input. That is why the publication gate
-          treats freshness, corpus size, macro closure, and both verification systems as
-          one release boundary.
+          SP1 is the proof framework used by this repo. A compressed proof is the normal
+          SP1 receipt shape used during iteration. Groth16 is a separate succinct wrapper:
+          it turns the checked statement into a much smaller proof with its own verifier
+          key. Rebuilding only one format leaves a reviewer asking whether the other
+          artifact still binds the same input. That is why the publication gate treats
+          freshness, corpus size, macro closure, and both verification systems as one
+          release boundary.
         </p>
       </article>
     </section>
@@ -3744,7 +3758,7 @@ export function App() {
         ];
       case 'zkp-boundary':
         return [
-          labItem(0, 'ZKP boundary', <ProofBoundaryLab projectData={projectData} />),
+          labItem(0, 'Zero-knowledge proof boundary', <ProofBoundaryLab projectData={projectData} />),
           labItem(1, 'Confidence ladder', <ConfidenceLadderLab projectData={projectData} />),
           labItem(2, 'Artifact atlas', <ArtifactAtlasLab projectData={projectData} />),
         ];

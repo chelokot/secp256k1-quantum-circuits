@@ -430,17 +430,17 @@ export const lessons: CourseLesson[] = [
   {
     id: 'zkp-boundary',
     module: 'Repo engine',
-    title: 'ZKP proves a statement, not every unstated assumption',
+    title: 'Zero-knowledge proofs bind one exact statement',
     icon: ShieldCheck,
     intuition:
-      'A compressed or Groth16 proof can be valid while proving an old input, a smoke corpus, or a macro-boundary statement that is weaker than a physical-circuit claim.',
+      'A zero-knowledge proof, abbreviated ZKP, can be valid while proving an old input, a smoke corpus, or a macro-boundary statement that is weaker than a physical-circuit claim.',
     whyItMatters:
       'The repo now separates proof freshness, public values, release corpus size, and physical-baseline readiness so a green verifier cannot hide a stale or weaker contract.',
     mentalModel:
-      'Read a ZKP as a relation check over bytes: the verifier accepts one proof for one public statement. Confidence comes from inspecting which input digest, public values, corpus, and resource certificate that statement binds.',
+      'Read a proof as a relation check over bytes: the verifier accepts one proof for one public statement. Confidence comes from inspecting which input digest, public values, corpus, and resource certificate that statement binds.',
     checkpoint: 'A reviewer should ask: what input, what corpus, what public values, what resource digest, and what remaining macro boundary?',
     coreIdeas: [
-      'Proof validity is not the same as claim validity.',
+      'Zero-knowledge proof validity is not the same as claim validity.',
       'Public values define what the verifier actually sees.',
       'Fresh artifacts and current resource contract must agree.',
       'Proof wording must not outrun the bound input and artifact freshness.',
