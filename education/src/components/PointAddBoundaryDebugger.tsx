@@ -62,6 +62,44 @@ const caseCopy: Record<BoundaryCategoryName, { label: string; risk: string; fix:
   },
 };
 
+const branchContract: Record<BoundaryCategoryName, {
+  predicate: string;
+  expectedOutput: string;
+  liveControls: string;
+  cleanup: string;
+}> = {
+  random: {
+    predicate: 'P != Q, P != -Q, accumulator finite, lookup finite',
+    expectedOutput: 'ordinary elliptic-curve addition result',
+    liveControls: 'ordinary path controls only',
+    cleanup: 'temporary slope and numerator lanes uncomputed',
+  },
+  doubling: {
+    predicate: 'P == Q',
+    expectedOutput: 'doubling formula result 2P',
+    liveControls: 'same-point predicate plus ordinary path controls',
+    cleanup: 'same-point selector cannot remain as garbage',
+  },
+  inverse: {
+    predicate: 'P == -Q',
+    expectedOutput: 'point at infinity',
+    liveControls: 'inverse predicate and infinity encoder',
+    cleanup: 'inverse selector and rejected affine lanes cleaned or counted',
+  },
+  accumulator_infinity: {
+    predicate: 'accumulator is infinity',
+    expectedOutput: 'copy lookup point into accumulator',
+    liveControls: 'accumulator-infinity flag and copy controls',
+    cleanup: 'copy controls returned to zero after selected branch',
+  },
+  lookup_infinity: {
+    predicate: 'lookup point is infinity',
+    expectedOutput: 'leave accumulator unchanged',
+    liveControls: 'lookup-infinity flag and no-op controls',
+    cleanup: 'no-op selector cleaned without touching accumulator state',
+  },
+};
+
 const readable = (name: BoundaryCategoryName) => caseCopy[name].label;
 
 export function PointAddBoundaryDebugger({ projectData }: { projectData: ProjectData }) {
@@ -95,6 +133,7 @@ export function PointAddBoundaryDebugger({ projectData }: { projectData: Project
   }, [accumulatorInfinityGuard, artifact, doublingGuard, inverseGuard, lookupInfinityGuard, randomOnly]);
 
   const selected = caseCopy[selectedCase];
+  const selectedContract = branchContract[selectedCase];
   const oldArtifact = projectData.pointAddBoundary.lookupFedLeaf;
   const artifactsAgree = oldArtifact.total === artifact.total && oldArtifact.pass === artifact.pass;
 
@@ -149,6 +188,30 @@ export function PointAddBoundaryDebugger({ projectData }: { projectData: Project
           <p><strong>Required contract:</strong> {selected.fix}</p>
         </article>
       </div>
+
+      <section className="branch-contract-packet" aria-label="Selected branch contract packet">
+        <h4>Selected branch contract packet</h4>
+        <article>
+          <span>Predicate</span>
+          <strong>{selectedContract.predicate}</strong>
+          <p>This is the condition that selects the branch inside the same point-add leaf.</p>
+        </article>
+        <article>
+          <span>Expected output</span>
+          <strong>{selectedContract.expectedOutput}</strong>
+          <p>The semantic replay must compare this output against the reference model.</p>
+        </article>
+        <article>
+          <span>Live controls</span>
+          <strong>{selectedContract.liveControls}</strong>
+          <p>Selector predicates are quantum controls while the branch is active.</p>
+        </article>
+        <article>
+          <span>Cleanup obligation</span>
+          <strong>{selectedContract.cleanup}</strong>
+          <p>The branch proof is incomplete if selector garbage is hidden outside the count.</p>
+        </article>
+      </section>
 
       <div className="boundary-simulator">
         <h4>Red-team simulator</h4>
@@ -213,6 +276,18 @@ export function PointAddBoundaryDebugger({ projectData }: { projectData: Project
             ? 'none'
             : simulatedCoverage.missing.map(readable).join(', ')}
         </p>
+        <div className="boundary-coverage-matrix">
+          {caseOrder.map((name) => {
+            const covered = simulatedCoverage.covered.includes(name);
+            const category = artifact.categories[name];
+            return (
+              <article className={covered ? 'pass' : 'fail'} key={name}>
+                <span>{readable(name)}</span>
+                <strong>{covered ? `${category.pass}/${category.total}` : 'not exercised'}</strong>
+              </article>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

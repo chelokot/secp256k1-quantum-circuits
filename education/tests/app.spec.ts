@@ -1268,9 +1268,14 @@ test('teaches point-add semantic boundary cases from equivalence artifacts', asy
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('lookup infinity');
   await page.getByTestId('point-add-boundary-debugger').getByRole('button', { name: /inverse pair/ }).click();
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('P == -Q');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Selected branch contract packet');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('point at infinity');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('inverse predicate and infinity encoder');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('rejected affine lanes cleaned or counted');
   await page.getByLabel('Test only random point-add cases').check();
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Boundary audit: fail');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Covered checked cases: 16/80');
+  await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('not exercised');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('doubling');
 });
 

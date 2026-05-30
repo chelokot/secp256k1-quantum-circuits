@@ -418,6 +418,7 @@ export const lessons: CourseLesson[] = [
       'Edge cases are part of semantics, not rare extras.',
       'Counted interface and tested interface must match.',
       'Branch selector predicates are live controls that need counting and cleanup.',
+      'Each edge case has a predicate, output behavior, controls, and cleanup obligation.',
     ],
   },
   {

@@ -7563,6 +7563,88 @@ code {
   color: #dce7f2;
 }
 
+.branch-contract-packet {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.85rem;
+  background: rgba(143, 182, 255, 0.04);
+}
+
+.branch-contract-packet h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.branch-contract-packet article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.branch-contract-packet article:nth-child(5) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.06);
+}
+
+.branch-contract-packet span,
+.branch-contract-packet strong,
+.boundary-coverage-matrix span,
+.boundary-coverage-matrix strong {
+  display: block;
+}
+
+.branch-contract-packet span,
+.boundary-coverage-matrix span {
+  color: #63e6be;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.branch-contract-packet strong,
+.boundary-coverage-matrix strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.branch-contract-packet p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.boundary-coverage-matrix {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.boundary-coverage-matrix article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.45rem;
+  padding: 0.65rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.boundary-coverage-matrix article.pass {
+  border-color: rgba(99, 230, 190, 0.28);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.boundary-coverage-matrix article.fail {
+  border-color: rgba(255, 112, 112, 0.3);
+  background: rgba(255, 112, 112, 0.075);
+}
+
 .accumulator-vocab-grid,
 .scratch-contract-grid {
   display: grid;
@@ -10355,6 +10437,8 @@ legend {
   .stack-handoff-receipt,
   .row-witness-grid,
   .lowering-replay-receipt,
+  .branch-contract-packet,
+  .boundary-coverage-matrix,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,
@@ -10634,6 +10718,8 @@ legend {
   .stack-handoff-receipt,
   .row-witness-grid,
   .lowering-replay-receipt,
+  .branch-contract-packet,
+  .boundary-coverage-matrix,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,
@@ -10707,6 +10793,8 @@ legend {
   .mission-grid,
   .mission-evidence-receipt,
   .generated-mission-grid,
+  .branch-contract-packet,
+  .boundary-coverage-matrix,
   .coverage-summary,
   .coverage-grid,
   .claim-drill-grid,
