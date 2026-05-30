@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Binary } from 'lucide-react';
+import { MathTex } from './MathText';
 
 type ProjectData = {
   strictNonCliffordFormula: {
@@ -9,6 +10,16 @@ type ProjectData = {
   };
   strictFormula: {
     lookup_workspace_qubits: number;
+  };
+  compilerParameters: {
+    field: {
+      fieldBits: number;
+    };
+    reusableChunkPolicy: {
+      chunkBits: number;
+      chunkCount: number;
+      scratchSlot: string;
+    };
   };
 };
 
@@ -20,6 +31,11 @@ export function QroamLab({ projectData }: { projectData: ProjectData }) {
   const [address, setAddress] = useState(5);
   const bits = useMemo(() => [4, 2, 1].map((mask) => (address & mask ? 1 : 0)), [address]);
   const selectedValue = table[address];
+  const selectedBits = Number.parseInt(selectedValue, 16).toString(2).padStart(8, '0');
+  const fieldBits = projectData.compilerParameters.field.fieldBits;
+  const chunkBits = projectData.compilerParameters.reusableChunkPolicy.chunkBits;
+  const chunkCount = projectData.compilerParameters.reusableChunkPolicy.chunkCount;
+  const scratchSlot = projectData.compilerParameters.reusableChunkPolicy.scratchSlot;
 
   const toggleBit = (bitIndex: number) => {
     const mask = 1 << (2 - bitIndex);
@@ -74,6 +90,72 @@ export function QroamLab({ projectData }: { projectData: ProjectData }) {
           </div>
         ))}
       </div>
+      <section className="lookup-receipt" aria-label="Lookup ownership receipt">
+        <div className="lookup-receipt-intro">
+          <h4>Ownership receipt for this selection</h4>
+          <p>
+            The visible table emits one byte, but the real circuit emits coordinate
+            chunks. The audit is the same: the selected data must be assigned to a
+            counted target owner before cleanup is allowed to erase the selection path.
+          </p>
+        </div>
+        <div className="lookup-receipt-flow" aria-hidden="true">
+          <div>
+            <span>address</span>
+            <strong>{bits.join('')}</strong>
+            <em>row {address}</em>
+          </div>
+          <i />
+          <div>
+            <span>selected data</span>
+            <strong>{selectedBits}</strong>
+            <em>{selectedValue}</em>
+          </div>
+          <i />
+          <div>
+            <span>counted owner</span>
+            <strong>{scratchSlot}</strong>
+            <em>{chunkBits} live wires</em>
+          </div>
+          <i />
+          <div>
+            <span>cleanup</span>
+            <strong>reverse select</strong>
+            <em>junk removed</em>
+          </div>
+        </div>
+        <div className="lookup-receipt-ledger">
+          <article>
+            <span>Toy target capacity</span>
+            <strong>8 wires</strong>
+            <p>The selected byte is tiny so the lab can show every output bit.</p>
+          </article>
+          <article>
+            <span>Repo chunk capacity</span>
+            <strong>{chunkBits} wires</strong>
+            <p>
+              One streamed coordinate chunk is bigger than the toy byte and must have
+              a live target owner while it is consumed.
+            </p>
+          </article>
+          <article>
+            <span>Full coordinate pressure</span>
+            <strong>{fieldBits} wires</strong>
+            <p>
+              A complete secp256k1 coordinate is a field-sized value, represented here
+              as <MathTex tex={`${chunkCount}`} /> streamed chunks rather than a free lane.
+            </p>
+          </article>
+          <article>
+            <span>Invalid shortcut</span>
+            <strong>workspace name only</strong>
+            <p>
+              A resource row cannot say “lookup workspace” unless its numeric capacity
+              covers decode/control bits plus the live selected-data target or a proven alias.
+            </p>
+          </article>
+        </div>
+      </section>
       <dl className="metric-row">
         <div><dt>Selected</dt><dd>{selectedValue}</dd></div>
         <div><dt>Workspace</dt><dd>{projectData.strictFormula.lookup_workspace_qubits}q</dd></div>

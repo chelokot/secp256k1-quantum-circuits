@@ -648,8 +648,13 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
   await expect(page.getByTestId('qroam-lab')).toContainText('Target lane');
   await expect(page.getByTestId('qroam-lab')).toContainText('No-free-lane audit');
   await expect(page.getByTestId('qroam-lab')).toContainText('selected data must have an owner');
+  await expect(page.getByTestId('qroam-lab')).toContainText('Ownership receipt for this selection');
+  await expect(page.getByTestId('qroam-lab')).toContainText('Repo chunk capacity');
+  await expect(page.getByTestId('qroam-lab')).toContainText('155 wires');
+  await expect(page.getByTestId('qroam-lab')).toContainText('Invalid shortcut');
   await page.getByRole('button', { name: 'a0=1' }).click();
   await expect(page.getByTestId('qroam-lab')).toContainText('Selected');
+  await expect(page.getByTestId('qroam-lab')).toContainText('row 1');
 
   await openLesson(page, 'owner-capacity');
   await selectRouteLab(page, /Invariant lab/);

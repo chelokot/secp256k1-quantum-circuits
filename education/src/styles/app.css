@@ -4441,6 +4441,115 @@ code {
   line-height: 1.45;
 }
 
+.lookup-receipt {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.22);
+  border-radius: 0.5rem;
+  padding: 0.9rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.lookup-receipt h4,
+.lookup-receipt p {
+  margin: 0;
+}
+
+.lookup-receipt-intro {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.lookup-receipt-intro p {
+  color: #c9d6e2;
+  line-height: 1.55;
+}
+
+.lookup-receipt-flow {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) 1rem minmax(7rem, 1fr) 1rem minmax(7rem, 1fr) 1rem minmax(7rem, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.lookup-receipt-flow div {
+  display: grid;
+  gap: 0.18rem;
+  min-height: 4.9rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(7, 16, 24, 0.38);
+}
+
+.lookup-receipt-flow i {
+  height: 0.12rem;
+  background: linear-gradient(90deg, #63e6be, #f5cf6b);
+}
+
+.lookup-receipt-flow span,
+.lookup-receipt-flow strong,
+.lookup-receipt-flow em {
+  display: block;
+}
+
+.lookup-receipt-flow span {
+  color: #93a4b7;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lookup-receipt-flow strong {
+  color: #ffffff;
+  overflow-wrap: anywhere;
+}
+
+.lookup-receipt-flow em {
+  color: #c9d6e2;
+  font-style: normal;
+  font-size: 0.82rem;
+}
+
+.lookup-receipt-ledger {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.65rem;
+}
+
+.lookup-receipt-ledger article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lookup-receipt-ledger span,
+.lookup-receipt-ledger strong {
+  display: block;
+}
+
+.lookup-receipt-ledger span {
+  color: #93a4b7;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lookup-receipt-ledger strong {
+  margin-top: 0.25rem;
+  color: #ffffff;
+}
+
+.lookup-receipt-ledger p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .no-free-lane-callout {
   border-color: rgba(245, 207, 107, 0.4);
   background: rgba(245, 207, 107, 0.08);
@@ -7778,6 +7887,14 @@ legend {
   .scaffold-controls,
   .scaffold-detail-grid {
     grid-template-columns: 1fr;
+  }
+
+  .lookup-receipt-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .lookup-receipt-flow i {
+    display: none;
   }
 }
 
