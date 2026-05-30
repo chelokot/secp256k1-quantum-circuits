@@ -32,6 +32,12 @@ test('keeps every lesson free of legacy scaffolding and page overflow', async ({
     'Current repo contract',
     'Current repository resource status',
     'notarized receipt',
+    'How to use the labs',
+    'What to do in the labs',
+    'What the labs are proving',
+    'What the labs are allowed to claim',
+    'The lab is a small control room',
+    'buttons below',
   ];
 
   for (const viewport of viewports) {
@@ -330,7 +336,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('gates-story')).toContainText('Wire');
   await expect(page.getByTestId('gates-story')).toContainText('Controlled gate');
   await expect(page.getByTestId('gates-story')).toContainText('Why cleanup is not optional');
-  await expect(page.getByTestId('gates-story')).toContainText('How to use the labs');
+  await expect(page.getByTestId('gates-story')).toContainText('The row discipline');
+  await expect(page.getByTestId('gates-story')).toContainText('the circuit contract the resource engine has to count');
   await expect(page.getByTestId('gates-story')).toContainText('scratch returned to |0>');
   await expect(page.getByTestId('circuit-builder')).toContainText('the row table is the countable object');
   await expect(page.getByTestId('circuit-builder')).toContainText('q0,q1 -> q2');
@@ -432,7 +439,8 @@ test('shows the whole attack map and point-add formula microscope', async ({ pag
   await expect(page.getByTestId('netlist-story')).toContainText('Rows turn intuition into receipts');
   await expect(page.getByTestId('netlist-story')).toContainText('Lowering is where trust usually leaks');
   await expect(page.getByTestId('netlist-story')).toContainText('Scheduling changes the peak');
-  await expect(page.getByTestId('netlist-story')).toContainText('How to use the labs');
+  await expect(page.getByTestId('netlist-story')).toContainText('The evidence chain');
+  await expect(page.getByTestId('netlist-story')).toContainText('formula lowered to primitive rows');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Phase estimation shell');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('Old failure mode');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('rows create live intervals');
@@ -606,7 +614,8 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
   await expect(page.getByTestId('logical-physical-story')).toContainText('Read code parameters as a hardware contract');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Error correction is a running service loop');
   await expect(page.getByTestId('logical-physical-story')).toContainText('Code distance');
-  await expect(page.getByTestId('logical-physical-story')).toContainText('What the labs are allowed to claim');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('The boundary of the claim');
+  await expect(page.getByTestId('logical-physical-story')).toContainText('Turning it into a hardware claim requires');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Logical to physical bridge');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('1,968');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('450');
@@ -825,7 +834,8 @@ test('trains claim classification before publishing resource numbers', async ({ 
   await expect(page.getByTestId('contribution-story')).toContainText('A useful patch is a small claim plus evidence');
   await expect(page.getByTestId('contribution-story')).toContainText('The open blockers define useful work');
   await expect(page.getByTestId('contribution-story')).toContainText('Choose the smallest claim');
-  await expect(page.getByTestId('contribution-story')).toContainText('How to use the three labs');
+  await expect(page.getByTestId('contribution-story')).toContainText('The contributor loop');
+  await expect(page.getByTestId('contribution-story')).toContainText('choose one blocker');
   await selectRouteLab(page, /Claim audit drill/);
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Claim audit drill');
   await expect(page.getByTestId('claim-audit-drill')).toContainText('Classification: wrong');
@@ -847,7 +857,9 @@ test('turns learning into contributor-ready mission packets', async ({ page }) =
   await openLesson(page, 'contribution');
 
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Contributor mission board');
-  await expect(page.getByTestId('contribution-story')).toContainText('The mission board turns blockers into concrete patches');
+  await expect(page.getByTestId('contribution-story')).toContainText('The contributor loop');
+  await expect(page.getByTestId('contribution-story')).toContainText('choose one blocker');
+  await expect(page.getByTestId('contribution-story')).toContainText('which evidence gate changed');
   await expect(page.getByTestId('contributor-mission-board')).toContainText('Mission ready: no');
   await page.getByTestId('contributor-mission-board').getByRole('button', { name: /Promote a primitive lowering row/ }).click();
   await page.getByLabel('Complete mission item identify source controls').check();
@@ -967,6 +979,9 @@ test('teaches the real resource engine source-of-truth boundary', async ({ page 
   await openLesson(page, 'resource-engine');
 
   await expect(page.getByTestId('resource-engine-story')).toContainText('The engine exists because precise-looking counts lied');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('What “flat primitive stream” means');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('row number, operation, controls');
+  await expect(page.getByTestId('resource-engine-story')).toContainText('derive peak qubits instead of trusting a hand-picked register list');
   await expect(page.getByTestId('resource-engine-story')).toContainText('One stream should feed every claim surface');
   await expect(page.getByTestId('resource-engine-story')).toContainText('No second calculator');
   await expect(page.getByTestId('resource-engine-story')).toContainText('artifact fields');
@@ -1096,7 +1111,7 @@ test('teaches proof freshness, corpus size, and ZKP release gates', async ({ pag
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The binding chain is the thing a reviewer follows');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('The current checked proof status is deliberately conservative');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('Proof validity still needs a wording audit');
-  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Why the lab asks for both compressed and Groth16 gates');
+  await expect(page.getByTestId('zkp-boundary-story')).toContainText('Why both proof systems matter');
   await expect(page.getByTestId('zkp-boundary-story')).toContainText('9,024');
   await selectRouteLab(page, /ZKP boundary/);
 

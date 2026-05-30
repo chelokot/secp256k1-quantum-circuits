@@ -606,12 +606,13 @@ function OneQubitStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>The lab is a small control room</h4>
+        <h4>The invariant to carry forward</h4>
         <p>
-          The buttons below are deliberately tiny examples of the same discipline used
-          later in the resource engine: apply named reversible operations, inspect the
-          state they produce, then verify a concrete mission. Make a split, hide phase,
-          reveal phase, and return by a cycle before moving to two-qubit gates.
+          Every one-qubit move here is a named reversible transformation of the same
+          amplitude pair. A useful mental checklist is: what does the gate do to
+          <MathTex tex="|0\rangle" />, what does it do to <MathTex tex="|1\rangle" />,
+          does it preserve total probability for mixtures of both, and what inverse
+          would return the state?
         </p>
       </article>
     </section>
@@ -927,12 +928,12 @@ function CliffordStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>What the labs are proving</h4>
+        <h4>The cost split to carry forward</h4>
         <p>
           The wheel makes the boundary visible: S and Z stay on stabilizer axes, while
           T moves into the magic region and increments the non-Clifford counter. The
-          budget lab then scales the same distinction to repo-sized claims: a headline
-          needs live-qubit accounting and magic-work accounting at the same time.
+          same distinction scales to repo-sized claims: a headline needs live-qubit
+          accounting and magic-work accounting at the same time.
         </p>
       </article>
     </section>
@@ -1112,12 +1113,12 @@ function LogicalPhysicalStoryPanel() {
       </article>
 
       <article className="story-question">
-        <h4>What the labs are allowed to claim</h4>
+        <h4>The boundary of the claim</h4>
         <p>
-          The first lab is a toy bridge from logical rows to a physical envelope. The
-          second lab is a repetition-code intuition demo. Neither is the repo’s hardware
-          claim. They exist to teach why a logical result is a circuit-design claim, and
-          why hardware claims need an additional fault-tolerance model.
+          A logical result is a circuit-design claim. Turning it into a hardware claim
+          requires an additional fault-tolerance model: code family, distance, physical
+          error rates, syndrome schedule, decoder, layout, and magic-factory plan. Keep
+          those layers separate whenever a number is quoted.
         </p>
       </article>
     </section>
@@ -1317,12 +1318,13 @@ function PhaseEstimationStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>What to do in the labs</h4>
+        <h4>The causal chain to remember</h4>
         <p>
-          First move the hidden phase and watch the likely binary label move. Then use
-          the Fourier lens to compare a matching candidate against a wrong one. The
-          important lesson is the direction of causality: controlled arithmetic creates
-          the phase rhythm, and inverse QFT turns that rhythm into bits.
+          The important direction is fixed: controlled arithmetic creates the phase
+          rhythm, and inverse QFT turns that rhythm into bits. If a resource estimate
+          changes the controlled operation, it changes the expensive part of the
+          algorithm; if it only changes readout formatting, it does not explain the
+          dominant cost.
         </p>
       </article>
     </section>
@@ -1725,12 +1727,13 @@ function CoordinatesStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>What to do in the labs</h4>
+        <h4>The coordinate claim to test</h4>
         <p>
-          First move the scale slider and verify that different triples normalize to
-          the same affine point. Then use the overwrite and boundary labs to ask the
-          resource question: which coordinate-sized values are live at the same time,
-          and which edge cases execute the same counted contract?
+          A coordinate optimization is credible only when two questions have the same
+          answer in the executable artifact: which coordinate-sized values are live at
+          the same time, and which edge cases execute the same counted contract? If the
+          liveness story and the point-add boundary story diverge, the qubit number is
+          only a hypothesis.
         </p>
       </article>
     </section>
@@ -1872,11 +1875,12 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
       </div>
 
       <article className="story-question">
-        <h4>What to do in the labs</h4>
+        <h4>The invariant to test</h4>
         <p>
-          First flip address bits and identify which register is address, target,
-          workspace, and cleanup. Then move <MathTex tex="K" /> in the tradeoff dial
-          and watch the same formula change gates and workspace together.
+          A lookup resource model must keep address, target, workspace, cleanup, and
+          gate cost in one construction. Changing <MathTex tex="K" /> changes both the
+          Toffoli formula and the workspace formula. Counting only the better side of
+          that tradeoff is exactly the failure mode this page is meant to catch.
         </p>
       </article>
     </section>
@@ -2029,11 +2033,12 @@ function ProgrammingStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>What to do in the labs</h4>
+        <h4>A valid parser is not a clean circuit</h4>
         <p>
-          Build a tiny row table first, then edit the DSL until it rejects and recovers.
-          When the parser says valid, compare rows, wires, and non-Clifford total. Then
-          continue to cleanup: a valid row stream is still incomplete if it leaves scratch.
+          A row stream can be syntactically valid and still fail the resource contract.
+          The next audit question is always whether every produced value has a use,
+          owner, cost, and end of life. Parser acceptance is the beginning of evidence,
+          not the final claim.
         </p>
       </article>
     </section>
@@ -2154,12 +2159,12 @@ function CleanupStoryPanel({ data }: { data: typeof projectData }) {
       </article>
 
       <article className="story-question">
-        <h4>What to do in the labs</h4>
+        <h4>The reusable cleanup question</h4>
         <p>
-          First make the small cleanup puzzle pass by adding the matching uncompute
-          row. Then inspect the scratch lifecycle lab and switch from partial-product
-          rows to guard rows. The lesson is the same at both scales: cleanup needs
-          source controls, not just an optimistic label.
+          The lesson is the same at toy and repo scale: cleanup needs source controls,
+          not just an optimistic label. For every temporary, ask which sources created
+          it, where the useful effect was consumed, which inverse erases it, and which
+          row proves its live interval ended.
         </p>
       </article>
     </section>
@@ -2592,13 +2597,12 @@ function NetlistStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>How to use the labs</h4>
+        <h4>The evidence chain</h4>
         <p>
-          Start with the stack map to locate where a formula can drift away from the
-          counted object. Then run the mini engine and opcode-lowering labs: they are
-          the small version of the desired repo architecture. End with the schedule
-          optimizer to see why the same function can have a different peak live-qubit
-          count after legal cleanup motion.
+          The desired architecture is one chain: formula lowered to primitive rows,
+          rows replayed for semantics, rows scanned for liveness, owner loads checked
+          numerically, and docs generated from the resulting artifact. If any link is
+          hand-recreated, the chain has another place to drift.
         </p>
       </article>
     </section>
@@ -2628,6 +2632,32 @@ function ResourceEngineStoryPanel({ data }: { data: typeof projectData }) {
           <span>check owners</span>
           <i />
           <span>emit artifacts</span>
+        </div>
+      </article>
+
+      <article className="story-rule primitive-row-rule">
+        <div>
+          <h4>What “flat primitive stream” means</h4>
+          <p>
+            A macro name like <code>field_mul</code> is not yet the thing we count. A
+            primitive row is smaller and duller: row number, operation, controls,
+            target wire, owner, cost class, and lifetime effect. At secp256k1 scale
+            there are many such rows, but each one has the same accountable shape.
+          </p>
+          <p>
+            Once a value is born by a row, it is live until another row proves cleanup
+            or declares it output. That row-level lifecycle is what lets the engine
+            derive peak qubits instead of trusting a hand-picked register list.
+          </p>
+        </div>
+        <div className="row-schema-strip" aria-hidden="true">
+          <span>row</span>
+          <span>op</span>
+          <span>controls</span>
+          <span>target</span>
+          <span>owner</span>
+          <span>cost</span>
+          <span>lifetime</span>
         </div>
       </article>
 
@@ -3138,9 +3168,9 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
             stronger than the input, corpus, resource digest, and macro-boundary status.
           </p>
           <p>
-            This is why the course asks the learner to classify claims before repeating
-            numbers. A verifier result is evidence, but the claim decides what that
-            evidence is being used to say.
+            This is why a reviewer classifies claims before repeating numbers. A
+            verifier result is evidence, but the claim decides what that evidence is
+            being used to say.
           </p>
         </div>
         <div className="proof-wording-card" aria-hidden="true">
@@ -3151,7 +3181,7 @@ function ZkpBoundaryStoryPanel({ data }: { data: typeof projectData }) {
       </article>
 
       <article className="story-question">
-        <h4>Why the lab asks for both compressed and Groth16 gates</h4>
+        <h4>Why both proof systems matter</h4>
         <p>
           A compressed proof is the normal SP1 receipt shape used during iteration.
           Groth16 is the smaller wrapped proof format people often want for external
@@ -3238,14 +3268,12 @@ function ContributionStoryPanel({ data }: { data: typeof projectData }) {
       </div>
 
       <article className="story-question">
-        <h4>How to use the three labs</h4>
+        <h4>The contributor loop</h4>
         <p>
-          The mission board turns blockers into concrete patches. The claim drill
-          trains the habit of rejecting attractive but under-proved statements. The
-          coverage audit checks whether the course itself still teaches the route from
-          first principles to useful repo work. A useful contributor should be able to
-          move between all three: choose work, prove it, and describe it without
-          overstating it.
+          Useful repo work follows a loop: choose one blocker, make the executable
+          evidence stronger, classify the resulting claim, and describe the status
+          without overstating it. If a patch cannot say which evidence gate changed, it
+          is probably optimization theater rather than contribution.
         </p>
       </article>
     </section>
@@ -3505,12 +3533,12 @@ function GatesStoryPanel() {
       </div>
 
       <article className="story-question">
-        <h4>How to use the labs</h4>
+        <h4>The row discipline</h4>
         <p>
-          First use the primitive netlist toy to see a button become a row with
-          touched wires and cost. Then type rows in the DSL until invalid opcodes fail
-          loudly. Finish with cleanup: the same row stream is not resource-safe until
-          every temporary wire has a justified end of life.
+          The same row stream is not resource-safe until every temporary wire has a
+          justified end of life. Gates, controls, operands, costs, owners, and cleanup
+          are not annotations around the circuit; they are the circuit contract the
+          resource engine has to count.
         </p>
       </article>
     </section>
