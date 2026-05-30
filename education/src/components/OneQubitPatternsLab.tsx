@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { GitCompareArrows, RotateCcw } from 'lucide-react';
+import { MathTex } from './MathText';
 
 type Gate = 'H' | 'X' | 'S' | 'T' | 'R';
 type Complex = { re: number; im: number };
@@ -22,6 +23,27 @@ const gateDescriptions: Record<Gate, string> = {
   S: '90deg phase turn',
   T: '45deg phase turn',
   R: 'long phase walk',
+};
+const gateNames: Record<Gate, string> = {
+  H: 'Hadamard',
+  X: 'Bit flip',
+  S: 'Quarter phase',
+  T: 'Eighth phase',
+  R: 'Irrational phase',
+};
+const gateRules: Record<Gate, string> = {
+  H: '(a,b)\\mapsto\\left((a+b)/\\sqrt2,(a-b)/\\sqrt2\\right)',
+  X: '(a,b)\\mapsto(b,a)',
+  S: '(a,b)\\mapsto(a,ib)',
+  T: '(a,b)\\mapsto(a,e^{i\\pi/4}b)',
+  R: '(a,b)\\mapsto(a,e^{i\\pi\\sqrt2/4}b)',
+};
+const gateTraceText: Record<Gate, string> = {
+  H: 'mixes the two slots, so phase can become probability',
+  X: 'swaps the outcome labels without deleting a branch',
+  S: 'turns the 1-amplitude by a quarter turn',
+  T: 'turns the 1-amplitude by half as much as S',
+  R: 'uses an awkward angle, so repeats do not quickly close',
 };
 
 const add = (left: Complex, right: Complex): Complex => ({ re: left.re + right.re, im: left.im + right.im });
@@ -68,6 +90,19 @@ function hasVisiblePhase(value: Complex) {
 export function OneQubitPatternsLab() {
   const [sequence, setSequence] = useState<Gate[]>(presets.exposePhase.sequence);
   const state = useMemo(() => sequence.reduce(applyGate, initialState), [sequence]);
+  const trace = useMemo(() => {
+    const rows = [{ label: 'start', state: initialState, detail: 'definite 0 before any gate' }];
+    let current = initialState;
+    for (const [index, gate] of sequence.entries()) {
+      current = applyGate(current, gate);
+      rows.push({
+        label: `${index + 1}. ${gateNames[gate]}`,
+        state: current,
+        detail: gateTraceText[gate],
+      });
+    }
+    return rows;
+  }, [sequence]);
   const zeroArrow = arrowEnd(state.zero);
   const oneArrow = arrowEnd(state.one);
   const p0 = abs2(state.zero);
@@ -118,7 +153,7 @@ export function OneQubitPatternsLab() {
       <section className="gate-palette-panel" aria-label="One-qubit gate palette">
         <div>
           <strong>Build your own sequence</strong>
-          <p>Closed gates move the state reversibly. Measurement goals below verify what your sequence achieved.</p>
+          <p>Each button appends one reversible move. The trace below shows how the same state walks through time.</p>
         </div>
         <div className="gate-row steering-gate-row">
           {gatePalette.map((gate) => (
@@ -131,6 +166,16 @@ export function OneQubitPatternsLab() {
             <RotateCcw size={16} />
           </button>
         </div>
+      </section>
+      <section className="gate-rule-strip" aria-label="One-qubit gate formulas">
+        {gatePalette.map((gate) => (
+          <article key={gate}>
+            <strong>{gate}</strong>
+            <span>{gateNames[gate]}</span>
+            <MathTex tex={gateRules[gate]} />
+            <p>{gateTraceText[gate]}</p>
+          </article>
+        ))}
       </section>
       <div className="pattern-lab-grid">
         <section className="pattern-state-panel" aria-label="Selected one-qubit state">
@@ -186,6 +231,33 @@ export function OneQubitPatternsLab() {
           </article>
         </section>
       </div>
+      <section className="sequence-trace-panel" aria-label="One-qubit sequence trace">
+        <div>
+          <strong>Sequence trace</strong>
+          <p>
+            This is the main habit: do not think of a gate as a final answer. Think of
+            it as one reversible state update that can later be undone, repeated, or
+            recombined with another update.
+          </p>
+        </div>
+        <div className="sequence-trace-grid">
+          {trace.map((row) => {
+            const traceP0 = abs2(row.state.zero);
+            const traceP1 = abs2(row.state.one);
+            return (
+              <article key={row.label}>
+                <strong>{row.label}</strong>
+                <span>{row.detail}</span>
+                <div className="trace-probability-bars">
+                  <i style={{ width: `${Math.round(traceP0 * 100)}%` }} />
+                  <i className="alt" style={{ width: `${Math.round(traceP1 * 100)}%` }} />
+                </div>
+                <em>0: {formatPercent(traceP0)} / 1: {formatPercent(traceP1)}</em>
+              </article>
+            );
+          })}
+        </div>
+      </section>
       <section className="one-qubit-mission-grid" aria-label="One-qubit verified missions">
         {missions.map((mission) => (
           <article className={mission.pass ? 'mission-pass' : ''} key={mission.label}>

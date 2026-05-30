@@ -254,6 +254,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('bloch-playground')).toContainText('swaps the 0 and 1 amplitudes');
   await expect(page.getByTestId('bloch-playground')).toContainText('rotates only the 1-amplitude phase');
   await page.getByTestId('bloch-playground').getByRole('button', { name: 'Hadamard' }).click();
+  await expect(page.getByTestId('bloch-playground')).toContainText('Before last gate');
+  await expect(page.getByTestId('bloch-playground')).toContainText('After last gate');
+  await expect(page.getByTestId('bloch-playground')).toContainText('Hadamard is the first recombining move');
   await expect(page.getByTestId('bloch-playground')).toContainText('|0|²=0.50 |1|²=0.50');
 
   await selectRouteLab(page, /Gate pattern missions/);
@@ -268,6 +271,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Long rotations');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Measurement is different');
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Expose phase as outcome 1');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Sequence trace');
+  await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('Irrational phase');
   await page.getByTestId('one-qubit-patterns-lab').getByRole('button', { name: /Hidden phase/ }).click();
   await expect(page.getByTestId('one-qubit-patterns-lab')).toContainText('sequence = H S');
 
@@ -287,6 +292,9 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('state-vector-lab')).toContainText('Product state');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Entangled state');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Measurement samples one full two-bit label');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Start with one live label');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('Use q0 as a reversible condition');
+  await expect(page.getByTestId('state-vector-lab')).toContainText('No branch is measured or deleted');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Split q0, then use q0 as a control');
   await expect(page.getByTestId('state-vector-lab')).toContainText('Mixing twice can cancel one branch');
   await expect(page.getByTestId('state-vector-lab')).toContainText('H q0; Z q0; H q0');

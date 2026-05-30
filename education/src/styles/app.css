@@ -3425,16 +3425,78 @@ code {
   background: linear-gradient(90deg, #63e6be, #8fb6ff);
 }
 
-.steering-amplitude-view {
-  justify-items: center;
-  margin: 1rem 0;
+.steering-legend {
+  justify-content: flex-start;
+  margin: 0.9rem 0 0.35rem;
 }
 
-.steering-amplitude-view p {
-  max-width: 34rem;
+.steering-comparison-grid {
+  display: grid;
+  grid-template-columns: minmax(12rem, 0.9fr) minmax(16rem, 1.1fr) minmax(12rem, 0.9fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  margin: 0.8rem 0;
+}
+
+.steering-snapshot,
+.gate-transform-card {
+  min-width: 0;
+  margin: 0;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.steering-snapshot {
+  display: grid;
+  gap: 0.55rem;
+  justify-items: center;
+}
+
+.steering-snapshot figcaption {
+  display: grid;
+  gap: 0.2rem;
+  justify-self: stretch;
+}
+
+.steering-snapshot figcaption strong,
+.gate-transform-card strong {
+  color: #ffffff;
+}
+
+.steering-snapshot figcaption span,
+.gate-transform-card span {
+  color: #93a4b7;
+  font-size: 0.82rem;
+}
+
+.snapshot-probability-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+  color: #cfe7f0;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.8rem;
+}
+
+.gate-transform-card {
+  display: grid;
+  gap: 0.45rem;
+  align-content: center;
+}
+
+.gate-transform-card p,
+.steering-note {
   margin: 0;
   color: #b4c4d6;
-  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.steering-note {
+  margin: 0.35rem 0 0.85rem;
 }
 
 .one-qubit-capability-row {
@@ -3507,6 +3569,43 @@ code {
   color: #b4c4d6;
 }
 
+.gate-rule-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.55rem;
+  margin: 0.9rem 0;
+}
+
+.gate-rule-strip article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(143, 182, 255, 0.16);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.gate-rule-strip strong {
+  display: block;
+  color: #f5cf6b;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.82rem;
+}
+
+.gate-rule-strip span {
+  display: block;
+  margin: 0.12rem 0 0.3rem;
+  color: #ffffff;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
+.gate-rule-strip p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+  font-size: 0.8rem;
+  line-height: 1.42;
+}
+
 .pattern-lab-grid {
   display: grid;
   grid-template-columns: minmax(18rem, 0.85fr) minmax(20rem, 1.15fr);
@@ -3570,6 +3669,75 @@ code {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.88rem;
   font-weight: 700;
+}
+
+.sequence-trace-panel {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 0.9rem;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.sequence-trace-panel > div:first-child strong {
+  color: #ffffff;
+}
+
+.sequence-trace-panel > div:first-child p {
+  margin: 0.25rem 0 0;
+  color: #b4c4d6;
+}
+
+.sequence-trace-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.5rem;
+}
+
+.sequence-trace-grid article {
+  display: grid;
+  gap: 0.35rem;
+  border: 0.0625rem solid rgba(255, 255, 255, 0.09);
+  border-radius: 0.45rem;
+  padding: 0.55rem;
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.sequence-trace-grid strong {
+  color: #ffffff;
+  font-size: 0.86rem;
+}
+
+.sequence-trace-grid span {
+  color: #b4c4d6;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+.sequence-trace-grid em {
+  color: #f5cf6b;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.78rem;
+  font-style: normal;
+}
+
+.trace-probability-bars {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.trace-probability-bars i {
+  display: block;
+  height: 0.35rem;
+  min-width: 0.2rem;
+  border-radius: 999rem;
+  background: linear-gradient(90deg, #8fb6ff, #63e6be);
+}
+
+.trace-probability-bars i.alt {
+  background: linear-gradient(90deg, #f5cf6b, #63e6be);
 }
 
 .one-qubit-mission-grid,
@@ -4862,6 +5030,57 @@ code {
   margin: 0.35rem 0 0;
   font-size: 0.86rem;
   line-height: 1.45;
+}
+
+.bell-ladder-panel {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 0.9rem 0;
+}
+
+.bell-ladder-panel article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.bell-ladder-panel article > span {
+  display: inline-grid;
+  place-items: center;
+  width: 1.55rem;
+  height: 1.55rem;
+  margin-bottom: 0.45rem;
+  border-radius: 999rem;
+  color: #071018;
+  background: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.bell-ladder-panel strong {
+  display: block;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+.bell-ladder-panel .katex {
+  font-size: 0.86rem;
+}
+
+.bell-ladder-panel .math-tex {
+  display: block;
+  margin-top: 0.35rem;
+  overflow-x: auto;
+}
+
+.bell-ladder-panel p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+  font-size: 0.84rem;
+  line-height: 1.42;
 }
 
 .two-qubit-schemes {
@@ -8212,6 +8431,12 @@ legend {
 
   .lookup-receipt-flow i {
     display: none;
+  }
+
+  .steering-comparison-grid,
+  .gate-rule-strip,
+  .bell-ladder-panel {
+    grid-template-columns: 1fr;
   }
 }
 

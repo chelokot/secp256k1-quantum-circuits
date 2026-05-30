@@ -255,6 +255,32 @@ export function StateVectorLab() {
           <p>Measurement samples one full two-bit label, such as |00&gt; or |11&gt;.</p>
         </article>
       </section>
+      <section className="bell-ladder-panel" aria-label="Bell pair construction ladder">
+        <article>
+          <span>1</span>
+          <strong>Start with one live label</strong>
+          <MathTex tex="|00\rangle" />
+          <p>Both wires are definite 0, so the four-entry table has only one nonzero branch.</p>
+        </article>
+        <article>
+          <span>2</span>
+          <strong>Split q0 without touching q1</strong>
+          <MathTex tex="(|00\rangle+|10\rangle)/\sqrt2" />
+          <p>The first wire is now in two branches, but the second wire is still 0 in both.</p>
+        </article>
+        <article>
+          <span>3</span>
+          <strong>Use q0 as a reversible condition</strong>
+          <MathTex tex="|10\rangle\mapsto|11\rangle" />
+          <p>Only the q0 = 1 branch changes target label. No branch is measured or deleted.</p>
+        </article>
+        <article>
+          <span>4</span>
+          <strong>Read the joint pattern</strong>
+          <MathTex tex="(|00\rangle+|11\rangle)/\sqrt2" />
+          <p>Each bit is random alone, but the pair is correlated because only matching labels remain.</p>
+        </article>
+      </section>
       <section className="two-qubit-schemes" aria-label="Two-qubit scheme examples">
         <article>
           <strong>Bell pair</strong>
