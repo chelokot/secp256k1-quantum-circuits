@@ -160,7 +160,7 @@ export function QroamLab({ projectData }: { projectData: ProjectData }) {
         <div><dt>Selected</dt><dd>{selectedValue}</dd></div>
         <div><dt>Workspace</dt><dd>{projectData.strictFormula.lookup_workspace_qubits}q</dd></div>
         <div><dt>Streams</dt><dd>{projectData.strictNonCliffordFormula.qroam_chunk_streams}</dd></div>
-        <div><dt>NC total</dt><dd>{Math.round(projectData.strictNonCliffordFormula.qroam_chunk_non_clifford / 1_000_000)}M</dd></div>
+        <div><dt>Non-Clifford total</dt><dd>{Math.round(projectData.strictNonCliffordFormula.qroam_chunk_non_clifford / 1_000_000)}M</dd></div>
       </dl>
       <div className="no-free-lane-callout">
         <span>No-free-lane audit</span>

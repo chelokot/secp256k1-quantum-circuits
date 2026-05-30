@@ -39,7 +39,7 @@ function parseProgram(program: string) {
     const [rawOp, ...wires] = line.split(/\s+/);
     const op = rawOp.toUpperCase();
     if (!(op in arity)) {
-      errors.push(`line ${index + 1}: unknown op ${rawOp}`);
+      errors.push(`line ${index + 1}: unknown operation ${rawOp}`);
       continue;
     }
     if (wires.length !== arity[op]) {
@@ -58,10 +58,10 @@ function parseProgram(program: string) {
 
 function rowEffect(row: ParsedRow) {
   if (row.op === 'CCX') {
-    return `reversible AND toggles ${row.wires[2]}`;
+    return `two-control reversible AND toggles ${row.wires[2]}`;
   }
   if (row.op === 'CX') {
-    return `control ${row.wires[0]} flips ${row.wires[1]}`;
+    return `control ${row.wires[0]} flips target ${row.wires[1]}`;
   }
   if (row.op === 'M') {
     return `readout of ${row.wires[0]}`;
@@ -118,8 +118,39 @@ export function QuantumDslLab() {
         <Code2 size={20} />
         <h3>Program a tiny netlist</h3>
       </div>
+      <p>
+        This editor uses compact circuit names, but each name still means a concrete
+        reversible row over named wires. Write one row per line, then inspect the parsed
+        row table and cleanup audit.
+      </p>
+      <section className="gate-vocabulary-grid" aria-label="Tiny netlist operation vocabulary">
+        <article>
+          <strong>H: Hadamard</strong>
+          <p>One-wire mix: splits or recombines 0 and 1 amplitudes.</p>
+        </article>
+        <article>
+          <strong>X: bit flip</strong>
+          <p>One-wire swap: exchanges the 0-label and 1-label amplitudes.</p>
+        </article>
+        <article>
+          <strong>S: phase turn</strong>
+          <p>One-wire phase step: changes direction of the 1-amplitude.</p>
+        </article>
+        <article>
+          <strong>CX: controlled-X</strong>
+          <p>Two-wire permutation: flip the target only on branches where the control is 1.</p>
+        </article>
+        <article>
+          <strong>CCX: Toffoli-style row</strong>
+          <p>Three-wire product: two controls toggle one target, so this counts as non-Clifford work.</p>
+        </article>
+        <article>
+          <strong>M: measurement</strong>
+          <p>Readout row: sample a wire at the end of the tiny program.</p>
+        </article>
+      </section>
       <textarea
-        aria-label="Quantum DSL editor"
+        aria-label="Tiny netlist editor"
         className="dsl-editor"
         value={program}
         onChange={(event) => setProgram(event.currentTarget.value)}
@@ -136,12 +167,12 @@ export function QuantumDslLab() {
         <article>
           <span>Parser</span>
           <strong>{streamAudit.parserStatus}</strong>
-          <p>Known operation names and arities only.</p>
+          <p>Only known operation names with the right number of wires become rows.</p>
         </article>
         <article>
           <span>Row table</span>
           <strong>{parsed.rows.length} executable row(s)</strong>
-          <p>Each row has operands, effect, and toy non-Clifford cost.</p>
+          <p>Each row has wires it touches, a concrete effect, and non-Clifford cost.</p>
         </article>
         <article>
           <span>Lifecycle</span>
@@ -155,7 +186,7 @@ export function QuantumDslLab() {
         </div>
       ) : (
         <div className="parsed-netlist" role="table" aria-label="Parsed primitive netlist">
-          <div role="row"><strong>Line</strong><strong>Op</strong><strong>Wires</strong><strong>Effect</strong><strong>NC</strong></div>
+          <div role="row"><strong>Line</strong><strong>Operation</strong><strong>Wires</strong><strong>Effect</strong><strong>Non-Clifford</strong></div>
           {parsed.rows.map((row) => (
             <div role="row" key={`${row.line}-${row.op}`}>
               <span>{row.line}</span>
@@ -167,7 +198,7 @@ export function QuantumDslLab() {
           ))}
         </div>
       )}
-      <p>Supported ops: <code>H</code>, <code>X</code>, <code>S</code>, <code>CX</code>, <code>CCX</code>, <code>M</code>. The real project needs this idea scaled to every emitted arithmetic and lookup row.</p>
+      <p>The real project needs this same discipline scaled to every emitted arithmetic and lookup row.</p>
     </article>
   );
 }

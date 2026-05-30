@@ -58,7 +58,7 @@ export function QroamTradeoffLab({ projectData }: { projectData: ProjectData }) 
       <dl className="metric-row">
         <div><dt>Entries</dt><dd>{entries}</dd></div>
         <div><dt>Bits</dt><dd>{bitsize}</dd></div>
-        <div><dt>NC toy cost</dt><dd>{cost.total}</dd></div>
+        <div><dt>Non-Clifford toy cost</dt><dd>{cost.total}</dd></div>
         <div><dt>Workspace</dt><dd>{cost.workspace}</dd></div>
       </dl>
       <div className="qroam-formula-strip">

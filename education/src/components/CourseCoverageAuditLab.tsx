@@ -34,7 +34,7 @@ const coverageRows: CoverageRow[] = [
   {
     id: 'programming',
     requirement: 'Let the learner program quantum circuits',
-    evidence: ['Circuit builder', 'Quantum DSL editor', 'Opcode lowering microscope', 'Mini resource engine'],
+    evidence: ['Circuit builder', 'Tiny netlist editor', 'Opcode lowering microscope', 'Mini resource engine'],
     reviewerQuestion: 'Can the learner write operations, see primitive rows, and debug liveness?',
     status: 'covered',
   },

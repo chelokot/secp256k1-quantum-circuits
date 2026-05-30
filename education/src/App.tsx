@@ -107,7 +107,7 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   ],
   gates: [
     { name: 'Primitive netlist toy', goal: 'See rows, touched wires, and non-Clifford cost.' },
-    { name: 'Quantum DSL', goal: 'Write valid rows and make invalid opcodes fail loudly.' },
+    { name: 'Tiny netlist editor', goal: 'Write valid rows and make invalid operation names fail loudly.' },
     { name: 'Cleanup puzzle', goal: 'Prove compute, use, and uncompute as one lifecycle.' },
   ],
   clifford: [
@@ -144,7 +144,7 @@ const labRoutes: Partial<Record<LessonId, LabRouteItem[]>> = {
   ],
   programming: [
     { name: 'Primitive netlist toy', goal: 'Build rows and see operands, effects, and non-Clifford cost.' },
-    { name: 'Quantum DSL', goal: 'Type valid rows, reject invalid opcodes, and inspect the parsed table.' },
+    { name: 'Tiny netlist editor', goal: 'Type valid rows, reject invalid operation names, and inspect the parsed table.' },
     { name: 'Opcode lowering', goal: 'Expand one abstract opcode into primitive counted rows.' },
   ],
   cleanup: [
@@ -1894,14 +1894,16 @@ function ProgrammingStoryPanel() {
       <article className="story-question">
         <h4>A circuit program is a contract over wires</h4>
         <p>
-          A classical program can hide many details behind a line like{' '}
-          <code>acc ^= x &amp; y</code>. A quantum circuit cannot treat that as a
-          black box. The compiler must say which wires hold <MathTex tex="x" /> and{' '}
-          <MathTex tex="y" />, where the temporary product lands, how the accumulator
-          changes, and how the temporary is cleaned.
+          A classical program can hide many details behind a compact update like
+          {' '}<MathTex tex="\mathrm{acc}\leftarrow \mathrm{acc}\oplus(x\wedge y)" />:
+          add the one-bit product of <MathTex tex="x" /> and <MathTex tex="y" /> into
+          an accumulator. A quantum circuit cannot treat that as a black box. The
+          compiler must say which wires hold <MathTex tex="x" /> and <MathTex tex="y" />,
+          where the temporary product lands, how the accumulator changes, and how the
+          temporary is cleaned.
         </p>
         <div className="program-contract-split" aria-hidden="true">
-          <div><span>classical expression</span><strong>acc ^= x & y</strong></div>
+          <div><span>classical expression</span><strong>acc gets acc XOR (x AND y)</strong></div>
           <i />
           <div><span>primitive rows</span><strong>compute, consume, uncompute</strong></div>
         </div>
@@ -1913,9 +1915,10 @@ function ProgrammingStoryPanel() {
           <p>
             When the editor shows <code>CX q0 q1</code>, do not picture one classical
             branch being edited. The row is a reversible rule applied coherently to
-            every amplitude branch at once. If <MathTex tex="q0" /> is in a split, the
-            branch where <MathTex tex="q0=0" /> leaves <MathTex tex="q1" /> alone, and
-            the branch where <MathTex tex="q0=1" /> flips <MathTex tex="q1" />.
+            every amplitude branch at once. Here <MathTex tex="q0" /> and{' '}
+            <MathTex tex="q1" /> are wire names. If <MathTex tex="q0" /> is in a split,
+            the branch where <MathTex tex="q0=0" /> leaves <MathTex tex="q1" /> alone,
+            and the branch where <MathTex tex="q0=1" /> flips <MathTex tex="q1" />.
           </p>
           <p>
             That is why operands matter. A wrong operand is not a local typo; it changes
@@ -1933,8 +1936,9 @@ function ProgrammingStoryPanel() {
         <div>
           <h4>The quantum version keeps the inputs</h4>
           <p>
-            A classical half-adder computes sum with XOR and carry with AND. The AND
-            output alone loses information: three different inputs produce carry 0.
+            A classical half-adder computes sum with exclusive-or, written XOR, and
+            carry with AND. The AND output alone loses information: three different
+            inputs produce carry 0.
             A reversible circuit keeps the input wires and writes sum or carry into
             helper targets initialized to <MathTex tex="|0\rangle" />. That is why a
             small arithmetic sentence turns into rows with sources, targets, and cleanup.
@@ -2029,7 +2033,7 @@ function ProgrammingStoryPanel() {
         <article>
           <h4>Cost surface</h4>
           <p>Clifford rows can be cheap while Toffoli-like rows spend non-Clifford budget.</p>
-          <span className="story-token">CCX = 1 toy NC</span>
+          <span className="story-token">CCX = 1 toy non-Clifford</span>
         </article>
       </div>
 
@@ -3634,7 +3638,7 @@ export function App() {
       case 'gates':
         return [
           labItem(0, 'Primitive netlist toy', <CircuitBuilder />),
-          labItem(1, 'Quantum DSL', <QuantumDslLab />),
+          labItem(1, 'Tiny netlist editor', <QuantumDslLab />),
           labItem(2, 'Cleanup puzzle', <CleanupPuzzleLab />),
         ];
       case 'clifford':
@@ -3683,7 +3687,7 @@ export function App() {
       case 'programming':
         return [
           labItem(0, 'Primitive netlist toy', <CircuitBuilder />),
-          labItem(1, 'Quantum DSL', <QuantumDslLab />),
+          labItem(1, 'Tiny netlist editor', <QuantumDslLab />),
           labItem(2, 'Opcode lowering', <OpcodeLoweringLab />),
         ];
       case 'cleanup':

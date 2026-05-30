@@ -163,7 +163,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Physical qubit = device-level carrier.',
       'Logical qubit = protected encoded circuit wire.',
-      'Hardware estimates require a QEC and architecture model on top of repo resources.',
+      'Hardware estimates require a quantum error-correction (QEC) and architecture model on top of repo resources.',
     ],
   },
   {
@@ -176,7 +176,7 @@ export const lessons: CourseLesson[] = [
     whyItMatters:
       'The secp256k1 circuit is expensive because phase estimation asks for many controlled group operations, and each one expands into point-add arithmetic.',
     mentalModel:
-      'Do not picture the answer as a stored bit waiting to be read. The controlled powers of a unitary create a rhythm of phases across a control register. The inverse-QFT readout tests candidate rhythms and turns the matching phase pattern into a likely binary label.',
+      'Do not picture the answer as a stored bit waiting to be read. The controlled powers of a unitary create a rhythm of phases across a control register. The inverse quantum Fourier transform, usually abbreviated inverse QFT, tests candidate rhythms and turns the matching phase pattern into a likely binary label.',
     checkpoint: 'The curve arithmetic is the engine; phase estimation is the measuring instrument wrapped around it.',
     coreIdeas: [
       'Controlled powers create a binary phase rhythm.',
@@ -199,7 +199,7 @@ export const lessons: CourseLesson[] = [
     coreIdeas: [
       'Primitive rows are the countable object.',
       'Live intervals determine peak qubits.',
-      'One engine should feed execution, tests, counts, and ZKP input.',
+      'One engine should feed execution, tests, counts, and zero-knowledge proof (ZKP) input.',
     ],
   },
   {

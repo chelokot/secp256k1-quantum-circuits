@@ -722,16 +722,19 @@ test('lets the learner write and debug a tiny quantum netlist', async ({ page })
   await expect(page.getByTestId('programming-story')).toContainText('parse rows');
   await expect(page.getByTestId('programming-story')).toContainText('derive lifetimes');
   await expect(page.getByTestId('programming-story')).toContainText('A rejected row is a feature');
-  await selectRouteLab(page, /Quantum DSL/);
+  await selectRouteLab(page, /Tiny netlist editor/);
 
-  const editor = page.getByLabel('Quantum DSL editor');
+  const editor = page.getByLabel('Tiny netlist editor');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('H: Hadamard');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('CX: controlled-X');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('CCX: Toffoli-style row');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Non-Clifford');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('valid');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('Stream audit');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('cleanup not proven');
-  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('reversible AND toggles q2');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('two-control reversible AND toggles q2');
   await editor.fill('H q0\nBAD q0');
-  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('unknown op BAD');
+  await expect(page.getByTestId('quantum-dsl-lab')).toContainText('unknown operation BAD');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('error');
   await expect(page.getByTestId('quantum-dsl-lab')).toContainText('not evaluated');
   await editor.fill('H q0\nCX q0 q1\nCCX q0 q1 q2');

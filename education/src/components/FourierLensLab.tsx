@@ -150,7 +150,7 @@ export function FourierLensLab() {
           <p className="mono-line">peak: {formatBinary(peak.candidate)} with {(peak.weight * 100).toFixed(0)}%</p>
           <p>
             The real secp256k1 attack builds this angle rhythm with controlled group operations;
-            the semiclassical inverse-QFT shell reads it out one bit at a time.
+            the semiclassical inverse quantum Fourier transform shell reads it out one bit at a time.
           </p>
         </article>
       </div>
