@@ -8,13 +8,32 @@ type PrimitiveRow = {
   meaning: string;
 };
 
+type BoolBit = 0 | 1;
+
+type BitState = Record<string, BoolBit>;
+
 type LoweringExample = {
   id: string;
   label: string;
   sourceOpcode: string;
   ownerCapacity: Record<string, number>;
+  replayInputs: string[];
+  replayAuxiliaries: string[];
+  abstractReplay: (state: BitState) => BitState;
   rows: PrimitiveRow[];
 };
+
+const readBit = (state: BitState, wire: string) => {
+  const bit = state[wire];
+  if (bit === undefined) {
+    throw new Error(`Missing bit for ${wire}`);
+  }
+  return bit;
+};
+
+const xorBits = (left: BoolBit, right: BoolBit): BoolBit => (left === right ? 0 : 1);
+
+const andBits = (left: BoolBit, right: BoolBit): BoolBit => (left === 1 && right === 1 ? 1 : 0);
 
 const examples: LoweringExample[] = [
   {
@@ -26,6 +45,13 @@ const examples: LoweringExample[] = [
       field_slot: 2,
       scratch: 1,
     },
+    replayInputs: ['src', 'flag', 'dst'],
+    replayAuxiliaries: ['scratch'],
+    abstractReplay: (state) => ({
+      ...state,
+      dst: xorBits(readBit(state, 'dst'), andBits(readBit(state, 'flag'), readBit(state, 'src'))),
+      scratch: 0,
+    }),
     rows: [
       { index: 0, gate: 'cx', operands: ['src', 'scratch'], meaning: 'copy candidate bit into scratch lane' },
       { index: 1, gate: 'ccx', operands: ['flag', 'scratch', 'dst'], meaning: 'conditionally flip destination bit' },
@@ -41,9 +67,16 @@ const examples: LoweringExample[] = [
       qroam_target: 1,
       table_control: 1,
     },
+    replayInputs: ['addr0', 'addr1', 'target'],
+    replayAuxiliaries: ['table_control'],
+    abstractReplay: (state) => ({
+      ...state,
+      target: xorBits(readBit(state, 'target'), andBits(readBit(state, 'addr0'), readBit(state, 'addr1'))),
+      table_control: 0,
+    }),
     rows: [
       { index: 0, gate: 'ccx', operands: ['addr0', 'addr1', 'table_control'], meaning: 'activate one selected unary path' },
-      { index: 1, gate: 'cx', operands: ['table_constant', 'target'], meaning: 'load selected table bit into counted target' },
+      { index: 1, gate: 'cx', operands: ['table_control', 'target'], meaning: 'load selected table bit into counted target' },
       { index: 2, gate: 'ccx', operands: ['addr0', 'addr1', 'table_control'], meaning: 'clean selected unary path' },
     ],
   },
@@ -55,6 +88,12 @@ const examples: LoweringExample[] = [
       phase_bit: 1,
       classical_feedforward: 0,
     },
+    replayInputs: ['phase_bit', 'rotation_control'],
+    replayAuxiliaries: [],
+    abstractReplay: (state) => ({
+      ...state,
+      rotation_control: xorBits(readBit(state, 'rotation_control'), readBit(state, 'phase_bit')),
+    }),
     rows: [
       { index: 0, gate: 'cx', operands: ['phase_bit', 'rotation_control'], meaning: 'apply controlled Clifford feedback' },
       { index: 1, gate: 'measurement', operands: ['phase_bit'], meaning: 'exit coherent liveness for this phase bit' },
@@ -74,6 +113,51 @@ const ownerForWire = (wire: string) => {
 };
 
 const gateCost = (gate: PrimitiveRow['gate']) => (gate === 'ccx' ? 1 : 0);
+
+const enumerateAssignments = (variables: string[]): BitState[] => variables.reduce<BitState[]>(
+  (states, variable) => states.flatMap((state) => [
+    { ...state, [variable]: 0 },
+    { ...state, [variable]: 1 },
+  ]),
+  [{}],
+);
+
+const createInitialState = (example: LoweringExample, assignment: BitState) => {
+  const state: BitState = {};
+  example.replayInputs.forEach((wire) => {
+    state[wire] = readBit(assignment, wire);
+  });
+  example.replayAuxiliaries.forEach((wire) => {
+    state[wire] = 0;
+  });
+  return state;
+};
+
+const applyPrimitiveRow = (state: BitState, row: PrimitiveRow) => {
+  if (row.gate === 'measurement') {
+    return state;
+  }
+  if (row.gate === 'cx') {
+    const [control, target] = row.operands;
+    state[target] = xorBits(readBit(state, target), readBit(state, control));
+    return state;
+  }
+  const [firstControl, secondControl, target] = row.operands;
+  state[target] = xorBits(
+    readBit(state, target),
+    andBits(readBit(state, firstControl), readBit(state, secondControl)),
+  );
+  return state;
+};
+
+const replayRows = (rows: PrimitiveRow[], initial: BitState) => rows.reduce(
+  (state, row) => applyPrimitiveRow(state, row),
+  { ...initial },
+);
+
+const snapshotState = (wires: string[], state: BitState) => wires
+  .map((wire) => `${wire}=${readBit(state, wire)}`)
+  .join(', ');
 
 export function OpcodeLoweringLab() {
   const [exampleId, setExampleId] = useState(examples[0].id);
@@ -104,6 +188,23 @@ export function OpcodeLoweringLab() {
     const nonClifford = rows.reduce((total, row) => total + gateCost(row.gate), 0);
     const ownerPass = tickLoads.every((tick) => tick.ownerLoads.every((owner) => owner.pass));
     const cleanupPass = !cleanupRemoved || selected.id === 'phase_measure';
+    const semanticWires = [...selected.replayInputs, ...selected.replayAuxiliaries];
+    const replayCases = enumerateAssignments(selected.replayInputs).map((assignment) => {
+      const initial = createInitialState(selected, assignment);
+      const primitive = replayRows(rows, initial);
+      const expected = selected.abstractReplay(initial);
+      const pass = semanticWires.every((wire) => readBit(primitive, wire) === readBit(expected, wire));
+      return {
+        assignment,
+        expected,
+        initial,
+        pass,
+        primitive,
+      };
+    });
+    const replayPassCount = replayCases.filter((replayCase) => replayCase.pass).length;
+    const firstReplayFailure = replayCases.find((replayCase) => !replayCase.pass);
+    const costTerms = rows.map((row) => String(gateCost(row.gate))).join(' + ');
     return {
       rows,
       intervals,
@@ -111,7 +212,12 @@ export function OpcodeLoweringLab() {
       nonClifford,
       ownerPass,
       cleanupPass,
-      pass: ownerPass && cleanupPass,
+      replayCases,
+      replayPassCount,
+      firstReplayFailure,
+      semanticWires,
+      costTerms,
+      pass: ownerPass && cleanupPass && replayPassCount === replayCases.length,
     };
   }, [cleanupRemoved, selected]);
 
@@ -190,6 +296,37 @@ export function OpcodeLoweringLab() {
             <em>rows {interval.start}-{interval.end}</em>
           </div>
         ))}
+      </div>
+
+      <div className="lowering-replay-receipt">
+        <article>
+          <span>Semantic replay receipt</span>
+          <strong>Case corpus {derived.replayPassCount}/{derived.replayCases.length}</strong>
+          <p>Every binary input for this tiny opcode is executed through the primitive rows.</p>
+        </article>
+        <article>
+          <span>Compared boundary</span>
+          <strong>{derived.semanticWires.join(', ')}</strong>
+          <p>Controls, targets, and auxiliary cleanup wires are compared against the source opcode.</p>
+        </article>
+        <article>
+          <span>Cost reconstruction</span>
+          <strong>{derived.costTerms} = {derived.nonClifford}</strong>
+          <p>The displayed non-Clifford count is reconstructed from primitive row gates.</p>
+        </article>
+      </div>
+
+      <div className={derived.firstReplayFailure ? 'replay-failure-card' : 'replay-pass-card'}>
+        <strong>Executable replay: {derived.firstReplayFailure ? 'fail' : 'pass'}</strong>
+        {derived.firstReplayFailure ? (
+          <p>
+            input {snapshotState(selected.replayInputs, derived.firstReplayFailure.initial)}:
+            primitive {snapshotState(derived.semanticWires, derived.firstReplayFailure.primitive)};
+            expected {snapshotState(derived.semanticWires, derived.firstReplayFailure.expected)}
+          </p>
+        ) : (
+          <p>All replay cases match the abstract opcode and leave required auxiliaries clean.</p>
+        )}
       </div>
     </section>
   );

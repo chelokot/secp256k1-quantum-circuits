@@ -378,6 +378,7 @@ export const lessons: CourseLesson[] = [
       'A witness row must expose live groups and owner equations.',
       'Owner assignment and capacity are checked numerically.',
       'Lowering connects abstract operations to primitive rows.',
+      'Primitive rows can be replayed against the source opcode contract.',
     ],
   },
   {

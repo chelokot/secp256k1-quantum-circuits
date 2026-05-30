@@ -1190,14 +1190,21 @@ test('shows how one opcode lowers to primitive rows and liveness intervals', asy
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('ccx');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Non-Clifford');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Lowering audit: pass');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Semantic replay receipt');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Case corpus 8/8');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Executable replay: pass');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Cost reconstruction');
   await page.getByLabel('Remove cleanup rows').check();
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Lowering audit: fail');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Executable replay: fail');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('expected');
   await page.getByLabel('Lowering source opcode').selectOption('qroam_load');
   await page.getByLabel('Remove cleanup rows').uncheck();
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('qroam_chunk_stream target bit');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('Non-Clifford');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('2');
   await expect(page.getByTestId('opcode-lowering-lab')).toContainText('qroam_target');
+  await expect(page.getByTestId('opcode-lowering-lab')).toContainText('1 + 0 + 1 = 2');
 });
 
 test('teaches schedule optimization by shortening live intervals', async ({ page }) => {

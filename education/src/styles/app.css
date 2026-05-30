@@ -7966,6 +7966,77 @@ code {
   font-style: normal;
 }
 
+.lowering-replay-receipt {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.lowering-replay-receipt article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.lowering-replay-receipt article:nth-child(3) {
+  border-color: rgba(245, 207, 107, 0.24);
+  background: rgba(245, 207, 107, 0.06);
+}
+
+.lowering-replay-receipt span,
+.lowering-replay-receipt strong {
+  display: block;
+}
+
+.lowering-replay-receipt span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.lowering-replay-receipt strong {
+  margin-top: 0.28rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+
+.lowering-replay-receipt p,
+.replay-pass-card p,
+.replay-failure-card p {
+  margin: 0.35rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.replay-pass-card,
+.replay-failure-card {
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+}
+
+.replay-pass-card {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.28);
+  background: rgba(99, 230, 190, 0.075);
+}
+
+.replay-failure-card {
+  border: 0.0625rem solid rgba(255, 117, 117, 0.28);
+  background: rgba(255, 117, 117, 0.08);
+}
+
+.replay-pass-card strong,
+.replay-failure-card strong {
+  display: block;
+  color: #ffffff;
+}
+
 .schedule-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
@@ -10219,6 +10290,7 @@ legend {
   .stack-map-grid,
   .stack-handoff-receipt,
   .row-witness-grid,
+  .lowering-replay-receipt,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,
@@ -10496,6 +10568,7 @@ legend {
   .stack-map-grid,
   .stack-handoff-receipt,
   .row-witness-grid,
+  .lowering-replay-receipt,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,
