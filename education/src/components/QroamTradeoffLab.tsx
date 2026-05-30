@@ -34,6 +34,11 @@ export function QroamTradeoffLab({ projectData }: { projectData: ProjectData }) 
         <Binary size={20} />
         <h3>QROAMClean tradeoff dial</h3>
       </div>
+      <p>
+        QROAMClean is a clean-workspace table lookup model. Increasing the block size
+        can reduce selection work, but the saved gates are paid for with extra live
+        junk-register bits.
+      </p>
       <label className="slider-label">
         Block size K={k}
         <input min="1" max="16" type="range" value={k} onChange={(event) => setK(Number(event.currentTarget.value))} />

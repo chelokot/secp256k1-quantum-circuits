@@ -49,9 +49,9 @@ export function QroamLab({ projectData }: { projectData: ProjectData }) {
         <h3>QROAM table selection</h3>
       </div>
       <p>
-        A lookup has four different resources. The address controls select a row,
-        the target lane receives the selected data, workspace helps the selection,
-        and cleanup removes temporary selection state.
+        QROAM means quantum read-only memory. A lookup has four different resources:
+        the address controls select a row, the target lane receives the selected data,
+        workspace helps the selection, and cleanup removes temporary selection state.
       </p>
       <div className="lookup-audit-grid">
         <article>

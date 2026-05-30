@@ -241,19 +241,19 @@ export const lessons: CourseLesson[] = [
   {
     id: 'lookup-qroam',
     module: 'Lookup systems',
-    title: 'QROAM is table lookup under quantum accounting',
+    title: 'Quantum table lookup under quantum accounting',
     icon: Binary,
     intuition:
-      'The circuit repeatedly selects precomputed curve-point data. In quantum form, a lookup is not a free memory read; it is a reversible selection circuit with controls, target bits, workspace, and cleanup.',
+      'The circuit repeatedly selects precomputed curve-point data. QROAM means quantum read-only memory: in quantum form, a lookup is not a free memory read, but a reversible selection circuit with controls, target bits, workspace, and cleanup.',
     whyItMatters:
       'Several earlier low-qubit stories failed because a lookup output lane or QROAM junk register was treated as if it were not live.',
     mentalModel:
-      'A QROAM lookup is a reversible table-selection circuit. The address controls decide which row contributes, the selected bits land in a target register, helper junk supports the selection network, and cleanup removes the temporary path. Gates and qubits must come from the same model.',
+      'A quantum read-only memory lookup is a reversible table-selection circuit. The address controls decide which row contributes, the selected bits land in a target register, helper junk supports the selection network, and cleanup removes the temporary path. Gates and qubits must come from the same model.',
     checkpoint: 'A lookup output is only free if the executable liveness artifact proves it aliases already-counted capacity.',
     coreIdeas: [
       'Lookup address, target, junk, and cleanup all count.',
       'Address decoding is not enough; arbitrary table constants still need a data-selection circuit.',
-      'QROAM trades gate count against workspace.',
+      'Quantum read-only memory trades gate count against workspace.',
       'Free output lanes require liveness proof, not assertion.',
     ],
   },

@@ -1757,6 +1757,11 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
           so the lookup must coherently route the selected data into a target register
           without measuring which row was chosen.
         </p>
+        <p>
+          QROAM means quantum read-only memory. In this course, read-only means the
+          table constants are precomputed, not that the quantum circuit gets a free
+          classical memory access.
+        </p>
         <div className="qroam-flow-strip" aria-hidden="true">
           <span>address register</span>
           <i />
@@ -1772,9 +1777,11 @@ function LookupQroamStoryPanel({ data }: { data: typeof projectData }) {
         <div>
           <h4>What QROAMClean buys and what it spends</h4>
           <p>
-            A standard clean-ancilla QROAM lookup over <MathTex tex="N" /> entries
-            and <MathTex tex="b" /> target bits trades Toffoli work against workspace:
-            compute cost <MathTex tex="N/K+(K-1)b" />, cleanup cost{' '}
+            QROAMClean is the clean-ancilla version of this lookup tradeoff: helper
+            registers start clean, support the selection, and must be cleaned again.
+            Over <MathTex tex="N" /> entries and <MathTex tex="b" /> target bits it
+            trades Toffoli work against workspace: compute cost{' '}
+            <MathTex tex="N/K+(K-1)b" />, cleanup cost{' '}
             <MathTex tex="N/K+(K-1)" />, and <MathTex tex="(K-1)b" /> junk bits.
           </p>
           <p>

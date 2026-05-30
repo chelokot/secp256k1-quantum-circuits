@@ -686,7 +686,9 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
   await openLesson(page, 'lookup-qroam');
 
   await expect(page.getByTestId('lookup-story')).toContainText('A table lookup is still a circuit');
+  await expect(page.getByTestId('lookup-story')).toContainText('QROAM means quantum read-only memory');
   await expect(page.getByTestId('lookup-story')).toContainText('What QROAMClean buys and what it spends');
+  await expect(page.getByTestId('lookup-story')).toContainText('QROAMClean is the clean-ancilla version');
   await expect(page.getByTestId('lookup-story')).toContainText('The selected coordinate bits are real data');
   await expect(page.getByTestId('lookup-story')).toContainText('Address decoding is not table selection');
   await expect(page.getByTestId('lookup-story')).toContainText('The consistency trap');
@@ -694,6 +696,7 @@ test('teaches QROAM selection and owner invariant failures', async ({ page }) =>
   await expect(page.getByTestId('lab-route')).toContainText('QROAM selection');
   await expect(page.getByTestId('lab-route')).toContainText('QROAMClean tradeoff');
   await expect(page.getByTestId('qroam-lab')).toContainText('QROAM table selection');
+  await expect(page.getByTestId('qroam-lab')).toContainText('quantum read-only memory');
   await expect(page.getByTestId('qroam-lab')).toContainText('Target lane');
   await expect(page.getByTestId('qroam-lab')).toContainText('No-free-lane audit');
   await expect(page.getByTestId('qroam-lab')).toContainText('selected data must have an owner');
