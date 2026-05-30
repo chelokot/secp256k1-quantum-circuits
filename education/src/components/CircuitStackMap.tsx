@@ -23,6 +23,8 @@ const stages = [
     name: 'Phase estimation shell',
     consumes: 'secp256k1 public key relation and coherent control register',
     emits: 'controlled group-operation requests and final measurement peaks',
+    contract: 'phase_request_stream',
+    downstream: 'lookup window scheduler',
     audit: 'Do the phase/control bits remain counted until measurement or semiclassical collapse?',
   },
   {
@@ -30,6 +32,8 @@ const stages = [
     name: 'Lookup and QROAM',
     consumes: 'window address bits and precomputed curve-point table',
     emits: 'selected point chunks with counted table-selection workspace',
+    contract: 'qroam_lookup_chunk_contract',
+    downstream: 'point-add leaf input',
     audit: 'Are target lanes, decode workspace, cleanup, and no-op lookup infinity all explicit?',
   },
   {
@@ -37,6 +41,8 @@ const stages = [
     name: 'Point-add leaf',
     consumes: 'accumulator point, lookup point, edge-case predicates',
     emits: 'updated accumulator point with equivalent semantics across all boundary cases',
+    contract: 'streamed_lookup_tail_leaf',
+    downstream: 'whole oracle resource composer',
     audit: 'Do random, doubling, inverse, accumulator-infinity, and lookup-infinity cases pass?',
   },
   {
@@ -44,6 +50,8 @@ const stages = [
     name: 'Field arithmetic lowering',
     consumes: 'field operations such as add, subtract, multiply, fold, and reduce',
     emits: 'bit-level reversible arithmetic obligations and temporary scratch routes',
+    contract: 'modular_arithmetic_primitive_stream',
+    downstream: 'primitive netlist engine',
     audit: 'Can every partial product, carry, fold, and cleanup row be promoted into one primitive stream?',
   },
   {
@@ -51,6 +59,8 @@ const stages = [
     name: 'Primitive netlist engine',
     consumes: 'lowered primitive rows with named wires and owners',
     emits: 'operation stream, live intervals, owner-capacity proof, non-Clifford total',
+    contract: 'resource_certificate',
+    downstream: 'README, course, proof input, public values',
     audit: 'Does one executable stream generate the same count used by tests and proof input?',
   },
   {
@@ -58,12 +68,15 @@ const stages = [
     name: 'Zero-knowledge proof publication boundary',
     consumes: 'resource digest, semantic corpus, public values, verifier key',
     emits: 'compressed SP1 receipt and Groth16 wrapper verification for a specific current statement',
+    contract: 'zkp_attestation_public_values',
+    downstream: 'external verifier',
     audit: 'Are proof artifacts current, release-grade, and bound to the selected physical contract?',
   },
 ];
 
 export function CircuitStackMap({ projectData }: { projectData: ProjectData }) {
   const [activeStageId, setActiveStageId] = useState('phase');
+  const [staleManualSummary, setStaleManualSummary] = useState(false);
   const activeStage = stages.find((stage) => stage.id === activeStageId) ?? stages[0];
   const primaryBlocker = projectData.activeBlockers[0];
 
@@ -136,6 +149,35 @@ export function CircuitStackMap({ projectData }: { projectData: ProjectData }) {
           </dl>
         </article>
       </div>
+
+      <label className="toggle-row stack-fork-toggle">
+        <input
+          aria-label="Simulate stale manual summary"
+          checked={staleManualSummary}
+          onChange={(event) => setStaleManualSummary(event.currentTarget.checked)}
+          type="checkbox"
+        />
+        <span>simulate stale manual summary</span>
+      </label>
+
+      <section className="stack-handoff-receipt" aria-label="Same-contract handoff">
+        <h4>Same-contract handoff</h4>
+        <article>
+          <span>Selected layer emits</span>
+          <strong>{activeStage.contract}</strong>
+          <p>{activeStage.name}</p>
+        </article>
+        <article>
+          <span>Downstream must read</span>
+          <strong>{staleManualSummary ? 'manual_summary_copy' : activeStage.contract}</strong>
+          <p>{activeStage.downstream}</p>
+        </article>
+        <article className={staleManualSummary ? 'fail' : 'pass'}>
+          <span>Fork audit</span>
+          <strong>{staleManualSummary ? 'fail' : 'pass'}</strong>
+          <p>{staleManualSummary ? 'The downstream surface is now reading a different object.' : 'The handoff keeps one generated object across the boundary.'}</p>
+        </article>
+      </section>
 
       <div className="stack-status-row">
         <div>

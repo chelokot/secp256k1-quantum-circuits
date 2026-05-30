@@ -1158,6 +1158,17 @@ test('teaches the real resource engine source-of-truth boundary', async ({ page 
   await expect(page.getByTestId('resource-engine-story')).toContainText('Current status is intentionally not');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('End-to-end circuit stack map');
   await expect(page.getByTestId('circuit-stack-map')).toContainText('3 physical-baseline blockers open');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('Same-contract handoff');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('phase_request_stream');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('Fork audit');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('pass');
+  await page.getByRole('button', { name: /Primitive netlist engine/ }).click();
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('resource_certificate');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('README, course, proof input, public values');
+  await page.getByLabel('Simulate stale manual summary').check();
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('manual_summary_copy');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('Fork audit');
+  await expect(page.getByTestId('circuit-stack-map')).toContainText('fail');
 });
 
 test('shows how one opcode lowers to primitive rows and liveness intervals', async ({ page }) => {

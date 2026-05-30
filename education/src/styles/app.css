@@ -8904,6 +8904,67 @@ code {
   color: #ffffff;
 }
 
+.stack-fork-toggle {
+  margin: 1rem 0;
+}
+
+.stack-handoff-receipt {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.stack-handoff-receipt h4 {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.stack-handoff-receipt article {
+  min-width: 0;
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.045);
+}
+
+.stack-handoff-receipt article.pass {
+  border-color: rgba(99, 230, 190, 0.34);
+  background: rgba(99, 230, 190, 0.07);
+}
+
+.stack-handoff-receipt article.fail {
+  border-color: rgba(255, 112, 112, 0.32);
+  background: rgba(255, 112, 112, 0.08);
+}
+
+.stack-handoff-receipt span,
+.stack-handoff-receipt strong {
+  display: block;
+}
+
+.stack-handoff-receipt span {
+  color: #63e6be;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.stack-handoff-receipt strong {
+  margin-top: 0.3rem;
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  overflow-wrap: anywhere;
+}
+
+.stack-handoff-receipt p {
+  margin: 0.45rem 0 0;
+  color: #b7c3d0;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .composer-controls {
   display: grid;
   grid-template-columns: minmax(16rem, 1fr) repeat(3, minmax(12rem, 0.8fr));
@@ -10075,6 +10136,7 @@ legend {
   .magic-status-grid,
   .magic-history-lab-panel,
   .stack-map-grid,
+  .stack-handoff-receipt,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,
@@ -10350,6 +10412,7 @@ legend {
   .magic-status-grid,
   .magic-history-lab-panel,
   .stack-map-grid,
+  .stack-handoff-receipt,
   .candidate-inspector,
   .stack-status-row,
   .physical-controls,

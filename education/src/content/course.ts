@@ -354,6 +354,7 @@ export const lessons: CourseLesson[] = [
     checkpoint: 'If a number is not generated from executable liveness, it is a hypothesis until proven otherwise.',
     coreIdeas: [
       'Executable primitive stream is the source of truth.',
+      'Layer handoffs must pass the same generated contract object forward.',
       'Liveness derives qubits mechanically.',
       'The checked artifact should be the public interface for docs and proofs.',
       'Docs and proof inputs must not fork the resource claim.',
