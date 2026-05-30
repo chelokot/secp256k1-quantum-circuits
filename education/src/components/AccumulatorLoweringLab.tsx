@@ -77,6 +77,36 @@ type ProjectData = {
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const readable = (value: string) => value.replaceAll('_', ' ');
+const promotionStepCard = (step: string) => {
+  if (step.startsWith('Lower partial_product_accumulator_consume')) {
+    return {
+      title: 'Lower product-consume rows',
+      detail: 'Turn product-to-accumulator obligations into concrete reversible update gates.',
+    };
+  }
+  if (step.startsWith('Lower pseudo_mersenne')) {
+    return {
+      title: 'Lower field-fold rows',
+      detail: 'Make the modular fold gates explicit, including carry and cleanup owner assignment.',
+    };
+  }
+  if (step.startsWith('Lower temporary_and_cleanup')) {
+    return {
+      title: 'Lower temporary cleanup',
+      detail: 'Replace cleanup obligations with exact uncompute or measurement-cleanup primitives.',
+    };
+  }
+  if (step.startsWith('Rebuild scheduled_modular_primitive_netlist')) {
+    return {
+      title: 'Rebuild the scheduled stream',
+      detail: 'Regenerate the primitive netlist and derive gates, measurements, and peak liveness from it.',
+    };
+  }
+  return {
+    title: readable(step),
+    detail: 'Promotion evidence required before this row family can be counted as public primitive stream work.',
+  };
+};
 
 const stageOrder = [
   'partial_product_accumulator_consume',
@@ -117,6 +147,29 @@ export function AccumulatorLoweringLab({ projectData }: { projectData: ProjectDa
         <Factory size={20} />
         <h3>Modular accumulator lowering</h3>
       </div>
+      <p>
+        This lab reads the modular-multiply artifact as a set of unpaid work orders.
+        Each work order names a row family the engine still has to lower into primitive
+        gates, owners, lifetimes, and cleanup before it can become a public resource row.
+      </p>
+      <section className="accumulator-vocab-grid" aria-label="Accumulator lowering vocabulary">
+        <article>
+          <strong>Accumulator</strong>
+          <p>A running column structure that receives many one-bit product effects.</p>
+        </article>
+        <article>
+          <strong>Carry-save</strong>
+          <p>A compression method that lowers column height without erasing obligations.</p>
+        </article>
+        <article>
+          <strong>Full-adder cell</strong>
+          <p>A reversible 3-bit-to-2-bit compressor with explicit CCX and CX cost.</p>
+        </article>
+        <article>
+          <strong>Promotion</strong>
+          <p>The step from side artifact to the scheduled primitive stream everyone counts.</p>
+        </article>
+      </section>
       <div className="accumulator-summary">
         <div>
           <span>Row obligations</span>
@@ -218,13 +271,22 @@ export function AccumulatorLoweringLab({ projectData }: { projectData: ProjectDa
           <p className={promoted ? 'audit-pass' : 'audit-fail'}>
             Accumulator promotion: {promoted ? 'promoted' : 'not promoted'}
           </p>
-          <ul className="promotion-steps">
+          <div className="obligation-step-list">
             {visibleRequiredSteps.length === 0 ? (
-              <li>No hidden promotion steps displayed.</li>
-            ) : visibleRequiredSteps.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ul>
+              <article>
+                <strong>No hidden promotion steps displayed.</strong>
+                <p>The toggle hides unpromoted obligations; it does not make the candidate promoted.</p>
+              </article>
+            ) : visibleRequiredSteps.map((step) => {
+              const card = promotionStepCard(step);
+              return (
+                <article key={step}>
+                  <strong>{card.title}</strong>
+                  <p>{card.detail}</p>
+                </article>
+              );
+            })}
+          </div>
         </article>
       </div>
     </section>

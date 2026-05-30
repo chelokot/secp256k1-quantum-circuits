@@ -2523,7 +2523,7 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
             The row stream has {formatInt(accumulator.rowStream.rowCount)} obligations
             across {formatInt(accumulator.rowStream.segmentCount)} segments.
           </p>
-          <span className="story-token">{accumulator.rowStream.status}</span>
+          <span className="story-token">obligations not promoted</span>
         </article>
         <article>
           <strong>Gates are partly known</strong>
@@ -2531,7 +2531,7 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
             The full-adder stream contributes {formatInt(accumulator.fullAdderStream.nonCliffordCount)}
             {' '}CCX, but it is not yet the global public resource stream.
           </p>
-          <span className="story-token">{accumulator.fullAdderStream.status}</span>
+          <span className="story-token">full-adder stream not public</span>
         </article>
         <article>
           <strong>Cleanup still gates promotion</strong>
@@ -2539,7 +2539,7 @@ function ModularLoweringStoryPanel({ data }: { data: typeof projectData }) {
             {formatInt(provenCleanup)} cleanup rows are proven; {formatInt(missingGuardCleanup)}
             {' '}guard rows still lack exposed source controls.
           </p>
-          <span className="story-token">{sourceUncompute.status}</span>
+          <span className="story-token">source cleanup not promoted</span>
         </article>
       </div>
 

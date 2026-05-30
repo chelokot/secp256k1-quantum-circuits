@@ -40,6 +40,30 @@ type RouteKind = 'partial_product' | 'zero_lift_guard';
 
 const formatInt = (value: number) => new Intl.NumberFormat('en-US').format(value);
 const readable = (value: string) => value.replaceAll('_', ' ');
+const promotionStepCard = (step: string) => {
+  if (step.startsWith('Expose concrete predicate controls')) {
+    return {
+      title: 'Expose guard controls',
+      detail: 'Show the exact predicate controls for guard scratch rows, or remove the placeholder route.',
+    };
+  }
+  if (step.startsWith('Lower consume_into_counted_accumulator')) {
+    return {
+      title: 'Lower consume rows',
+      detail: 'Turn temporary-controlled accumulator updates into concrete primitive gates.',
+    };
+  }
+  if (step.startsWith('Append the proven source-uncompute')) {
+    return {
+      title: 'Append cleanup rows',
+      detail: 'Promote the proven CCX cleanup rows and recompute global liveness and non-Clifford totals.',
+    };
+  }
+  return {
+    title: readable(step),
+    detail: 'Promotion evidence required before this cleanup route can enter the public primitive stream.',
+  };
+};
 
 const routeLabels: Record<RouteKind, string> = {
   partial_product: 'partial product temporary AND',
@@ -99,8 +123,26 @@ export function AccumulatorScratchLifecycleLab({ projectData }: { projectData: P
         The current modular primitive stream has {formatInt(lifecycle.currentStream.scratchObservationCount)}
         {' '}temporary-AND scratch observations, {formatInt(lifecycle.currentStream.scratchCleanupObservationCount)}
         {' '}cleanup observations, and {formatInt(lifecycle.currentStream.scratchAbandonedGarbageCount)}
-        {' '}abandoned targets. Current stream status: {lifecycle.currentStream.physicalLifecycleStatus}.
+        {' '}abandoned targets. Current stream status: {readable(lifecycle.currentStream.physicalLifecycleStatus)}.
       </p>
+      <section className="scratch-contract-grid" aria-label="Scratch lifecycle contract">
+        <article>
+          <strong>Temporary AND</strong>
+          <p>A one-bit scratch target produced from two source controls.</p>
+        </article>
+        <article>
+          <strong>Consume row</strong>
+          <p>The row that uses the scratch bit to update counted accumulator state.</p>
+        </article>
+        <article>
+          <strong>Source-uncompute</strong>
+          <p>Replay the same source controls so the scratch target returns to zero.</p>
+        </article>
+        <article>
+          <strong>Guard route</strong>
+          <p>A predicate-cleanup route is blocked until its source controls are explicit.</p>
+        </article>
+      </section>
 
       <div className="scratch-summary">
         <div>
@@ -221,11 +263,17 @@ export function AccumulatorScratchLifecycleLab({ projectData }: { projectData: P
               {' '}{formatInt(sourceUncompute.cleanupStatusCounts.missing_source_controls_for_cleanup ?? 0)}.
             </span>
           </p>
-          <ul className="promotion-steps">
-            {sourceUncompute.requiredToPromote.map((step) => (
-              <li key={step}>{step}</li>
-            ))}
-          </ul>
+          <div className="obligation-step-list">
+            {sourceUncompute.requiredToPromote.map((step) => {
+              const card = promotionStepCard(step);
+              return (
+                <article key={step}>
+                  <strong>{card.title}</strong>
+                  <p>{card.detail}</p>
+                </article>
+              );
+            })}
+          </div>
         </article>
       </div>
     </section>

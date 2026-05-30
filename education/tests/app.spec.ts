@@ -1140,6 +1140,8 @@ test('shows real modular accumulator lowering obligations', async ({ page }) => 
   await selectRouteLab(page, /Accumulator lowering/);
 
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('Modular accumulator lowering');
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('This lab reads the modular-multiply artifact as a set of unpaid work orders');
+  await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('Promotion');
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('1,448,433');
   await expect(page.getByTestId('accumulator-lowering-lab')).toContainText('2,137,410');
   await page.getByRole('button', { name: /pseudo mersenne high column fold/ }).click();
@@ -1153,9 +1155,11 @@ test('teaches modular scratch lifecycle cleanup obligations', async ({ page }) =
   await selectRouteLab(page, /Scratch lifecycle/);
 
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Scratch lifecycle lab');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Temporary AND');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Source-uncompute');
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('720,896');
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('510');
-  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Current stream status: invalid_abandoned_temporary_and_targets');
+  await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Current stream status: invalid abandoned temporary and targets');
   await expect(page.getByTestId('accumulator-scratch-lifecycle-lab')).toContainText('Lifecycle audit: blocked');
   await page.getByLabel('Add consume row').check();
   await page.getByLabel('Replay cleanup controls').check();

@@ -6581,6 +6581,36 @@ code {
   color: #dce7f2;
 }
 
+.accumulator-vocab-grid,
+.scratch-contract-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin: 1rem 0;
+}
+
+.accumulator-vocab-grid article,
+.scratch-contract-grid article {
+  border: 0.0625rem solid rgba(99, 230, 190, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.8rem;
+  background: rgba(99, 230, 190, 0.055);
+}
+
+.accumulator-vocab-grid strong,
+.scratch-contract-grid strong {
+  display: block;
+  color: #ffffff;
+}
+
+.accumulator-vocab-grid p,
+.scratch-contract-grid p {
+  margin: 0.35rem 0 0;
+  color: #b4c4d6;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
 .accumulator-summary {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -6678,6 +6708,31 @@ code {
   display: grid;
   gap: 0.5rem;
   padding-left: 1rem;
+}
+
+.obligation-step-list {
+  display: grid;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.obligation-step-list article {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(245, 207, 107, 0.055);
+}
+
+.obligation-step-list strong {
+  display: block;
+  color: #ffffff;
+}
+
+.obligation-step-list p {
+  margin: 0.3rem 0 0;
+  color: #b4c4d6;
+  font-size: 0.86rem;
+  line-height: 1.45;
 }
 
 .scratch-summary {
@@ -8746,6 +8801,8 @@ legend {
   .physical-layer-warning,
   .error-correction-boundary,
   .magic-budget-boundary,
+  .accumulator-vocab-grid,
+  .scratch-contract-grid,
   .wire-timeline-panel,
   .cleanup-equation,
   .one-qubit-capability-row,
@@ -8996,6 +9053,8 @@ legend {
   .physical-layer-warning,
   .error-correction-boundary,
   .magic-budget-boundary,
+  .accumulator-vocab-grid,
+  .scratch-contract-grid,
   .wire-timeline-panel,
   .cleanup-equation,
   .one-qubit-capability-row,
