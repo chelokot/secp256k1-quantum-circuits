@@ -114,6 +114,21 @@ export function LogicalPhysicalBridgeLab({ projectData }: { projectData: Project
         <div><strong>Error correction</strong><span>distance {distance}, layout factor {layoutFactor}x</span></div>
         <div><strong>Hardware envelope</strong><span>{formatCompact(estimate.physicalTotal)} toy physical qubits</span></div>
       </div>
+
+      <section className="physical-assumption-ledger" aria-label="Physical estimate assumption ledger">
+        <article>
+          <strong>Included in the toy envelope</strong>
+          <p>logical peak qubits, code distance, and one coarse layout multiplier</p>
+        </article>
+        <article>
+          <strong>Still excluded</strong>
+          <p>cycle time, decoder latency, routing, factory footprint, and target failure rate</p>
+        </article>
+        <article>
+          <strong>Allowed claim</strong>
+          <p>logical result plus assumptions gives a toy envelope, not a hardware forecast</p>
+        </article>
+      </section>
     </section>
   );
 }

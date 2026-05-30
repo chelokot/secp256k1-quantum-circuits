@@ -280,6 +280,8 @@ test('runs the qubit and netlist interactives', async ({ page }) => {
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('stabilizer');
   await page.getByTestId('stabilizer-magic-lab').getByRole('button', { name: 'T', exact: true }).click();
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('magic');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Clifford quarter-turn');
+  await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('non-Clifford eighth-turn');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('needs magic accounting');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('Non-Clifford steps');
   await expect(page.getByTestId('stabilizer-magic-lab')).toContainText('1');
@@ -543,6 +545,9 @@ test('bridges logical repo rows to a toy physical-qubit envelope', async ({ page
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('999.9k');
   await page.getByTestId('logical-physical-bridge-lab').getByLabel('Code distance').fill('17');
   await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('578');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Included in the toy envelope');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('Still excluded');
+  await expect(page.getByTestId('logical-physical-bridge-lab')).toContainText('not a hardware forecast');
 });
 
 test('teaches logical encoding with a repetition-code toy decoder', async ({ page }) => {

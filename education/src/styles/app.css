@@ -3488,6 +3488,45 @@ code {
   font-size: 0.82rem;
 }
 
+.magic-gate-legend {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  margin: 1rem 0;
+}
+
+.magic-gate-legend article {
+  border: 0.0625rem solid rgba(245, 207, 107, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.65rem;
+  background: rgba(245, 207, 107, 0.06);
+}
+
+.magic-gate-legend strong,
+.magic-gate-legend span {
+  display: block;
+}
+
+.magic-gate-legend strong {
+  color: #ffffff;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 1rem;
+}
+
+.magic-gate-legend span {
+  margin-top: 0.25rem;
+  color: #f5cf6b;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.magic-gate-legend p {
+  margin: 0.35rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
 .mono-line {
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   color: #b8f3e6;
@@ -6565,6 +6604,32 @@ code {
   gap: 0.55rem;
 }
 
+.physical-assumption-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.physical-assumption-ledger article {
+  border: 0.0625rem solid rgba(143, 182, 255, 0.18);
+  border-radius: 0.5rem;
+  padding: 0.7rem;
+  background: rgba(143, 182, 255, 0.055);
+}
+
+.physical-assumption-ledger strong {
+  display: block;
+  color: #ffffff;
+}
+
+.physical-assumption-ledger p {
+  margin: 0.4rem 0 0;
+  color: #c9d6e2;
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
 .magic-controls {
   display: grid;
   grid-template-columns: minmax(16rem, 1.1fr) minmax(12rem, 0.9fr) minmax(12rem, 0.9fr);
@@ -6997,6 +7062,7 @@ legend {
   .physical-controls,
   .physical-grid,
   .physical-stack,
+  .physical-assumption-ledger,
   .wire-ledger,
   .error-code-grid,
   .error-code-summary,
@@ -7004,6 +7070,7 @@ legend {
   .publication-workflow-strip,
   .claim-verdict-strip,
   .magic-controls,
+  .magic-gate-legend,
   .magic-grid,
   .magic-stack,
   .trust-repair-strip,
@@ -7172,6 +7239,7 @@ legend {
   .physical-controls,
   .physical-grid,
   .physical-stack,
+  .physical-assumption-ledger,
   .wire-ledger,
   .error-code-grid,
   .error-code-summary,
@@ -7179,6 +7247,7 @@ legend {
   .publication-workflow-strip,
   .claim-verdict-strip,
   .magic-controls,
+  .magic-gate-legend,
   .magic-grid,
   .magic-stack,
   .trust-repair-strip,

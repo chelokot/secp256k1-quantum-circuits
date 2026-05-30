@@ -15,6 +15,21 @@ const gateKind: Record<Gate, 'Clifford' | 'non-Clifford'> = {
   T: 'non-Clifford',
 };
 
+const gateLegend: Record<Gate, { name: string; description: string }> = {
+  S: {
+    name: 'Clifford quarter-turn',
+    description: 'moves from one stabilizer axis to the next',
+  },
+  Z: {
+    name: 'Clifford half-turn',
+    description: 'flips to the opposite stabilizer axis',
+  },
+  T: {
+    name: 'non-Clifford eighth-turn',
+    description: 'lands between axes and spends magic accounting',
+  },
+};
+
 const axisNames = ['+X', '+Y', '-X', '-Y'];
 
 const normalizeTurn = (turn: number) => ((turn % 8) + 8) % 8;
@@ -49,6 +64,16 @@ export function StabilizerMagicLab() {
         halfway between axes, creating the kind of non-stabilizer resource that fault-tolerant
         circuits must pay for.
       </p>
+
+      <section className="magic-gate-legend" aria-label="Gate letter legend">
+        {(['S', 'Z', 'T'] as Gate[]).map((gate) => (
+          <article key={gate}>
+            <strong>{gate}</strong>
+            <span>{gateLegend[gate].name}</span>
+            <p>{gateLegend[gate].description}</p>
+          </article>
+        ))}
+      </section>
 
       <svg className="magic-wheel" viewBox="0 0 100 100" role="img" aria-label="Stabilizer and magic state wheel">
         <circle cx="50" cy="50" r="36" />
