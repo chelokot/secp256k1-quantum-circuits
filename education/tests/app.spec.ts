@@ -978,6 +978,9 @@ test('keeps accepted-baseline promotion behind all blockers', async ({ page }) =
   await expect(page.getByTestId('repo-baseline-story')).toContainText('blocked by 5 gate rows');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('Single primitive stream');
   await expect(page.getByTestId('repo-baseline-story')).not.toContainText('single_authoritative_primitive_stream');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('Publication should be generated, not typed');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('primitive rows');
+  await expect(page.getByTestId('repo-baseline-story')).toContainText('README and proof input');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('How the README should eventually get its numbers');
   await expect(page.getByTestId('repo-baseline-story')).toContainText('none yet');
   await selectRouteLab(page, /Promotion audit/);
@@ -1004,6 +1007,9 @@ test('trains claim classification before publishing resource numbers', async ({ 
   await expect(page.getByTestId('contribution-story')).toContainText('Zero-lift guard capacity');
   await expect(page.getByTestId('contribution-story')).not.toContainText('zero_lift_guard_capacity_not_promoted');
   await expect(page.getByTestId('contribution-story')).toContainText('Choose the smallest claim');
+  await expect(page.getByTestId('contribution-story')).toContainText('A patch packet has to answer reviewer objections');
+  await expect(page.getByTestId('contribution-story')).toContainText('Where are the wires counted?');
+  await expect(page.getByTestId('contribution-story')).toContainText('owner-capacity and peak-row witness regenerated from liveness');
   await expect(page.getByTestId('contribution-story')).toContainText('The contributor loop');
   await expect(page.getByTestId('contribution-story')).toContainText('choose one blocker');
   await selectRouteLab(page, /Claim audit drill/);
@@ -1270,8 +1276,12 @@ test('teaches point-add semantic boundary cases from equivalence artifacts', asy
 
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('A point-add leaf is an API');
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('The counted interface and tested interface must be the same');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('Each branch is a complete API case');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('copy or alias path must be reversible and counted');
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('Edge cases require branch selectors, not wishes');
   await expect(page.getByTestId('point-add-boundary-story')).toContainText('80/80');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('What can still go wrong after 80/80');
+  await expect(page.getByTestId('point-add-boundary-story')).toContainText('primitive lowering');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('Point-add boundary debugger');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('80/80');
   await expect(page.getByTestId('point-add-boundary-debugger')).toContainText('lookup infinity');

@@ -3427,6 +3427,38 @@ function PointAddBoundaryStoryPanel({ data }: { data: typeof projectData }) {
   const boundary = data.pointAddBoundary.streamedLookupTailLeaf;
   const oldBoundary = data.pointAddBoundary.lookupFedLeaf;
   const artifactsAgree = boundary.pass === oldBoundary.pass && boundary.total === oldBoundary.total;
+  const caseDescriptions: Record<string, { predicate: string; output: string; audit: string }> = {
+    random: {
+      predicate: 'ordinary unequal finite points',
+      output: 'normal point-add formula',
+      audit: 'hot path still needs the same counted interface',
+    },
+    doubling: {
+      predicate: 'accumulator point equals lookup point',
+      output: 'point doubling branch',
+      audit: 'selector must not fall through to ordinary add',
+    },
+    inverse: {
+      predicate: 'points cancel to the identity',
+      output: 'point at infinity',
+      audit: 'infinity encoder and rejected coordinates must be accounted',
+    },
+    accumulator_infinity: {
+      predicate: 'accumulator starts as identity',
+      output: 'copy lookup point into accumulator role',
+      audit: 'copy or alias path must be reversible and counted',
+    },
+    lookup_infinity: {
+      predicate: 'lookup table entry is identity',
+      output: 'leave accumulator unchanged',
+      audit: 'no-op branch still has controls and cleanup obligations',
+    },
+  };
+  const boundaryRows = Object.entries(boundary.categories).map(([name, category]) => ({
+    name,
+    category,
+    description: caseDescriptions[name],
+  }));
 
   return (
     <section className="point-add-boundary-story" data-testid="point-add-boundary-story" aria-label="Point-add boundary contract story">
@@ -3460,8 +3492,35 @@ function PointAddBoundaryStoryPanel({ data }: { data: typeof projectData }) {
           </p>
         </div>
         <div className="proof-contract-list" aria-hidden="true">
-          {Object.entries(boundary.categories).map(([name, category]) => (
-            <span key={name}>{name.replaceAll('_', ' ')}: {category.pass}/{category.total}</span>
+          {boundaryRows.map((row) => (
+            <span key={row.name}>{row.name.replaceAll('_', ' ')}: {row.category.pass}/{row.category.total}</span>
+          ))}
+        </div>
+      </article>
+
+      <article className="story-question">
+        <h4>Each branch is a complete API case</h4>
+        <p>
+          A reviewer should be able to point at every semantic branch and say what
+          selects it, what output it promises, and which resource-accounting question
+          remains attached to that promise. Passing arithmetic values without this
+          branch ledger is too weak: it can hide the selector, the rejected formula
+          path, or a coordinate lane that stayed live after the branch.
+        </p>
+        <div className="boundary-case-ledger" role="table" aria-label="Point-add boundary case ledger">
+          <div role="row">
+            <strong role="columnheader">Case</strong>
+            <strong role="columnheader">Predicate</strong>
+            <strong role="columnheader">Output promise</strong>
+            <strong role="columnheader">Resource audit</strong>
+          </div>
+          {boundaryRows.map((row) => (
+            <div role="row" key={row.name}>
+              <span role="cell">{row.name.replaceAll('_', ' ')}</span>
+              <span role="cell">{row.description.predicate}</span>
+              <span role="cell">{row.description.output}</span>
+              <span role="cell">{row.description.audit}</span>
+            </div>
           ))}
         </div>
       </article>
@@ -3505,6 +3564,25 @@ function PointAddBoundaryStoryPanel({ data }: { data: typeof projectData }) {
           <span className="story-token">same leaf, same contract</span>
         </article>
       </div>
+
+      <article className="story-rule point-boundary-rule">
+        <div>
+          <h4>What can still go wrong after 80/80</h4>
+          <p>
+            The 80/80 result is a semantic receipt for this leaf boundary. It does not
+            automatically prove that every lower arithmetic row below the leaf is already
+            Clifford-complete, or that every selector/control wire has been promoted into
+            the global liveness engine. That distinction is deliberate: boundary tests
+            prove the API behavior, while the resource engine proves the physical wire
+            accounting for the implementation underneath.
+          </p>
+        </div>
+        <div className="branch-selector-card" aria-hidden="true">
+          <div><span>semantic receipt</span><strong>right outputs for all branches</strong></div>
+          <div><span>primitive lowering</span><strong>rows for the implementation</strong></div>
+          <div><span>liveness receipt</span><strong>all controls and lanes counted</strong></div>
+        </div>
+      </article>
     </section>
   );
 }
@@ -3689,6 +3767,41 @@ function ContributionStoryPanel({ data }: { data: typeof projectData }) {
         </div>
       </article>
 
+      <article className="story-rule mission-packet-rule">
+        <div>
+          <h4>A patch packet has to answer reviewer objections</h4>
+          <p>
+            The goal is not to sound confident. The goal is to make the next skeptical
+            question cheap to check. For this repo, that means every serious patch should
+            name the executable object, the semantic boundary it preserves, the liveness
+            or cost artifact it regenerates, and the strongest public wording it now
+            allows.
+          </p>
+        </div>
+        <div className="review-objection-grid" role="table" aria-label="Contributor review objection checklist">
+          <div role="row">
+            <strong role="columnheader">Reviewer asks</strong>
+            <strong role="columnheader">Packet answers with</strong>
+          </div>
+          <div role="row">
+            <span role="cell">What object changed?</span>
+            <span role="cell">one primitive stream, boundary artifact, proof input, or generated doc section</span>
+          </div>
+          <div role="row">
+            <span role="cell">Did semantics survive?</span>
+            <span role="cell">random plus edge-case replay against the same executable interface</span>
+          </div>
+          <div role="row">
+            <span role="cell">Where are the wires counted?</span>
+            <span role="cell">owner-capacity and peak-row witness regenerated from liveness</span>
+          </div>
+          <div role="row">
+            <span role="cell">What may the README say?</span>
+            <span role="cell">only the claim level whose evidence gates now pass</span>
+          </div>
+        </div>
+      </article>
+
       <div className="story-card-grid">
         <article>
           <strong>Choose the smallest claim</strong>
@@ -3726,6 +3839,16 @@ function ContributionStoryPanel({ data }: { data: typeof projectData }) {
           evidence stronger, classify the resulting claim, and describe the status
           without overstating it. If a patch cannot say which evidence gate changed, it
           is probably optimization theater rather than contribution.
+        </p>
+      </article>
+
+      <article className="story-question">
+        <h4>The smallest useful patch is still end-to-end</h4>
+        <p>
+          A one-file code change can be small and still be complete. It should leave a
+          trail from implementation to generated artifact to focused test to wording.
+          That is what prevents “I fixed the formula” from becoming another hand-maintained
+          number that nobody can audit later.
         </p>
       </article>
     </section>
@@ -3787,6 +3910,24 @@ function RepoBaselineStoryPanel({ data }: { data: typeof projectData }) {
               <em>{blockerStatusLabel(row.status)}</em>
             </div>
           ))}
+        </div>
+      </article>
+
+      <article className="story-rule baseline-status-rule">
+        <div>
+          <h4>Publication should be generated, not typed</h4>
+          <p>
+            The baseline page, README, and proof input should all read the same generated
+            status artifact. If a number has to be copied by hand into three places, the
+            repo has recreated the old failure mode: a precise-looking sentence can drift
+            away from the executable circuit and the proof statement.
+          </p>
+        </div>
+        <div className="baseline-pipeline-strip" aria-hidden="true">
+          <span>primitive rows</span>
+          <span>liveness artifact</span>
+          <span>baseline status</span>
+          <span>README and proof input</span>
         </div>
       </article>
 

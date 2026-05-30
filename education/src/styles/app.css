@@ -3197,7 +3197,8 @@ code {
 .engine-flow-strip,
 .source-of-truth-strip,
 .mini-engine-flow-strip,
-.optimization-gate-strip {
+.optimization-gate-strip,
+.baseline-pipeline-strip {
   display: grid;
   grid-template-columns: minmax(8rem, 1fr) 1.4rem minmax(8rem, 1fr);
   gap: 0.45rem;
@@ -3221,7 +3222,8 @@ code {
 .engine-flow-strip,
 .source-of-truth-strip,
 .mini-engine-flow-strip,
-.optimization-gate-strip {
+.optimization-gate-strip,
+.baseline-pipeline-strip {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
@@ -3239,7 +3241,8 @@ code {
 .engine-flow-strip span,
 .source-of-truth-strip span,
 .mini-engine-flow-strip span,
-.optimization-gate-strip span {
+.optimization-gate-strip span,
+.baseline-pipeline-strip span {
   display: grid;
   place-items: center;
   min-height: 3.2rem;
@@ -3261,7 +3264,8 @@ code {
 .engine-flow-strip span:first-child,
 .source-of-truth-strip span:first-child,
 .mini-engine-flow-strip span:first-child,
-.optimization-gate-strip span:first-child {
+.optimization-gate-strip span:first-child,
+.baseline-pipeline-strip span:first-child {
   border-color: rgba(245, 207, 107, 0.3);
   background: rgba(245, 207, 107, 0.08);
 }
@@ -3736,7 +3740,9 @@ code {
 .zkp-system-status-list,
 .engine-blocker-list,
 .mini-lifecycle-compare,
-.optimization-candidate-strip {
+.optimization-candidate-strip,
+.boundary-case-ledger,
+.review-objection-grid {
   display: grid;
   gap: 0.55rem;
 }
@@ -3748,7 +3754,9 @@ code {
 .zkp-system-status-list article,
 .engine-blocker-list div,
 .mini-lifecycle-compare div,
-.optimization-candidate-strip div {
+.optimization-candidate-strip div,
+.boundary-case-ledger [role="row"] > *,
+.review-objection-grid [role="row"] > * {
   border: 0.0625rem solid rgba(255, 255, 255, 0.1);
   border-radius: 0.5rem;
   padding: 0.65rem;
@@ -3771,7 +3779,11 @@ code {
 .mini-lifecycle-compare strong,
 .optimization-candidate-strip span,
 .optimization-candidate-strip strong,
-.optimization-candidate-strip em {
+.optimization-candidate-strip em,
+.boundary-case-ledger strong,
+.boundary-case-ledger span,
+.review-objection-grid strong,
+.review-objection-grid span {
   display: block;
 }
 
@@ -3780,7 +3792,9 @@ code {
 .zkp-system-status-list span,
 .engine-blocker-list span,
 .mini-lifecycle-compare span,
-.optimization-candidate-strip span {
+.optimization-candidate-strip span,
+.boundary-case-ledger span,
+.review-objection-grid span {
   color: #93a4b7;
   font-size: 0.78rem;
   overflow-wrap: anywhere;
@@ -3791,7 +3805,9 @@ code {
 .zkp-system-status-list strong,
 .engine-blocker-list strong,
 .mini-lifecycle-compare strong,
-.optimization-candidate-strip strong {
+.optimization-candidate-strip strong,
+.boundary-case-ledger strong,
+.review-objection-grid strong {
   color: #ffffff;
   overflow-wrap: anywhere;
 }
@@ -3807,6 +3823,33 @@ code {
 
 .zkp-system-status-list {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.boundary-case-ledger {
+  margin-top: 0.75rem;
+}
+
+.boundary-case-ledger [role="row"] {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.8fr) repeat(3, minmax(9rem, 1fr));
+  gap: 0.35rem;
+}
+
+.review-objection-grid [role="row"] {
+  display: grid;
+  grid-template-columns: minmax(10rem, 0.7fr) minmax(14rem, 1fr);
+  gap: 0.35rem;
+}
+
+.boundary-case-ledger strong,
+.review-objection-grid strong {
+  color: #f5cf6b;
+  background: rgba(245, 207, 107, 0.08);
+}
+
+.boundary-case-ledger span,
+.review-objection-grid span {
+  color: #dce7f2;
 }
 
 .zkp-system-status-list article {
@@ -10621,6 +10664,9 @@ legend {
   .source-of-truth-strip,
   .mini-engine-flow-strip,
   .optimization-gate-strip,
+  .baseline-pipeline-strip,
+  .boundary-case-ledger [role="row"],
+  .review-objection-grid [role="row"],
   .zkp-system-status-list,
   .scratch-lifecycle-card,
   .story-card-grid,
@@ -10906,6 +10952,9 @@ legend {
   .source-of-truth-strip,
   .mini-engine-flow-strip,
   .optimization-gate-strip,
+  .baseline-pipeline-strip,
+  .boundary-case-ledger [role="row"],
+  .review-objection-grid [role="row"],
   .zkp-system-status-list,
   .scratch-lifecycle-card,
   .story-card-grid,
